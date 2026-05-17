@@ -51,31 +51,34 @@ function ReservationsPage() {
     returnObjects: true,
   }) as Record<OccasionKey, string>;
 
-  const today = useMemo(() => {
+  // Date state is initialised after mount only. Computing `new Date()` during
+  // SSR vs. on the client in a different timezone produces different month
+  // grids in react-day-picker → React error #418 (text content mismatch).
+  // We render a skeleton during SSR and the first client paint, then swap
+  // the real calendar in once the client has mounted.
+  const [today, setToday] = useState<Date | null>(null);
+  const [month, setMonth] = useState<Date | null>(null);
+  const [numberOfMonths, setNumberOfMonths] = useState<1 | 2>(1);
+
+  useEffect(() => {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
-    return d;
-  }, []);
-  const blocked = useMemo(() => buildBlockedRanges(today), [today]);
+    setToday(d);
+    setMonth(d);
 
-  const [range, setRange] = useState<DateRange | undefined>(undefined);
-  const [guests, setGuests] = useState<number>(12);
-  const [occasion, setOccasion] = useState<OccasionKey | "">("");
-  const [submitted, setSubmitted] = useState(false);
-  const [month, setMonth] = useState<Date>(today);
-
-  // Show two months on desktop, one on mobile. Updated after mount via a
-  // matchMedia listener so SSR markup matches the initial client render
-  // (server has no window → starts at 1; we upgrade to 2 in the effect).
-  const [numberOfMonths, setNumberOfMonths] = useState<1 | 2>(1);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
     const mql = window.matchMedia("(min-width: 768px)");
     const apply = () => setNumberOfMonths(mql.matches ? 2 : 1);
     apply();
     mql.addEventListener("change", apply);
     return () => mql.removeEventListener("change", apply);
   }, []);
+
+  const blocked = useMemo(() => (today ? buildBlockedRanges(today) : []), [today]);
+
+  const [range, setRange] = useState<DateRange | undefined>(undefined);
+  const [guests, setGuests] = useState<number>(12);
+  const [occasion, setOccasion] = useState<OccasionKey | "">("");
+  const [submitted, setSubmitted] = useState(false);
 
   const nights =
     range?.from && range?.to ? Math.max(0, differenceInCalendarDays(range.to, range.from)) : 0;
@@ -132,24 +135,27 @@ function ReservationsPage() {
                   </p>
                 </div>
 
-                <div className="andreashof-calendar">
-                  <DayPicker
-                    mode="range"
-                    selected={range}
-                    onSelect={(r) => {
-                      setRange(r);
-                      // When user picks a fresh check-in, keep them in that month.
-                      if (r?.from && !isSameMonth(r.from, month)) setMonth(startOfMonth(r.from));
-                    }}
-                    month={month}
-                    onMonthChange={setMonth}
-                    numberOfMonths={numberOfMonths}
-                    pagedNavigation
-                    disabled={[{ before: today }, ...blocked]}
-                    locale={locale}
-                    showOutsideDays={false}
-                    weekStartsOn={1}
-                  />
+                <div className="andreashof-calendar" suppressHydrationWarning>
+                  {today && month ? (
+                    <DayPicker
+                      mode="range"
+                      selected={range}
+                      onSelect={(r) => {
+                        setRange(r);
+                        if (r?.from && !isSameMonth(r.from, month)) setMonth(startOfMonth(r.from));
+                      }}
+                      month={month}
+                      onMonthChange={setMonth}
+                      numberOfMonths={numberOfMonths}
+                      pagedNavigation
+                      disabled={[{ before: today }, ...blocked]}
+                      locale={locale}
+                      showOutsideDays={false}
+                      weekStartsOn={1}
+                    />
+                  ) : (
+                    <CalendarSkeleton />
+                  )}
                 </div>
 
                 <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -355,6 +361,19 @@ function SmallField({
         required={required}
         className="mt-3 w-full border-0 border-b border-border bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
       />
+    </div>
+  );
+}
+
+// Renders during SSR + first client paint to keep the calendar slot the same
+// height. Once `today` is set in useEffect, the real DayPicker takes over.
+function CalendarSkeleton() {
+  return (
+    <div className="grid grid-cols-7 gap-2" aria-hidden="true">
+      <div className="col-span-7 mb-3 h-6 w-32 bg-linen" />
+      {Array.from({ length: 35 }).map((_, i) => (
+        <div key={i} className="h-9 w-full rounded-full bg-linen/60" />
+      ))}
     </div>
   );
 }
