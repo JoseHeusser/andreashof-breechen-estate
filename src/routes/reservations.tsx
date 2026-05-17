@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DayPicker, type DateRange } from "react-day-picker";
-import "react-day-picker/style.css";
 import { de as deLocale, es as esLocale } from "date-fns/locale";
 import { differenceInCalendarDays, addDays, addMonths, format, isSameMonth, startOfMonth } from "date-fns";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
@@ -65,13 +64,23 @@ function ReservationsPage() {
   const [submitted, setSubmitted] = useState(false);
   const [month, setMonth] = useState<Date>(today);
 
+  // Show two months on desktop, one on mobile. Updated after mount via a
+  // matchMedia listener so SSR markup matches the initial client render
+  // (server has no window → starts at 1; we upgrade to 2 in the effect).
+  const [numberOfMonths, setNumberOfMonths] = useState<1 | 2>(1);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(min-width: 768px)");
+    const apply = () => setNumberOfMonths(mql.matches ? 2 : 1);
+    apply();
+    mql.addEventListener("change", apply);
+    return () => mql.removeEventListener("change", apply);
+  }, []);
+
   const nights =
     range?.from && range?.to ? Math.max(0, differenceInCalendarDays(range.to, range.from)) : 0;
   const locale = localeFor(i18n.language);
   const fmt = (d: Date) => format(d, "EEE, d MMM", { locale });
-
-  // For mobile, show one month; for desktop, two side-by-side.
-  const numberOfMonths = typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches ? 2 : 1;
 
   return (
     <div className="min-h-screen bg-background">
