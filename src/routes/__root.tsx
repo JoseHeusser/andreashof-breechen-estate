@@ -10,6 +10,10 @@ import {
 
 import appCss from "../styles.css?url";
 import { LangProvider } from "@/i18n/lang-provider";
+import { useSmoothAnchorScroll } from "@/hooks/use-smooth-anchor-scroll";
+import { useRevealPage } from "@/hooks/use-reveal-page";
+import { useRouterState } from "@tanstack/react-router";
+import { FloatingLangSwitcher } from "@/components/floating-lang-switcher";
 
 function NotFoundComponent() {
   return (
@@ -115,8 +119,22 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LangProvider>
+        <GlobalScrollEffects />
+        <FloatingLangSwitcher />
         <Outlet />
       </LangProvider>
     </QueryClientProvider>
   );
+}
+
+function GlobalScrollEffects() {
+  useSmoothAnchorScroll();
+  // Re-run reveal observers when the route changes so new sections fade in too.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  return <RevealScanner key={pathname} />;
+}
+
+function RevealScanner() {
+  useRevealPage();
+  return null;
 }

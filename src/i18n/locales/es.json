@@ -113,10 +113,11 @@
   "reviewsSec": {
     "eyebrow": "Voces",
     "title": "Lo que dejan nuestros huéspedes.",
+    "badge": "★ 5,0 · 21 evaluaciones en Airbnb",
     "items": [
-      { "q": "Éramos 19 personas, cuatro generaciones — nadie se sintió apretado. La casa respira calma.",       "a": "Familia Möller, Hamburgo" },
-      { "q": "Nuestra boda en el jardín bajo los tilos. La luz del salón al atardecer fue indescriptible.",     "a": "Lea y Jonas" },
-      { "q": "Tres días de retiro estratégico. Silencio, campos abiertos, comida excelente. Volveremos.",      "a": "Henning K., Berlín" }
+      { "q": "Estuvimos en la casa con toda la familia durante el fin de semana. Fue simplemente fantástico, incluso más bonito que en las fotos. La anfitriona es muy amable y servicial.", "a": "Anne · fin de semana en familia" },
+      { "q": "Pasé un maravilloso fin de semana de cumpleaños aquí con mis mejores amigos, y nos sentimos más que en casa. El diseño interior está cuidadosamente seleccionado y combina maravillosamente con la casa.", "a": "Tjerk · cumpleaños con amigos" },
+      { "q": "Nuestra empresa fuera de la oficina en casa de Andrea fue absolutamente increíble. El espacio era cómodo, limpio y perfectamente adecuado para nuestro equipo. Andrea fue una anfitriona fantástica, atenta, acogedora y servicial.", "a": "Clemens · retiro corporativo" }
     ]
   },
   "bookingTeaser": {
@@ -130,6 +131,19 @@
     "eyebrow": "Reservas",
     "title": "Reserva la casa completa.",
     "subtitle": "El Andreashof se alquila únicamente entero, para 11 a 21 huéspedes. Envíanos tus datos — respondemos en menos de 24 horas.",
+    "calendarEyebrow": "Disponibilidad",
+    "calendarTitle": "Elige tus fechas",
+    "calendarHint": "Haz click en llegada y salida. Los días grises no están disponibles.",
+    "legendAvailable": "Disponible",
+    "legendSelected": "Seleccionado",
+    "legendBlocked": "No disponible",
+    "summaryTitle": "Tu selección",
+    "summaryEmpty": "Selecciona llegada y salida en el calendario.",
+    "summaryArrival": "Llegada",
+    "summaryDeparture": "Salida",
+    "summaryNights": "{{count}} noche",
+    "summaryNights_other": "{{count}} noches",
+    "summaryGuests": "Huéspedes",
     "stepsEyebrow": "Cómo funciona",
     "steps": [
       { "n": "01", "title": "Envías tu solicitud",  "body": "Eliges fechas, número de huéspedes y ocasión. Verificamos disponibilidad." },

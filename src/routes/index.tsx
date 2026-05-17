@@ -46,24 +46,6 @@ function Home() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const els = document.querySelectorAll(".reveal");
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("is-visible");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" },
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
   return (
     <div id="top" className="min-h-screen bg-background">
       <SiteHeader tone="light" />
@@ -179,27 +161,27 @@ function Home() {
           <div className="grid grid-cols-12 gap-4 md:gap-6">
             {/* Row 1: hero-sized great room + tall salon-upper */}
             <div className="img-hover reveal col-span-12 md:col-span-8">
-              <img src="/gallery/great-room.jpg" alt={t("gallery.alt.greatRoom")} loading="lazy" className="h-[320px] w-full object-cover md:h-[560px]" />
+              <img src="/gallery/great-room.jpg" alt={t("gallery.alt.greatRoom")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[320px] md:h-[560px]" />
             </div>
-            <div className="img-hover reveal col-span-6 md:col-span-4" style={{ transitionDelay: "120ms" }}>
-              <img src="/gallery/salon-upper.jpg" alt={t("gallery.alt.salonUpper")} loading="lazy" className="h-[320px] w-full object-cover md:h-[560px]" />
+            <div className="img-hover reveal col-span-12 md:col-span-4" style={{ transitionDelay: "120ms" }}>
+              <img src="/gallery/salon-upper.jpg" alt={t("gallery.alt.salonUpper")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[320px] md:h-[560px]" />
             </div>
             {/* Row 2: dining wide + two salon-second */}
-            <div className="img-hover reveal col-span-6 md:col-span-6">
-              <img src="/gallery/dining.jpg" alt={t("gallery.alt.dining")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
+            <div className="img-hover reveal col-span-12 md:col-span-6">
+              <img src="/gallery/dining.jpg" alt={t("gallery.alt.dining")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[400px]" />
             </div>
-            <div className="img-hover reveal col-span-6 md:col-span-3" style={{ transitionDelay: "120ms" }}>
-              <img src="/gallery/salon-second-a.jpg" alt={t("gallery.alt.salonSecondA")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
+            <div className="img-hover reveal col-span-12 md:col-span-3" style={{ transitionDelay: "120ms" }}>
+              <img src="/gallery/salon-second-a.jpg" alt={t("gallery.alt.salonSecondA")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[400px]" />
             </div>
             <div className="img-hover reveal col-span-12 md:col-span-3" style={{ transitionDelay: "240ms" }}>
-              <img src="/gallery/salon-second-b.jpg" alt={t("gallery.alt.salonSecondB")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
+              <img src="/gallery/salon-second-b.jpg" alt={t("gallery.alt.salonSecondB")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[400px]" />
             </div>
             {/* Row 3: kitchen + outdoor games */}
             <div className="img-hover reveal col-span-12 md:col-span-7">
-              <img src="/gallery/kitchen-ground.jpg" alt={t("gallery.alt.kitchenGround")} loading="lazy" className="h-[300px] w-full object-cover md:h-[460px]" />
+              <img src="/gallery/kitchen-ground.jpg" alt={t("gallery.alt.kitchenGround")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[460px]" />
             </div>
             <div className="img-hover reveal col-span-12 md:col-span-5" style={{ transitionDelay: "120ms" }}>
-              <img src="/gallery/outdoor-games.jpg" alt={t("gallery.alt.outdoorGames")} loading="lazy" className="h-[300px] w-full object-cover md:h-[460px]" />
+              <img src="/gallery/outdoor-games.jpg" alt={t("gallery.alt.outdoorGames")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[460px]" />
             </div>
           </div>
         </div>
@@ -308,9 +290,14 @@ function Home() {
       <section className="bg-linen px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto max-w-6xl">
           <span className="eyebrow">{t("reviewsSec.eyebrow")}</span>
-          <h2 className="mt-4 max-w-3xl font-display text-4xl font-light leading-[1.1] md:text-5xl">
-            {t("reviewsSec.title")}
-          </h2>
+          <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
+            <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.1] md:text-5xl">
+              {t("reviewsSec.title")}
+            </h2>
+            <p className="text-[11px] uppercase tracking-[0.28em] text-sage-deep">
+              {t("reviewsSec.badge")}
+            </p>
+          </div>
           <div className="mt-16 grid gap-12 md:grid-cols-3">
             {reviews.map((r, i) => (
               <figure key={i} className="border-t border-sage pt-8">

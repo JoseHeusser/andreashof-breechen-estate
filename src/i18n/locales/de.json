@@ -113,10 +113,11 @@
   "reviewsSec": {
     "eyebrow": "Stimmen",
     "title": "Was unsere Gäste zurücklassen.",
+    "badge": "★ 5,0 · 21 Bewertungen auf Airbnb",
     "items": [
-      { "q": "Wir waren 19 Personen über vier Generationen — niemand musste sich einengen. Das Haus atmet Ruhe.", "a": "Familie Möller, Hamburg" },
-      { "q": "Unsere Hochzeit im Garten unter den Linden. Das Licht im Salon am Abend war unbeschreiblich.",       "a": "Lea & Jonas" },
-      { "q": "Drei Tage Strategie-Retreat. Stille, weite Felder, hervorragende Küche. Wir kommen wieder.",          "a": "Henning K., Berlin" }
+      { "q": "Wir waren mit der ganzen Familie ein Wochenende im Haus. Es war einfach fantastisch — noch schöner als auf den Fotos. Die Gastgeberin ist sehr freundlich und hilfsbereit.", "a": "Anne · Familie am Wochenende" },
+      { "q": "Ein wunderbares Geburtstagswochenende mit meinen besten Freunden — wir haben uns mehr als zu Hause gefühlt. Die Einrichtung ist mit viel Sorgfalt gewählt und passt wunderbar zum Haus.", "a": "Tjerk · Geburtstag mit Freunden" },
+      { "q": "Unser Firmen-Offsite bei Andrea war absolut großartig. Der Raum war angenehm, sauber und perfekt für unser Team. Andrea ist eine fantastische Gastgeberin — aufmerksam, herzlich, hilfsbereit.", "a": "Clemens · Firmen-Offsite" }
     ]
   },
   "bookingTeaser": {
@@ -130,6 +131,19 @@
     "eyebrow": "Reservierung",
     "title": "Reservieren Sie das ganze Haus.",
     "subtitle": "Der Andreashof wird ausschließlich als Ganzes vermietet, für 11 bis 21 Gäste. Senden Sie uns Ihre Daten — wir antworten innerhalb von 24 Stunden.",
+    "calendarEyebrow": "Verfügbarkeit",
+    "calendarTitle": "Wählen Sie Ihre Daten",
+    "calendarHint": "Klicken Sie auf Anreise und Abreise. Grau markierte Tage sind nicht verfügbar.",
+    "legendAvailable": "Verfügbar",
+    "legendSelected": "Ausgewählt",
+    "legendBlocked": "Nicht verfügbar",
+    "summaryTitle": "Ihre Auswahl",
+    "summaryEmpty": "Wählen Sie Anreise und Abreise im Kalender.",
+    "summaryArrival": "Anreise",
+    "summaryDeparture": "Abreise",
+    "summaryNights": "{{count}} Nacht",
+    "summaryNights_other": "{{count}} Nächte",
+    "summaryGuests": "Gäste",
     "stepsEyebrow": "Ablauf",
     "steps": [
       { "n": "01", "title": "Anfrage senden",        "body": "Wählen Sie Ihre Daten, Gruppengröße und den Anlass. Wir prüfen die Verfügbarkeit." },

@@ -172,3 +172,92 @@
   background: var(--color-linen);
   font-family: var(--font-sans);
 }
+.map-container .leaflet-tooltip {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 0;
+  box-shadow: none;
+}
+.map-container .leaflet-tooltip-top:before {
+  display: none;
+}
+
+/* React-day-picker — Gustavian / editorial overrides */
+.andreashof-calendar .rdp-root {
+  --rdp-accent-color: var(--color-sage-deep);
+  --rdp-accent-background-color: color-mix(in oklab, var(--color-sage) 40%, transparent);
+  --rdp-background-color: var(--color-card);
+  --rdp-range_middle-color: var(--color-foreground);
+  --rdp-range_middle-background-color: color-mix(in oklab, var(--color-sage) 30%, transparent);
+  --rdp-day-height: 40px;
+  --rdp-day-width: 40px;
+  --rdp-day_button-height: 40px;
+  --rdp-day_button-width: 40px;
+  --rdp-day_button-border-radius: 9999px;
+  --rdp-day-font: 400 0.95rem/1 var(--font-sans);
+  --rdp-weekday-padding: 0.5rem 0;
+  --rdp-weekday-text-transform: uppercase;
+  --rdp-weekday-font: 500 0.65rem/1 var(--font-sans);
+  --rdp-months-gap: 2.5rem;
+  --rdp-month_caption-font: 400 1.1rem/1 var(--font-display);
+  --rdp-nav_button-height: 32px;
+  --rdp-nav_button-width: 32px;
+  font-family: var(--font-sans);
+  color: var(--color-foreground);
+}
+.andreashof-calendar .rdp-month_caption {
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+}
+.andreashof-calendar .rdp-weekday {
+  color: var(--color-muted-foreground);
+  letter-spacing: 0.18em;
+}
+.andreashof-calendar .rdp-day_button {
+  border: none;
+  background: transparent;
+  color: var(--color-foreground);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.andreashof-calendar .rdp-day_button:hover {
+  background-color: color-mix(in oklab, var(--color-sage) 25%, transparent);
+}
+.andreashof-calendar .rdp-day.rdp-disabled .rdp-day_button {
+  color: color-mix(in oklab, var(--color-muted-foreground) 70%, transparent);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+.andreashof-calendar .rdp-day.rdp-disabled .rdp-day_button:hover {
+  background-color: transparent;
+}
+.andreashof-calendar .rdp-day.rdp-range_start .rdp-day_button,
+.andreashof-calendar .rdp-day.rdp-range_end .rdp-day_button {
+  background-color: var(--color-sage-deep);
+  color: var(--color-background);
+}
+.andreashof-calendar .rdp-day.rdp-today .rdp-day_button {
+  font-weight: 500;
+  outline: 1px solid var(--color-sage);
+  outline-offset: -4px;
+}
+.andreashof-calendar .rdp-nav {
+  gap: 0.5rem;
+}
+.andreashof-calendar .rdp-button_previous,
+.andreashof-calendar .rdp-button_next {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  color: var(--color-foreground);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.andreashof-calendar .rdp-button_previous:hover,
+.andreashof-calendar .rdp-button_next:hover {
+  background-color: color-mix(in oklab, var(--color-sage) 30%, transparent);
+  color: var(--color-foreground);
+}

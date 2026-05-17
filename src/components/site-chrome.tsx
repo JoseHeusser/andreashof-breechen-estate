@@ -1,7 +1,6 @@
 import logo from "@/assets/logo-andreashof.jpeg";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { LangSwitcher } from "@/i18n/lang-provider";
 
 export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
   const { t } = useTranslation();
@@ -47,18 +46,12 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
             ),
           )}
         </nav>
-        <div className="hidden items-center gap-6 md:flex">
-          <LangSwitcher tone={tone} />
-          <Link
-            to="/reservations"
-            className={`border px-5 py-2.5 text-[11px] uppercase tracking-[0.28em] transition-colors ${borderColor}`}
-          >
-            {t("nav.reserve")}
-          </Link>
-        </div>
-        <div className="md:hidden">
-          <LangSwitcher tone={tone} />
-        </div>
+        <Link
+          to="/reservations"
+          className={`hidden border px-5 py-2.5 text-[11px] uppercase tracking-[0.28em] transition-colors md:inline-block ${borderColor}`}
+        >
+          {t("nav.reserve")}
+        </Link>
       </div>
     </header>
   );

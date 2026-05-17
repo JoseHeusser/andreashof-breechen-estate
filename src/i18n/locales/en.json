@@ -113,10 +113,11 @@
   "reviewsSec": {
     "eyebrow": "Guests",
     "title": "What our guests leave behind.",
+    "badge": "★ 5.0 · 21 reviews on Airbnb",
     "items": [
-      { "q": "We were 19 people across four generations — no one had to crowd in. The house breathes stillness.", "a": "Möller family, Hamburg" },
-      { "q": "Our wedding in the garden under the limes. The light in the salon at evening was beyond words.",     "a": "Lea & Jonas" },
-      { "q": "Three days of strategy retreat. Quiet, wide fields, excellent food. We will be back.",               "a": "Henning K., Berlin" }
+      { "q": "We spent a weekend in the house with the whole family. It was simply fantastic — even more beautiful than in the photos. The hostess is very friendly and helpful.", "a": "Anne · family weekend" },
+      { "q": "A wonderful birthday weekend here with my best friends — we felt more than at home. The interior is carefully chosen and beautifully suits the house.", "a": "Tjerk · birthday with friends" },
+      { "q": "Our company offsite at Andrea's was absolutely incredible. The space was comfortable, clean and perfectly suited for our team. Andrea is a fantastic host — attentive, welcoming, helpful.", "a": "Clemens · company offsite" }
     ]
   },
   "bookingTeaser": {
@@ -130,6 +131,19 @@
     "eyebrow": "Reservations",
     "title": "Reserve the whole house.",
     "subtitle": "Andreashof is rented exclusively as a whole, for 11 to 21 guests. Send us your details — we reply within 24 hours.",
+    "calendarEyebrow": "Availability",
+    "calendarTitle": "Choose your dates",
+    "calendarHint": "Click on arrival and departure. Grey days are not available.",
+    "legendAvailable": "Available",
+    "legendSelected": "Selected",
+    "legendBlocked": "Unavailable",
+    "summaryTitle": "Your selection",
+    "summaryEmpty": "Select arrival and departure on the calendar.",
+    "summaryArrival": "Arrival",
+    "summaryDeparture": "Departure",
+    "summaryNights": "{{count}} night",
+    "summaryNights_other": "{{count}} nights",
+    "summaryGuests": "Guests",
     "stepsEyebrow": "How it works",
     "steps": [
       { "n": "01", "title": "Send your request",   "body": "Choose your dates, group size and occasion. We check availability." },
