@@ -209,17 +209,17 @@ function Home() {
       {/* INTRODUCTION */}
       <section id="haus" className="px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
-          <div className="md:col-span-4">
+          <div className="reveal md:col-span-4">
             <span className="eyebrow">Willkommen</span>
             <span className="rule ml-4 align-middle" />
           </div>
           <div className="md:col-span-8">
-            <h2 className="font-display text-3xl font-light leading-[1.15] md:text-5xl">
+            <h2 className="reveal font-display text-3xl font-light leading-[1.15] md:text-5xl" style={{ transitionDelay: "120ms" }}>
               Ein Haus, das seit
               <em className="italic text-sage-deep"> zwei Jahrhunderten </em>
               empfängt.
             </h2>
-            <div className="mt-10 grid gap-8 text-base leading-relaxed text-muted-foreground md:grid-cols-2 md:text-[1.05rem]">
+            <div className="reveal mt-10 grid gap-8 text-base leading-relaxed text-muted-foreground md:grid-cols-2 md:text-[1.05rem]" style={{ transitionDelay: "240ms" }}>
               <p>
                 Der Andreashof wurde 1782 als Gutshaus eines pommerschen
                 Landadels errichtet. Die symmetrische Fassade, der hohe
@@ -241,10 +241,11 @@ function Home() {
       <section className="px-6 pb-28 md:px-10 md:pb-40">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 md:grid-cols-3">
-            {uses.map((u) => (
+            {uses.map((u, i) => (
               <article
                 key={u.title}
-                className="border border-border bg-card p-10 transition-colors hover:border-sage"
+                className="reveal border border-border bg-card p-10 transition-all duration-500 hover:-translate-y-1 hover:border-sage hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]"
+                style={{ transitionDelay: `${i * 140}ms` }}
               >
                 <h3 className="font-display text-2xl font-light md:text-3xl">
                   {u.title}
@@ -275,22 +276,22 @@ function Home() {
             </p>
           </div>
           <div className="grid grid-cols-12 gap-4 md:gap-6">
-            <div className="col-span-12 md:col-span-8">
+            <div className="img-hover reveal col-span-12 md:col-span-8">
               <img src={salonImg} alt="Salon im gustavianischen Stil" loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
             </div>
-            <div className="col-span-6 md:col-span-4">
+            <div className="img-hover reveal col-span-6 md:col-span-4" style={{ transitionDelay: "120ms" }}>
               <img src={bedroomImg} alt="Schlafzimmer mit Himmelbett" loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
             </div>
-            <div className="col-span-6 md:col-span-4">
+            <div className="img-hover reveal col-span-6 md:col-span-4">
               <img src={nookImg} alt="Leseplatz am Fenster" loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
-            <div className="col-span-12 md:col-span-4">
+            <div className="img-hover reveal col-span-12 md:col-span-4" style={{ transitionDelay: "120ms" }}>
               <img src={diningImg} alt="Langer Esstisch für 21 Personen" loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
-            <div className="col-span-6 md:col-span-4">
+            <div className="img-hover reveal col-span-6 md:col-span-4" style={{ transitionDelay: "240ms" }}>
               <img src={kitchenImg} alt="Landhausküche" loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
-            <div className="col-span-12">
+            <div className="img-hover reveal col-span-12">
               <img src={gardenImg} alt="Lindenallee im Garten" loading="lazy" className="h-[320px] w-full object-cover md:h-[480px]" />
             </div>
           </div>
@@ -319,12 +320,13 @@ function Home() {
           </div>
 
           <div className="border-t border-border">
-            {rooms.map((r) => (
+            {rooms.map((r, i) => (
               <div
                 key={r.n}
-                className="group grid grid-cols-12 items-baseline gap-4 border-b border-border py-6 transition-colors hover:bg-linen/60"
+                className="reveal group grid grid-cols-12 items-baseline gap-4 border-b border-border py-6 transition-colors hover:bg-linen/60"
+                style={{ transitionDelay: `${Math.min(i * 60, 400)}ms` }}
               >
-                <div className="col-span-2 font-display text-2xl italic text-sage-deep md:col-span-1 md:text-3xl">
+                <div className="col-span-2 font-display text-2xl italic text-sage-deep transition-transform duration-500 group-hover:translate-x-1 md:col-span-1 md:text-3xl">
                   {r.n}
                 </div>
                 <div className="col-span-10 md:col-span-5">
