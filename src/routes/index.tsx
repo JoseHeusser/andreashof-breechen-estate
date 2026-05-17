@@ -137,35 +137,50 @@ function Home() {
       <SiteHeader />
 
       {/* HERO */}
-      <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden">
+      <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-foreground">
         <img
           src={heroImg}
           alt="Fassade des Andreashof Breechen mit Fachwerkgiebel"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover animate-hero-zoom"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/10 to-background/60" />
-        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-6 pb-24 text-center md:px-10 md:pb-32">
-          <span className="eyebrow text-foreground/80">
+        {/* Vignette + bottom darken for legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.45)_100%)]" />
+
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-6 pb-20 text-center md:px-10 md:pb-28">
+          <span
+            className="eyebrow animate-fade-up text-white/85"
+            style={{ animationDelay: "200ms", color: "rgba(255,255,255,0.85)" }}
+          >
             Gützkow · Mecklenburg-Vorpommern · Est. 1782
           </span>
-          <h1 className="mt-6 font-display text-5xl font-light leading-[1.05] text-foreground md:text-7xl lg:text-[5.5rem]">
+          <h1
+            className="mt-6 animate-fade-up font-display text-5xl font-light leading-[1.05] text-white md:text-7xl lg:text-[5.5rem]"
+            style={{ animationDelay: "400ms", textShadow: "0 2px 28px rgba(0,0,0,0.5)" }}
+          >
             Ein Gutshaus,<br />
-            <em className="italic text-sage-deep">stille Tage.</em>
+            <em className="italic text-white/95">stille Tage.</em>
           </h1>
-          <p className="mt-8 max-w-xl text-base leading-relaxed text-foreground/85 md:text-lg">
+          <p
+            className="mt-8 max-w-xl animate-fade-up text-base leading-relaxed text-white/85 md:text-lg"
+            style={{ animationDelay: "700ms", textShadow: "0 1px 14px rgba(0,0,0,0.5)" }}
+          >
             Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert.
             Komplett mietbar für bis zu 21 Gäste.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <div
+            className="mt-10 flex animate-fade-up flex-wrap items-center justify-center gap-4"
+            style={{ animationDelay: "950ms" }}
+          >
             <a
               href="#anfrage"
-              className="border border-foreground bg-foreground px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep"
+              className="border border-white bg-white px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-foreground transition-all duration-500 hover:bg-sage-deep hover:border-sage-deep hover:text-white"
             >
               Anfrage senden
             </a>
             <a
               href="#haus"
-              className="border border-foreground/70 px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-foreground transition-colors hover:bg-foreground/5"
+              className="border border-white/70 px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-white transition-all duration-500 hover:bg-white/10 hover:border-white"
             >
               Das Haus entdecken
             </a>
