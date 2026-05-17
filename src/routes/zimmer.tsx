@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
@@ -70,28 +70,14 @@ function ZimmerPage() {
       </div>
 
       {/* PAGE INTRO */}
-      <section className="px-6 pt-20 pb-12 md:px-10 md:pt-28 md:pb-16">
+      <section className="px-6 pt-16 pb-12 md:px-10 md:pt-24 md:pb-16">
         <div className="mx-auto max-w-6xl">
-          <Link
-            to="/"
-            className="eyebrow text-muted-foreground transition-colors hover:text-sage-deep"
-          >
-            ← {t("zimmer.ctaBack")}
-          </Link>
-          <div className="mt-10 grid gap-10 md:grid-cols-12">
-            <div className="md:col-span-4">
-              <span className="eyebrow">{t("zimmer.pageEyebrow")}</span>
-              <span className="rule ml-4 align-middle" />
-            </div>
-            <div className="md:col-span-8">
-              <h1 className="font-display text-4xl font-light leading-[1.1] md:text-6xl">
-                {t("zimmer.pageTitle")}
-              </h1>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-                {t("zimmer.pageSubtitle")}
-              </p>
-            </div>
-          </div>
+          <h1 className="font-display text-4xl font-light leading-[1.1] md:text-6xl">
+            {t("zimmer.pageTitle")}
+          </h1>
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
+            {t("zimmer.pageSubtitle")}
+          </p>
         </div>
       </section>
 

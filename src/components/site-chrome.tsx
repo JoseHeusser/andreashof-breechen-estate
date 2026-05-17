@@ -6,6 +6,7 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
   const { t } = useTranslation();
 
   const nav = [
+    { href: "/", label: t("nav.home"), to: "/" as const },
     { href: "/#haus", label: t("nav.house") },
     { href: "/zimmer", label: t("nav.rooms"), to: "/zimmer" as const },
     { href: "/#galerie", label: t("nav.gallery") },
@@ -72,6 +73,7 @@ export function SiteFooter() {
           <div>
             <h4 className="eyebrow">{t("footer.navHeading")}</h4>
             <ul className="mt-5 space-y-3 text-sm">
+              <li><Link to="/" className="hover:text-sage-deep">{t("nav.home")}</Link></li>
               <li><a href="/#haus" className="hover:text-sage-deep">{t("nav.house")}</a></li>
               <li><Link to="/zimmer" className="hover:text-sage-deep">{t("nav.rooms")}</Link></li>
               <li><a href="/#galerie" className="hover:text-sage-deep">{t("nav.gallery")}</a></li>

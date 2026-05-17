@@ -93,20 +93,14 @@ function ReservationsPage() {
       </div>
 
       {/* INTRO */}
-      <section className="px-6 pt-16 pb-10 md:px-10 md:pt-24 md:pb-14">
-        <div className="reveal mx-auto grid max-w-6xl gap-10 md:grid-cols-12">
-          <div className="md:col-span-4">
-            <span className="eyebrow">{t("reservations.eyebrow")}</span>
-            <span className="rule ml-4 align-middle" />
-          </div>
-          <div className="md:col-span-8">
-            <h1 className="font-display text-4xl font-light leading-[1.1] md:text-6xl">
-              {t("reservations.title")}
-            </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
-              {t("reservations.subtitle")}
-            </p>
-          </div>
+      <section className="px-6 pt-12 pb-8 md:px-10 md:pt-16 md:pb-10">
+        <div className="mx-auto max-w-6xl">
+          <h1 className="font-display text-4xl font-light leading-[1.1] md:text-6xl">
+            {t("reservations.title")}
+          </h1>
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
+            {t("reservations.subtitle")}
+          </p>
         </div>
       </section>
 

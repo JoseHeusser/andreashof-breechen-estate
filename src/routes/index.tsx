@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import heroImg from "@/assets/hero-facade.jpeg";
 
+// Lazy — leaflet touches `window` on import, so it cannot live in the SSR bundle.
 const LocationMap = lazy(() =>
   import("@/components/location-map").then((m) => ({ default: m.LocationMap })),
 );
@@ -232,11 +233,11 @@ function Home() {
             </h2>
           </div>
           <div className="md:col-span-8">
-            <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">
+            <ul className="grid gap-x-10 gap-y-4 md:grid-cols-2">
               {amenityItems.map((a) => (
-                <li key={a} className="flex items-baseline gap-4 border-b border-border/60 pb-4">
-                  <span className="h-px w-4 shrink-0 translate-y-2 bg-sage" />
-                  <span className="text-[0.95rem] text-foreground/85">{a}</span>
+                <li key={a} className="flex items-baseline gap-3">
+                  <span aria-hidden className="font-display text-base italic text-sage-deep">·</span>
+                  <span className="text-[0.95rem] leading-relaxed text-foreground/85">{a}</span>
                 </li>
               ))}
             </ul>
@@ -262,11 +263,11 @@ function Home() {
           <div className="grid gap-10 md:grid-cols-12">
             <div className="md:col-span-7">
               {mounted ? (
-                <Suspense fallback={<div className="h-[520px] w-full bg-linen" />}>
+                <Suspense fallback={<div className="h-[420px] w-full bg-linen md:h-[520px]" />}>
                   <LocationMap />
                 </Suspense>
               ) : (
-                <div className="h-[520px] w-full bg-linen" />
+                <div className="h-[420px] w-full bg-linen md:h-[520px]" />
               )}
             </div>
             <div className="md:col-span-5">

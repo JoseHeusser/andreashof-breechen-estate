@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Tooltip, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import { useEffect, useRef } from "react";
 
@@ -19,50 +19,51 @@ const cityIcon = L.divIcon({
   iconAnchor: [5, 5],
 });
 
-/**
- * Forces Leaflet to recompute its tile grid after the container becomes
- * visible / resizes. Without this, lazy-mounted maps (or maps inside a
- * Suspense boundary that hydrates after layout settles) only paint the
- * single central tile because Leaflet measured a 0px container at init.
- */
-function MapResizer({ containerRef }: { containerRef: React.RefObject<HTMLDivElement | null> }) {
-  const map = useMap();
-  useEffect(() => {
-    // Run after the next paint, then again shortly after to catch CSS
-    // transitions / late layout changes (e.g. reveal animations).
-    const raf = requestAnimationFrame(() => map.invalidateSize());
-    const t = setTimeout(() => map.invalidateSize(), 350);
+export function LocationMap() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<L.Map | null>(null);
 
-    // Keep reacting to any subsequent container resize.
-    const el = containerRef.current;
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    // Leaflet measures its container on init. If it sees 0px (lazy mount,
+    // CSS not yet applied, reveal animation still mid-transition…) it only
+    // paints the central tile. Repeated invalidateSize() calls cover that
+    // window, and a ResizeObserver picks up any later size change.
+    const intervals = [50, 200, 500, 1000, 2000].map((d) =>
+      window.setTimeout(() => map.invalidateSize(), d),
+    );
+
     let ro: ResizeObserver | undefined;
-    if (el && typeof ResizeObserver !== "undefined") {
+    if (wrapperRef.current && typeof ResizeObserver !== "undefined") {
       ro = new ResizeObserver(() => map.invalidateSize());
-      ro.observe(el);
+      ro.observe(wrapperRef.current);
     }
+
     return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t);
+      intervals.forEach(window.clearTimeout);
       ro?.disconnect();
     };
-  }, [map, containerRef]);
-  return null;
-}
+  }, []);
 
-export function LocationMap() {
-  const containerRef = useRef<HTMLDivElement>(null);
   return (
     <div
-      ref={containerRef}
+      ref={wrapperRef}
       className="map-container h-[420px] w-full overflow-hidden border border-border md:h-[520px]"
     >
       <MapContainer
+        ref={mapRef}
         center={[(HOUSE[0] + GREIFSWALD[0]) / 2, (HOUSE[1] + GREIFSWALD[1]) / 2]}
         zoom={11}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
+        whenReady={() => {
+          // Initial paint sometimes still measures 0px — kick the tile
+          // grid into sync once Leaflet says it's ready.
+          requestAnimationFrame(() => mapRef.current?.invalidateSize());
+        }}
       >
-        <MapResizer containerRef={containerRef} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
