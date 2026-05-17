@@ -195,21 +195,31 @@
   --rdp-background-color: var(--color-card);
   --rdp-range_middle-color: var(--color-foreground);
   --rdp-range_middle-background-color: color-mix(in oklab, var(--color-sage) 30%, transparent);
-  --rdp-day-height: 40px;
-  --rdp-day-width: 40px;
-  --rdp-day_button-height: 40px;
-  --rdp-day_button-width: 40px;
+  --rdp-day-height: 36px;
+  --rdp-day-width: 36px;
+  --rdp-day_button-height: 36px;
+  --rdp-day_button-width: 36px;
   --rdp-day_button-border-radius: 9999px;
-  --rdp-day-font: 400 0.95rem/1 var(--font-sans);
+  --rdp-day-font: 400 0.9rem/1 var(--font-sans);
   --rdp-weekday-padding: 0.5rem 0;
   --rdp-weekday-text-transform: uppercase;
   --rdp-weekday-font: 500 0.65rem/1 var(--font-sans);
-  --rdp-months-gap: 2.5rem;
-  --rdp-month_caption-font: 400 1.1rem/1 var(--font-display);
-  --rdp-nav_button-height: 32px;
-  --rdp-nav_button-width: 32px;
+  --rdp-months-gap: 1.5rem;
+  --rdp-month_caption-font: 400 1.05rem/1 var(--font-display);
+  --rdp-nav_button-height: 28px;
+  --rdp-nav_button-width: 28px;
   font-family: var(--font-sans);
   color: var(--color-foreground);
+}
+/* Keep two months side-by-side on desktop (default RDP wraps when tight). */
+.andreashof-calendar .rdp-months {
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+@media (max-width: 767px) {
+  .andreashof-calendar .rdp-months {
+    flex-wrap: wrap;
+  }
 }
 .andreashof-calendar .rdp-month_caption {
   letter-spacing: 0.04em;
