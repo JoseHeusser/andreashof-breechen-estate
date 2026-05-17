@@ -1,5 +1,6 @@
-import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip, useMap } from "react-leaflet";
 import L from "leaflet";
+import { useEffect, useRef } from "react";
 
 const HOUSE: [number, number] = [53.9314, 13.3513];
 const GREIFSWALD: [number, number] = [54.0865, 13.3923];
@@ -18,15 +19,50 @@ const cityIcon = L.divIcon({
   iconAnchor: [5, 5],
 });
 
+/**
+ * Forces Leaflet to recompute its tile grid after the container becomes
+ * visible / resizes. Without this, lazy-mounted maps (or maps inside a
+ * Suspense boundary that hydrates after layout settles) only paint the
+ * single central tile because Leaflet measured a 0px container at init.
+ */
+function MapResizer({ containerRef }: { containerRef: React.RefObject<HTMLDivElement | null> }) {
+  const map = useMap();
+  useEffect(() => {
+    // Run after the next paint, then again shortly after to catch CSS
+    // transitions / late layout changes (e.g. reveal animations).
+    const raf = requestAnimationFrame(() => map.invalidateSize());
+    const t = setTimeout(() => map.invalidateSize(), 350);
+
+    // Keep reacting to any subsequent container resize.
+    const el = containerRef.current;
+    let ro: ResizeObserver | undefined;
+    if (el && typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(() => map.invalidateSize());
+      ro.observe(el);
+    }
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t);
+      ro?.disconnect();
+    };
+  }, [map, containerRef]);
+  return null;
+}
+
 export function LocationMap() {
+  const containerRef = useRef<HTMLDivElement>(null);
   return (
-    <div className="map-container h-[420px] w-full overflow-hidden border border-border md:h-[520px]">
+    <div
+      ref={containerRef}
+      className="map-container h-[420px] w-full overflow-hidden border border-border md:h-[520px]"
+    >
       <MapContainer
         center={[(HOUSE[0] + GREIFSWALD[0]) / 2, (HOUSE[1] + GREIFSWALD[1]) / 2]}
         zoom={11}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
       >
+        <MapResizer containerRef={containerRef} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
