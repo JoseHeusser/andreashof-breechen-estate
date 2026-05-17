@@ -1,22 +1,49 @@
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SUPPORTED_LANGS, DEFAULT_LANG, LANG_LABELS, type Lang } from "@/i18n";
+import i18n, { SUPPORTED_LANGS, DEFAULT_LANG, LANG_LABELS, type Lang } from "@/i18n";
 
 const STORAGE_KEY = "andreashof.lang";
 
+function isLang(v: string | null): v is Lang {
+  return v !== null && (SUPPORTED_LANGS as readonly string[]).includes(v);
+}
+
 /**
  * Small fixed-position language switcher. Anchored at bottom-right so it
- * never overlaps the header CTAs and stays out of the reading flow. Uses
- * a single light tone — the bottom of the page is always linen-coloured
- * across every route.
+ * never overlaps the header CTAs and stays out of the reading flow.
+ *
+ * Rendered client-only (after mount) and also responsible for loading the
+ * stored language preference from localStorage. Doing this here — rather
+ * than in LangProvider — guarantees that the language change happens
+ * after React has fully hydrated the SSR tree, removing a source of
+ * hydration mismatches (React error #418).
  */
 export function FloatingLangSwitcher() {
-  const { i18n } = useTranslation();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      if (isLang(stored) && i18n.language !== stored) {
+        i18n.changeLanguage(stored);
+      }
+    } catch {
+      // localStorage may be unavailable (Safari private mode etc.) — ignore.
+    }
+  }, []);
+
+  // Subscribe to language changes for re-render. The actual mutations go
+  // through the singleton imported above.
+  useTranslation();
   const current = (i18n.language?.slice(0, 2) || DEFAULT_LANG) as Lang;
 
+  if (!mounted) return null;
+
   const change = (lng: Lang) => {
-    if (typeof window !== "undefined") {
+    try {
       window.localStorage.setItem(STORAGE_KEY, lng);
-    }
+    } catch {}
     i18n.changeLanguage(lng);
   };
 

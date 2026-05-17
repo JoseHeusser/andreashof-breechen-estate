@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 
+import { useEffect, useState } from "react";
 import appCss from "../styles.css?url";
 import { LangProvider } from "@/i18n/lang-provider";
 import { useSmoothAnchorScroll } from "@/hooks/use-smooth-anchor-scroll";
@@ -128,6 +129,16 @@ function RootComponent() {
 }
 
 function GlobalScrollEffects() {
+  // Render nothing during SSR — everything in this subtree is browser-only
+  // (event listeners, IntersectionObserver). Keeping it out of the SSR tree
+  // means it can't contribute to any hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return <ClientScrollEffects />;
+}
+
+function ClientScrollEffects() {
   useSmoothAnchorScroll();
   // Re-run reveal observers when the route changes so new sections fade in too.
   const pathname = useRouterState({ select: (s) => s.location.pathname });
