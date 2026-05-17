@@ -4,7 +4,7 @@
     "rooms": "Habitaciones",
     "gallery": "Galería",
     "location": "Ubicación",
-    "inquiry": "Consulta",
+    "inquiry": "Reservas",
     "reserve": "Reservar"
   },
   "hero": {
@@ -42,12 +42,13 @@
     "title": "Luz, línea, lino.",
     "subtitle": "Impresiones del salón, comedor, recámaras y jardín — fotografiadas con la luz suave del verano pomerano.",
     "alt": {
-      "salon": "Salón de estilo gustaviano",
-      "bedroom": "Recámara con cama con dosel",
-      "nook": "Rincón de lectura junto a la ventana",
-      "dining": "Mesa larga para 21 personas",
-      "kitchen": "Cocina de campo",
-      "garden": "Avenida de tilos en el jardín"
+      "greatRoom": "Gran salón social con mesa para 14 y cocina abierta",
+      "salonUpper": "Salón del piso superior, 100 m² de estar",
+      "salonSecondA": "Segundo salón — zona de estar",
+      "salonSecondB": "Segundo salón — junto a la ventana",
+      "kitchenGround": "Cocina de planta baja — cocinar y comer",
+      "dining": "Comedor con mesa larga",
+      "outdoorGames": "Übergames XL en el jardín — ajedrez, molino, Jenga"
     }
   },
   "roomsTeaser": {
@@ -118,24 +119,49 @@
       { "q": "Tres días de retiro estratégico. Silencio, campos abiertos, comida excelente. Volveremos.",      "a": "Henning K., Berlín" }
     ]
   },
-  "booking": {
-    "eyebrow": "Consulta",
-    "titleA": "Escríbenos —",
-    "titleEm": " respondemos en persona.",
-    "body": "Cuéntanos la ocasión, tus deseos y las fechas que tienes en mente. Respondemos en menos de 24 horas.",
-    "or": "O directamente:",
+  "bookingTeaser": {
+    "eyebrow": "Reservas",
+    "titleA": "¿Listos para",
+    "titleEm": " días tranquilos?",
+    "body": "La casa entera es para ti y tu grupo. Confirmamos cada reserva en persona.",
+    "cta": "Reservar la casa"
+  },
+  "reservations": {
+    "eyebrow": "Reservas",
+    "title": "Reserva la casa completa.",
+    "subtitle": "El Andreashof se alquila únicamente entero, para 11 a 21 huéspedes. Envíanos tus datos — respondemos en menos de 24 horas.",
+    "stepsEyebrow": "Cómo funciona",
+    "steps": [
+      { "n": "01", "title": "Envías tu solicitud",  "body": "Eliges fechas, número de huéspedes y ocasión. Verificamos disponibilidad." },
+      { "n": "02", "title": "Confirmación personal","body": "Andrea responde en menos de 24 horas con una oferta a medida." },
+      { "n": "03", "title": "Aseguras tu estancia", "body": "30% de anticipo confirma la reserva. Saldo 14 días antes de la llegada." }
+    ],
+    "formEyebrow": "Tu solicitud",
+    "formTitle": "Datos de tu reserva",
     "fields": {
-      "name": "Nombre",
-      "email": "Correo",
       "arrival": "Llegada",
       "departure": "Salida",
-      "guests": "Huéspedes",
+      "guests": "Número de huéspedes",
+      "guestsHint": "11 a 21",
       "occasion": "Ocasión",
-      "occasionPlaceholder": "Boda, reunión familiar, retiro …",
-      "message": "Mensaje"
+      "occasionOptions": {
+        "wedding": "Boda",
+        "family": "Reunión familiar",
+        "retreat": "Retiro / taller",
+        "other": "Otro"
+      },
+      "name": "Nombre",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "message": "Mensaje (opcional)",
+      "messagePlaceholder": "Cuéntanos sobre tu ocasión …"
     },
-    "submit": "Enviar consulta",
-    "thanks": "Gracias — te contactaremos en breve."
+    "submit": "Enviar solicitud de reserva",
+    "submitNote": "Enviar esto no reserva la casa todavía. Respondemos en menos de 24 horas con una oferta personalizada.",
+    "thanks": "Gracias — te contactaremos en breve.",
+    "contactEyebrow": "¿Prefieres hablar?",
+    "contactBody": "Escribe a Andrea por correo o WhatsApp.",
+    "pricingNote": "El precio depende de la temporada, duración y tamaño del grupo. Preparamos una oferta personal para cada solicitud."
   },
   "faq": {
     "eyebrow": "Preguntas frecuentes",

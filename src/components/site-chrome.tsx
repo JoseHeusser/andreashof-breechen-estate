@@ -11,7 +11,7 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
     { href: "/zimmer", label: t("nav.rooms"), to: "/zimmer" as const },
     { href: "/#galerie", label: t("nav.gallery") },
     { href: "/#lage", label: t("nav.location") },
-    { href: "/#anfrage", label: t("nav.inquiry") },
+    { href: "/reservations", label: t("nav.inquiry"), to: "/reservations" as const },
   ];
 
   const isLight = tone === "light";
@@ -49,12 +49,12 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
         </nav>
         <div className="hidden items-center gap-6 md:flex">
           <LangSwitcher tone={tone} />
-          <a
-            href="/#anfrage"
+          <Link
+            to="/reservations"
             className={`border px-5 py-2.5 text-[11px] uppercase tracking-[0.28em] transition-colors ${borderColor}`}
           >
             {t("nav.reserve")}
-          </a>
+          </Link>
         </div>
         <div className="md:hidden">
           <LangSwitcher tone={tone} />
@@ -83,7 +83,7 @@ export function SiteFooter() {
               <li><Link to="/zimmer" className="hover:text-sage-deep">{t("nav.rooms")}</Link></li>
               <li><a href="/#galerie" className="hover:text-sage-deep">{t("nav.gallery")}</a></li>
               <li><a href="/#lage" className="hover:text-sage-deep">{t("nav.location")}</a></li>
-              <li><a href="/#anfrage" className="hover:text-sage-deep">{t("nav.inquiry")}</a></li>
+              <li><Link to="/reservations" className="hover:text-sage-deep">{t("nav.inquiry")}</Link></li>
             </ul>
           </div>
           <div>

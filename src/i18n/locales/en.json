@@ -4,7 +4,7 @@
     "rooms": "Rooms",
     "gallery": "Gallery",
     "location": "Location",
-    "inquiry": "Inquiry",
+    "inquiry": "Reservations",
     "reserve": "Reserve"
   },
   "hero": {
@@ -42,12 +42,13 @@
     "title": "Light, line, linen.",
     "subtitle": "Impressions from the salon, dining room, bedchambers and garden — photographed in the soft light of a Pomeranian summer.",
     "alt": {
-      "salon": "Salon in Gustavian style",
-      "bedroom": "Bedroom with canopy bed",
-      "nook": "Reading nook by the window",
-      "dining": "Long dining table for 21",
-      "kitchen": "Country kitchen",
-      "garden": "Lime-tree avenue in the garden"
+      "greatRoom": "Great room with dining table for 14 and open kitchen",
+      "salonUpper": "Upper-floor salon, 100 m² of living space",
+      "salonSecondA": "Second salon — seating arrangement",
+      "salonSecondB": "Second salon — by the window",
+      "kitchenGround": "Ground-floor kitchen — cooking and dining",
+      "dining": "Dining room with long table",
+      "outdoorGames": "Übergames XL in the garden — chess, mill, Jenga"
     }
   },
   "roomsTeaser": {
@@ -118,24 +119,49 @@
       { "q": "Three days of strategy retreat. Quiet, wide fields, excellent food. We will be back.",               "a": "Henning K., Berlin" }
     ]
   },
-  "booking": {
-    "eyebrow": "Inquiry",
-    "titleA": "Write to us —",
-    "titleEm": " we reply in person.",
-    "body": "Tell us about your occasion, your wishes and the dates you have in mind. We respond within 24 hours.",
-    "or": "Or directly:",
+  "bookingTeaser": {
+    "eyebrow": "Reservations",
+    "titleA": "Ready for",
+    "titleEm": " quiet days?",
+    "body": "The whole house is yours and your group's. We confirm every reservation in person.",
+    "cta": "Reserve your stay"
+  },
+  "reservations": {
+    "eyebrow": "Reservations",
+    "title": "Reserve the whole house.",
+    "subtitle": "Andreashof is rented exclusively as a whole, for 11 to 21 guests. Send us your details — we reply within 24 hours.",
+    "stepsEyebrow": "How it works",
+    "steps": [
+      { "n": "01", "title": "Send your request",   "body": "Choose your dates, group size and occasion. We check availability." },
+      { "n": "02", "title": "Personal confirmation","body": "Andrea replies within 24 hours with a tailored offer." },
+      { "n": "03", "title": "Secure your stay",     "body": "30% deposit confirms the booking. Balance due 14 days before arrival." }
+    ],
+    "formEyebrow": "Your request",
+    "formTitle": "Reservation details",
     "fields": {
-      "name": "Name",
-      "email": "Email",
       "arrival": "Arrival",
       "departure": "Departure",
-      "guests": "Guests",
+      "guests": "Number of guests",
+      "guestsHint": "11 to 21",
       "occasion": "Occasion",
-      "occasionPlaceholder": "Wedding, family gathering, retreat …",
-      "message": "Message"
+      "occasionOptions": {
+        "wedding": "Wedding",
+        "family": "Family gathering",
+        "retreat": "Retreat / workshop",
+        "other": "Other"
+      },
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message (optional)",
+      "messagePlaceholder": "Tell us about your occasion …"
     },
-    "submit": "Send inquiry",
-    "thanks": "Thank you — we'll be in touch shortly."
+    "submit": "Send reservation request",
+    "submitNote": "Sending this does not book the house yet. We reply within 24 hours with a tailored offer.",
+    "thanks": "Thank you — we'll be in touch shortly.",
+    "contactEyebrow": "Prefer to talk?",
+    "contactBody": "Write to Andrea by email or WhatsApp.",
+    "pricingNote": "Pricing depends on season, length of stay and group size. We prepare a personal offer for every request."
   },
   "faq": {
     "eyebrow": "Frequently asked",

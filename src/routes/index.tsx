@@ -3,12 +3,6 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import heroImg from "@/assets/hero-facade.jpeg";
-import salonImg from "@/assets/interior-salon.jpg";
-import diningImg from "@/assets/dining-room.jpg";
-import bedroomImg from "@/assets/bedroom.jpg";
-import gardenImg from "@/assets/garden.jpg";
-import nookImg from "@/assets/nook.jpg";
-import kitchenImg from "@/assets/kitchen.jpg";
 
 const LocationMap = lazy(() =>
   import("@/components/location-map").then((m) => ({ default: m.LocationMap })),
@@ -108,12 +102,12 @@ function Home() {
             className="mt-10 flex animate-fade-up flex-wrap items-center justify-center gap-4"
             style={{ animationDelay: "950ms" }}
           >
-            <a
-              href="#anfrage"
+            <Link
+              to="/reservations"
               className="border border-white bg-white px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-foreground transition-all duration-500 hover:bg-sage-deep hover:border-sage-deep hover:text-white"
             >
               {t("hero.ctaPrimary")}
-            </a>
+            </Link>
             <a
               href="#haus"
               className="border border-white/70 px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-white transition-all duration-500 hover:bg-white/10 hover:border-white"
@@ -168,7 +162,7 @@ function Home() {
         </div>
       </section>
 
-      {/* GALLERY */}
+      {/* GALLERY — real photos from the Airbnb listing */}
       <section id="galerie" className="bg-linen px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
@@ -183,23 +177,29 @@ function Home() {
             </p>
           </div>
           <div className="grid grid-cols-12 gap-4 md:gap-6">
+            {/* Row 1: hero-sized great room + tall salon-upper */}
             <div className="img-hover reveal col-span-12 md:col-span-8">
-              <img src={salonImg} alt={t("gallery.alt.salon")} loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
+              <img src="/gallery/great-room.jpg" alt={t("gallery.alt.greatRoom")} loading="lazy" className="h-[320px] w-full object-cover md:h-[560px]" />
             </div>
             <div className="img-hover reveal col-span-6 md:col-span-4" style={{ transitionDelay: "120ms" }}>
-              <img src={bedroomImg} alt={t("gallery.alt.bedroom")} loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
+              <img src="/gallery/salon-upper.jpg" alt={t("gallery.alt.salonUpper")} loading="lazy" className="h-[320px] w-full object-cover md:h-[560px]" />
             </div>
-            <div className="img-hover reveal col-span-6 md:col-span-4">
-              <img src={nookImg} alt={t("gallery.alt.nook")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
+            {/* Row 2: dining wide + two salon-second */}
+            <div className="img-hover reveal col-span-6 md:col-span-6">
+              <img src="/gallery/dining.jpg" alt={t("gallery.alt.dining")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
-            <div className="img-hover reveal col-span-12 md:col-span-4" style={{ transitionDelay: "120ms" }}>
-              <img src={diningImg} alt={t("gallery.alt.dining")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
+            <div className="img-hover reveal col-span-6 md:col-span-3" style={{ transitionDelay: "120ms" }}>
+              <img src="/gallery/salon-second-a.jpg" alt={t("gallery.alt.salonSecondA")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
-            <div className="img-hover reveal col-span-6 md:col-span-4" style={{ transitionDelay: "240ms" }}>
-              <img src={kitchenImg} alt={t("gallery.alt.kitchen")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
+            <div className="img-hover reveal col-span-12 md:col-span-3" style={{ transitionDelay: "240ms" }}>
+              <img src="/gallery/salon-second-b.jpg" alt={t("gallery.alt.salonSecondB")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
-            <div className="img-hover reveal col-span-12">
-              <img src={gardenImg} alt={t("gallery.alt.garden")} loading="lazy" className="h-[320px] w-full object-cover md:h-[480px]" />
+            {/* Row 3: kitchen + outdoor games */}
+            <div className="img-hover reveal col-span-12 md:col-span-7">
+              <img src="/gallery/kitchen-ground.jpg" alt={t("gallery.alt.kitchenGround")} loading="lazy" className="h-[300px] w-full object-cover md:h-[460px]" />
+            </div>
+            <div className="img-hover reveal col-span-12 md:col-span-5" style={{ transitionDelay: "120ms" }}>
+              <img src="/gallery/outdoor-games.jpg" alt={t("gallery.alt.outdoorGames")} loading="lazy" className="h-[300px] w-full object-cover md:h-[460px]" />
             </div>
           </div>
         </div>
@@ -230,7 +230,7 @@ function Home() {
               <Link to="/zimmer" className="img-hover block">
                 <img
                   src="/rooms/room-01a.jpg"
-                  alt={t("gallery.alt.bedroom")}
+                  alt={t("zimmer.pageTitle")}
                   loading="lazy"
                   className="h-[360px] w-full object-cover md:h-[480px]"
                 />
@@ -326,54 +326,23 @@ function Home() {
         </div>
       </section>
 
-      {/* BOOKING */}
+      {/* BOOKING TEASER → /reservations */}
       <section id="anfrage" className="px-6 py-28 md:px-10 md:py-40">
-        <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <span className="eyebrow">{t("booking.eyebrow")}</span>
-            <h2 className="mt-4 font-display text-4xl font-light leading-[1.1] md:text-5xl">
-              {t("booking.titleA")}
-              <em className="italic text-sage-deep">{t("booking.titleEm")}</em>
-            </h2>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
-              {t("booking.body")}
-            </p>
-            <div className="mt-10 space-y-2 text-sm">
-              <p className="text-muted-foreground">{t("booking.or")}</p>
-              <p><a href="mailto:willkommen@andreashof-breechen.de" className="hover:text-sage-deep">willkommen@andreashof-breechen.de</a></p>
-              <p><a href="https://wa.me/4915112345678" className="hover:text-sage-deep">WhatsApp · +49 151 1234 5678</a></p>
-            </div>
-          </div>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert(t("booking.thanks"));
-            }}
-            className="md:col-span-7"
+        <div className="mx-auto max-w-5xl border border-border bg-card px-8 py-16 text-center md:px-16 md:py-24">
+          <span className="eyebrow">{t("bookingTeaser.eyebrow")}</span>
+          <h2 className="mt-6 font-display text-4xl font-light leading-[1.1] md:text-6xl">
+            {t("bookingTeaser.titleA")}
+            <em className="italic text-sage-deep">{t("bookingTeaser.titleEm")}</em>
+          </h2>
+          <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
+            {t("bookingTeaser.body")}
+          </p>
+          <Link
+            to="/reservations"
+            className="mt-12 inline-block border border-foreground bg-foreground px-10 py-4 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep"
           >
-            <div className="grid gap-x-8 gap-y-6 md:grid-cols-2">
-              <Field label={t("booking.fields.name")} name="name" required />
-              <Field label={t("booking.fields.email")} name="email" type="email" required />
-              <Field label={t("booking.fields.arrival")} name="arrival" type="date" />
-              <Field label={t("booking.fields.departure")} name="departure" type="date" />
-              <Field label={t("booking.fields.guests")} name="guests" type="number" />
-              <Field label={t("booking.fields.occasion")} name="occasion" placeholder={t("booking.fields.occasionPlaceholder")} />
-              <div className="md:col-span-2">
-                <label className="eyebrow">{t("booking.fields.message")}</label>
-                <textarea
-                  name="message"
-                  rows={5}
-                  className="mt-3 w-full border-0 border-b border-border bg-transparent py-3 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
-                />
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="mt-12 w-full border border-foreground bg-foreground px-8 py-4 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep md:w-auto"
-            >
-              {t("booking.submit")}
-            </button>
-          </form>
+            {t("bookingTeaser.cta")}
+          </Link>
         </div>
       </section>
 
@@ -420,37 +389,6 @@ function Home() {
       </section>
 
       <SiteFooter />
-    </div>
-  );
-}
-
-function Field({
-  label,
-  name,
-  type = "text",
-  required,
-  placeholder,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
-}) {
-  return (
-    <div>
-      <label htmlFor={name} className="eyebrow">
-        {label}
-        {required && " *"}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required={required}
-        placeholder={placeholder}
-        className="mt-3 w-full border-0 border-b border-border bg-transparent py-3 font-sans text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-sage-deep"
-      />
     </div>
   );
 }

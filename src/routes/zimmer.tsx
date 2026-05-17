@@ -234,15 +234,6 @@ function ZimmerPage() {
                   <dd className="mt-2 font-display text-lg text-foreground">{room.view}</dd>
                 </div>
               </dl>
-
-              <div className="mt-12">
-                <a
-                  href="/#anfrage"
-                  className="inline-block border border-foreground bg-foreground px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep"
-                >
-                  {t("nav.reserve")}
-                </a>
-              </div>
             </div>
           </div>
         </div>

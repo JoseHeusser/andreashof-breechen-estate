@@ -4,7 +4,7 @@
     "rooms": "Zimmer",
     "gallery": "Galerie",
     "location": "Lage",
-    "inquiry": "Anfrage",
+    "inquiry": "Reservierung",
     "reserve": "Reservieren"
   },
   "hero": {
@@ -42,12 +42,13 @@
     "title": "Licht, Linie, Leinen.",
     "subtitle": "Eindrücke aus Salon, Esszimmer, Kammern und Garten — fotografiert im weichen Licht des Vorpommerschen Sommers.",
     "alt": {
-      "salon": "Salon im gustavianischen Stil",
-      "bedroom": "Schlafzimmer mit Himmelbett",
-      "nook": "Leseplatz am Fenster",
-      "dining": "Langer Esstisch für 21 Personen",
-      "kitchen": "Landhausküche",
-      "garden": "Lindenallee im Garten"
+      "greatRoom": "Großer Gemeinschaftsraum mit Esstisch für 14 und offener Küche",
+      "salonUpper": "Salon im Obergeschoss, 100 m² Wohnraum",
+      "salonSecondA": "Zweiter Salon — Sitzgruppe",
+      "salonSecondB": "Zweiter Salon — Fensterseite",
+      "kitchenGround": "Küche im Erdgeschoss — Kochen und Essen",
+      "dining": "Esszimmer mit langer Tafel",
+      "outdoorGames": "Übergames XL im Garten — Schach, Mühle, Jenga"
     }
   },
   "roomsTeaser": {
@@ -118,24 +119,49 @@
       { "q": "Drei Tage Strategie-Retreat. Stille, weite Felder, hervorragende Küche. Wir kommen wieder.",          "a": "Henning K., Berlin" }
     ]
   },
-  "booking": {
-    "eyebrow": "Anfrage",
-    "titleA": "Schreiben Sie uns —",
-    "titleEm": " wir antworten persönlich.",
-    "body": "Erzählen Sie uns von Ihrem Anlass, Ihren Wünschen und der gewünschten Zeit. Wir melden uns innerhalb von 24 Stunden.",
-    "or": "Oder direkt:",
+  "bookingTeaser": {
+    "eyebrow": "Reservierung",
+    "titleA": "Bereit für",
+    "titleEm": " stille Tage?",
+    "body": "Das ganze Haus ist exklusiv für Sie und Ihre Gruppe. Wir bestätigen jede Reservierung persönlich.",
+    "cta": "Stillen Tag reservieren"
+  },
+  "reservations": {
+    "eyebrow": "Reservierung",
+    "title": "Reservieren Sie das ganze Haus.",
+    "subtitle": "Der Andreashof wird ausschließlich als Ganzes vermietet, für 11 bis 21 Gäste. Senden Sie uns Ihre Daten — wir antworten innerhalb von 24 Stunden.",
+    "stepsEyebrow": "Ablauf",
+    "steps": [
+      { "n": "01", "title": "Anfrage senden",        "body": "Wählen Sie Ihre Daten, Gruppengröße und den Anlass. Wir prüfen die Verfügbarkeit." },
+      { "n": "02", "title": "Persönliche Bestätigung","body": "Andrea meldet sich innerhalb von 24 Stunden mit einem maßgeschneiderten Angebot." },
+      { "n": "03", "title": "Buchung sichern",        "body": "30% Anzahlung bestätigt die Buchung. Restzahlung 14 Tage vor Anreise." }
+    ],
+    "formEyebrow": "Ihre Anfrage",
+    "formTitle": "Daten für Ihre Reservierung",
     "fields": {
-      "name": "Name",
-      "email": "E-Mail",
       "arrival": "Anreise",
       "departure": "Abreise",
-      "guests": "Gäste",
+      "guests": "Anzahl Gäste",
+      "guestsHint": "11 bis 21",
       "occasion": "Anlass",
-      "occasionPlaceholder": "Hochzeit, Familienfeier, Retreat …",
-      "message": "Nachricht"
+      "occasionOptions": {
+        "wedding": "Hochzeit",
+        "family": "Familienfeier",
+        "retreat": "Retreat / Workshop",
+        "other": "Anderes"
+      },
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "message": "Nachricht (optional)",
+      "messagePlaceholder": "Erzählen Sie uns von Ihrem Anlass …"
     },
-    "submit": "Anfrage senden",
-    "thanks": "Vielen Dank — wir melden uns in Kürze."
+    "submit": "Reservierungsanfrage senden",
+    "submitNote": "Mit dem Senden wird noch nichts gebucht. Wir antworten innerhalb von 24 Stunden mit einem persönlichen Angebot.",
+    "thanks": "Vielen Dank — wir melden uns in Kürze.",
+    "contactEyebrow": "Lieber direkt sprechen?",
+    "contactBody": "Schreiben Sie Andrea per E-Mail oder WhatsApp.",
+    "pricingNote": "Der Preis hängt von Reisezeit, Aufenthaltsdauer und Gruppengröße ab. Wir erstellen für jede Anfrage ein individuelles Angebot."
   },
   "faq": {
     "eyebrow": "Häufige Fragen",

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ZimmerRouteImport } from './routes/zimmer'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ReservationsRouteImport } from './routes/reservations'
 import { Route as ImpressumRouteImport } from './routes/impressum'
 import { Route as DatenschutzRouteImport } from './routes/datenschutz'
 import { Route as AgbRouteImport } from './routes/agb'
@@ -24,6 +25,11 @@ const ZimmerRoute = ZimmerRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReservationsRoute = ReservationsRouteImport.update({
+  id: '/reservations',
+  path: '/reservations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImpressumRoute = ImpressumRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/agb': typeof AgbRoute
   '/datenschutz': typeof DatenschutzRoute
   '/impressum': typeof ImpressumRoute
+  '/reservations': typeof ReservationsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/agb': typeof AgbRoute
   '/datenschutz': typeof DatenschutzRoute
   '/impressum': typeof ImpressumRoute
+  '/reservations': typeof ReservationsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/agb': typeof AgbRoute
   '/datenschutz': typeof DatenschutzRoute
   '/impressum': typeof ImpressumRoute
+  '/reservations': typeof ReservationsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
 }
@@ -79,16 +88,25 @@ export interface FileRouteTypes {
     | '/agb'
     | '/datenschutz'
     | '/impressum'
+    | '/reservations'
     | '/sitemap.xml'
     | '/zimmer'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/agb' | '/datenschutz' | '/impressum' | '/sitemap.xml' | '/zimmer'
+  to:
+    | '/'
+    | '/agb'
+    | '/datenschutz'
+    | '/impressum'
+    | '/reservations'
+    | '/sitemap.xml'
+    | '/zimmer'
   id:
     | '__root__'
     | '/'
     | '/agb'
     | '/datenschutz'
     | '/impressum'
+    | '/reservations'
     | '/sitemap.xml'
     | '/zimmer'
   fileRoutesById: FileRoutesById
@@ -98,6 +116,7 @@ export interface RootRouteChildren {
   AgbRoute: typeof AgbRoute
   DatenschutzRoute: typeof DatenschutzRoute
   ImpressumRoute: typeof ImpressumRoute
+  ReservationsRoute: typeof ReservationsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ZimmerRoute: typeof ZimmerRoute
 }
@@ -116,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reservations': {
+      id: '/reservations'
+      path: '/reservations'
+      fullPath: '/reservations'
+      preLoaderRoute: typeof ReservationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/impressum': {
@@ -154,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AgbRoute: AgbRoute,
   DatenschutzRoute: DatenschutzRoute,
   ImpressumRoute: ImpressumRoute,
+  ReservationsRoute: ReservationsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ZimmerRoute: ZimmerRoute,
 }
