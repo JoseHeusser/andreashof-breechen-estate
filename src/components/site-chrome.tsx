@@ -10,17 +10,17 @@ export function SiteHeader() {
     { href: "#anfrage", label: "Anfrage" },
   ];
   return (
-    <header className="absolute top-0 left-0 right-0 z-20">
+    <header className="absolute top-0 left-0 right-0 z-20 animate-fade-in" style={{ animationDelay: "100ms" }}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:px-10">
         <a href="#top" className="flex items-center gap-3">
-          <img src={logo} alt="Andreashof Breechen" className="h-12 w-auto md:h-14" />
+          <img src={logo} alt="Andreashof Breechen" className="h-12 w-auto brightness-0 invert md:h-14" />
         </a>
         <nav className="hidden items-center gap-10 md:flex">
           {nav.map((n) => (
             <a
               key={n.href}
               href={n.href}
-              className="text-[11px] uppercase tracking-[0.28em] text-foreground/85 transition-colors hover:text-sage-deep"
+              className="text-[11px] uppercase tracking-[0.28em] text-white/85 transition-colors hover:text-white"
             >
               {n.label}
             </a>
@@ -28,7 +28,7 @@ export function SiteHeader() {
         </nav>
         <a
           href="#anfrage"
-          className="hidden border border-foreground/70 px-5 py-2.5 text-[11px] uppercase tracking-[0.28em] text-foreground transition-colors hover:bg-foreground hover:text-background md:inline-block"
+          className="hidden border border-white/80 px-5 py-2.5 text-[11px] uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-foreground md:inline-block"
         >
           Reservieren
         </a>
