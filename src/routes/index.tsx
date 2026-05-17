@@ -132,40 +132,73 @@ function Home() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const els = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <div id="top" className="min-h-screen bg-background">
       <SiteHeader />
 
       {/* HERO */}
-      <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden">
+      <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-foreground">
         <img
           src={heroImg}
           alt="Fassade des Andreashof Breechen mit Fachwerkgiebel"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover animate-hero-zoom"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/10 to-background/60" />
-        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-6 pb-24 text-center md:px-10 md:pb-32">
-          <span className="eyebrow text-foreground/80">
+        {/* Vignette + bottom darken for legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.45)_100%)]" />
+
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-6 pb-20 text-center md:px-10 md:pb-28">
+          <span
+            className="eyebrow animate-fade-up text-white/85"
+            style={{ animationDelay: "200ms", color: "rgba(255,255,255,0.85)" }}
+          >
             Gützkow · Mecklenburg-Vorpommern · Est. 1782
           </span>
-          <h1 className="mt-6 font-display text-5xl font-light leading-[1.05] text-foreground md:text-7xl lg:text-[5.5rem]">
+          <h1
+            className="mt-6 animate-fade-up font-display text-5xl font-light leading-[1.05] text-white md:text-7xl lg:text-[5.5rem]"
+            style={{ animationDelay: "400ms", textShadow: "0 2px 28px rgba(0,0,0,0.5)" }}
+          >
             Ein Gutshaus,<br />
-            <em className="italic text-sage-deep">stille Tage.</em>
+            <em className="italic text-white/95">stille Tage.</em>
           </h1>
-          <p className="mt-8 max-w-xl text-base leading-relaxed text-foreground/85 md:text-lg">
+          <p
+            className="mt-8 max-w-xl animate-fade-up text-base leading-relaxed text-white/85 md:text-lg"
+            style={{ animationDelay: "700ms", textShadow: "0 1px 14px rgba(0,0,0,0.5)" }}
+          >
             Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert.
             Komplett mietbar für bis zu 21 Gäste.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <div
+            className="mt-10 flex animate-fade-up flex-wrap items-center justify-center gap-4"
+            style={{ animationDelay: "950ms" }}
+          >
             <a
               href="#anfrage"
-              className="border border-foreground bg-foreground px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep"
+              className="border border-white bg-white px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-foreground transition-all duration-500 hover:bg-sage-deep hover:border-sage-deep hover:text-white"
             >
               Anfrage senden
             </a>
             <a
               href="#haus"
-              className="border border-foreground/70 px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-foreground transition-colors hover:bg-foreground/5"
+              className="border border-white/70 px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-white transition-all duration-500 hover:bg-white/10 hover:border-white"
             >
               Das Haus entdecken
             </a>
@@ -176,17 +209,17 @@ function Home() {
       {/* INTRODUCTION */}
       <section id="haus" className="px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
-          <div className="md:col-span-4">
+          <div className="reveal md:col-span-4">
             <span className="eyebrow">Willkommen</span>
             <span className="rule ml-4 align-middle" />
           </div>
           <div className="md:col-span-8">
-            <h2 className="font-display text-3xl font-light leading-[1.15] md:text-5xl">
+            <h2 className="reveal font-display text-3xl font-light leading-[1.15] md:text-5xl" style={{ transitionDelay: "120ms" }}>
               Ein Haus, das seit
               <em className="italic text-sage-deep"> zwei Jahrhunderten </em>
               empfängt.
             </h2>
-            <div className="mt-10 grid gap-8 text-base leading-relaxed text-muted-foreground md:grid-cols-2 md:text-[1.05rem]">
+            <div className="reveal mt-10 grid gap-8 text-base leading-relaxed text-muted-foreground md:grid-cols-2 md:text-[1.05rem]" style={{ transitionDelay: "240ms" }}>
               <p>
                 Der Andreashof wurde 1782 als Gutshaus eines pommerschen
                 Landadels errichtet. Die symmetrische Fassade, der hohe
@@ -208,10 +241,11 @@ function Home() {
       <section className="px-6 pb-28 md:px-10 md:pb-40">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 md:grid-cols-3">
-            {uses.map((u) => (
+            {uses.map((u, i) => (
               <article
                 key={u.title}
-                className="border border-border bg-card p-10 transition-colors hover:border-sage"
+                className="reveal border border-border bg-card p-10 transition-all duration-500 hover:-translate-y-1 hover:border-sage hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]"
+                style={{ transitionDelay: `${i * 140}ms` }}
               >
                 <h3 className="font-display text-2xl font-light md:text-3xl">
                   {u.title}
@@ -242,22 +276,22 @@ function Home() {
             </p>
           </div>
           <div className="grid grid-cols-12 gap-4 md:gap-6">
-            <div className="col-span-12 md:col-span-8">
+            <div className="img-hover reveal col-span-12 md:col-span-8">
               <img src={salonImg} alt="Salon im gustavianischen Stil" loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
             </div>
-            <div className="col-span-6 md:col-span-4">
+            <div className="img-hover reveal col-span-6 md:col-span-4" style={{ transitionDelay: "120ms" }}>
               <img src={bedroomImg} alt="Schlafzimmer mit Himmelbett" loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
             </div>
-            <div className="col-span-6 md:col-span-4">
+            <div className="img-hover reveal col-span-6 md:col-span-4">
               <img src={nookImg} alt="Leseplatz am Fenster" loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
-            <div className="col-span-12 md:col-span-4">
+            <div className="img-hover reveal col-span-12 md:col-span-4" style={{ transitionDelay: "120ms" }}>
               <img src={diningImg} alt="Langer Esstisch für 21 Personen" loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
-            <div className="col-span-6 md:col-span-4">
+            <div className="img-hover reveal col-span-6 md:col-span-4" style={{ transitionDelay: "240ms" }}>
               <img src={kitchenImg} alt="Landhausküche" loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
-            <div className="col-span-12">
+            <div className="img-hover reveal col-span-12">
               <img src={gardenImg} alt="Lindenallee im Garten" loading="lazy" className="h-[320px] w-full object-cover md:h-[480px]" />
             </div>
           </div>
@@ -286,12 +320,13 @@ function Home() {
           </div>
 
           <div className="border-t border-border">
-            {rooms.map((r) => (
+            {rooms.map((r, i) => (
               <div
                 key={r.n}
-                className="group grid grid-cols-12 items-baseline gap-4 border-b border-border py-6 transition-colors hover:bg-linen/60"
+                className="reveal group grid grid-cols-12 items-baseline gap-4 border-b border-border py-6 transition-colors hover:bg-linen/60"
+                style={{ transitionDelay: `${Math.min(i * 60, 400)}ms` }}
               >
-                <div className="col-span-2 font-display text-2xl italic text-sage-deep md:col-span-1 md:text-3xl">
+                <div className="col-span-2 font-display text-2xl italic text-sage-deep transition-transform duration-500 group-hover:translate-x-1 md:col-span-1 md:text-3xl">
                   {r.n}
                 </div>
                 <div className="col-span-10 md:col-span-5">
