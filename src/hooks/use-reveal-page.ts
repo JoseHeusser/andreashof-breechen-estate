@@ -1,10 +1,14 @@
 import { useEffect } from "react";
 
 /**
- * Observes every `.reveal` element on the page once on mount and toggles
- * `is-visible` when it enters the viewport. Pages opt in by calling
- * `useRevealPage()` and adding the `reveal` class to elements that should
- * fade up on scroll.
+ * Observes every `.reveal` element on the page and toggles `is-visible`
+ * when it enters the viewport. Pages opt in by adding the `reveal`
+ * class to elements that should fade up on scroll.
+ *
+ * Also installs a safety-net timer: anything still hidden 1.6s after
+ * mount is force-revealed. This guarantees the page is never stuck
+ * with invisible content (e.g. observer never fires, JS errored after
+ * setup, layout has 0-height elements that never qualify as visible).
  */
 export function useRevealPage() {
   useEffect(() => {
@@ -21,10 +25,21 @@ export function useRevealPage() {
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
     );
 
     els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+
+    // Safety net: anything not yet visible after a moment gets revealed.
+    const fallback = window.setTimeout(() => {
+      document
+        .querySelectorAll(".reveal:not(.is-visible)")
+        .forEach((el) => el.classList.add("is-visible"));
+    }, 1600);
+
+    return () => {
+      io.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, []);
 }

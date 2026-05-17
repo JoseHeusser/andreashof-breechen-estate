@@ -110,9 +110,9 @@ function ReservationsPage() {
         </div>
       </section>
 
-      {/* BOOKING WIDGET */}
+      {/* BOOKING WIDGET — main content, never gated behind a scroll reveal */}
       <section className="px-6 pb-24 md:px-10 md:pb-32">
-        <div className="reveal mx-auto max-w-6xl border border-border bg-card">
+        <div className="mx-auto max-w-6xl border border-border bg-card">
           {submitted ? (
             <div className="px-8 py-20 text-center md:px-16 md:py-28">
               <p className="font-display text-2xl font-light italic text-sage-deep md:text-3xl">
@@ -135,7 +135,7 @@ function ReservationsPage() {
                   </p>
                 </div>
 
-                <div className="andreashof-calendar" suppressHydrationWarning>
+                <div className="andreashof-calendar">
                   {today && month ? (
                     <DayPicker
                       mode="range"
