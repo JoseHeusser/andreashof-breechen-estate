@@ -1,0 +1,163 @@
+{
+  "nav": {
+    "house": "Das Haus",
+    "rooms": "Zimmer",
+    "gallery": "Galerie",
+    "location": "Lage",
+    "inquiry": "Anfrage",
+    "reserve": "Reservieren"
+  },
+  "hero": {
+    "eyebrow": "Gützkow · Mecklenburg-Vorpommern · Est. 1782",
+    "titleLine1": "Ein Gutshaus,",
+    "titleLine2": "stille Tage.",
+    "subtitle": "Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert. Komplett mietbar für bis zu 21 Gäste.",
+    "ctaPrimary": "Anfrage senden",
+    "ctaSecondary": "Das Haus entdecken"
+  },
+  "intro": {
+    "eyebrow": "Willkommen",
+    "titleA": "Ein Haus, das seit",
+    "titleEm": " zwei Jahrhunderten ",
+    "titleB": "empfängt.",
+    "p1": "Der Andreashof wurde 1782 als Gutshaus eines pommerschen Landadels errichtet. Die symmetrische Fassade, der hohe Fachwerkgiebel und die schlichten Proportionen erzählen vom gustavianischen Geschmack jener Zeit — einer skandinavischen Eleganz, die bis heute trägt.",
+    "p2": "Hinter den hohen Fenstern: helle Räume, weiß lasierte Dielen, Leinen und Stein. Genug Platz für 21 Gäste, und doch eine Stille, die nicht endet, wenn der letzte Wagen ankommt."
+  },
+  "uses": {
+    "family": {
+      "title": "Familienfeste",
+      "body": "Großzügige gemeinsame Räume und zehn Schlafzimmer — Raum für drei Generationen unter einem Dach."
+    },
+    "weddings": {
+      "title": "Hochzeiten",
+      "body": "Symmetrische Fassade, ein Lindenallee-Garten und ein langer Tisch für 21 Gäste. Ein Tag, der bleibt."
+    },
+    "retreats": {
+      "title": "Retreats & Workshops",
+      "body": "Stille, weite Felder, hohe Räume. Ein Ort für Teams, Schreibklausuren und stille Tage."
+    }
+  },
+  "gallery": {
+    "eyebrow": "Galerie",
+    "title": "Licht, Linie, Leinen.",
+    "subtitle": "Eindrücke aus Salon, Esszimmer, Kammern und Garten — fotografiert im weichen Licht des Vorpommerschen Sommers.",
+    "alt": {
+      "salon": "Salon im gustavianischen Stil",
+      "bedroom": "Schlafzimmer mit Himmelbett",
+      "nook": "Leseplatz am Fenster",
+      "dining": "Langer Esstisch für 21 Personen",
+      "kitchen": "Landhausküche",
+      "garden": "Lindenallee im Garten"
+    }
+  },
+  "roomsTeaser": {
+    "eyebrow": "Die Zimmer",
+    "titleA": "Zehn Kammern für",
+    "titleEm": " einundzwanzig ",
+    "titleB": "Gäste.",
+    "body": "Jedes Zimmer trägt einen Namen, jedes hat seinen Blick. Hohe Decken, weiß gestrichene Dielen, Leinenvorhänge.",
+    "cta": "Alle Zimmer ansehen"
+  },
+  "zimmer": {
+    "pageEyebrow": "Die Zimmer",
+    "pageTitle": "Zehn Kammern, je eigen.",
+    "pageSubtitle": "Wählen Sie eine Kammer, um Bett, Aussicht und Atmosphäre zu sehen.",
+    "labelBed": "Bett",
+    "labelView": "Aussicht",
+    "labelNumber": "Kammer",
+    "ctaBack": "Zurück zur Übersicht",
+    "selectorLabel": "Kammer wählen"
+  },
+  "rooms": {
+    "I":    { "name": "Lindenzimmer",     "bed": "1 Kingsize-Bett",   "view": "Lindenallee", "desc": "Mit Blick in die alte Lindenallee. Hohe Decken, weiß gestrichene Dielen, ein Schreibtisch am Fenster." },
+    "II":   { "name": "Gartensuite",      "bed": "1 Kingsize-Bett",   "view": "Südgarten",   "desc": "Ruhig zum Garten gelegen. Morgens Sonne, abends Lavendelduft." },
+    "III":  { "name": "Giebelzimmer",     "bed": "1 Kingsize-Bett",   "view": "Hof",         "desc": "Im hohen Giebel mit freigelegtem Fachwerk. Stille des Innenhofs." },
+    "IV":   { "name": "Salonzimmer",      "bed": "1 Queensize-Bett",  "view": "Park",        "desc": "Großzügig, mit Stuckdecke und Parkett. Direkt neben dem Salon." },
+    "V":    { "name": "Kammer Hesse",     "bed": "2 Einzelbetten",    "view": "Felder",      "desc": "Schlicht, hell, ländlich. Blick über die Felder bis zum Horizont." },
+    "VI":   { "name": "Kammer Storch",    "bed": "2 Einzelbetten",    "view": "Hof",         "desc": "Im hinteren Trakt, geschützt. Storchennest am Schornstein." },
+    "VII":  { "name": "Mansarde Nord",    "bed": "3 Einzelbetten",    "view": "Dachfenster", "desc": "Unter dem Dach, ideal für Geschwister oder Freunde." },
+    "VIII": { "name": "Mansarde Süd",     "bed": "1 Einzelbett",      "view": "Garten",      "desc": "Kleine Kammer mit Süddach. Sonne den ganzen Tag." },
+    "IX":   { "name": "Bibliothekszimmer","bed": "1 Einzelbett",      "view": "Bibliothek",  "desc": "Eingebaute Regale, Lesesessel, eigene Tür zur Bibliothek." },
+    "X":    { "name": "Gesindekammer",    "bed": "2 Einzelbetten",    "view": "Innenhof",    "desc": "Im ehemaligen Gesindetrakt. Eigener Eingang, gemütlich." }
+  },
+  "amenitiesSec": {
+    "eyebrow": "Ausstattung",
+    "title": "Alles, was bleibt, ist da.",
+    "items": [
+      "Voll ausgestattete Landhausküche",
+      "Esstisch für 21 Personen",
+      "Salon mit offenem Kamin",
+      "Bibliothek mit Leseplätzen",
+      "Kostenfreies WLAN im ganzen Haus",
+      "Bettwäsche & Handtücher inklusive",
+      "Kostenfreie Parkplätze auf dem Hof",
+      "Großer Garten mit Lindenallee",
+      "Lagerfeuerstelle & Terrasse",
+      "Wickeltisch & Hochstühle auf Anfrage"
+    ]
+  },
+  "locationSec": {
+    "eyebrow": "Lage",
+    "titleA": "Zwischen Greifswald",
+    "titleEm": " und der Ostsee.",
+    "address": "Breechen 1 · 17506 Gützkow",
+    "nearby": [
+      { "place": "Ostsee",                  "time": "≈ 30 Min" },
+      { "place": "Greifswald Altstadt",     "time": "≈ 20 Min" },
+      { "place": "Insel Usedom",            "time": "≈ 45 Min" },
+      { "place": "Flughafen Heringsdorf",   "time": "≈ 50 Min" },
+      { "place": "Berlin",                  "time": "≈ 2 h 30 Min" }
+    ]
+  },
+  "reviewsSec": {
+    "eyebrow": "Stimmen",
+    "title": "Was unsere Gäste zurücklassen.",
+    "items": [
+      { "q": "Wir waren 19 Personen über vier Generationen — niemand musste sich einengen. Das Haus atmet Ruhe.", "a": "Familie Möller, Hamburg" },
+      { "q": "Unsere Hochzeit im Garten unter den Linden. Das Licht im Salon am Abend war unbeschreiblich.",       "a": "Lea & Jonas" },
+      { "q": "Drei Tage Strategie-Retreat. Stille, weite Felder, hervorragende Küche. Wir kommen wieder.",          "a": "Henning K., Berlin" }
+    ]
+  },
+  "booking": {
+    "eyebrow": "Anfrage",
+    "titleA": "Schreiben Sie uns —",
+    "titleEm": " wir antworten persönlich.",
+    "body": "Erzählen Sie uns von Ihrem Anlass, Ihren Wünschen und der gewünschten Zeit. Wir melden uns innerhalb von 24 Stunden.",
+    "or": "Oder direkt:",
+    "fields": {
+      "name": "Name",
+      "email": "E-Mail",
+      "arrival": "Anreise",
+      "departure": "Abreise",
+      "guests": "Gäste",
+      "occasion": "Anlass",
+      "occasionPlaceholder": "Hochzeit, Familienfeier, Retreat …",
+      "message": "Nachricht"
+    },
+    "submit": "Anfrage senden",
+    "thanks": "Vielen Dank — wir melden uns in Kürze."
+  },
+  "faq": {
+    "eyebrow": "Häufige Fragen",
+    "title": "Bevor Sie schreiben.",
+    "items": [
+      { "q": "Kann man Teile des Hauses mieten oder nur das ganze Haus?", "a": "Der Andreashof wird ausschließlich als Ganzes vermietet, um die besondere Atmosphäre für Ihre Gruppe zu wahren." },
+      { "q": "Sind Hochzeiten und Feiern erlaubt?",                       "a": "Ja. Wir empfangen regelmäßig Hochzeiten, Familienfeste und private Feiern. Gerne empfehlen wir Caterer und lokale Dienstleister." },
+      { "q": "Gibt es Parkplätze?",                                       "a": "Auf dem Innenhof stehen kostenfreie Parkplätze für bis zu zwölf Fahrzeuge zur Verfügung." },
+      { "q": "Sind Haustiere erlaubt?",                                   "a": "Gut erzogene Hunde sind nach Absprache willkommen. Bitte geben Sie uns bei der Anfrage Bescheid." },
+      { "q": "Wie ist die Stornierungsrichtlinie?",                       "a": "Kostenfreie Stornierung bis 60 Tage vor Anreise. Details finden Sie in unseren AGB." },
+      { "q": "Wie läuft der Check-in?",                                   "a": "Persönliche Begrüßung am Anreisetag ab 16:00 Uhr. Schlüsselübergabe und Hausführung inklusive." }
+    ]
+  },
+  "footer": {
+    "tagline": "Ein historisches Gutshaus aus dem 18. Jahrhundert in Vorpommern — für Familien, Hochzeiten und Rückzüge.",
+    "navHeading": "Navigation",
+    "contactHeading": "Kontakt",
+    "address": "Breechen 1, 17506 Gützkow",
+    "region": "Mecklenburg-Vorpommern",
+    "copyright": "Alle Rechte vorbehalten.",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "terms": "AGB"
+  }
+}

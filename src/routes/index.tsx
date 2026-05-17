@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, lazy, Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import heroImg from "@/assets/hero-facade.jpeg";
 import salonImg from "@/assets/interior-salon.jpg";
@@ -36,98 +37,17 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const uses = [
-  {
-    title: "Familienfeste",
-    body: "Großzügige gemeinsame Räume und zehn Schlafzimmer — Raum für drei Generationen unter einem Dach.",
-  },
-  {
-    title: "Hochzeiten",
-    body: "Symmetrische Fassade, ein Lindenallee-Garten und ein langer Tisch für 21 Gäste. Ein Tag, der bleibt.",
-  },
-  {
-    title: "Retreats & Workshops",
-    body: "Stille, weite Felder, hohe Räume. Ein Ort für Teams, Schreibklausuren und stille Tage.",
-  },
-];
-
-const rooms = [
-  { n: "I", name: "Lindenzimmer", bed: "Doppelbett", view: "Allee" },
-  { n: "II", name: "Gartensuite", bed: "Doppelbett", view: "Südgarten" },
-  { n: "III", name: "Giebelzimmer", bed: "Doppelbett", view: "Hof" },
-  { n: "IV", name: "Salonzimmer", bed: "Doppelbett", view: "Park" },
-  { n: "V", name: "Kammer Hesse", bed: "Doppelbett", view: "Felder" },
-  { n: "VI", name: "Kammer Storch", bed: "2× Einzel", view: "Hof" },
-  { n: "VII", name: "Mansarde Nord", bed: "2× Einzel", view: "Dachfenster" },
-  { n: "VIII", name: "Mansarde Süd", bed: "Doppelbett", view: "Garten" },
-  { n: "IX", name: "Bibliothekszimmer", bed: "Doppelbett", view: "Bibliothek" },
-  { n: "X", name: "Gesindekammer", bed: "Einzel + Sofa", view: "Innenhof" },
-];
-
-const amenities = [
-  "Voll ausgestattete Landhausküche",
-  "Esstisch für 21 Personen",
-  "Salon mit offenem Kamin",
-  "Bibliothek mit Leseplätzen",
-  "Kostenfreies WLAN im ganzen Haus",
-  "Bettwäsche & Handtücher inklusive",
-  "Kostenfreie Parkplätze auf dem Hof",
-  "Großer Garten mit Lindenallee",
-  "Lagerfeuerstelle & Terrasse",
-  "Wickeltisch & Hochstühle auf Anfrage",
-];
-
-const nearby = [
-  { place: "Ostsee", time: "≈ 30 Min" },
-  { place: "Greifswald Altstadt", time: "≈ 20 Min" },
-  { place: "Insel Usedom", time: "≈ 45 Min" },
-  { place: "Flughafen Heringsdorf", time: "≈ 50 Min" },
-  { place: "Berlin", time: "≈ 2 h 30 Min" },
-];
-
-const reviews = [
-  {
-    q: "Wir waren 19 Personen über vier Generationen — niemand musste sich einengen. Das Haus atmet Ruhe.",
-    a: "Familie Möller, Hamburg",
-  },
-  {
-    q: "Unsere Hochzeit im Garten unter den Linden. Das Licht im Salon am Abend war unbeschreiblich.",
-    a: "Lea & Jonas",
-  },
-  {
-    q: "Drei Tage Strategie-Retreat. Stille, weite Felder, hervorragende Küche. Wir kommen wieder.",
-    a: "Henning K., Berlin",
-  },
-];
-
-const faqs = [
-  {
-    q: "Kann man Teile des Hauses mieten oder nur das ganze Haus?",
-    a: "Der Andreashof wird ausschließlich als Ganzes vermietet, um die besondere Atmosphäre für Ihre Gruppe zu wahren.",
-  },
-  {
-    q: "Sind Hochzeiten und Feiern erlaubt?",
-    a: "Ja. Wir empfangen regelmäßig Hochzeiten, Familienfeste und private Feiern. Gerne empfehlen wir Caterer und lokale Dienstleister.",
-  },
-  {
-    q: "Gibt es Parkplätze?",
-    a: "Auf dem Innenhof stehen kostenfreie Parkplätze für bis zu zwölf Fahrzeuge zur Verfügung.",
-  },
-  {
-    q: "Sind Haustiere erlaubt?",
-    a: "Gut erzogene Hunde sind nach Absprache willkommen. Bitte geben Sie uns bei der Anfrage Bescheid.",
-  },
-  {
-    q: "Wie ist die Stornierungsrichtlinie?",
-    a: "Kostenfreie Stornierung bis 60 Tage vor Anreise. Details finden Sie in unseren AGB.",
-  },
-  {
-    q: "Wie läuft der Check-in?",
-    a: "Persönliche Begrüßung am Anreisetag ab 16:00 Uhr. Schlüsselübergabe und Hausführung inklusive.",
-  },
-];
-
 function Home() {
+  const { t } = useTranslation();
+  const uses = t("uses", { returnObjects: true }) as Record<
+    "family" | "weddings" | "retreats",
+    { title: string; body: string }
+  >;
+  const amenityItems = t("amenitiesSec.items", { returnObjects: true }) as string[];
+  const nearby = t("locationSec.nearby", { returnObjects: true }) as { place: string; time: string }[];
+  const reviews = t("reviewsSec.items", { returnObjects: true }) as { q: string; a: string }[];
+  const faqs = t("faq.items", { returnObjects: true }) as { q: string; a: string }[];
+
   const [open, setOpen] = useState<number | null>(0);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -152,7 +72,7 @@ function Home() {
 
   return (
     <div id="top" className="min-h-screen bg-background">
-      <SiteHeader />
+      <SiteHeader tone="light" />
 
       {/* HERO */}
       <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-foreground">
@@ -161,7 +81,6 @@ function Home() {
           alt="Fassade des Andreashof Breechen mit Fachwerkgiebel"
           className="absolute inset-0 h-full w-full object-cover animate-hero-zoom"
         />
-        {/* Vignette + bottom darken for legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/80" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.45)_100%)]" />
 
@@ -170,21 +89,20 @@ function Home() {
             className="eyebrow animate-fade-up text-white/85"
             style={{ animationDelay: "200ms", color: "rgba(255,255,255,0.85)" }}
           >
-            Gützkow · Mecklenburg-Vorpommern · Est. 1782
+            {t("hero.eyebrow")}
           </span>
           <h1
             className="mt-6 animate-fade-up font-display text-5xl font-light leading-[1.05] text-white md:text-7xl lg:text-[5.5rem]"
             style={{ animationDelay: "400ms", textShadow: "0 2px 28px rgba(0,0,0,0.5)" }}
           >
-            Ein Gutshaus,<br />
-            <em className="italic text-white/95">stille Tage.</em>
+            {t("hero.titleLine1")}<br />
+            <em className="italic text-white/95">{t("hero.titleLine2")}</em>
           </h1>
           <p
             className="mt-8 max-w-xl animate-fade-up text-base leading-relaxed text-white/85 md:text-lg"
             style={{ animationDelay: "700ms", textShadow: "0 1px 14px rgba(0,0,0,0.5)" }}
           >
-            Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert.
-            Komplett mietbar für bis zu 21 Gäste.
+            {t("hero.subtitle")}
           </p>
           <div
             className="mt-10 flex animate-fade-up flex-wrap items-center justify-center gap-4"
@@ -194,13 +112,13 @@ function Home() {
               href="#anfrage"
               className="border border-white bg-white px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-foreground transition-all duration-500 hover:bg-sage-deep hover:border-sage-deep hover:text-white"
             >
-              Anfrage senden
+              {t("hero.ctaPrimary")}
             </a>
             <a
               href="#haus"
               className="border border-white/70 px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-white transition-all duration-500 hover:bg-white/10 hover:border-white"
             >
-              Das Haus entdecken
+              {t("hero.ctaSecondary")}
             </a>
           </div>
         </div>
@@ -210,28 +128,18 @@ function Home() {
       <section id="haus" className="px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
           <div className="reveal md:col-span-4">
-            <span className="eyebrow">Willkommen</span>
+            <span className="eyebrow">{t("intro.eyebrow")}</span>
             <span className="rule ml-4 align-middle" />
           </div>
           <div className="md:col-span-8">
             <h2 className="reveal font-display text-3xl font-light leading-[1.15] md:text-5xl" style={{ transitionDelay: "120ms" }}>
-              Ein Haus, das seit
-              <em className="italic text-sage-deep"> zwei Jahrhunderten </em>
-              empfängt.
+              {t("intro.titleA")}
+              <em className="italic text-sage-deep">{t("intro.titleEm")}</em>
+              {t("intro.titleB")}
             </h2>
             <div className="reveal mt-10 grid gap-8 text-base leading-relaxed text-muted-foreground md:grid-cols-2 md:text-[1.05rem]" style={{ transitionDelay: "240ms" }}>
-              <p>
-                Der Andreashof wurde 1782 als Gutshaus eines pommerschen
-                Landadels errichtet. Die symmetrische Fassade, der hohe
-                Fachwerkgiebel und die schlichten Proportionen erzählen vom
-                gustavianischen Geschmack jener Zeit — einer skandinavischen
-                Eleganz, die bis heute trägt.
-              </p>
-              <p>
-                Hinter den hohen Fenstern: helle Räume, weiß lasierte Dielen,
-                Leinen und Stein. Genug Platz für 21 Gäste, und doch eine
-                Stille, die nicht endet, wenn der letzte Wagen ankommt.
-              </p>
+              <p>{t("intro.p1")}</p>
+              <p>{t("intro.p2")}</p>
             </div>
           </div>
         </div>
@@ -241,18 +149,18 @@ function Home() {
       <section className="px-6 pb-28 md:px-10 md:pb-40">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 md:grid-cols-3">
-            {uses.map((u, i) => (
+            {(["family", "weddings", "retreats"] as const).map((k, i) => (
               <article
-                key={u.title}
+                key={k}
                 className="reveal border border-border bg-card p-10 transition-all duration-500 hover:-translate-y-1 hover:border-sage hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]"
                 style={{ transitionDelay: `${i * 140}ms` }}
               >
                 <h3 className="font-display text-2xl font-light md:text-3xl">
-                  {u.title}
+                  {uses[k].title}
                 </h3>
                 <div className="mt-5 h-px w-10 bg-sage" />
                 <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-                  {u.body}
+                  {uses[k].body}
                 </p>
               </article>
             ))}
@@ -265,81 +173,69 @@ function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <span className="eyebrow">Galerie</span>
+              <span className="eyebrow">{t("gallery.eyebrow")}</span>
               <h2 className="mt-4 font-display text-4xl font-light md:text-5xl">
-                Licht, Linie, Leinen.
+                {t("gallery.title")}
               </h2>
             </div>
             <p className="max-w-sm text-sm text-muted-foreground">
-              Eindrücke aus Salon, Esszimmer, Kammern und Garten —
-              fotografiert im weichen Licht des Vorpommerschen Sommers.
+              {t("gallery.subtitle")}
             </p>
           </div>
           <div className="grid grid-cols-12 gap-4 md:gap-6">
             <div className="img-hover reveal col-span-12 md:col-span-8">
-              <img src={salonImg} alt="Salon im gustavianischen Stil" loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
+              <img src={salonImg} alt={t("gallery.alt.salon")} loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
             </div>
             <div className="img-hover reveal col-span-6 md:col-span-4" style={{ transitionDelay: "120ms" }}>
-              <img src={bedroomImg} alt="Schlafzimmer mit Himmelbett" loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
+              <img src={bedroomImg} alt={t("gallery.alt.bedroom")} loading="lazy" className="h-[320px] w-full object-cover md:h-[520px]" />
             </div>
             <div className="img-hover reveal col-span-6 md:col-span-4">
-              <img src={nookImg} alt="Leseplatz am Fenster" loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
+              <img src={nookImg} alt={t("gallery.alt.nook")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
             <div className="img-hover reveal col-span-12 md:col-span-4" style={{ transitionDelay: "120ms" }}>
-              <img src={diningImg} alt="Langer Esstisch für 21 Personen" loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
+              <img src={diningImg} alt={t("gallery.alt.dining")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
             <div className="img-hover reveal col-span-6 md:col-span-4" style={{ transitionDelay: "240ms" }}>
-              <img src={kitchenImg} alt="Landhausküche" loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
+              <img src={kitchenImg} alt={t("gallery.alt.kitchen")} loading="lazy" className="h-[260px] w-full object-cover md:h-[400px]" />
             </div>
             <div className="img-hover reveal col-span-12">
-              <img src={gardenImg} alt="Lindenallee im Garten" loading="lazy" className="h-[320px] w-full object-cover md:h-[480px]" />
+              <img src={gardenImg} alt={t("gallery.alt.garden")} loading="lazy" className="h-[320px] w-full object-cover md:h-[480px]" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ROOMS */}
+      {/* ROOMS TEASER (links to /zimmer) */}
       <section id="zimmer" className="px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-16 grid gap-8 md:grid-cols-12">
-            <div className="md:col-span-4">
-              <span className="eyebrow">Die Zimmer</span>
-              <span className="rule ml-4 align-middle" />
-            </div>
-            <div className="md:col-span-8">
-              <h2 className="font-display text-4xl font-light leading-[1.1] md:text-5xl">
-                Zehn Kammern für
-                <em className="italic text-sage-deep"> einundzwanzig </em>
-                Gäste.
+          <div className="grid gap-12 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-7">
+              <span className="eyebrow">{t("roomsTeaser.eyebrow")}</span>
+              <h2 className="mt-4 font-display text-4xl font-light leading-[1.1] md:text-5xl">
+                {t("roomsTeaser.titleA")}
+                <em className="italic text-sage-deep">{t("roomsTeaser.titleEm")}</em>
+                {t("roomsTeaser.titleB")}
               </h2>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-                Jedes Zimmer trägt einen Namen, jedes hat seinen Blick.
-                Hohe Decken, weiß gestrichene Dielen, Leinenvorhänge.
+                {t("roomsTeaser.body")}
               </p>
-            </div>
-          </div>
-
-          <div className="border-t border-border">
-            {rooms.map((r, i) => (
-              <div
-                key={r.n}
-                className="reveal group grid grid-cols-12 items-baseline gap-4 border-b border-border py-6 transition-colors hover:bg-linen/60"
-                style={{ transitionDelay: `${Math.min(i * 60, 400)}ms` }}
+              <Link
+                to="/zimmer"
+                className="mt-10 inline-block border border-foreground bg-foreground px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep"
               >
-                <div className="col-span-2 font-display text-2xl italic text-sage-deep transition-transform duration-500 group-hover:translate-x-1 md:col-span-1 md:text-3xl">
-                  {r.n}
-                </div>
-                <div className="col-span-10 md:col-span-5">
-                  <h3 className="font-display text-xl font-light md:text-2xl">{r.name}</h3>
-                </div>
-                <div className="col-span-6 mt-2 text-sm text-muted-foreground md:col-span-3 md:mt-0">
-                  {r.bed}
-                </div>
-                <div className="col-span-6 mt-2 text-sm text-muted-foreground md:col-span-3 md:mt-0 md:text-right">
-                  Blick: {r.view}
-                </div>
-              </div>
-            ))}
+                {t("roomsTeaser.cta")}
+              </Link>
+            </div>
+            <div className="md:col-span-5">
+              <Link to="/zimmer" className="img-hover block">
+                <img
+                  src="/rooms/room-01a.jpg"
+                  alt={t("gallery.alt.bedroom")}
+                  loading="lazy"
+                  className="h-[360px] w-full object-cover md:h-[480px]"
+                />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -348,14 +244,14 @@ function Home() {
       <section className="bg-linen px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
           <div className="md:col-span-4">
-            <span className="eyebrow">Ausstattung</span>
+            <span className="eyebrow">{t("amenitiesSec.eyebrow")}</span>
             <h2 className="mt-4 font-display text-4xl font-light leading-[1.1] md:text-5xl">
-              Alles, was bleibt, ist da.
+              {t("amenitiesSec.title")}
             </h2>
           </div>
           <div className="md:col-span-8">
             <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">
-              {amenities.map((a) => (
+              {amenityItems.map((a) => (
                 <li key={a} className="flex items-baseline gap-4 border-b border-border/60 pb-4">
                   <span className="h-px w-4 shrink-0 translate-y-2 bg-sage" />
                   <span className="text-[0.95rem] text-foreground/85">{a}</span>
@@ -371,13 +267,13 @@ function Home() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 grid gap-8 md:grid-cols-12">
             <div className="md:col-span-4">
-              <span className="eyebrow">Lage</span>
+              <span className="eyebrow">{t("locationSec.eyebrow")}</span>
               <span className="rule ml-4 align-middle" />
             </div>
             <div className="md:col-span-8">
               <h2 className="font-display text-4xl font-light leading-[1.1] md:text-5xl">
-                Zwischen Greifswald
-                <em className="italic text-sage-deep"> und der Ostsee.</em>
+                {t("locationSec.titleA")}
+                <em className="italic text-sage-deep">{t("locationSec.titleEm")}</em>
               </h2>
             </div>
           </div>
@@ -393,7 +289,7 @@ function Home() {
             </div>
             <div className="md:col-span-5">
               <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
-                Breechen 1 · 17506 Gützkow
+                {t("locationSec.address")}
               </p>
               <ul className="mt-8 border-t border-border">
                 {nearby.map((p) => (
@@ -411,9 +307,9 @@ function Home() {
       {/* REVIEWS */}
       <section className="bg-linen px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto max-w-6xl">
-          <span className="eyebrow">Stimmen</span>
+          <span className="eyebrow">{t("reviewsSec.eyebrow")}</span>
           <h2 className="mt-4 max-w-3xl font-display text-4xl font-light leading-[1.1] md:text-5xl">
-            Was unsere Gäste zurücklassen.
+            {t("reviewsSec.title")}
           </h2>
           <div className="mt-16 grid gap-12 md:grid-cols-3">
             {reviews.map((r, i) => (
@@ -434,17 +330,16 @@ function Home() {
       <section id="anfrage" className="px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
           <div className="md:col-span-5">
-            <span className="eyebrow">Anfrage</span>
+            <span className="eyebrow">{t("booking.eyebrow")}</span>
             <h2 className="mt-4 font-display text-4xl font-light leading-[1.1] md:text-5xl">
-              Schreiben Sie uns —
-              <em className="italic text-sage-deep"> wir antworten persönlich.</em>
+              {t("booking.titleA")}
+              <em className="italic text-sage-deep">{t("booking.titleEm")}</em>
             </h2>
             <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
-              Erzählen Sie uns von Ihrem Anlass, Ihren Wünschen und der
-              gewünschten Zeit. Wir melden uns innerhalb von 24 Stunden.
+              {t("booking.body")}
             </p>
             <div className="mt-10 space-y-2 text-sm">
-              <p className="text-muted-foreground">Oder direkt:</p>
+              <p className="text-muted-foreground">{t("booking.or")}</p>
               <p><a href="mailto:willkommen@andreashof-breechen.de" className="hover:text-sage-deep">willkommen@andreashof-breechen.de</a></p>
               <p><a href="https://wa.me/4915112345678" className="hover:text-sage-deep">WhatsApp · +49 151 1234 5678</a></p>
             </div>
@@ -452,19 +347,19 @@ function Home() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              alert("Vielen Dank — wir melden uns in Kürze.");
+              alert(t("booking.thanks"));
             }}
             className="md:col-span-7"
           >
             <div className="grid gap-x-8 gap-y-6 md:grid-cols-2">
-              <Field label="Name" name="name" required />
-              <Field label="E-Mail" name="email" type="email" required />
-              <Field label="Anreise" name="arrival" type="date" />
-              <Field label="Abreise" name="departure" type="date" />
-              <Field label="Gäste" name="guests" type="number" />
-              <Field label="Anlass" name="occasion" placeholder="Hochzeit, Familienfeier, Retreat …" />
+              <Field label={t("booking.fields.name")} name="name" required />
+              <Field label={t("booking.fields.email")} name="email" type="email" required />
+              <Field label={t("booking.fields.arrival")} name="arrival" type="date" />
+              <Field label={t("booking.fields.departure")} name="departure" type="date" />
+              <Field label={t("booking.fields.guests")} name="guests" type="number" />
+              <Field label={t("booking.fields.occasion")} name="occasion" placeholder={t("booking.fields.occasionPlaceholder")} />
               <div className="md:col-span-2">
-                <label className="eyebrow">Nachricht</label>
+                <label className="eyebrow">{t("booking.fields.message")}</label>
                 <textarea
                   name="message"
                   rows={5}
@@ -476,7 +371,7 @@ function Home() {
               type="submit"
               className="mt-12 w-full border border-foreground bg-foreground px-8 py-4 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep md:w-auto"
             >
-              Anfrage senden
+              {t("booking.submit")}
             </button>
           </form>
         </div>
@@ -486,9 +381,9 @@ function Home() {
       <section className="border-t border-border bg-linen px-6 py-28 md:px-10 md:py-40">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
           <div className="md:col-span-4">
-            <span className="eyebrow">Häufige Fragen</span>
+            <span className="eyebrow">{t("faq.eyebrow")}</span>
             <h2 className="mt-4 font-display text-4xl font-light leading-[1.1] md:text-5xl">
-              Bevor Sie schreiben.
+              {t("faq.title")}
             </h2>
           </div>
           <div className="md:col-span-8">

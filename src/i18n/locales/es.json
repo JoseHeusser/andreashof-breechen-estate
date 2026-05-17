@@ -1,0 +1,163 @@
+{
+  "nav": {
+    "house": "La Casa",
+    "rooms": "Habitaciones",
+    "gallery": "Galería",
+    "location": "Ubicación",
+    "inquiry": "Consulta",
+    "reserve": "Reservar"
+  },
+  "hero": {
+    "eyebrow": "Gützkow · Mecklemburgo-Pomerania Occidental · Est. 1782",
+    "titleLine1": "Una casa solariega,",
+    "titleLine2": "días tranquilos.",
+    "subtitle": "Casa solariega histórica de estilo gustaviano del siglo XVIII. Se alquila completa, para hasta 21 huéspedes.",
+    "ctaPrimary": "Enviar consulta",
+    "ctaSecondary": "Descubrir la casa"
+  },
+  "intro": {
+    "eyebrow": "Bienvenidos",
+    "titleA": "Una casa que recibe desde hace",
+    "titleEm": " dos siglos.",
+    "titleB": "",
+    "p1": "El Andreashof fue construido en 1782 como casa señorial de una familia rural pomerana. La fachada simétrica, el alto gablete de entramado de madera y las proporciones sobrias hablan aún del gusto gustaviano de aquella época — una elegancia escandinava que se mantiene hasta hoy.",
+    "p2": "Detrás de las altas ventanas: habitaciones luminosas, suelos pintados de blanco, lino y piedra. Espacio para 21 huéspedes y, sin embargo, una calma que no termina cuando llega el último coche."
+  },
+  "uses": {
+    "family": {
+      "title": "Reuniones familiares",
+      "body": "Espacios comunes amplios y diez recámaras — sitio para tres generaciones bajo un mismo techo."
+    },
+    "weddings": {
+      "title": "Bodas",
+      "body": "Fachada simétrica, un jardín con avenida de tilos y una mesa larga para 21. Un día que permanece."
+    },
+    "retreats": {
+      "title": "Retiros y talleres",
+      "body": "Silencio, campos abiertos, techos altos. Un lugar para equipos, retiros de escritura y días tranquilos."
+    }
+  },
+  "gallery": {
+    "eyebrow": "Galería",
+    "title": "Luz, línea, lino.",
+    "subtitle": "Impresiones del salón, comedor, recámaras y jardín — fotografiadas con la luz suave del verano pomerano.",
+    "alt": {
+      "salon": "Salón de estilo gustaviano",
+      "bedroom": "Recámara con cama con dosel",
+      "nook": "Rincón de lectura junto a la ventana",
+      "dining": "Mesa larga para 21 personas",
+      "kitchen": "Cocina de campo",
+      "garden": "Avenida de tilos en el jardín"
+    }
+  },
+  "roomsTeaser": {
+    "eyebrow": "Las Habitaciones",
+    "titleA": "Diez recámaras para",
+    "titleEm": " veintiún ",
+    "titleB": "huéspedes.",
+    "body": "Cada habitación tiene un nombre, cada una su propia vista. Techos altos, suelos blancos, cortinas de lino.",
+    "cta": "Ver todas las habitaciones"
+  },
+  "zimmer": {
+    "pageEyebrow": "Las Habitaciones",
+    "pageTitle": "Diez recámaras, cada una distinta.",
+    "pageSubtitle": "Elige una recámara para ver cama, vista y carácter.",
+    "labelBed": "Cama",
+    "labelView": "Vista",
+    "labelNumber": "Recámara",
+    "ctaBack": "Volver al inicio",
+    "selectorLabel": "Elegir recámara"
+  },
+  "rooms": {
+    "I":    { "name": "Recámara del Tilo",      "bed": "1 cama king size",  "view": "Avenida de tilos", "desc": "Con vista a la antigua avenida de tilos. Techos altos, suelos blancos, un escritorio junto a la ventana." },
+    "II":   { "name": "Suite del Jardín",       "bed": "1 cama king size",  "view": "Jardín sur",       "desc": "Tranquila, abierta al jardín. Sol por la mañana, aroma a lavanda al anochecer." },
+    "III":  { "name": "Recámara del Gablete",   "bed": "1 cama king size",  "view": "Patio",            "desc": "En lo alto del gablete con vigas de madera vistas. La calma del patio interior." },
+    "IV":   { "name": "Recámara del Salón",     "bed": "1 cama queen size", "view": "Parque",           "desc": "Generosa, con techo de estuco y parquet. Junto al salón." },
+    "V":    { "name": "Cámara Hesse",           "bed": "2 camas individuales", "view": "Campos",         "desc": "Sencilla, luminosa, rural. Vista sobre los campos hasta el horizonte." },
+    "VI":   { "name": "Cámara Cigüeña",         "bed": "2 camas individuales", "view": "Patio",          "desc": "En el ala posterior, resguardada. Nido de cigüeña en la chimenea." },
+    "VII":  { "name": "Mansarda Norte",         "bed": "3 camas individuales", "view": "Tragaluz",       "desc": "Bajo el tejado, ideal para hermanos o amigos." },
+    "VIII": { "name": "Mansarda Sur",           "bed": "1 cama individual", "view": "Jardín",            "desc": "Cámara pequeña bajo el techo sur. Sol todo el día." },
+    "IX":   { "name": "Recámara de la Biblioteca","bed": "1 cama individual","view": "Biblioteca",       "desc": "Estanterías empotradas, sillón de lectura, puerta propia a la biblioteca." },
+    "X":    { "name": "Cámara del Servicio",    "bed": "2 camas individuales", "view": "Patio interior", "desc": "En la antigua ala del servicio. Entrada propia, acogedora." }
+  },
+  "amenitiesSec": {
+    "eyebrow": "Servicios",
+    "title": "Todo lo que importa, está.",
+    "items": [
+      "Cocina de campo totalmente equipada",
+      "Mesa de comedor para 21 personas",
+      "Salón con chimenea abierta",
+      "Biblioteca con rincones de lectura",
+      "Wi-Fi gratuito en toda la casa",
+      "Ropa de cama y toallas incluidas",
+      "Estacionamiento gratuito en el patio",
+      "Gran jardín con avenida de tilos",
+      "Fogata y terraza",
+      "Cambiador y tronas bajo petición"
+    ]
+  },
+  "locationSec": {
+    "eyebrow": "Ubicación",
+    "titleA": "Entre Greifswald",
+    "titleEm": " y el Mar Báltico.",
+    "address": "Breechen 1 · 17506 Gützkow",
+    "nearby": [
+      { "place": "Mar Báltico",              "time": "≈ 30 min" },
+      { "place": "Casco antiguo de Greifswald", "time": "≈ 20 min" },
+      { "place": "Isla de Usedom",           "time": "≈ 45 min" },
+      { "place": "Aeropuerto de Heringsdorf","time": "≈ 50 min" },
+      { "place": "Berlín",                   "time": "≈ 2h 30min" }
+    ]
+  },
+  "reviewsSec": {
+    "eyebrow": "Voces",
+    "title": "Lo que dejan nuestros huéspedes.",
+    "items": [
+      { "q": "Éramos 19 personas, cuatro generaciones — nadie se sintió apretado. La casa respira calma.",       "a": "Familia Möller, Hamburgo" },
+      { "q": "Nuestra boda en el jardín bajo los tilos. La luz del salón al atardecer fue indescriptible.",     "a": "Lea y Jonas" },
+      { "q": "Tres días de retiro estratégico. Silencio, campos abiertos, comida excelente. Volveremos.",      "a": "Henning K., Berlín" }
+    ]
+  },
+  "booking": {
+    "eyebrow": "Consulta",
+    "titleA": "Escríbenos —",
+    "titleEm": " respondemos en persona.",
+    "body": "Cuéntanos la ocasión, tus deseos y las fechas que tienes en mente. Respondemos en menos de 24 horas.",
+    "or": "O directamente:",
+    "fields": {
+      "name": "Nombre",
+      "email": "Correo",
+      "arrival": "Llegada",
+      "departure": "Salida",
+      "guests": "Huéspedes",
+      "occasion": "Ocasión",
+      "occasionPlaceholder": "Boda, reunión familiar, retiro …",
+      "message": "Mensaje"
+    },
+    "submit": "Enviar consulta",
+    "thanks": "Gracias — te contactaremos en breve."
+  },
+  "faq": {
+    "eyebrow": "Preguntas frecuentes",
+    "title": "Antes de escribirnos.",
+    "items": [
+      { "q": "¿Se puede alquilar parte de la casa o sólo entera?", "a": "El Andreashof se alquila únicamente entero, para preservar el ambiente para tu grupo." },
+      { "q": "¿Se permiten bodas y celebraciones?",                 "a": "Sí. Recibimos con frecuencia bodas, reuniones familiares y celebraciones privadas. Recomendamos con gusto caterings y servicios locales." },
+      { "q": "¿Hay estacionamiento?",                               "a": "Estacionamiento gratuito para hasta doce vehículos en el patio interior." },
+      { "q": "¿Se permiten mascotas?",                              "a": "Aceptamos perros bien educados previa consulta. Avísanos al hacer tu solicitud." },
+      { "q": "¿Cuál es la política de cancelación?",                "a": "Cancelación gratuita hasta 60 días antes de la llegada. Detalles en nuestros términos." },
+      { "q": "¿Cómo es el check-in?",                               "a": "Recibimiento personal el día de llegada a partir de las 16:00. Entrega de llaves y breve recorrido por la casa." }
+    ]
+  },
+  "footer": {
+    "tagline": "Una casa solariega histórica del siglo XVIII en Pomerania Occidental — para familias, bodas y retiros.",
+    "navHeading": "Navegación",
+    "contactHeading": "Contacto",
+    "address": "Breechen 1, 17506 Gützkow",
+    "region": "Mecklemburgo-Pomerania Occidental",
+    "copyright": "Todos los derechos reservados.",
+    "imprint": "Aviso legal",
+    "privacy": "Privacidad",
+    "terms": "Términos"
+  }
+}
