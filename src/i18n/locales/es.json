@@ -9,10 +9,10 @@
     "reserve": "Reservar"
   },
   "hero": {
-    "eyebrow": "Gützkow · Mecklemburgo-Pomerania Occidental · Est. 1782",
+    "eyebrow": "Breechen · Mecklemburgo-Pomerania Occidental · Est. 1782",
     "titleLine1": "Una casa solariega,",
-    "titleLine2": "días tranquilos.",
-    "subtitle": "Casa solariega histórica de estilo gustaviano del siglo XVIII. Se alquila completa, para hasta 21 huéspedes.",
+    "titleLine2": "en el pueblo.",
+    "subtitle": "Casa solariega histórica de estilo gustaviano del siglo XVIII, en el corazón del pueblo de Breechen. Se alquila completa, para hasta 21 huéspedes.",
     "ctaPrimary": "Enviar consulta",
     "ctaSecondary": "Descubrir la casa"
   },
@@ -21,27 +21,28 @@
     "titleA": "Una casa que recibe desde hace",
     "titleEm": " dos siglos.",
     "titleB": "",
-    "p1": "El Andreashof fue construido en 1782 como casa señorial de una familia rural pomerana. La fachada simétrica, el alto gablete de entramado de madera y las proporciones sobrias hablan aún del gusto gustaviano de aquella época — una elegancia escandinava que se mantiene hasta hoy.",
-    "p2": "Detrás de las altas ventanas: habitaciones luminosas, suelos pintados de blanco, lino y piedra. Espacio para 21 huéspedes y, sin embargo, una calma que no termina cuando llega el último coche."
+    "p1": "El Andreashof se construyó en 1782 como casa señorial de una familia rural pomerana — en pleno pueblo de Breechen, detrás de su seto y su portón. La fachada simétrica, el alto gablete de entramado de madera y las proporciones sobrias hablan aún del gusto gustaviano de aquella época, una elegancia escandinava que se mantiene hasta hoy.",
+    "p2": "Detrás de las altas ventanas: habitaciones luminosas, suelos pintados de blanco, lino y piedra. Sitio para 21 huéspedes, pero nunca aislado — vecinos en el pueblo, lago para bañarse y campos a la salida, Greifswald y el Mar Báltico a poca distancia."
   },
   "uses": {
     "family": {
       "title": "Reuniones familiares",
-      "body": "Espacios comunes amplios y diez recámaras — sitio para tres generaciones bajo un mismo techo."
+      "body": "Espacios comunes amplios, diez recámaras y un gran jardín — sitio para tres generaciones bajo un mismo techo."
     },
     "weddings": {
       "title": "Bodas",
-      "body": "Fachada simétrica, un jardín con avenida de tilos y una mesa larga para 21. Un día que permanece."
+      "body": "Fachada simétrica, un jardín con mesa larga para 21 y el pueblo al lado. Un día que permanece."
     },
     "retreats": {
       "title": "Retiros y talleres",
-      "body": "Silencio, campos abiertos, techos altos. Un lugar para equipos, retiros de escritura y días tranquilos."
+      "body": "Techos altos, un patio resguardado del pueblo, lago para bañarse cerca. Un lugar para equipos y días de concentración."
     }
   },
   "gallery": {
     "eyebrow": "Galería",
     "title": "Luz, línea, lino.",
     "subtitle": "Impresiones del salón, comedor, recámaras y jardín — fotografiadas con la luz suave del verano pomerano.",
+    "cta": "Ver la galería completa",
     "alt": {
       "greatRoom": "Gran salón social con mesa para 14 y cocina abierta",
       "salonUpper": "Salón del piso superior, 100 m² de estar",
@@ -59,6 +60,19 @@
     "titleB": "huéspedes.",
     "body": "Cada habitación tiene un nombre, cada una su propia vista. Techos altos, suelos blancos, cortinas de lino.",
     "cta": "Ver todas las habitaciones"
+  },
+  "galerieFull": {
+    "eyebrow": "Galería",
+    "title": "La casa, el pueblo, los alrededores.",
+    "subtitle": "Habitaciones, baños, jardín — y el pueblo de Breechen con sus lagos para nadar, Gützkow y la isla de Usedom en el Báltico.",
+    "categories": {
+      "interior": "Interiores",
+      "bath":     "Baños",
+      "garden":   "Jardín y exterior",
+      "around":   "Pueblo y alrededores",
+      "plans":    "Planos",
+      "atmos":    "Ambiente"
+    }
   },
   "zimmer": {
     "pageEyebrow": "Las Habitaciones",
@@ -100,15 +114,16 @@
   },
   "locationSec": {
     "eyebrow": "Ubicación",
-    "titleA": "Entre Greifswald",
-    "titleEm": " y el Mar Báltico.",
+    "titleA": "En el pueblo de Breechen,",
+    "titleEm": " cerca de Greifswald y el Mar Báltico.",
     "address": "Breechen 1 · 17506 Gützkow",
     "nearby": [
-      { "place": "Mar Báltico",              "time": "≈ 30 min" },
+      { "place": "Lago de Breechen",            "time": "≈ 5 min" },
+      { "place": "Gützkow",                     "time": "≈ 7 min" },
       { "place": "Casco antiguo de Greifswald", "time": "≈ 20 min" },
-      { "place": "Isla de Usedom",           "time": "≈ 45 min" },
-      { "place": "Aeropuerto de Heringsdorf","time": "≈ 50 min" },
-      { "place": "Berlín",                   "time": "≈ 2h 30min" }
+      { "place": "Mar Báltico",                 "time": "≈ 30 min" },
+      { "place": "Isla de Usedom",              "time": "≈ 45 min" },
+      { "place": "Berlín",                      "time": "≈ 2h 30min" }
     ]
   },
   "reviewsSec": {
@@ -124,7 +139,7 @@
   "bookingTeaser": {
     "eyebrow": "Reservas",
     "titleA": "¿Listos para",
-    "titleEm": " días tranquilos?",
+    "titleEm": " días en la mansión?",
     "body": "La casa entera es para ti y tu grupo. Confirmamos cada reserva en persona.",
     "cta": "Reservar la casa"
   },

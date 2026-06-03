@@ -185,6 +185,14 @@ function Home() {
               <img src="/gallery/outdoor-games.jpg" alt={t("gallery.alt.outdoorGames")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[460px]" />
             </div>
           </div>
+          <div className="mt-12 text-center md:mt-16">
+            <Link
+              to="/galerie"
+              className="inline-block border border-foreground bg-transparent px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-foreground transition-colors hover:bg-foreground hover:text-background"
+            >
+              {t("gallery.cta")}
+            </Link>
+          </div>
         </div>
       </section>
 

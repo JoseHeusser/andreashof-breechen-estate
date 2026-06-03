@@ -9,7 +9,7 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
     { href: "/", label: t("nav.home"), to: "/" as const },
     { href: "/#haus", label: t("nav.house") },
     { href: "/zimmer", label: t("nav.rooms"), to: "/zimmer" as const },
-    { href: "/#galerie", label: t("nav.gallery") },
+    { href: "/galerie", label: t("nav.gallery"), to: "/galerie" as const },
     { href: "/#lage", label: t("nav.location") },
     { href: "/reservations", label: t("nav.inquiry"), to: "/reservations" as const },
   ];
@@ -76,7 +76,7 @@ export function SiteFooter() {
               <li><Link to="/" className="hover:text-sage-deep">{t("nav.home")}</Link></li>
               <li><a href="/#haus" className="hover:text-sage-deep">{t("nav.house")}</a></li>
               <li><Link to="/zimmer" className="hover:text-sage-deep">{t("nav.rooms")}</Link></li>
-              <li><a href="/#galerie" className="hover:text-sage-deep">{t("nav.gallery")}</a></li>
+              <li><Link to="/galerie" className="hover:text-sage-deep">{t("nav.gallery")}</Link></li>
               <li><a href="/#lage" className="hover:text-sage-deep">{t("nav.location")}</a></li>
               <li><Link to="/reservations" className="hover:text-sage-deep">{t("nav.inquiry")}</Link></li>
             </ul>

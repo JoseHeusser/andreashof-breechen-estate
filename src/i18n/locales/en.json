@@ -9,10 +9,10 @@
     "reserve": "Reserve"
   },
   "hero": {
-    "eyebrow": "Gützkow · Mecklenburg-Vorpommern · Est. 1782",
+    "eyebrow": "Breechen · Mecklenburg-Vorpommern · Est. 1782",
     "titleLine1": "A manor house,",
-    "titleLine2": "quiet days.",
-    "subtitle": "Historic 18th-century Gustavian manor house. Available exclusively as a whole — for up to 21 guests.",
+    "titleLine2": "in the village.",
+    "subtitle": "Historic 18th-century Gustavian manor house, in the heart of the village of Breechen. Available exclusively as a whole — for up to 21 guests.",
     "ctaPrimary": "Send inquiry",
     "ctaSecondary": "Discover the house"
   },
@@ -21,27 +21,28 @@
     "titleA": "A house that has welcomed guests for",
     "titleEm": " two centuries.",
     "titleB": "",
-    "p1": "Andreashof was built in 1782 as the manor of a Pomeranian landed family. The symmetrical façade, the high half-timbered gable and the restrained proportions still speak of the Gustavian taste of that era — a Scandinavian elegance that carries to this day.",
-    "p2": "Behind the tall windows: light-filled rooms, white-washed floorboards, linen and stone. Space for 21 guests, and yet a stillness that does not end when the last car arrives."
+    "p1": "Andreashof was built in 1782 as the manor of a Pomeranian landed family — right in the small village of Breechen, behind its hedge and gates. The symmetrical façade, the high half-timbered gable and the restrained proportions still speak of the Gustavian taste of that era, a Scandinavian elegance that carries to this day.",
+    "p2": "Behind the tall windows: light-filled rooms, white-washed floorboards, linen and stone. Room for 21 guests, but never cut off — neighbours in the village, a bathing lake and fields at the door, Greifswald and the Baltic Sea not far."
   },
   "uses": {
     "family": {
       "title": "Family gatherings",
-      "body": "Generous common rooms and ten bedrooms — space for three generations under one roof."
+      "body": "Generous common rooms, ten bedrooms and a wide garden — room for three generations under one roof."
     },
     "weddings": {
       "title": "Weddings",
-      "body": "A symmetrical façade, a garden with a lime-tree avenue and a long table for 21. A day that stays."
+      "body": "A symmetrical façade, a garden long enough for a table of 21, the village just outside. A day that stays."
     },
     "retreats": {
       "title": "Retreats & workshops",
-      "body": "Stillness, wide fields, high-ceilinged rooms. A place for teams, writing retreats and quiet days."
+      "body": "High-ceilinged rooms, a courtyard sheltered from the village, a bathing lake nearby. A place for teams and focused days."
     }
   },
   "gallery": {
     "eyebrow": "Gallery",
     "title": "Light, line, linen.",
     "subtitle": "Impressions from the salon, dining room, bedchambers and garden — photographed in the soft light of a Pomeranian summer.",
+    "cta": "See the full gallery",
     "alt": {
       "greatRoom": "Great room with dining table for 14 and open kitchen",
       "salonUpper": "Upper-floor salon, 100 m² of living space",
@@ -59,6 +60,19 @@
     "titleB": "guests.",
     "body": "Each room carries a name, each has its own view. High ceilings, white-painted floorboards, linen curtains.",
     "cta": "View all rooms"
+  },
+  "galerieFull": {
+    "eyebrow": "Gallery",
+    "title": "The house, the village, the surroundings.",
+    "subtitle": "Rooms, baths, garden — and the village of Breechen with its swimming lakes nearby, Gützkow and the Baltic island of Usedom.",
+    "categories": {
+      "interior": "Interiors",
+      "bath":     "Baths",
+      "garden":   "Garden & exterior",
+      "around":   "Village & surroundings",
+      "plans":    "Floor plans",
+      "atmos":    "Atmosphere"
+    }
   },
   "zimmer": {
     "pageEyebrow": "The Rooms",
@@ -100,14 +114,15 @@
   },
   "locationSec": {
     "eyebrow": "Location",
-    "titleA": "Between Greifswald",
-    "titleEm": " and the Baltic Sea.",
+    "titleA": "In the village of Breechen,",
+    "titleEm": " close to Greifswald and the Baltic Sea.",
     "address": "Breechen 1 · 17506 Gützkow",
     "nearby": [
-      { "place": "Baltic Sea",            "time": "≈ 30 min" },
+      { "place": "Breechen bathing lake", "time": "≈ 5 min" },
+      { "place": "Gützkow",               "time": "≈ 7 min" },
       { "place": "Greifswald old town",   "time": "≈ 20 min" },
+      { "place": "Baltic Sea",            "time": "≈ 30 min" },
       { "place": "Usedom island",         "time": "≈ 45 min" },
-      { "place": "Heringsdorf airport",   "time": "≈ 50 min" },
       { "place": "Berlin",                "time": "≈ 2h 30min" }
     ]
   },
@@ -124,7 +139,7 @@
   "bookingTeaser": {
     "eyebrow": "Reservations",
     "titleA": "Ready for",
-    "titleEm": " quiet days?",
+    "titleEm": " days in the manor?",
     "body": "The whole house is yours and your group's. We confirm every reservation in person.",
     "cta": "Reserve your stay"
   },

@@ -9,10 +9,10 @@
     "reserve": "Reservieren"
   },
   "hero": {
-    "eyebrow": "Gützkow · Mecklenburg-Vorpommern · Est. 1782",
+    "eyebrow": "Breechen · Mecklenburg-Vorpommern · Est. 1782",
     "titleLine1": "Ein Gutshaus,",
-    "titleLine2": "stille Tage.",
-    "subtitle": "Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert. Komplett mietbar für bis zu 21 Gäste.",
+    "titleLine2": "mitten im Dorf.",
+    "subtitle": "Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert, im Herzen von Breechen. Komplett mietbar für bis zu 21 Gäste.",
     "ctaPrimary": "Anfrage senden",
     "ctaSecondary": "Das Haus entdecken"
   },
@@ -21,27 +21,28 @@
     "titleA": "Ein Haus, das seit",
     "titleEm": " zwei Jahrhunderten ",
     "titleB": "empfängt.",
-    "p1": "Der Andreashof wurde 1782 als Gutshaus eines pommerschen Landadels errichtet. Die symmetrische Fassade, der hohe Fachwerkgiebel und die schlichten Proportionen erzählen vom gustavianischen Geschmack jener Zeit — einer skandinavischen Eleganz, die bis heute trägt.",
-    "p2": "Hinter den hohen Fenstern: helle Räume, weiß lasierte Dielen, Leinen und Stein. Genug Platz für 21 Gäste, und doch eine Stille, die nicht endet, wenn der letzte Wagen ankommt."
+    "p1": "Der Andreashof wurde 1782 als Gutshaus eines pommerschen Landadels errichtet — mitten im kleinen Dorf Breechen, hinter Hecke und Hofeinfahrt. Die symmetrische Fassade, der hohe Fachwerkgiebel und die schlichten Proportionen erzählen vom gustavianischen Geschmack jener Zeit, einer skandinavischen Eleganz, die bis heute trägt.",
+    "p2": "Hinter den hohen Fenstern: helle Räume, weiß lasierte Dielen, Leinen und Stein. Platz für 21 Gäste, und doch ein Haus mit Anschluss — Nachbarschaft im Dorf, Badesee und Felder vor der Tür, Greifswald und die Ostsee nicht weit."
   },
   "uses": {
     "family": {
       "title": "Familienfeste",
-      "body": "Großzügige gemeinsame Räume und zehn Schlafzimmer — Raum für drei Generationen unter einem Dach."
+      "body": "Großzügige gemeinsame Räume, zehn Schlafzimmer und ein weiter Garten — Platz für drei Generationen unter einem Dach."
     },
     "weddings": {
       "title": "Hochzeiten",
-      "body": "Symmetrische Fassade, ein Lindenallee-Garten und ein langer Tisch für 21 Gäste. Ein Tag, der bleibt."
+      "body": "Symmetrische Fassade, Garten mit langer Tafel für 21 Gäste, das Dorf gleich nebenan. Ein Tag, der bleibt."
     },
     "retreats": {
       "title": "Retreats & Workshops",
-      "body": "Stille, weite Felder, hohe Räume. Ein Ort für Teams, Schreibklausuren und stille Tage."
+      "body": "Hohe Räume, ein vom Dorf abgeschirmter Hof, Badesee in der Nähe. Ein Ort für Teams und konzentrierte Tage."
     }
   },
   "gallery": {
     "eyebrow": "Galerie",
     "title": "Licht, Linie, Leinen.",
     "subtitle": "Eindrücke aus Salon, Esszimmer, Kammern und Garten — fotografiert im weichen Licht des Vorpommerschen Sommers.",
+    "cta": "Ganze Galerie ansehen",
     "alt": {
       "greatRoom": "Großer Gemeinschaftsraum mit Esstisch für 14 und offener Küche",
       "salonUpper": "Salon im Obergeschoss, 100 m² Wohnraum",
@@ -59,6 +60,19 @@
     "titleB": "Gäste.",
     "body": "Jedes Zimmer trägt einen Namen, jedes hat seinen Blick. Hohe Decken, weiß gestrichene Dielen, Leinenvorhänge.",
     "cta": "Alle Zimmer ansehen"
+  },
+  "galerieFull": {
+    "eyebrow": "Galerie",
+    "title": "Das Haus, das Dorf, die Umgebung.",
+    "subtitle": "Räume, Bäder, Garten — und das Dorf Breechen mit den nahen Badeseen, Gützkow und der Ostseeinsel Usedom.",
+    "categories": {
+      "interior": "Innenräume",
+      "bath":     "Bäder",
+      "garden":   "Garten & Außen",
+      "around":   "Dorf & Umgebung",
+      "plans":    "Grundrisse",
+      "atmos":    "Atmosphäre"
+    }
   },
   "zimmer": {
     "pageEyebrow": "Die Zimmer",
@@ -100,14 +114,15 @@
   },
   "locationSec": {
     "eyebrow": "Lage",
-    "titleA": "Zwischen Greifswald",
-    "titleEm": " und der Ostsee.",
+    "titleA": "Im Dorf Breechen,",
+    "titleEm": " nahe Greifswald und der Ostsee.",
     "address": "Breechen 1 · 17506 Gützkow",
     "nearby": [
-      { "place": "Ostsee",                  "time": "≈ 30 Min" },
+      { "place": "Breechener Badesee",      "time": "≈ 5 Min" },
+      { "place": "Gützkow",                 "time": "≈ 7 Min" },
       { "place": "Greifswald Altstadt",     "time": "≈ 20 Min" },
+      { "place": "Ostsee",                  "time": "≈ 30 Min" },
       { "place": "Insel Usedom",            "time": "≈ 45 Min" },
-      { "place": "Flughafen Heringsdorf",   "time": "≈ 50 Min" },
       { "place": "Berlin",                  "time": "≈ 2 h 30 Min" }
     ]
   },
@@ -124,9 +139,9 @@
   "bookingTeaser": {
     "eyebrow": "Reservierung",
     "titleA": "Bereit für",
-    "titleEm": " stille Tage?",
+    "titleEm": " Tage im Gutshaus?",
     "body": "Das ganze Haus ist exklusiv für Sie und Ihre Gruppe. Wir bestätigen jede Reservierung persönlich.",
-    "cta": "Stillen Tag reservieren"
+    "cta": "Aufenthalt reservieren"
   },
   "reservations": {
     "eyebrow": "Reservierung",
