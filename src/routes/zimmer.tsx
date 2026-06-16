@@ -116,9 +116,9 @@ function ZimmerPage() {
       </div>
 
       {/* PAGE INTRO */}
-      <section className="px-6 pt-16 pb-12 md:px-10 md:pt-24 md:pb-16">
+      <section className="px-5 pt-14 pb-10 md:px-10 md:pt-24 md:pb-16">
         <div className="mx-auto max-w-6xl">
-          <h1 className="font-display text-4xl font-light leading-[1.1] md:text-6xl">
+          <h1 className="font-display text-[2.2rem] font-light leading-[1.1] md:text-6xl">
             {t("zimmer.pageTitle")}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
@@ -128,7 +128,7 @@ function ZimmerPage() {
       </section>
 
       {/* MOBILE SELECTOR */}
-      <section className="px-6 pb-8 md:hidden">
+      <section className="px-5 pb-8 md:hidden">
         <div className="mx-auto max-w-6xl">
           <label htmlFor="room-select" className="eyebrow block">
             {t("zimmer.selectorLabel")}
@@ -138,7 +138,7 @@ function ZimmerPage() {
               id="room-select"
               value={active}
               onChange={(e) => setActive(e.target.value as RoomKey)}
-              className="w-full appearance-none border border-border bg-card px-4 py-4 pr-10 font-display text-lg text-foreground outline-none transition-colors focus:border-sage-deep"
+              className="min-h-11 w-full appearance-none border border-border bg-card px-4 py-3.5 pr-10 font-display text-lg text-foreground outline-none transition-colors focus:border-sage-deep"
             >
               {ROOM_KEYS.map((k) => {
                 const r = t(`rooms.${k}`, { returnObjects: true }) as { name: string };
@@ -157,7 +157,7 @@ function ZimmerPage() {
       </section>
 
       {/* CONTENT: sidebar list + detail panel */}
-      <section className="px-6 pb-32 md:px-10 md:pb-40">
+      <section className="px-5 pb-20 md:px-10 md:pb-40">
         <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-12 md:gap-16">
           {/* Sidebar (desktop) */}
           <aside className="hidden md:col-span-4 md:block">
@@ -213,12 +213,12 @@ function ZimmerPage() {
                 <img
                   src={currentPhoto}
                   alt={`${room.name} — ${imgIdx + 1}/${photos.length}`}
-                  className="h-[320px] w-full object-cover md:h-[560px]"
+                  className="h-[280px] w-full object-cover sm:h-[320px] md:h-[560px]"
                 />
               </div>
               {photos.length > 1 && (
                 <div
-                  className="mt-4 grid gap-3"
+                  className="mt-4 grid gap-2.5 md:gap-3"
                   style={{
                     gridTemplateColumns: `repeat(${photos.length}, minmax(0, 1fr))`,
                   }}
@@ -241,7 +241,7 @@ function ZimmerPage() {
                           src={src}
                           alt=""
                           loading="lazy"
-                          className="h-20 w-full object-cover md:h-24"
+                          className="h-16 w-full object-cover sm:h-20 md:h-24"
                         />
                       </button>
                     );

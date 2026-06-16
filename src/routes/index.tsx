@@ -61,7 +61,7 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/80" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.45)_100%)]" />
 
-        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-6 pb-20 text-center md:px-10 md:pb-28">
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-5 pb-16 text-center md:px-10 md:pb-28">
           <span
             className="eyebrow animate-fade-up text-white/85"
             style={{ animationDelay: "200ms", color: "rgba(255,255,255,0.85)" }}
@@ -69,31 +69,31 @@ function Home() {
             {t("hero.eyebrow")}
           </span>
           <h1
-            className="mt-6 animate-fade-up font-display text-5xl font-light leading-[1.05] text-white md:text-7xl lg:text-[5.5rem]"
+            className="mt-5 animate-fade-up font-display text-[2.5rem] font-light leading-[1.05] text-white sm:text-5xl md:mt-6 md:text-7xl lg:text-[5.5rem]"
             style={{ animationDelay: "400ms", textShadow: "0 2px 28px rgba(0,0,0,0.5)" }}
           >
             {t("hero.titleLine1")}<br />
             <em className="italic text-white/95">{t("hero.titleLine2")}</em>
           </h1>
           <p
-            className="mt-8 max-w-xl animate-fade-up text-base leading-relaxed text-white/85 md:text-lg"
+            className="mt-6 max-w-xl animate-fade-up text-[0.95rem] leading-relaxed text-white/85 md:mt-8 md:text-lg"
             style={{ animationDelay: "700ms", textShadow: "0 1px 14px rgba(0,0,0,0.5)" }}
           >
             {t("hero.subtitle")}
           </p>
           <div
-            className="mt-10 flex animate-fade-up flex-wrap items-center justify-center gap-4"
+            className="mt-8 flex animate-fade-up flex-wrap items-center justify-center gap-3 md:mt-10 md:gap-4"
             style={{ animationDelay: "950ms" }}
           >
             <Link
               to="/reservations"
-              className="border border-white bg-white px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-foreground transition-all duration-500 hover:bg-sage-deep hover:border-sage-deep hover:text-white"
+              className="min-h-11 border border-white bg-white px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-foreground transition-all duration-500 hover:bg-sage-deep hover:border-sage-deep hover:text-white md:px-8 md:py-3.5 md:tracking-[0.28em]"
             >
               {t("hero.ctaPrimary")}
             </Link>
             <a
               href="#haus"
-              className="border border-white/70 px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-white transition-all duration-500 hover:bg-white/10 hover:border-white"
+              className="min-h-11 border border-white/70 px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-white transition-all duration-500 hover:bg-white/10 hover:border-white md:px-8 md:py-3.5 md:tracking-[0.28em]"
             >
               {t("hero.ctaSecondary")}
             </a>
@@ -102,14 +102,14 @@ function Home() {
       </section>
 
       {/* INTRODUCTION */}
-      <section id="haus" className="px-6 py-28 md:px-10 md:py-40">
+      <section id="haus" className="px-5 py-20 md:px-10 md:py-40">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
           <div className="reveal md:col-span-4">
             <span className="eyebrow">{t("intro.eyebrow")}</span>
             <span className="rule ml-4 align-middle" />
           </div>
           <div className="md:col-span-8">
-            <h2 className="reveal font-display text-3xl font-light leading-[1.15] md:text-5xl" style={{ transitionDelay: "120ms" }}>
+            <h2 className="reveal font-display text-[2rem] font-light leading-[1.15] md:text-5xl" style={{ transitionDelay: "120ms" }}>
               {t("intro.titleA")}
               <em className="italic text-sage-deep">{t("intro.titleEm")}</em>
               {t("intro.titleB")}
@@ -123,13 +123,13 @@ function Home() {
       </section>
 
       {/* USES */}
-      <section className="px-6 pb-28 md:px-10 md:pb-40">
+      <section className="px-5 pb-20 md:px-10 md:pb-40">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 md:grid-cols-3">
             {(["family", "weddings", "retreats"] as const).map((k, i) => (
               <article
                 key={k}
-                className="reveal border border-border bg-card p-10 transition-all duration-500 hover:-translate-y-1 hover:border-sage hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]"
+                className="reveal border border-border bg-card p-6 sm:p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-sage hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]"
                 style={{ transitionDelay: `${i * 140}ms` }}
               >
                 <h3 className="font-display text-2xl font-light md:text-3xl">
@@ -146,12 +146,12 @@ function Home() {
       </section>
 
       {/* GALLERY — real photos from the Airbnb listing */}
-      <section id="galerie" className="bg-linen px-6 py-28 md:px-10 md:py-40">
+      <section id="galerie" className="bg-linen px-5 py-20 md:px-10 md:py-40">
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <span className="eyebrow">{t("gallery.eyebrow")}</span>
-              <h2 className="mt-4 font-display text-4xl font-light md:text-5xl">
+              <h2 className="mt-4 font-display text-[2rem] font-light md:text-5xl">
                 {t("gallery.title")}
               </h2>
             </div>
@@ -194,12 +194,12 @@ function Home() {
       </section>
 
       {/* ROOMS TEASER (links to /zimmer) */}
-      <section id="zimmer" className="px-6 py-28 md:px-10 md:py-40">
+      <section id="zimmer" className="px-5 py-20 md:px-10 md:py-40">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-12 md:grid-cols-12 md:items-end">
             <div className="md:col-span-7">
               <span className="eyebrow">{t("roomsTeaser.eyebrow")}</span>
-              <h2 className="mt-4 font-display text-4xl font-light leading-[1.1] md:text-5xl">
+              <h2 className="mt-4 font-display text-[2rem] font-light leading-[1.1] md:text-5xl">
                 {t("roomsTeaser.titleA")}
                 <em className="italic text-sage-deep">{t("roomsTeaser.titleEm")}</em>
                 {t("roomsTeaser.titleB")}
@@ -209,7 +209,7 @@ function Home() {
               </p>
               <Link
                 to="/zimmer"
-                className="mt-10 inline-block border border-foreground bg-foreground px-8 py-3.5 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep"
+                className="mt-10 inline-block min-h-11 border border-foreground bg-foreground px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep md:px-8 md:py-3.5 md:tracking-[0.28em]"
               >
                 {t("roomsTeaser.cta")}
               </Link>
@@ -229,11 +229,11 @@ function Home() {
       </section>
 
       {/* AMENITIES */}
-      <section className="bg-linen px-6 py-28 md:px-10 md:py-40">
+      <section className="bg-linen px-5 py-20 md:px-10 md:py-40">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
           <div className="md:col-span-4">
             <span className="eyebrow">{t("amenitiesSec.eyebrow")}</span>
-            <h2 className="mt-4 font-display text-4xl font-light leading-[1.1] md:text-5xl">
+            <h2 className="mt-4 font-display text-[2rem] font-light leading-[1.1] md:text-5xl">
               {t("amenitiesSec.title")}
             </h2>
           </div>
@@ -251,7 +251,7 @@ function Home() {
       </section>
 
       {/* LOCATION */}
-      <section id="lage" className="px-6 py-28 md:px-10 md:py-40">
+      <section id="lage" className="px-5 py-20 md:px-10 md:py-40">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 grid gap-8 md:grid-cols-12">
             <div className="md:col-span-4">
@@ -259,7 +259,7 @@ function Home() {
               <span className="rule ml-4 align-middle" />
             </div>
             <div className="md:col-span-8">
-              <h2 className="font-display text-4xl font-light leading-[1.1] md:text-5xl">
+              <h2 className="font-display text-[2rem] font-light leading-[1.1] md:text-5xl">
                 {t("locationSec.titleA")}
                 <em className="italic text-sage-deep">{t("locationSec.titleEm")}</em>
               </h2>
@@ -281,8 +281,8 @@ function Home() {
               </p>
               <ul className="mt-8 border-t border-border">
                 {nearby.map((p) => (
-                  <li key={p.place} className="flex items-baseline justify-between border-b border-border py-4">
-                    <span className="font-display text-xl">{p.place}</span>
+                  <li key={p.place} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-border py-4">
+                    <span className="font-display text-lg md:text-xl">{p.place}</span>
                     <span className="text-sm text-muted-foreground">{p.time}</span>
                   </li>
                 ))}
@@ -293,11 +293,11 @@ function Home() {
       </section>
 
       {/* REVIEWS */}
-      <section className="bg-linen px-6 py-28 md:px-10 md:py-40">
+      <section className="bg-linen px-5 py-20 md:px-10 md:py-40">
         <div className="mx-auto max-w-6xl">
           <span className="eyebrow">{t("reviewsSec.eyebrow")}</span>
           <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
-            <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.1] md:text-5xl">
+            <h2 className="max-w-3xl font-display text-[2rem] font-light leading-[1.1] md:text-5xl">
               {t("reviewsSec.title")}
             </h2>
             <p className="text-[11px] uppercase tracking-[0.28em] text-sage-deep">
@@ -320,10 +320,10 @@ function Home() {
       </section>
 
       {/* BOOKING TEASER → /reservations */}
-      <section id="anfrage" className="px-6 py-28 md:px-10 md:py-40">
-        <div className="mx-auto max-w-5xl border border-border bg-card px-8 py-16 text-center md:px-16 md:py-24">
+      <section id="anfrage" className="px-5 py-20 md:px-10 md:py-40">
+        <div className="mx-auto max-w-5xl border border-border bg-card px-6 py-12 text-center md:px-16 md:py-24">
           <span className="eyebrow">{t("bookingTeaser.eyebrow")}</span>
-          <h2 className="mt-6 font-display text-4xl font-light leading-[1.1] md:text-6xl">
+          <h2 className="mt-6 font-display text-[2rem] font-light leading-[1.1] md:text-6xl">
             {t("bookingTeaser.titleA")}
             <em className="italic text-sage-deep">{t("bookingTeaser.titleEm")}</em>
           </h2>
@@ -332,7 +332,7 @@ function Home() {
           </p>
           <Link
             to="/reservations"
-            className="mt-12 inline-block border border-foreground bg-foreground px-10 py-4 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep"
+            className="mt-12 inline-block min-h-11 border border-foreground bg-foreground px-7 py-3 text-[11px] uppercase tracking-[0.2em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep md:px-10 md:py-4 md:tracking-[0.28em]"
           >
             {t("bookingTeaser.cta")}
           </Link>
@@ -340,11 +340,11 @@ function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-border bg-linen px-6 py-28 md:px-10 md:py-40">
+      <section className="border-t border-border bg-linen px-5 py-20 md:px-10 md:py-40">
         <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12">
           <div className="md:col-span-4">
             <span className="eyebrow">{t("faq.eyebrow")}</span>
-            <h2 className="mt-4 font-display text-4xl font-light leading-[1.1] md:text-5xl">
+            <h2 className="mt-4 font-display text-[2rem] font-light leading-[1.1] md:text-5xl">
               {t("faq.title")}
             </h2>
           </div>
@@ -356,9 +356,9 @@ function Home() {
                   <div key={i} className="border-b border-border">
                     <button
                       onClick={() => setOpen(isOpen ? null : i)}
-                      className="flex w-full items-baseline justify-between gap-6 py-6 text-left transition-colors hover:text-sage-deep"
+                      className="flex w-full items-baseline justify-between gap-4 py-5 text-left transition-colors hover:text-sage-deep md:gap-6 md:py-6"
                     >
-                      <span className="font-display text-xl font-light md:text-2xl">
+                      <span className="font-display text-lg font-light md:text-2xl">
                         {f.q}
                       </span>
                       <span className="font-display text-2xl italic text-sage-deep">
@@ -369,7 +369,7 @@ function Home() {
                       className="overflow-hidden transition-all duration-300"
                       style={{ maxHeight: isOpen ? 240 : 0 }}
                     >
-                      <p className="pb-6 pr-12 text-[0.95rem] leading-relaxed text-muted-foreground">
+                      <p className="pb-6 pr-4 text-[0.95rem] leading-relaxed text-muted-foreground md:pr-12">
                         {f.a}
                       </p>
                     </div>

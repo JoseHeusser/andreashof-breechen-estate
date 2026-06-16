@@ -63,10 +63,10 @@ function GaleriePage() {
       </div>
 
       {/* INTRO */}
-      <section className="px-6 pt-12 pb-8 md:px-10 md:pt-16 md:pb-12">
+      <section className="px-5 pt-12 pb-8 md:px-10 md:pt-16 md:pb-12">
         <div className="mx-auto max-w-6xl">
           <span className="eyebrow">{t("galerieFull.eyebrow")}</span>
-          <h1 className="mt-4 font-display text-4xl font-light leading-[1.1] md:text-6xl">
+          <h1 className="mt-4 font-display text-[2.2rem] font-light leading-[1.1] md:text-6xl">
             {t("galerieFull.title")}
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
@@ -76,9 +76,9 @@ function GaleriePage() {
       </section>
 
       {/* FILTERS */}
-      <section className="px-6 pb-10 md:px-10">
+      <section className="px-5 pb-10 md:px-10">
         <div className="mx-auto max-w-6xl overflow-x-auto">
-          <ul className="flex min-w-max gap-6 border-b border-border pb-3 md:gap-10">
+          <ul className="flex min-w-max gap-4 border-b border-border pb-3 md:gap-10">
             {CATEGORIES.map((c) => {
               const isActive = c === active;
               const label = labels[c];
@@ -88,7 +88,7 @@ function GaleriePage() {
                     type="button"
                     onClick={() => setActive(c)}
                     aria-current={isActive ? "true" : undefined}
-                    className={`relative pb-1 text-[11px] uppercase tracking-[0.28em] transition-colors ${
+                    className={`relative min-h-11 px-1 pb-1 text-[11px] uppercase tracking-[0.2em] transition-colors md:tracking-[0.28em] ${
                       isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
@@ -105,7 +105,7 @@ function GaleriePage() {
       </section>
 
       {/* GRID */}
-      <section className="px-6 pb-24 md:px-10 md:pb-32">
+      <section className="px-5 pb-24 md:px-10 md:pb-32">
         <div className="mx-auto max-w-7xl">
           <div className="columns-1 gap-4 sm:columns-2 md:columns-3 md:gap-6 lg:columns-4">
             {photos.map((p, i) => (
@@ -142,7 +142,7 @@ function GaleriePage() {
             }}
             disabled={lightbox === 0}
             aria-label="Zurück"
-            className="absolute left-4 top-1/2 -translate-y-1/2 border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 disabled:opacity-30 md:left-8 md:px-4 md:py-3"
+            className="absolute left-2 top-1/2 -translate-y-1/2 border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 disabled:opacity-30 md:left-8 md:px-4 md:py-3"
           >
             ←
           </button>
@@ -156,7 +156,7 @@ function GaleriePage() {
             }}
             disabled={lightbox === photos.length - 1}
             aria-label="Weiter"
-            className="absolute right-4 top-1/2 -translate-y-1/2 border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 disabled:opacity-30 md:right-8 md:px-4 md:py-3"
+            className="absolute right-2 top-1/2 -translate-y-1/2 border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 disabled:opacity-30 md:right-8 md:px-4 md:py-3"
           >
             →
           </button>
@@ -167,7 +167,7 @@ function GaleriePage() {
               setLightbox(null);
             }}
             aria-label="Schließen"
-            className="absolute right-4 top-4 border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 md:right-8 md:top-8"
+            className="absolute right-2 top-3 border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 md:right-8 md:top-8"
           >
             ✕
           </button>

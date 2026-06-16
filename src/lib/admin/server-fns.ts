@@ -187,3 +187,35 @@ export const getBlockedRanges = createServerFn({ method: "GET" }).handler(async 
   if (error) throw error;
   return data as { arrival: string; departure: string; source: string }[];
 });
+
+/* -----------------------------------------------------------------
+ * SETTINGS + manual Airbnb sync
+ * -------------------------------------------------------------- */
+export const updateAirbnbIcalUrl = createServerFn({ method: "POST" })
+  .validator((data: { url: string }) => data)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const admin = getSupabaseAdmin();
+    const { error } = await admin
+      .from("settings")
+      .upsert({ key: "airbnb_ical_url", value: data.url });
+    if (error) throw error;
+  });
+
+export const triggerAirbnbSync = createServerFn({ method: "POST" }).handler(async () => {
+  await requireAdmin();
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) throw new Error("Supabase env vars missing");
+  const res = await fetch(`${url}/functions/v1/airbnb-sync`, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${key}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ reason: "manual" }),
+  });
+  const payload = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+  if (!res.ok) throw new Error(`sync failed (${res.status}): ${JSON.stringify(payload)}`);
+  return payload;
+});

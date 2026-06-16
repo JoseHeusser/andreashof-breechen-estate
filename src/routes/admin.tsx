@@ -11,6 +11,8 @@ import {
   upsertSpecialPrice,
   deleteSpecialPrice,
   updateBooking,
+  updateAirbnbIcalUrl,
+  triggerAirbnbSync,
 } from "@/lib/admin/server-fns";
 import {
   STATUS_LABEL_DE,
@@ -25,7 +27,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type Tab = "bookings" | "pricing" | "calendar";
+type Tab = "bookings" | "pricing" | "calendar" | "settings";
 
 function AdminPage() {
   const nav = useNavigate();
@@ -34,6 +36,7 @@ function AdminPage() {
   const [tab, setTab] = useState<Tab>("bookings");
   const [pricing, setPricing] = useState<PricingRow[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [settings, setSettings] = useState<{ key: string; value: unknown }[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -57,6 +60,7 @@ function AdminPage() {
       const res = await getDashboardData();
       setPricing(res.pricing);
       setBookings(res.bookings);
+      setSettings(res.settings);
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Fehler beim Laden");
@@ -91,7 +95,7 @@ function AdminPage() {
           </div>
         </div>
         <nav className="mx-auto flex max-w-6xl gap-8 px-6 text-[11px] uppercase tracking-[0.28em]">
-          {(["bookings", "pricing", "calendar"] as const).map((k) => (
+          {(["bookings", "pricing", "calendar", "settings"] as const).map((k) => (
             <button
               key={k}
               onClick={() => setTab(k)}
@@ -99,7 +103,7 @@ function AdminPage() {
                 tab === k ? "text-foreground border-b-2 border-sage-deep -mb-px" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {k === "bookings" ? "Buchungen" : k === "pricing" ? "Preise" : "Kalender"}
+              {k === "bookings" ? "Buchungen" : k === "pricing" ? "Preise" : k === "calendar" ? "Kalender" : "Einstellungen"}
             </button>
           ))}
         </nav>
@@ -113,8 +117,10 @@ function AdminPage() {
           <BookingsTab bookings={bookings} onReload={reload} />
         ) : tab === "pricing" ? (
           <PricingTab pricing={pricing} onReload={reload} />
-        ) : (
+        ) : tab === "calendar" ? (
           <CalendarTab bookings={bookings} />
+        ) : (
+          <SettingsTab settings={settings} onReload={reload} />
         )}
       </main>
     </div>
@@ -496,5 +502,128 @@ function Legend({ color, label }: { color: string; label: string }) {
       <span className={`h-3 w-3 ${color}`} />
       <span className="text-muted-foreground">{label}</span>
     </li>
+  );
+}
+
+/* ============================================================
+ *  SETTINGS TAB — Airbnb iCal URL + manual sync + outbound .ics
+ * ========================================================== */
+function SettingsTab({
+  settings,
+  onReload,
+}: {
+  settings: { key: string; value: unknown }[];
+  onReload: () => void;
+}) {
+  const lookup = (k: string) => settings.find((s) => s.key === k)?.value;
+  const [icalUrl, setIcalUrl] = useState((lookup("airbnb_ical_url") as string) ?? "");
+  const lastSynced = lookup("airbnb_last_synced_at") as string | undefined;
+
+  const [busy, setBusy] = useState<"save" | "sync" | null>(null);
+  const [result, setResult] = useState<string | null>(null);
+
+  const outboundUrl =
+    typeof window !== "undefined" ? `${window.location.origin}/api/calendar.ics` : "/api/calendar.ics";
+
+  return (
+    <div className="space-y-12">
+      {/* PULL: import Airbnb iCal */}
+      <section>
+        <h2 className="eyebrow">Airbnb → Andreashof (pull)</h2>
+        <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+          Hol dir den iCal-Link aus deinem Airbnb-Hostbereich: Listing → Kalender →
+          Kalender synchronisieren → <em>Kalender exportieren</em>. Wir lesen ihn
+          stündlich + bei jeder Buchungsänderung (Rate-Limit 30 s).
+        </p>
+
+        <label className="mt-6 block">
+          <span className="eyebrow block mb-2">iCal-URL von Airbnb</span>
+          <input
+            type="url"
+            value={icalUrl}
+            onChange={(e) => setIcalUrl(e.target.value)}
+            placeholder="https://www.airbnb.com/calendar/ical/..."
+            className="w-full border border-border bg-background px-3 py-2 text-sm font-mono"
+          />
+        </label>
+
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <button
+            disabled={busy !== null}
+            onClick={async () => {
+              setBusy("save");
+              setResult(null);
+              try {
+                await updateAirbnbIcalUrl({ data: { url: icalUrl } });
+                setResult("URL gespeichert.");
+                await onReload();
+              } catch (e) {
+                setResult(e instanceof Error ? e.message : "Fehler");
+              } finally {
+                setBusy(null);
+              }
+            }}
+            className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
+          >
+            {busy === "save" ? "..." : "URL speichern"}
+          </button>
+
+          <button
+            disabled={busy !== null || !icalUrl}
+            onClick={async () => {
+              setBusy("sync");
+              setResult(null);
+              try {
+                const r = (await triggerAirbnbSync()) as Record<string, unknown>;
+                setResult(`Synchronisiert: ${JSON.stringify(r)}`);
+                await onReload();
+              } catch (e) {
+                setResult(e instanceof Error ? e.message : "Fehler");
+              } finally {
+                setBusy(null);
+              }
+            }}
+            className="border border-border px-4 py-2 text-[11px] uppercase tracking-[0.22em] hover:border-foreground disabled:opacity-50"
+          >
+            {busy === "sync" ? "..." : "Jetzt synchronisieren"}
+          </button>
+
+          {lastSynced && (
+            <span className="text-xs text-muted-foreground">
+              Letzte Sync: {lastSynced ? format(parseISO(lastSynced), "d MMM yyyy, HH:mm", { locale: deLocale }) : "—"}
+            </span>
+          )}
+        </div>
+
+        {result && <p className="mt-3 text-xs text-sage-deep break-all">{result}</p>}
+      </section>
+
+      <div className="h-px bg-border" />
+
+      {/* PUSH: outbound iCal feed */}
+      <section>
+        <h2 className="eyebrow">Andreashof → Airbnb (push)</h2>
+        <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+          Diese URL veröffentlicht alle bestätigten Buchungen unserer Seite als
+          iCal-Feed. Importiere sie in Airbnb: Listing → Kalender → Kalender
+          synchronisieren → <em>Kalender importieren</em>. Airbnb fragt den
+          Feed alle paar Stunden ab.
+        </p>
+        <div className="mt-4 flex items-center gap-3">
+          <input
+            readOnly
+            value={outboundUrl}
+            className="flex-1 border border-border bg-background px-3 py-2 text-sm font-mono"
+            onFocus={(e) => e.currentTarget.select()}
+          />
+          <button
+            onClick={() => navigator.clipboard.writeText(outboundUrl)}
+            className="border border-border px-4 py-2 text-[11px] uppercase tracking-[0.22em] hover:border-foreground"
+          >
+            Kopieren
+          </button>
+        </div>
+      </section>
+    </div>
   );
 }

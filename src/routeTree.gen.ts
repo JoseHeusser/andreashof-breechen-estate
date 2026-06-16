@@ -19,6 +19,7 @@ import { Route as DatenschutzRouteImport } from './routes/datenschutz'
 import { Route as AgbRouteImport } from './routes/agb'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiCalendarDoticsRouteImport } from './routes/api/calendar[.]ics'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 
 const ZimmerRoute = ZimmerRouteImport.update({
@@ -71,6 +72,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCalendarDoticsRoute = ApiCalendarDoticsRouteImport.update({
+  id: '/api/calendar.ics',
+  path: '/api/calendar.ics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
   '/admin/login': typeof AdminLoginRoute
+  '/api/calendar.ics': typeof ApiCalendarDoticsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
   '/admin/login': typeof AdminLoginRoute
+  '/api/calendar.ics': typeof ApiCalendarDoticsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
   '/admin/login': typeof AdminLoginRoute
+  '/api/calendar.ics': typeof ApiCalendarDoticsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/zimmer'
     | '/admin/login'
+    | '/api/calendar.ics'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/zimmer'
     | '/admin/login'
+    | '/api/calendar.ics'
   id:
     | '__root__'
     | '/'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/zimmer'
     | '/admin/login'
+    | '/api/calendar.ics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -170,6 +182,7 @@ export interface RootRouteChildren {
   ReservationsRoute: typeof ReservationsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ZimmerRoute: typeof ZimmerRoute
+  ApiCalendarDoticsRoute: typeof ApiCalendarDoticsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/calendar.ics': {
+      id: '/api/calendar.ics'
+      path: '/api/calendar.ics'
+      fullPath: '/api/calendar.ics'
+      preLoaderRoute: typeof ApiCalendarDoticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/login'
@@ -275,6 +295,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReservationsRoute: ReservationsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ZimmerRoute: ZimmerRoute,
+  ApiCalendarDoticsRoute: ApiCalendarDoticsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

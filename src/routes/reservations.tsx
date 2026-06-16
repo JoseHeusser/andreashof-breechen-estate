@@ -96,9 +96,9 @@ function ReservationsPage() {
       </div>
 
       {/* INTRO */}
-      <section className="px-6 pt-12 pb-8 md:px-10 md:pt-16 md:pb-10">
+      <section className="px-5 pt-12 pb-8 md:px-10 md:pt-16 md:pb-10">
         <div className="mx-auto max-w-6xl">
-          <h1 className="font-display text-4xl font-light leading-[1.1] md:text-6xl">
+          <h1 className="font-display text-[2.2rem] font-light leading-[1.1] md:text-6xl">
             {t("reservations.title")}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
@@ -108,7 +108,7 @@ function ReservationsPage() {
       </section>
 
       {/* BOOKING WIDGET — main content, never gated behind a scroll reveal */}
-      <section className="px-6 pb-24 md:px-10 md:pb-32">
+      <section className="px-5 pb-24 md:px-10 md:pb-32">
         <div className="mx-auto max-w-6xl border border-border bg-card">
           {submitted ? (
             <div className="px-8 py-20 text-center md:px-16 md:py-28">
@@ -119,7 +119,7 @@ function ReservationsPage() {
           ) : (
             <div className="grid gap-0 md:grid-cols-12">
               {/* CALENDAR */}
-              <div className="border-b border-border px-6 py-10 md:col-span-7 md:border-b-0 md:border-r md:px-10 md:py-12">
+              <div className="border-b border-border px-5 py-8 md:col-span-7 md:border-b-0 md:border-r md:px-10 md:py-12">
                 <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                   <div>
                     <span className="eyebrow text-sage-deep">
@@ -158,7 +158,7 @@ function ReservationsPage() {
                   )}
                 </div>
 
-                <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-[11px] uppercase tracking-[0.14em] text-muted-foreground md:tracking-[0.2em]">
                   <li className="flex items-center gap-2">
                     <span className="h-2.5 w-2.5 border border-border bg-background" />
                     {t("reservations.legendAvailable")}
@@ -175,13 +175,13 @@ function ReservationsPage() {
               </div>
 
               {/* SUMMARY & FORM */}
-              <div className="px-6 py-10 md:col-span-5 md:px-10 md:py-12">
+              <div className="px-5 py-8 md:col-span-5 md:px-10 md:py-12">
                 <span className="eyebrow">{t("reservations.summaryTitle")}</span>
 
                 <div className="mt-6 border-y border-border py-6">
                   {range?.from ? (
                     <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                             {t("reservations.summaryArrival")}
@@ -258,7 +258,7 @@ function ReservationsPage() {
                       max={21}
                       value={guests}
                       onChange={(e) => setGuests(Number(e.target.value))}
-                      className="mt-3 w-full border-0 border-b border-border bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
+                      className="mt-3 min-h-11 w-full border-0 border-b border-border bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
                     />
                   </div>
 
@@ -271,7 +271,7 @@ function ReservationsPage() {
                         id="occasion"
                         value={occasion}
                         onChange={(e) => setOccasion(e.target.value as OccasionKey)}
-                        className="w-full appearance-none border-0 border-b border-border bg-transparent py-2 pr-8 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
+                        className="min-h-11 w-full appearance-none border-0 border-b border-border bg-transparent py-2 pr-8 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
                       >
                         <option value="" disabled>
                           —
@@ -288,7 +288,7 @@ function ReservationsPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <SmallField label={t("reservations.fields.name")} name="name" required />
                     <SmallField
                       label={t("reservations.fields.email")}
@@ -301,7 +301,7 @@ function ReservationsPage() {
                   <button
                     type="submit"
                     disabled={!range?.from || !range?.to || submitting}
-                    className="mt-2 w-full border border-foreground bg-foreground px-6 py-4 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep disabled:cursor-not-allowed disabled:border-border disabled:bg-border disabled:text-muted-foreground"
+                    className="mt-2 min-h-11 w-full border border-foreground bg-foreground px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep disabled:cursor-not-allowed disabled:border-border disabled:bg-border disabled:text-muted-foreground md:tracking-[0.28em]"
                   >
                     {submitting ? "…" : t("reservations.submit")}
                   </button>
@@ -321,7 +321,7 @@ function ReservationsPage() {
       </section>
 
       {/* STEPS */}
-      <section className="reveal border-t border-border bg-linen px-6 py-20 md:px-10 md:py-28">
+      <section className="reveal border-t border-border bg-linen px-5 py-20 md:px-10 md:py-28">
         <div className="mx-auto max-w-6xl">
           <span className="eyebrow">{t("reservations.stepsEyebrow")}</span>
           <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-12">
@@ -344,7 +344,7 @@ function ReservationsPage() {
       </section>
 
       {/* DIRECT CONTACT */}
-      <section className="reveal border-t border-border px-6 py-20 md:px-10 md:py-28">
+      <section className="reveal border-t border-border px-5 py-20 md:px-10 md:py-28">
         <div className="mx-auto grid max-w-5xl gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
             <span className="eyebrow">{t("reservations.contactEyebrow")}</span>
@@ -396,7 +396,7 @@ function SmallField({
         name={name}
         type={type}
         required={required}
-        className="mt-3 w-full border-0 border-b border-border bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
+        className="mt-3 min-h-11 w-full border-0 border-b border-border bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
       />
     </div>
   );
