@@ -2,6 +2,11 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabaseBrowser } from "@/lib/supabase/browser";
 
+// Default domain appended when the user types a bare username (e.g. "andrea")
+// instead of a full email. Supabase only supports email-based auth, so we
+// translate behind the scenes.
+const DEFAULT_DOMAIN = "andreashof-breechen.de";
+
 export const Route = createFileRoute("/admin/login")({
   head: () => ({ meta: [{ title: "Admin · Andreashof" }] }),
   component: LoginPage,
@@ -9,7 +14,7 @@ export const Route = createFileRoute("/admin/login")({
 
 function LoginPage() {
   const nav = useNavigate();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -28,6 +33,7 @@ function LoginPage() {
           e.preventDefault();
           setBusy(true);
           setErr(null);
+          const email = username.includes("@") ? username : `${username}@${DEFAULT_DOMAIN}`;
           const { error } = await supabaseBrowser.auth.signInWithPassword({ email, password });
           setBusy(false);
           if (error) {
@@ -42,14 +48,15 @@ function LoginPage() {
         <p className="mt-2 text-sm text-muted-foreground">Andreashof Breechen</p>
 
         <div className="mt-8">
-          <label htmlFor="email" className="eyebrow">E-Mail</label>
+          <label htmlFor="username" className="eyebrow">Benutzername</label>
           <input
-            id="email"
-            type="email"
+            id="username"
+            type="text"
             required
             autoComplete="username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="andrea"
             className="mt-2 w-full border-0 border-b border-border bg-transparent py-2 outline-none focus:border-sage-deep"
           />
         </div>

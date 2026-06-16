@@ -49,7 +49,7 @@ export const getDashboardData = createServerFn({ method: "GET" }).handler(async 
  * PRICING — base price update + create / delete special date ranges
  * -------------------------------------------------------------- */
 export const updateBasePrice = createServerFn({ method: "POST" })
-  .validator((data: { pricePerNightCents: number }) => data)
+  .inputValidator((data: { pricePerNightCents: number }) => data)
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
@@ -61,7 +61,7 @@ export const updateBasePrice = createServerFn({ method: "POST" })
   });
 
 export const upsertSpecialPrice = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: {
       id?: string;
       label: string;
@@ -92,7 +92,7 @@ export const upsertSpecialPrice = createServerFn({ method: "POST" })
   });
 
 export const deleteSpecialPrice = createServerFn({ method: "POST" })
-  .validator((data: { id: string }) => data)
+  .inputValidator((data: { id: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
@@ -108,7 +108,7 @@ export const deleteSpecialPrice = createServerFn({ method: "POST" })
  * BOOKINGS — status change + notes + price
  * -------------------------------------------------------------- */
 export const updateBooking = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: {
       id: string;
       status?: BookingStatus;
@@ -135,7 +135,7 @@ export const updateBooking = createServerFn({ method: "POST" })
  * No auth required; status defaults to 'requested'.
  * -------------------------------------------------------------- */
 export const createBookingRequest = createServerFn({ method: "POST" })
-  .validator(
+  .inputValidator(
     (data: {
       arrival: string;
       departure: string;
@@ -192,7 +192,7 @@ export const getBlockedRanges = createServerFn({ method: "GET" }).handler(async 
  * SETTINGS + manual Airbnb sync
  * -------------------------------------------------------------- */
 export const updateAirbnbIcalUrl = createServerFn({ method: "POST" })
-  .validator((data: { url: string }) => data)
+  .inputValidator((data: { url: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
