@@ -3,8 +3,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DayPicker, type DateRange } from "react-day-picker";
 import { de as deLocale, es as esLocale } from "date-fns/locale";
-import { differenceInCalendarDays, addDays, addMonths, format, isSameMonth, startOfMonth } from "date-fns";
+import { differenceInCalendarDays, addDays, format, isSameMonth, startOfMonth } from "date-fns";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/reservations")({
   head: () => ({
@@ -119,7 +120,9 @@ function ReservationsPage() {
               <div className="border-b border-border px-6 py-10 md:col-span-7 md:border-b-0 md:border-r md:px-10 md:py-12">
                 <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <span className="eyebrow text-sage-deep">{t("reservations.calendarEyebrow")}</span>
+                    <span className="eyebrow text-sage-deep">
+                      {t("reservations.calendarEyebrow")}
+                    </span>
                     <h2 className="mt-2 font-display text-2xl font-light leading-tight md:text-3xl">
                       {t("reservations.calendarTitle")}
                     </h2>
@@ -141,6 +144,7 @@ function ReservationsPage() {
                       month={month}
                       onMonthChange={setMonth}
                       numberOfMonths={numberOfMonths}
+                      navLayout={numberOfMonths === 2 ? "around" : undefined}
                       pagedNavigation
                       disabled={[{ before: today }, ...blocked]}
                       locale={locale}
@@ -242,7 +246,9 @@ function ReservationsPage() {
                         onChange={(e) => setOccasion(e.target.value as OccasionKey)}
                         className="w-full appearance-none border-0 border-b border-border bg-transparent py-2 pr-8 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
                       >
-                        <option value="" disabled>—</option>
+                        <option value="" disabled>
+                          —
+                        </option>
                         {(Object.keys(occasionOptions) as OccasionKey[]).map((k) => (
                           <option key={k} value={k}>
                             {occasionOptions[k]}
@@ -257,7 +263,12 @@ function ReservationsPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <SmallField label={t("reservations.fields.name")} name="name" required />
-                    <SmallField label={t("reservations.fields.email")} name="email" type="email" required />
+                    <SmallField
+                      label={t("reservations.fields.email")}
+                      name="email"
+                      type="email"
+                      required
+                    />
                   </div>
 
                   <button
@@ -363,10 +374,14 @@ function SmallField({
 // height. Once `today` is set in useEffect, the real DayPicker takes over.
 function CalendarSkeleton() {
   return (
-    <div className="grid grid-cols-7 gap-2" aria-hidden="true">
-      <div className="col-span-7 mb-3 h-6 w-32 bg-linen" />
-      {Array.from({ length: 35 }).map((_, i) => (
-        <div key={i} className="h-9 w-full rounded-full bg-linen/60" />
+    <div className="flex w-full flex-col gap-6 md:flex-row md:gap-8" aria-hidden="true">
+      {[0, 1].map((m) => (
+        <div key={m} className={cn("grid flex-1 grid-cols-7 gap-2", m === 1 && "hidden md:grid")}>
+          <div className="col-span-7 mb-3 h-6 w-32 bg-linen" />
+          {Array.from({ length: 35 }).map((_, i) => (
+            <div key={i} className="aspect-square w-full rounded-full bg-linen/60" />
+          ))}
+        </div>
       ))}
     </div>
   );

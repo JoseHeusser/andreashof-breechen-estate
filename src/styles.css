@@ -189,6 +189,11 @@
 }
 
 /* React-day-picker — Gustavian / editorial overrides */
+.andreashof-calendar {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .andreashof-calendar .rdp-root {
   --rdp-accent-color: var(--color-sage-deep);
   --rdp-accent-background-color: color-mix(in oklab, var(--color-sage) 40%, transparent);
@@ -208,17 +213,53 @@
   --rdp-month_caption-font: 400 1.05rem/1 var(--font-display);
   --rdp-nav_button-height: 28px;
   --rdp-nav_button-width: 28px;
+  width: 100%;
   font-family: var(--font-sans);
   color: var(--color-foreground);
 }
-/* Keep two months side-by-side on desktop (default RDP wraps when tight). */
+/* Two months side-by-side on desktop; single month centered on mobile. */
 .andreashof-calendar .rdp-months {
+  width: 100%;
+  max-width: none;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: space-between;
+  gap: var(--rdp-months-gap);
+}
+.andreashof-calendar .rdp-month_grid {
+  width: 100%;
+  table-layout: fixed;
+}
+.andreashof-calendar .rdp-day {
+  width: auto;
+}
+.andreashof-calendar .rdp-day_button {
+  width: 100%;
+  max-width: var(--rdp-day_button-width);
+  margin-inline: auto;
+  border: none;
+  background: transparent;
+  color: var(--color-foreground);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+@media (min-width: 768px) {
+  .andreashof-calendar .rdp-root {
+    --rdp-day-height: 44px;
+    --rdp-day-width: 44px;
+    --rdp-day_button-height: 44px;
+    --rdp-day_button-width: 44px;
+    --rdp-months-gap: 2rem;
+  }
+  .andreashof-calendar .rdp-month {
+    flex: 1;
+    min-width: 0;
+  }
 }
 @media (max-width: 767px) {
   .andreashof-calendar .rdp-months {
     flex-wrap: wrap;
+    justify-content: center;
+    max-width: fit-content;
+    margin-inline: auto;
   }
 }
 .andreashof-calendar .rdp-month_caption {
@@ -228,12 +269,6 @@
 .andreashof-calendar .rdp-weekday {
   color: var(--color-muted-foreground);
   letter-spacing: 0.18em;
-}
-.andreashof-calendar .rdp-day_button {
-  border: none;
-  background: transparent;
-  color: var(--color-foreground);
-  transition: background-color 200ms ease, color 200ms ease;
 }
 .andreashof-calendar .rdp-day_button:hover {
   background-color: color-mix(in oklab, var(--color-sage) 25%, transparent);

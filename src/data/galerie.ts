@@ -52,7 +52,6 @@ export const GALLERY_PHOTOS: GalleryPhoto[] = [
 
   // Atmosphere
   { src: "/galerie/christmas.jpg",          alt: "Weihnachtsstimmung im Gutshaus",                      category: "atmos" },
-  { src: "/galerie/detail-07.jpg",          alt: "Detail",                                              category: "atmos" },
   { src: "/galerie/detail-11.jpg",          alt: "Detail",                                              category: "atmos" },
 
   // === Photos from the host (WhatsApp set, May 2026) ===
@@ -136,10 +135,7 @@ export const GALLERY_PHOTOS: GalleryPhoto[] = [
   { src: "/galerie/whatsapp/wa-58.jpg", alt: "Andreashof Breechen",                                     category: "atmos" },
   { src: "/galerie/whatsapp/wa-59.jpg", alt: "Andreashof Breechen",                                     category: "atmos" },
   { src: "/galerie/whatsapp/wa-60.jpg", alt: "Andreashof Breechen",                                     category: "atmos" },
-  { src: "/galerie/whatsapp/wa-61.jpg", alt: "Andreashof Breechen",                                     category: "atmos" },
   { src: "/galerie/whatsapp/wa-62.jpg", alt: "Andreashof Breechen",                                     category: "atmos" },
-  { src: "/galerie/whatsapp/wa-63.jpg", alt: "Andreashof Breechen",                                     category: "atmos" },
   { src: "/galerie/whatsapp/wa-69.jpg", alt: "Andreashof Breechen",                                     category: "atmos" },
   { src: "/galerie/whatsapp/wa-78.jpg", alt: "Andreashof Breechen",                                     category: "atmos" },
-  { src: "/galerie/whatsapp/wa-79.jpg", alt: "Andreashof Breechen",                                     category: "atmos" },
 ];
