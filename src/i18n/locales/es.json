@@ -162,6 +162,8 @@
     "summaryNights": "{{count}} noche",
     "summaryNights_other": "{{count}} noches",
     "summaryGuests": "Huéspedes",
+    "summaryTotal": "Total",
+    "summaryTotalNote": "Todo incluido — limpieza y cargos por persona.",
     "stepsEyebrow": "Cómo funciona",
     "steps": [
       { "n": "01", "title": "Envías tu solicitud",  "body": "Eliges fechas, número de huéspedes y ocasión. Verificamos disponibilidad." },

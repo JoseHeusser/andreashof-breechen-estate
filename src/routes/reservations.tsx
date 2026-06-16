@@ -82,11 +82,55 @@ function ReservationsPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [quoteCents, setQuoteCents] = useState<number | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
 
   const nights =
     range?.from && range?.to ? Math.max(0, differenceInCalendarDays(range.to, range.from)) : 0;
   const locale = localeFor(i18n.language);
   const fmt = (d: Date) => format(d, "EEE, d MMM", { locale });
+
+  // Fetch a server-side pricing quote whenever the date range or guest count
+  // changes. Debounced 250 ms to avoid spamming the API while the user is
+  // dragging the calendar selection.
+  useEffect(() => {
+    if (!range?.from || !range?.to || nights < 1 || guests < 1) {
+      setQuoteCents(null);
+      return;
+    }
+    setQuoteLoading(true);
+    let cancelled = false;
+    const timer = window.setTimeout(async () => {
+      try {
+        const { getPricingQuote } = await import("@/lib/admin/server-fns");
+        const res = await getPricingQuote({
+          data: {
+            arrival: format(range.from!, "yyyy-MM-dd"),
+            departure: format(range.to!, "yyyy-MM-dd"),
+            guests,
+          },
+        });
+        if (!cancelled) setQuoteCents(res.totalCents);
+      } catch {
+        if (!cancelled) setQuoteCents(null);
+      } finally {
+        if (!cancelled) setQuoteLoading(false);
+      }
+    }, 250);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [range?.from, range?.to, guests, nights]);
+
+  const totalFormatted =
+    quoteCents != null
+      ? new Intl.NumberFormat(i18n.language === "en" ? "en-GB" : i18n.language === "es" ? "es-ES" : "de-DE", {
+          style: "currency",
+          currency: "EUR",
+          maximumFractionDigits: 0,
+        }).format(quoteCents / 100)
+      : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -203,6 +247,19 @@ function ReservationsPage() {
                         <p className="text-sm italic text-sage-deep">
                           {t("reservations.summaryNights", { count: nights })}
                         </p>
+                      )}
+                      {nights > 0 && (
+                        <div className="mt-4 border-t border-border pt-4">
+                          <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                            {t("reservations.summaryTotal")}
+                          </p>
+                          <p className="mt-1 font-display text-3xl leading-tight text-foreground">
+                            {quoteLoading || !totalFormatted ? "…" : totalFormatted}
+                          </p>
+                          <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                            {t("reservations.summaryTotalNote")}
+                          </p>
+                        </div>
                       )}
                     </div>
                   ) : (

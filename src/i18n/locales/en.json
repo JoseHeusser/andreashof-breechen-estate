@@ -252,6 +252,8 @@
     "summaryNights": "{{count}} night",
     "summaryNights_other": "{{count}} nights",
     "summaryGuests": "Guests",
+    "summaryTotal": "Total",
+    "summaryTotalNote": "All inclusive — cleaning and any per-person surcharges.",
     "stepsEyebrow": "How it works",
     "steps": [
       { "n": "01", "title": "Send your request",   "body": "Choose your dates, group size and occasion. We check availability." },

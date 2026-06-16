@@ -252,6 +252,8 @@
     "summaryNights": "{{count}} Nacht",
     "summaryNights_other": "{{count}} Nächte",
     "summaryGuests": "Gäste",
+    "summaryTotal": "Gesamtpreis",
+    "summaryTotalNote": "Alles inklusive — Reinigung und alle Aufschläge.",
     "stepsEyebrow": "Ablauf",
     "steps": [
       { "n": "01", "title": "Anfrage senden",        "body": "Wählen Sie Ihre Daten, Gruppengröße und den Anlass. Wir prüfen die Verfügbarkeit." },

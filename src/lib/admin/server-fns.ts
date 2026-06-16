@@ -177,6 +177,71 @@ export const createBookingRequest = createServerFn({ method: "POST" })
   });
 
 /* -----------------------------------------------------------------
+ * PUBLIC — pricing quote for the /reservations widget.
+ *   total = Σ(nightly price for each night) + cleaning_fee
+ *         + max(0, guests - base_occupancy) × extra_person_fee × nights
+ * Nightly price is the base unless the date falls inside a special
+ * range, in which case the highest-priority special wins.
+ * -------------------------------------------------------------- */
+export const getPricingQuote = createServerFn({ method: "POST" })
+  .inputValidator(
+    (data: { arrival: string; departure: string; guests: number }) => data,
+  )
+  .handler(async ({ data }) => {
+    if (!data.arrival || !data.departure || data.arrival >= data.departure) {
+      throw new Error("invalid_date_range");
+    }
+    if (!data.guests || data.guests < 1) throw new Error("invalid_guests");
+
+    const admin = getSupabaseAdmin();
+    const [pricingRes, settingsRes] = await Promise.all([
+      admin.from("pricing").select("*"),
+      admin
+        .from("settings")
+        .select("key,value")
+        .in("key", [
+          "cleaning_fee_cents",
+          "base_occupancy",
+          "extra_person_fee_per_night_cents",
+        ]),
+    ]);
+    if (pricingRes.error) throw pricingRes.error;
+    if (settingsRes.error) throw settingsRes.error;
+
+    const settings = Object.fromEntries(
+      (settingsRes.data ?? []).map((s) => [s.key, s.value as number]),
+    );
+    const cleaningCents = (settings.cleaning_fee_cents as number) ?? 0;
+    const baseOccupancy = (settings.base_occupancy as number) ?? 10;
+    const extraPerNight = (settings.extra_person_fee_per_night_cents as number) ?? 0;
+
+    const base = (pricingRes.data ?? []).find((p) => p.type === "base");
+    const baseCents = base?.price_per_night_cents ?? 0;
+    const specials = (pricingRes.data ?? [])
+      .filter((p) => p.type === "special")
+      .sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+
+    let nightlySum = 0;
+    let nights = 0;
+    const start = new Date(data.arrival + "T00:00:00Z");
+    const end = new Date(data.departure + "T00:00:00Z");
+    for (let d = new Date(start); d < end; d.setUTCDate(d.getUTCDate() + 1)) {
+      const iso = d.toISOString().slice(0, 10);
+      const special = specials.find(
+        (s) => s.start_date && s.end_date && iso >= s.start_date && iso <= s.end_date,
+      );
+      nightlySum += special ? special.price_per_night_cents : baseCents;
+      nights++;
+    }
+
+    const extraGuests = Math.max(0, data.guests - baseOccupancy);
+    const extraTotal = extraGuests * extraPerNight * nights;
+    const totalCents = nightlySum + cleaningCents + extraTotal;
+
+    return { totalCents, nights };
+  });
+
+/* -----------------------------------------------------------------
  * PUBLIC — fetch blocked ranges so the public calendar greys them
  * out. Only returns accepted / paid bookings, never raw requests.
  * -------------------------------------------------------------- */
