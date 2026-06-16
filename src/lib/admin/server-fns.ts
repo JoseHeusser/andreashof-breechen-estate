@@ -203,6 +203,36 @@ export const updateAirbnbIcalUrl = createServerFn({ method: "POST" })
     if (error) throw error;
   });
 
+/* -----------------------------------------------------------------
+ * GLOBAL FEES (cleaning, base occupancy, extra-person surcharge)
+ * Stored as integers (cents / persons) in `settings`.
+ * -------------------------------------------------------------- */
+export const updateFees = createServerFn({ method: "POST" })
+  .inputValidator(
+    (data: {
+      cleaningFeeCents?: number;
+      baseOccupancy?: number;
+      extraPersonFeePerNightCents?: number;
+    }) => data,
+  )
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const admin = getSupabaseAdmin();
+    const rows: { key: string; value: number }[] = [];
+    if (data.cleaningFeeCents !== undefined)
+      rows.push({ key: "cleaning_fee_cents", value: data.cleaningFeeCents });
+    if (data.baseOccupancy !== undefined)
+      rows.push({ key: "base_occupancy", value: data.baseOccupancy });
+    if (data.extraPersonFeePerNightCents !== undefined)
+      rows.push({
+        key: "extra_person_fee_per_night_cents",
+        value: data.extraPersonFeePerNightCents,
+      });
+    if (rows.length === 0) return;
+    const { error } = await admin.from("settings").upsert(rows);
+    if (error) throw error;
+  });
+
 export const triggerAirbnbSync = createServerFn({ method: "POST" }).handler(async () => {
   await requireAdmin();
   const url = process.env.SUPABASE_URL;

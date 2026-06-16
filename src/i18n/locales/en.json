@@ -61,7 +61,15 @@
       "fieldLabelPlaceholder": "Add new…",
       "fieldFrom": "From",
       "fieldTo": "To",
-      "fieldPrice": "€/night"
+      "fieldPrice": "€/night",
+      "feesTitle": "Additional fees",
+      "feesHint": "Total = (nightly rate × nights) + cleaning + (extra guests × per-person surcharge × nights)",
+      "cleaningFee": "Cleaning fee",
+      "cleaningSuffix": "€ per stay",
+      "baseOccupancy": "Included in base price",
+      "baseOccupancySuffix": "guests",
+      "extraPersonFee": "Extra-person surcharge",
+      "extraPersonSuffix": "€ per person · per night"
     },
     "calendar": {
       "legendWeb": "Web (confirmed / paid)",

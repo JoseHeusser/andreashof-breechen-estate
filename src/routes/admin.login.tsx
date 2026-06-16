@@ -29,12 +29,12 @@ function LoginPage() {
   }, [nav]);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-6 py-20 relative">
-      <div className="absolute top-4 right-4 md:top-6 md:right-6">
-        <AdminLangSwitcher />
+    <div className="relative flex min-h-screen items-start justify-center bg-background px-4 pt-6 pb-8 sm:px-6 sm:pt-8 sm:pb-12 md:items-center md:py-20">
+      <div className="absolute top-4 right-3 sm:top-5 sm:right-5 md:top-6 md:right-6">
+        <AdminLangSwitcher className="text-[11px] tracking-[0.2em] [&_button>span]:min-h-11 sm:text-[11px]" />
       </div>
 
-      <form
+        <form
         onSubmit={async (e) => {
           e.preventDefault();
           setBusy(true);
@@ -48,12 +48,12 @@ function LoginPage() {
           }
           nav({ to: "/admin" });
         }}
-        className="w-full max-w-sm border border-border bg-card p-10"
+        className="mt-12 w-full max-w-sm border border-border bg-card p-5 sm:mt-14 sm:p-8 md:mt-0 md:p-10"
       >
-        <h1 className="font-display text-3xl font-light">{t("admin.login.title")}</h1>
+        <h1 className="font-display text-[2rem] leading-none font-light sm:text-3xl">{t("admin.login.title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">{t("admin.login.subtitle")}</p>
 
-        <div className="mt-8">
+        <div className="mt-6 sm:mt-8">
           <label htmlFor="username" className="eyebrow">{t("admin.login.username")}</label>
           <input
             id="username"
@@ -63,10 +63,10 @@ function LoginPage() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="andrea"
-            className="mt-2 w-full border-0 border-b border-border bg-transparent py-2 outline-none focus:border-sage-deep"
+            className="mt-2 w-full border-0 border-b border-border bg-transparent px-0 py-2.5 text-base outline-none focus:border-sage-deep focus-visible:ring-2 focus-visible:ring-sage-deep/20"
           />
         </div>
-        <div className="mt-6">
+        <div className="mt-5 sm:mt-6">
           <label htmlFor="password" className="eyebrow">{t("admin.login.password")}</label>
           <input
             id="password"
@@ -75,7 +75,7 @@ function LoginPage() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-2 w-full border-0 border-b border-border bg-transparent py-2 outline-none focus:border-sage-deep"
+            className="mt-2 w-full border-0 border-b border-border bg-transparent px-0 py-2.5 text-base outline-none focus:border-sage-deep focus-visible:ring-2 focus-visible:ring-sage-deep/20"
           />
         </div>
 
@@ -84,12 +84,12 @@ function LoginPage() {
         <button
           type="submit"
           disabled={busy}
-          className="mt-10 w-full border border-foreground bg-foreground py-3 text-[11px] uppercase tracking-[0.28em] text-background hover:bg-sage-deep hover:border-sage-deep disabled:opacity-50"
+          className="mt-8 min-h-11 w-full border border-foreground bg-foreground px-4 py-3 text-[11px] uppercase tracking-[0.28em] text-background hover:border-sage-deep hover:bg-sage-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage-deep/40 disabled:opacity-50 sm:mt-10"
         >
           {busy ? t("admin.saving") : t("admin.login.submit")}
         </button>
 
-        <Link to="/" className="mt-8 block text-center text-xs text-muted-foreground hover:text-sage-deep">
+        <Link to="/" className="mt-6 block min-h-11 py-3 text-center text-sm text-muted-foreground hover:text-sage-deep sm:mt-8 sm:text-xs">
           {t("admin.login.backToSite")}
         </Link>
       </form>

@@ -61,7 +61,15 @@
       "fieldLabelPlaceholder": "Neu hinzufügen…",
       "fieldFrom": "Von",
       "fieldTo": "Bis",
-      "fieldPrice": "€/Nacht"
+      "fieldPrice": "€/Nacht",
+      "feesTitle": "Zusätzliche Gebühren",
+      "feesHint": "Endpreis = (Grundpreis × Nächte) + Reinigung + (zusätzliche Gäste × Pro-Nacht-Aufschlag × Nächte)",
+      "cleaningFee": "Reinigungspauschale",
+      "cleaningSuffix": "€ pro Aufenthalt",
+      "baseOccupancy": "Im Grundpreis enthalten",
+      "baseOccupancySuffix": "Gäste",
+      "extraPersonFee": "Aufpreis pro weitere Person",
+      "extraPersonSuffix": "€ pro Person · pro Nacht"
     },
     "calendar": {
       "legendWeb": "Web (bestätigt / bezahlt)",

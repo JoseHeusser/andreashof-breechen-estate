@@ -15,6 +15,7 @@ import {
   updateBooking,
   updateAirbnbIcalUrl,
   triggerAirbnbSync,
+  updateFees,
 } from "@/lib/admin/server-fns";
 import {
   STATUS_COLOR,
@@ -125,7 +126,7 @@ function AdminPage() {
         ) : tab === "bookings" ? (
           <BookingsTab bookings={bookings} onReload={reload} />
         ) : tab === "pricing" ? (
-          <PricingTab pricing={pricing} onReload={reload} />
+          <PricingTab pricing={pricing} settings={settings} onReload={reload} />
         ) : tab === "calendar" ? (
           <CalendarTab bookings={bookings} />
         ) : (
@@ -292,7 +293,15 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
 /* ============================================================
  *  PRICING TAB
  * ========================================================== */
-function PricingTab({ pricing, onReload }: { pricing: PricingRow[]; onReload: () => void }) {
+function PricingTab({
+  pricing,
+  settings,
+  onReload,
+}: {
+  pricing: PricingRow[];
+  settings: { key: string; value: unknown }[];
+  onReload: () => void;
+}) {
   const { t } = useTranslation();
   const base = pricing.find((p) => p.type === "base");
   const specials = pricing.filter((p) => p.type === "special");
@@ -302,6 +311,22 @@ function PricingTab({ pricing, onReload }: { pricing: PricingRow[]; onReload: ()
   useEffect(() => {
     if (base) setBaseEdit(String(base.price_per_night_cents / 100));
   }, [base]);
+
+  // Global fees stored in `settings`
+  const lookup = (k: string) => settings.find((s) => s.key === k)?.value as number | undefined;
+  const [cleaning, setCleaning] = useState(String((lookup("cleaning_fee_cents") ?? 0) / 100));
+  const [occupancy, setOccupancy] = useState(String(lookup("base_occupancy") ?? 10));
+  const [extraPerson, setExtraPerson] = useState(
+    String((lookup("extra_person_fee_per_night_cents") ?? 0) / 100),
+  );
+  const [feesBusy, setFeesBusy] = useState(false);
+
+  useEffect(() => {
+    setCleaning(String((lookup("cleaning_fee_cents") ?? 0) / 100));
+    setOccupancy(String(lookup("base_occupancy") ?? 10));
+    setExtraPerson(String((lookup("extra_person_fee_per_night_cents") ?? 0) / 100));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settings]);
 
   return (
     <div className="space-y-12">
@@ -335,6 +360,82 @@ function PricingTab({ pricing, onReload }: { pricing: PricingRow[]; onReload: ()
             {t("admin.save")}
           </button>
         </div>
+      </section>
+
+      {/* Global fees */}
+      <section>
+        <h2 className="eyebrow">{t("admin.pricing.feesTitle")}</h2>
+        <p className="mt-2 max-w-xl text-xs leading-relaxed text-muted-foreground">
+          {t("admin.pricing.feesHint")}
+        </p>
+
+        <div className="mt-6 grid gap-6 md:grid-cols-3">
+          <label className="block">
+            <span className="eyebrow block mb-2">{t("admin.pricing.cleaningFee")}</span>
+            <div className="flex items-baseline gap-2">
+              <input
+                type="number"
+                step="1"
+                value={cleaning}
+                onChange={(e) => setCleaning(e.target.value)}
+                className="w-28 border border-border bg-background px-2 py-1.5 font-display text-lg"
+              />
+              <span className="text-xs text-muted-foreground">{t("admin.pricing.cleaningSuffix")}</span>
+            </div>
+          </label>
+
+          <label className="block">
+            <span className="eyebrow block mb-2">{t("admin.pricing.baseOccupancy")}</span>
+            <div className="flex items-baseline gap-2">
+              <input
+                type="number"
+                step="1"
+                min={1}
+                max={30}
+                value={occupancy}
+                onChange={(e) => setOccupancy(e.target.value)}
+                className="w-20 border border-border bg-background px-2 py-1.5 font-display text-lg"
+              />
+              <span className="text-xs text-muted-foreground">{t("admin.pricing.baseOccupancySuffix")}</span>
+            </div>
+          </label>
+
+          <label className="block">
+            <span className="eyebrow block mb-2">{t("admin.pricing.extraPersonFee")}</span>
+            <div className="flex items-baseline gap-2">
+              <input
+                type="number"
+                step="1"
+                value={extraPerson}
+                onChange={(e) => setExtraPerson(e.target.value)}
+                className="w-28 border border-border bg-background px-2 py-1.5 font-display text-lg"
+              />
+              <span className="text-xs text-muted-foreground">{t("admin.pricing.extraPersonSuffix")}</span>
+            </div>
+          </label>
+        </div>
+
+        <button
+          disabled={feesBusy}
+          onClick={async () => {
+            setFeesBusy(true);
+            try {
+              await updateFees({
+                data: {
+                  cleaningFeeCents: Math.round(parseFloat(cleaning) * 100),
+                  baseOccupancy: parseInt(occupancy, 10),
+                  extraPersonFeePerNightCents: Math.round(parseFloat(extraPerson) * 100),
+                },
+              });
+              await onReload();
+            } finally {
+              setFeesBusy(false);
+            }
+          }}
+          className="mt-6 border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
+        >
+          {feesBusy ? t("admin.saving") : t("admin.save")}
+        </button>
       </section>
 
       {/* Special date ranges */}
