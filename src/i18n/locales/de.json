@@ -1,4 +1,86 @@
 {
+  "admin": {
+    "brand": "Admin",
+    "signOut": "Abmelden",
+    "loading": "Lade…",
+    "save": "Speichern",
+    "saving": "…",
+    "add": "Hinzufügen",
+    "delete": "Löschen",
+    "deleteConfirm": "{{label}} löschen?",
+    "tabs": {
+      "bookings": "Buchungen",
+      "pricing": "Preise",
+      "calendar": "Kalender",
+      "settings": "Einstellungen"
+    },
+    "login": {
+      "title": "Admin",
+      "subtitle": "Andreashof Breechen",
+      "username": "Benutzername",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "backToSite": "← Zur Webseite"
+    },
+    "bookings": {
+      "filterAll": "Alle ({{n}})",
+      "empty": "Keine Buchungen.",
+      "labelEmail": "E-Mail:",
+      "labelPhone": "Tel:",
+      "labelOccasion": "Anlass:",
+      "labelReceived": "Eingegangen: {{when}}",
+      "fieldStatus": "Status",
+      "fieldTotalPrice": "Gesamtpreis (€)",
+      "fieldNotes": "Interne Notizen",
+      "nightsShort": "N",
+      "personsShort": "P."
+    },
+    "status": {
+      "requested": "Angefragt — noch nicht geprüft",
+      "accepted": "Bestätigt — wartet auf Anzahlung",
+      "deposit_paid": "Anzahlung erhalten — wartet auf Restzahlung",
+      "fully_paid": "Vollständig bezahlt",
+      "cancelled": "Storniert",
+      "completed": "Aufenthalt abgeschlossen"
+    },
+    "statusShort": {
+      "requested": "Angefragt",
+      "accepted": "Bestätigt",
+      "deposit_paid": "Anzahlung",
+      "fully_paid": "Bezahlt",
+      "cancelled": "Storniert",
+      "completed": "Abgeschlossen"
+    },
+    "pricing": {
+      "baseTitle": "Grundpreis pro Nacht",
+      "baseSuffix": "€ / Nacht",
+      "specialTitle": "Sonderpreise (Datumsbereiche)",
+      "specialHint": "z.B. Weihnachten, Silvester, Hochsaison",
+      "empty": "Keine Sonderpreise.",
+      "fieldLabel": "Bezeichnung",
+      "fieldLabelPlaceholder": "Neu hinzufügen…",
+      "fieldFrom": "Von",
+      "fieldTo": "Bis",
+      "fieldPrice": "€/Nacht"
+    },
+    "calendar": {
+      "legendWeb": "Web (bestätigt / bezahlt)",
+      "legendPending": "Web (Anfrage offen)",
+      "legendAirbnb": "Airbnb"
+    },
+    "settings": {
+      "pullTitle": "Airbnb → Andreashof (pull)",
+      "pullBody": "Hol dir den iCal-Link aus deinem Airbnb-Hostbereich: Listing → Kalender → Kalender synchronisieren → Kalender exportieren. Wir lesen ihn stündlich + bei jeder Buchungsänderung (Rate-Limit 30 s).",
+      "fieldIcalUrl": "iCal-URL von Airbnb",
+      "saveUrl": "URL speichern",
+      "syncNow": "Jetzt synchronisieren",
+      "urlSaved": "URL gespeichert.",
+      "syncedAt": "Letzte Sync: {{when}}",
+      "pushTitle": "Andreashof → Airbnb (push)",
+      "pushBody": "Diese URL veröffentlicht alle bestätigten Buchungen unserer Seite als iCal-Feed. Importiere sie in Airbnb: Listing → Kalender → Kalender synchronisieren → Kalender importieren. Airbnb fragt den Feed alle paar Stunden ab.",
+      "copy": "Kopieren"
+    }
+  },
   "nav": {
     "home": "Startseite",
     "house": "Das Haus",

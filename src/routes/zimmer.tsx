@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { ROOM_IMAGES, ROOM_KEYS, type RoomKey } from "@/data/rooms";
 
-const ROOM_SWITCH_OUT_MS = 110;
-const ROOM_SWITCH_IN_MS = 220;
+const ROOM_SWITCH_OUT_MS = 280;
+const ROOM_SWITCH_GAP_MS = 110;
+const ROOM_SWITCH_IN_MS = 380;
 
 export const Route = createFileRoute("/zimmer")({
   head: () => ({
@@ -27,9 +28,10 @@ function ZimmerPage() {
   const [active, setActive] = useState<RoomKey>("I");
   const [displayedRoom, setDisplayedRoom] = useState<RoomKey>("I");
   const [imgIdx, setImgIdx] = useState(0);
-  const [transitionPhase, setTransitionPhase] = useState<"idle" | "out" | "in">("idle");
+  const [transitionPhase, setTransitionPhase] = useState<"idle" | "out" | "gap" | "in">("idle");
   const [reduceMotion, setReduceMotion] = useState(false);
   const displayedRoomRef = useRef<RoomKey>("I");
+  const transitionRunRef = useRef(0);
 
   const room = t(`rooms.${displayedRoom}`, { returnObjects: true }) as {
     name: string;
@@ -71,20 +73,31 @@ function ZimmerPage() {
       return;
     }
 
+    const transitionRun = transitionRunRef.current + 1;
+    transitionRunRef.current = transitionRun;
+    let gapTimer: number | undefined;
     let inTimer: number | undefined;
     setTransitionPhase("out");
     const outTimer = window.setTimeout(() => {
-      displayedRoomRef.current = active;
-      setDisplayedRoom(active);
-      setTransitionPhase("in");
+      if (transitionRunRef.current !== transitionRun) return;
+      setTransitionPhase("gap");
+      gapTimer = window.setTimeout(() => {
+        if (transitionRunRef.current !== transitionRun) return;
+        displayedRoomRef.current = active;
+        setDisplayedRoom(active);
+        setTransitionPhase("in");
 
-      inTimer = window.setTimeout(() => {
-        setTransitionPhase("idle");
-      }, ROOM_SWITCH_IN_MS);
+        inTimer = window.setTimeout(() => {
+          if (transitionRunRef.current !== transitionRun) return;
+          setTransitionPhase("idle");
+        }, ROOM_SWITCH_IN_MS);
+      }, ROOM_SWITCH_GAP_MS);
     }, ROOM_SWITCH_OUT_MS);
 
     return () => {
+      transitionRunRef.current += 1;
       window.clearTimeout(outTimer);
+      if (gapTimer) window.clearTimeout(gapTimer);
       if (inTimer) window.clearTimeout(inTimer);
     };
   }, [active, reduceMotion]);
@@ -97,15 +110,19 @@ function ZimmerPage() {
   const detailTransitionClass = reduceMotion
     ? "opacity-100 translate-y-0"
     : transitionPhase === "out"
-      ? "opacity-30 translate-y-0.5"
-      : transitionPhase === "in"
-        ? "opacity-100 translate-y-0"
-        : "opacity-100 translate-y-0";
+      ? "opacity-0 translate-y-0.5"
+      : transitionPhase === "gap"
+        ? "opacity-0 translate-y-0.5"
+        : transitionPhase === "in"
+          ? "opacity-100 translate-y-0"
+          : "opacity-100 translate-y-0";
   const detailTransitionDurationMs = reduceMotion
     ? 0
     : transitionPhase === "out"
       ? ROOM_SWITCH_OUT_MS
-      : ROOM_SWITCH_IN_MS;
+      : transitionPhase === "gap"
+        ? 0
+        : ROOM_SWITCH_IN_MS;
 
   return (
     <div className="min-h-screen bg-background">
@@ -271,7 +288,7 @@ function ZimmerPage() {
                 </dl>
               </div>
             </div>
-            {!reduceMotion && transitionPhase === "out" && (
+            {!reduceMotion && (transitionPhase === "out" || transitionPhase === "gap") && (
               <div className="mt-4 h-px w-full bg-sage-deep/35" />
             )}
           </div>

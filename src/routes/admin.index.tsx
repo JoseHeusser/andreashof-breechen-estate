@@ -1,10 +1,12 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { DayPicker } from "react-day-picker";
-import { de as deLocale } from "date-fns/locale";
+import { de as deLocale, enUS as enLocale } from "date-fns/locale";
 import { differenceInCalendarDays, format, parseISO } from "date-fns";
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { installAdminFetch } from "@/lib/admin/auth-fetch";
+import { AdminLangSwitcher } from "@/components/admin/admin-lang-switcher";
 import {
   getDashboardData,
   updateBasePrice,
@@ -15,12 +17,17 @@ import {
   triggerAirbnbSync,
 } from "@/lib/admin/server-fns";
 import {
-  STATUS_LABEL_DE,
   STATUS_COLOR,
   type Booking,
   type BookingStatus,
   type PricingRow,
 } from "@/lib/supabase/types";
+
+// Helper: returns date-fns locale based on current i18n language.
+function useLocale() {
+  const { i18n } = useTranslation();
+  return i18n.language?.startsWith("en") ? enLocale : deLocale;
+}
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "Admin · Andreashof" }] }),
@@ -30,6 +37,7 @@ export const Route = createFileRoute("/admin/")({
 type Tab = "bookings" | "pricing" | "calendar" | "settings";
 
 function AdminPage() {
+  const { t } = useTranslation();
   const nav = useNavigate();
   const [ready, setReady] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
@@ -80,8 +88,9 @@ function AdminPage() {
       {/* Header */}
       <header className="border-b border-border bg-card">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-          <Link to="/" className="font-display text-xl">Andreashof <span className="text-muted-foreground italic">· Admin</span></Link>
-          <div className="flex items-center gap-6 text-xs text-muted-foreground">
+          <Link to="/" className="font-display text-xl">Andreashof <span className="text-muted-foreground italic">· {t("admin.brand")}</span></Link>
+          <div className="flex items-center gap-5 text-xs text-muted-foreground">
+            <AdminLangSwitcher />
             <span>{email}</span>
             <button
               onClick={async () => {
@@ -90,7 +99,7 @@ function AdminPage() {
               }}
               className="hover:text-sage-deep uppercase tracking-[0.22em]"
             >
-              Abmelden
+              {t("admin.signOut")}
             </button>
           </div>
         </div>
@@ -103,7 +112,7 @@ function AdminPage() {
                 tab === k ? "text-foreground border-b-2 border-sage-deep -mb-px" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {k === "bookings" ? "Buchungen" : k === "pricing" ? "Preise" : k === "calendar" ? "Kalender" : "Einstellungen"}
+              {t(`admin.tabs.${k}`)}
             </button>
           ))}
         </nav>
@@ -112,7 +121,7 @@ function AdminPage() {
       <main className="mx-auto max-w-6xl px-6 py-10">
         {error && <p className="mb-6 text-sm text-red-700">{error}</p>}
         {loading && !pricing.length ? (
-          <p className="text-muted-foreground">Lade…</p>
+          <p className="text-muted-foreground">{t("admin.loading")}</p>
         ) : tab === "bookings" ? (
           <BookingsTab bookings={bookings} onReload={reload} />
         ) : tab === "pricing" ? (
@@ -131,6 +140,7 @@ function AdminPage() {
  *  BOOKINGS TAB
  * ========================================================== */
 function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: () => void }) {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<BookingStatus | "all">("all");
   const filtered = filter === "all" ? bookings : bookings.filter((b) => b.status === filter);
   const counts = useMemo(() => {
@@ -142,19 +152,19 @@ function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: ()
   return (
     <div>
       <div className="mb-6 flex flex-wrap gap-2 text-xs">
-        <FilterChip active={filter === "all"} onClick={() => setFilter("all")} label={`Alle (${bookings.length})`} />
+        <FilterChip active={filter === "all"} onClick={() => setFilter("all")} label={t("admin.bookings.filterAll", { n: bookings.length })} />
         {(["requested", "accepted", "deposit_paid", "fully_paid", "cancelled", "completed"] as BookingStatus[]).map((s) => (
           <FilterChip
             key={s}
             active={filter === s}
             onClick={() => setFilter(s)}
-            label={`${STATUS_LABEL_DE[s].split(" — ")[0]} (${counts[s] ?? 0})`}
+            label={`${t(`admin.statusShort.${s}`)} (${counts[s] ?? 0})`}
           />
         ))}
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-muted-foreground">Keine Buchungen.</p>
+        <p className="text-muted-foreground">{t("admin.bookings.empty")}</p>
       ) : (
         <ul className="space-y-3">
           {filtered.map((b) => (
@@ -180,6 +190,8 @@ function FilterChip({ active, onClick, label }: { active: boolean; onClick: () =
 }
 
 function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => void }) {
+  const { t } = useTranslation();
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState(booking.status);
   const [notes, setNotes] = useState(booking.internal_notes ?? "");
@@ -193,11 +205,11 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
         <span className="flex-1">
           <span className="font-display text-lg">{booking.contact_name}</span>
           <span className="ml-3 text-xs text-muted-foreground">
-            {format(parseISO(booking.arrival), "d MMM", { locale: deLocale })} → {format(parseISO(booking.departure), "d MMM yyyy", { locale: deLocale })} · {nights}N · {booking.guests} P.
+            {format(parseISO(booking.arrival), "d MMM", { locale })} → {format(parseISO(booking.departure), "d MMM yyyy", { locale })} · {nights}{t("admin.bookings.nightsShort")} · {booking.guests} {t("admin.bookings.personsShort")}
           </span>
         </span>
         <span className={`border px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${STATUS_COLOR[booking.status]}`}>
-          {booking.status}
+          {t(`admin.statusShort.${booking.status}`)}
         </span>
         <span className="text-xs text-muted-foreground">{booking.source}</span>
       </button>
@@ -205,29 +217,29 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
       {open && (
         <div className="border-t border-border px-5 py-5 grid gap-5 md:grid-cols-2">
           <div className="text-sm space-y-1">
-            <p><strong>Email:</strong> <a href={`mailto:${booking.contact_email}`} className="underline">{booking.contact_email}</a></p>
-            {booking.contact_phone && <p><strong>Tel:</strong> {booking.contact_phone}</p>}
-            {booking.occasion && <p><strong>Anlass:</strong> {booking.occasion}</p>}
+            <p><strong>{t("admin.bookings.labelEmail")}</strong> <a href={`mailto:${booking.contact_email}`} className="underline">{booking.contact_email}</a></p>
+            {booking.contact_phone && <p><strong>{t("admin.bookings.labelPhone")}</strong> {booking.contact_phone}</p>}
+            {booking.occasion && <p><strong>{t("admin.bookings.labelOccasion")}</strong> {booking.occasion}</p>}
             {booking.message && <p className="mt-3 italic text-muted-foreground">"{booking.message}"</p>}
-            <p className="mt-3 text-xs text-muted-foreground">Eingegangen: {format(parseISO(booking.created_at), "d MMM yyyy, HH:mm", { locale: deLocale })}</p>
+            <p className="mt-3 text-xs text-muted-foreground">{t("admin.bookings.labelReceived", { when: format(parseISO(booking.created_at), "d MMM yyyy, HH:mm", { locale }) })}</p>
           </div>
 
           <div className="space-y-3 text-sm">
             <label className="block">
-              <span className="eyebrow block mb-1">Status</span>
+              <span className="eyebrow block mb-1">{t("admin.bookings.fieldStatus")}</span>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as BookingStatus)}
                 className="w-full border border-border bg-background px-2 py-1.5"
               >
                 {(["requested", "accepted", "deposit_paid", "fully_paid", "cancelled", "completed"] as BookingStatus[]).map((s) => (
-                  <option key={s} value={s}>{STATUS_LABEL_DE[s]}</option>
+                  <option key={s} value={s}>{t(`admin.status.${s}`)}</option>
                 ))}
               </select>
             </label>
 
             <label className="block">
-              <span className="eyebrow block mb-1">Gesamtpreis (€)</span>
+              <span className="eyebrow block mb-1">{t("admin.bookings.fieldTotalPrice")}</span>
               <input
                 type="number"
                 step="0.01"
@@ -238,7 +250,7 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
             </label>
 
             <label className="block">
-              <span className="eyebrow block mb-1">Interne Notizen</span>
+              <span className="eyebrow block mb-1">{t("admin.bookings.fieldNotes")}</span>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -268,7 +280,7 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
               }}
               className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
             >
-              {busy ? "..." : "Speichern"}
+              {busy ? t("admin.saving") : t("admin.save")}
             </button>
           </div>
         </div>
@@ -281,6 +293,7 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
  *  PRICING TAB
  * ========================================================== */
 function PricingTab({ pricing, onReload }: { pricing: PricingRow[]; onReload: () => void }) {
+  const { t } = useTranslation();
   const base = pricing.find((p) => p.type === "base");
   const specials = pricing.filter((p) => p.type === "special");
   const [baseEdit, setBaseEdit] = useState(base ? String(base.price_per_night_cents / 100) : "");
@@ -294,7 +307,7 @@ function PricingTab({ pricing, onReload }: { pricing: PricingRow[]; onReload: ()
     <div className="space-y-12">
       {/* Base price */}
       <section>
-        <h2 className="eyebrow">Grundpreis pro Nacht</h2>
+        <h2 className="eyebrow">{t("admin.pricing.baseTitle")}</h2>
         <div className="mt-4 flex items-end gap-4">
           <div>
             <input
@@ -304,7 +317,7 @@ function PricingTab({ pricing, onReload }: { pricing: PricingRow[]; onReload: ()
               onChange={(e) => setBaseEdit(e.target.value)}
               className="border border-border bg-background px-3 py-2 font-display text-2xl w-40"
             />
-            <span className="ml-2 text-sm text-muted-foreground">€ / Nacht</span>
+            <span className="ml-2 text-sm text-muted-foreground">{t("admin.pricing.baseSuffix")}</span>
           </div>
           <button
             disabled={busy}
@@ -319,7 +332,7 @@ function PricingTab({ pricing, onReload }: { pricing: PricingRow[]; onReload: ()
             }}
             className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background"
           >
-            Speichern
+            {t("admin.save")}
           </button>
         </div>
       </section>
@@ -327,13 +340,13 @@ function PricingTab({ pricing, onReload }: { pricing: PricingRow[]; onReload: ()
       {/* Special date ranges */}
       <section>
         <div className="flex items-baseline justify-between">
-          <h2 className="eyebrow">Sonderpreise (Datumsbereiche)</h2>
-          <span className="text-xs text-muted-foreground">z.B. Weihnachten, Silvester, Hochsaison</span>
+          <h2 className="eyebrow">{t("admin.pricing.specialTitle")}</h2>
+          <span className="text-xs text-muted-foreground">{t("admin.pricing.specialHint")}</span>
         </div>
 
         <ul className="mt-4 divide-y divide-border border border-border">
           {specials.length === 0 && (
-            <li className="px-4 py-6 text-sm text-muted-foreground">Keine Sonderpreise.</li>
+            <li className="px-4 py-6 text-sm text-muted-foreground">{t("admin.pricing.empty")}</li>
           )}
           {specials.map((s) => (
             <SpecialPriceRow key={s.id} row={s} onReload={onReload} />
@@ -346,6 +359,7 @@ function PricingTab({ pricing, onReload }: { pricing: PricingRow[]; onReload: ()
 }
 
 function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: () => void }) {
+  const { t } = useTranslation();
   const [label, setLabel] = useState(row?.label ?? "");
   const [start, setStart] = useState(row?.start_date ?? "");
   const [end, setEnd] = useState(row?.end_date ?? "");
@@ -356,16 +370,16 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
   return (
     <li className="grid gap-3 px-4 py-4 md:grid-cols-[1fr_auto_auto_auto_auto_auto] md:items-end">
       <label>
-        <span className="eyebrow block mb-1">Bezeichnung</span>
+        <span className="eyebrow block mb-1">{t("admin.pricing.fieldLabel")}</span>
         <input
           value={label}
           onChange={(e) => setLabel(e.target.value)}
-          placeholder={isNew ? "Neu hinzufügen…" : ""}
+          placeholder={isNew ? t("admin.pricing.fieldLabelPlaceholder") : ""}
           className="w-full border border-border bg-background px-2 py-1.5 text-sm"
         />
       </label>
       <label>
-        <span className="eyebrow block mb-1">Von</span>
+        <span className="eyebrow block mb-1">{t("admin.pricing.fieldFrom")}</span>
         <input
           type="date"
           value={start}
@@ -374,7 +388,7 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
         />
       </label>
       <label>
-        <span className="eyebrow block mb-1">Bis</span>
+        <span className="eyebrow block mb-1">{t("admin.pricing.fieldTo")}</span>
         <input
           type="date"
           value={end}
@@ -383,7 +397,7 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
         />
       </label>
       <label>
-        <span className="eyebrow block mb-1">€/Nacht</span>
+        <span className="eyebrow block mb-1">{t("admin.pricing.fieldPrice")}</span>
         <input
           type="number"
           value={price}
@@ -418,13 +432,13 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
         }}
         className="border border-foreground bg-foreground px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-background disabled:opacity-30"
       >
-        {isNew ? "Hinzufügen" : "Speichern"}
+        {isNew ? t("admin.add") : t("admin.save")}
       </button>
       {!isNew && (
         <button
           disabled={busy}
           onClick={async () => {
-            if (!confirm(`"${row.label}" löschen?`)) return;
+            if (!confirm(t("admin.deleteConfirm", { label: row.label }))) return;
             setBusy(true);
             try {
               await deleteSpecialPrice({ data: { id: row.id } });
@@ -435,7 +449,7 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
           }}
           className="text-xs text-red-700 hover:underline"
         >
-          Löschen
+          {t("admin.delete")}
         </button>
       )}
     </li>
@@ -446,6 +460,8 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
  *  CALENDAR TAB — visual overview
  * ========================================================== */
 function CalendarTab({ bookings }: { bookings: Booking[] }) {
+  const { t } = useTranslation();
+  const locale = useLocale();
   // Visualise web + Airbnb bookings on a single calendar.
   // Web (accepted/paid) = sage. Airbnb = stone. Requested (pending review) = amber.
   const modifiers = useMemo(() => {
@@ -471,9 +487,9 @@ function CalendarTab({ bookings }: { bookings: Booking[] }) {
   return (
     <div>
       <ul className="mb-6 flex gap-6 text-xs">
-        <Legend color="bg-sage-deep" label="Web (bestätigt / bezahlt)" />
-        <Legend color="bg-amber-400" label="Web (Anfrage offen)" />
-        <Legend color="bg-stone-500" label="Airbnb" />
+        <Legend color="bg-sage-deep" label={t("admin.calendar.legendWeb")} />
+        <Legend color="bg-amber-400" label={t("admin.calendar.legendPending")} />
+        <Legend color="bg-stone-500" label={t("admin.calendar.legendAirbnb")} />
       </ul>
 
       <div className="andreashof-calendar admin-calendar">
@@ -481,7 +497,7 @@ function CalendarTab({ bookings }: { bookings: Booking[] }) {
           mode="default"
           numberOfMonths={3}
           pagedNavigation
-          locale={deLocale}
+          locale={locale}
           showOutsideDays={false}
           weekStartsOn={1}
           modifiers={modifiers}
@@ -515,6 +531,8 @@ function SettingsTab({
   settings: { key: string; value: unknown }[];
   onReload: () => void;
 }) {
+  const { t } = useTranslation();
+  const locale = useLocale();
   const lookup = (k: string) => settings.find((s) => s.key === k)?.value;
   const [icalUrl, setIcalUrl] = useState((lookup("airbnb_ical_url") as string) ?? "");
   const lastSynced = lookup("airbnb_last_synced_at") as string | undefined;
@@ -529,15 +547,13 @@ function SettingsTab({
     <div className="space-y-12">
       {/* PULL: import Airbnb iCal */}
       <section>
-        <h2 className="eyebrow">Airbnb → Andreashof (pull)</h2>
+        <h2 className="eyebrow">{t("admin.settings.pullTitle")}</h2>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-          Hol dir den iCal-Link aus deinem Airbnb-Hostbereich: Listing → Kalender →
-          Kalender synchronisieren → <em>Kalender exportieren</em>. Wir lesen ihn
-          stündlich + bei jeder Buchungsänderung (Rate-Limit 30 s).
+          {t("admin.settings.pullBody")}
         </p>
 
         <label className="mt-6 block">
-          <span className="eyebrow block mb-2">iCal-URL von Airbnb</span>
+          <span className="eyebrow block mb-2">{t("admin.settings.fieldIcalUrl")}</span>
           <input
             type="url"
             value={icalUrl}
@@ -555,17 +571,17 @@ function SettingsTab({
               setResult(null);
               try {
                 await updateAirbnbIcalUrl({ data: { url: icalUrl } });
-                setResult("URL gespeichert.");
+                setResult(t("admin.settings.urlSaved"));
                 await onReload();
               } catch (e) {
-                setResult(e instanceof Error ? e.message : "Fehler");
+                setResult(e instanceof Error ? e.message : "Error");
               } finally {
                 setBusy(null);
               }
             }}
             className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
           >
-            {busy === "save" ? "..." : "URL speichern"}
+            {busy === "save" ? t("admin.saving") : t("admin.settings.saveUrl")}
           </button>
 
           <button
@@ -575,22 +591,22 @@ function SettingsTab({
               setResult(null);
               try {
                 const r = (await triggerAirbnbSync()) as Record<string, unknown>;
-                setResult(`Synchronisiert: ${JSON.stringify(r)}`);
+                setResult(JSON.stringify(r));
                 await onReload();
               } catch (e) {
-                setResult(e instanceof Error ? e.message : "Fehler");
+                setResult(e instanceof Error ? e.message : "Error");
               } finally {
                 setBusy(null);
               }
             }}
             className="border border-border px-4 py-2 text-[11px] uppercase tracking-[0.22em] hover:border-foreground disabled:opacity-50"
           >
-            {busy === "sync" ? "..." : "Jetzt synchronisieren"}
+            {busy === "sync" ? t("admin.saving") : t("admin.settings.syncNow")}
           </button>
 
           {lastSynced && (
             <span className="text-xs text-muted-foreground">
-              Letzte Sync: {lastSynced ? format(parseISO(lastSynced), "d MMM yyyy, HH:mm", { locale: deLocale }) : "—"}
+              {t("admin.settings.syncedAt", { when: format(parseISO(lastSynced), "d MMM yyyy, HH:mm", { locale }) })}
             </span>
           )}
         </div>
@@ -602,12 +618,9 @@ function SettingsTab({
 
       {/* PUSH: outbound iCal feed */}
       <section>
-        <h2 className="eyebrow">Andreashof → Airbnb (push)</h2>
+        <h2 className="eyebrow">{t("admin.settings.pushTitle")}</h2>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-          Diese URL veröffentlicht alle bestätigten Buchungen unserer Seite als
-          iCal-Feed. Importiere sie in Airbnb: Listing → Kalender → Kalender
-          synchronisieren → <em>Kalender importieren</em>. Airbnb fragt den
-          Feed alle paar Stunden ab.
+          {t("admin.settings.pushBody")}
         </p>
         <div className="mt-4 flex items-center gap-3">
           <input
@@ -620,7 +633,7 @@ function SettingsTab({
             onClick={() => navigator.clipboard.writeText(outboundUrl)}
             className="border border-border px-4 py-2 text-[11px] uppercase tracking-[0.22em] hover:border-foreground"
           >
-            Kopieren
+            {t("admin.settings.copy")}
           </button>
         </div>
       </section>

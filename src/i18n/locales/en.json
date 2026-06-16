@@ -1,4 +1,86 @@
 {
+  "admin": {
+    "brand": "Admin",
+    "signOut": "Sign out",
+    "loading": "Loading…",
+    "save": "Save",
+    "saving": "…",
+    "add": "Add",
+    "delete": "Delete",
+    "deleteConfirm": "Delete {{label}}?",
+    "tabs": {
+      "bookings": "Bookings",
+      "pricing": "Pricing",
+      "calendar": "Calendar",
+      "settings": "Settings"
+    },
+    "login": {
+      "title": "Admin",
+      "subtitle": "Andreashof Breechen",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Sign in",
+      "backToSite": "← Back to site"
+    },
+    "bookings": {
+      "filterAll": "All ({{n}})",
+      "empty": "No bookings.",
+      "labelEmail": "Email:",
+      "labelPhone": "Phone:",
+      "labelOccasion": "Occasion:",
+      "labelReceived": "Received: {{when}}",
+      "fieldStatus": "Status",
+      "fieldTotalPrice": "Total price (€)",
+      "fieldNotes": "Internal notes",
+      "nightsShort": "N",
+      "personsShort": "P."
+    },
+    "status": {
+      "requested": "Requested — pending review",
+      "accepted": "Accepted — awaiting deposit",
+      "deposit_paid": "Deposit received — awaiting balance",
+      "fully_paid": "Fully paid",
+      "cancelled": "Cancelled",
+      "completed": "Stay completed"
+    },
+    "statusShort": {
+      "requested": "Requested",
+      "accepted": "Accepted",
+      "deposit_paid": "Deposit",
+      "fully_paid": "Paid",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "pricing": {
+      "baseTitle": "Base price per night",
+      "baseSuffix": "€ / night",
+      "specialTitle": "Special pricing (date ranges)",
+      "specialHint": "e.g. Christmas, New Year, peak season",
+      "empty": "No special pricing.",
+      "fieldLabel": "Label",
+      "fieldLabelPlaceholder": "Add new…",
+      "fieldFrom": "From",
+      "fieldTo": "To",
+      "fieldPrice": "€/night"
+    },
+    "calendar": {
+      "legendWeb": "Web (confirmed / paid)",
+      "legendPending": "Web (request pending)",
+      "legendAirbnb": "Airbnb"
+    },
+    "settings": {
+      "pullTitle": "Airbnb → Andreashof (pull)",
+      "pullBody": "Grab the iCal link from your Airbnb host dashboard: Listing → Calendar → Sync calendars → Export calendar. We read it every hour and on every booking change (30 s rate-limit).",
+      "fieldIcalUrl": "Airbnb iCal URL",
+      "saveUrl": "Save URL",
+      "syncNow": "Sync now",
+      "urlSaved": "URL saved.",
+      "syncedAt": "Last sync: {{when}}",
+      "pushTitle": "Andreashof → Airbnb (push)",
+      "pushBody": "This URL publishes every confirmed booking from our site as an iCal feed. Import it into Airbnb: Listing → Calendar → Sync calendars → Import calendar. Airbnb polls it every few hours.",
+      "copy": "Copy"
+    }
+  },
   "nav": {
     "home": "Home",
     "house": "The House",
