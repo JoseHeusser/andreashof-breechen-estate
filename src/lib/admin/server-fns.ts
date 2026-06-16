@@ -12,8 +12,9 @@ import type { Booking, BookingStatus, PricingRow } from "@/lib/supabase/types";
  * will see a 500 and we redirect to /admin/login.
  * -------------------------------------------------------------- */
 async function requireAdmin(): Promise<{ userId: string; email: string }> {
+  // h3 returns a Headers instance (Web Fetch API), accessed via .get()
   const headers = getRequestHeaders();
-  const authHeader = headers["authorization"] ?? headers["Authorization"];
+  const authHeader = headers.get("authorization") ?? headers.get("Authorization");
   const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
   if (!token) throw new Error("UNAUTHORIZED");
 

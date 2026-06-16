@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouterState } from "@tanstack/react-router";
 import i18n, { SUPPORTED_LANGS, DEFAULT_LANG, LANG_LABELS, type Lang } from "@/i18n";
 
 const STORAGE_KEY = "andreashof.lang";
@@ -20,6 +21,8 @@ function isLang(v: string | null): v is Lang {
  */
 export function FloatingLangSwitcher() {
   const [mounted, setMounted] = useState(false);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const onAdmin = pathname.startsWith("/admin");
 
   useEffect(() => {
     setMounted(true);
@@ -38,7 +41,7 @@ export function FloatingLangSwitcher() {
   useTranslation();
   const current = (i18n.language?.slice(0, 2) || DEFAULT_LANG) as Lang;
 
-  if (!mounted) return null;
+  if (!mounted || onAdmin) return null;
 
   const change = (lng: Lang) => {
     try {
