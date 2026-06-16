@@ -9,7 +9,7 @@
     "reserve": "Reservar"
   },
   "hero": {
-    "eyebrow": "Breechen · Mecklemburgo-Pomerania Occidental · Est. 1782",
+    "eyebrow": "Breechen · Pomerania Occidental · Est. 1782",
     "titleLine1": "Una casa solariega,",
     "titleLine2": "en el pueblo.",
     "subtitle": "Casa solariega histórica de estilo gustaviano del siglo XVIII, en el corazón del pueblo de Breechen. Se alquila completa, para hasta 21 huéspedes.",
@@ -27,11 +27,11 @@
   "uses": {
     "family": {
       "title": "Reuniones familiares",
-      "body": "Espacios comunes amplios, diez recámaras y un gran jardín — sitio para tres generaciones bajo un mismo techo."
+      "body": "Espacios comunes amplios, once recámaras y un gran jardín — sitio para tres generaciones bajo un mismo techo."
     },
     "weddings": {
-      "title": "Bodas",
-      "body": "Fachada simétrica, un jardín con mesa larga para 21 y el pueblo al lado. Un día que permanece."
+      "title": "Cumpleaños",
+      "body": "Espacios generosos, un jardín con mesa larga para 21 huéspedes y más — lugar para celebraciones que se quedan en la memoria."
     },
     "retreats": {
       "title": "Retiros y talleres",
@@ -55,10 +55,10 @@
   },
   "roomsTeaser": {
     "eyebrow": "Las Habitaciones",
-    "titleA": "Diez recámaras para",
+    "titleA": "Once recámaras para",
     "titleEm": " veintiún ",
     "titleB": "huéspedes.",
-    "body": "Cada habitación tiene un nombre, cada una su propia vista. Techos altos, suelos blancos, cortinas de lino.",
+    "body": "Cada habitación tiene un nombre y su propio carácter. Techos altos, suelos blancos, cortinas de lino.",
     "cta": "Ver todas las habitaciones"
   },
   "galerieFull": {
@@ -76,8 +76,8 @@
   },
   "zimmer": {
     "pageEyebrow": "Las Habitaciones",
-    "pageTitle": "Diez recámaras, cada una distinta.",
-    "pageSubtitle": "Elige una recámara para ver cama, vista y carácter.",
+    "pageTitle": "Once recámaras, cada una distinta.",
+    "pageSubtitle": "Elige una recámara para ver cama y carácter.",
     "labelBed": "Cama",
     "labelView": "Vista",
     "labelNumber": "Recámara",
@@ -85,16 +85,17 @@
     "selectorLabel": "Elegir recámara"
   },
   "rooms": {
-    "I":    { "name": "Recámara del Tilo",      "bed": "1 cama king size",  "view": "Avenida de tilos", "desc": "Con vista a la antigua avenida de tilos. Techos altos, suelos blancos, un escritorio junto a la ventana." },
-    "II":   { "name": "Suite del Jardín",       "bed": "1 cama king size",  "view": "Jardín sur",       "desc": "Tranquila, abierta al jardín. Sol por la mañana, aroma a lavanda al anochecer." },
-    "III":  { "name": "Recámara del Gablete",   "bed": "1 cama king size",  "view": "Patio",            "desc": "En lo alto del gablete con vigas de madera vistas. La calma del patio interior." },
-    "IV":   { "name": "Recámara del Salón",     "bed": "1 cama queen size", "view": "Parque",           "desc": "Generosa, con techo de estuco y parquet. Junto al salón." },
-    "V":    { "name": "Cámara Hesse",           "bed": "2 camas individuales", "view": "Campos",         "desc": "Sencilla, luminosa, rural. Vista sobre los campos hasta el horizonte." },
-    "VI":   { "name": "Cámara Cigüeña",         "bed": "2 camas individuales", "view": "Patio",          "desc": "En el ala posterior, resguardada. Nido de cigüeña en la chimenea." },
-    "VII":  { "name": "Mansarda Norte",         "bed": "3 camas individuales", "view": "Tragaluz",       "desc": "Bajo el tejado, ideal para hermanos o amigos." },
-    "VIII": { "name": "Mansarda Sur",           "bed": "1 cama individual", "view": "Jardín",            "desc": "Cámara pequeña bajo el techo sur. Sol todo el día." },
-    "IX":   { "name": "Recámara de la Biblioteca","bed": "1 cama individual","view": "Biblioteca",       "desc": "Estanterías empotradas, sillón de lectura, puerta propia a la biblioteca." },
-    "X":    { "name": "Cámara del Servicio",    "bed": "2 camas individuales", "view": "Patio interior", "desc": "En la antigua ala del servicio. Entrada propia, acogedora." }
+    "I":    { "name": "Recámara del Tilo",      "bed": "2 camas individuales", "view": "Avenida de tilos", "desc": "Junto a la antigua avenida de tilos. Techos altos, suelos blancos, un escritorio junto a la ventana." },
+    "II":   { "name": "Suite del Jardín",       "bed": "2 camas individuales", "view": "Jardín sur",       "desc": "Tranquila, abierta al jardín. Sol por la mañana, aroma a lavanda al anochecer." },
+    "III":  { "name": "Recámara Harry Potter",  "bed": "1 cama king size",  "view": "Patio",            "desc": "En lo alto del gablete con vigas de madera vistas. La calma del patio interior." },
+    "IV":   { "name": "Recámara del Gablete",   "bed": "1 cama queen size", "view": "Parque",           "desc": "Generosa, con techo de estuco y parquet. Junto al salón." },
+    "V":    { "name": "Cámara Hesse",           "bed": "2 camas individuales", "view": "Campos",         "desc": "Sencilla, luminosa, rural. Campos abiertos hasta el horizonte." },
+    "VI":   { "name": "Habitación de Caballeros",         "bed": "1 cama full", "view": "Patio",          "desc": "En el ala posterior, resguardada. Nido de cigüeña en la chimenea." },
+    "VII":  { "name": "Cámara Rosa Antigua",         "bed": "1 cama queen",      "view": "Tragaluz",       "desc": "Bajo el tejado, ideal para hermanos o amigos." },
+    "VIII": { "name": "Habitación de Damas",    "bed": "1 cama full", "view": "Jardín",            "desc": "Cámara pequeña bajo el techo sur. Sol todo el día." },
+    "IX":   { "name": "Habitación de Camas para Hombres Altos", "bed": "1 cama king size extralarga", "view": "Pueblo", "desc": "Recámara adicional con camas extralargas para huéspedes altos. Tranquila y de carácter sencillo." },
+    "X":    { "name": "Habitación-Senior-del-Gutshaus", "bed": "1 cama king size", "view": "Patio", "desc": "Habitación luminosa y sin barreras, con baño accesible, en la casa solariega, en una zona tranquila del patio interior." },
+    "XI":   { "name": "Habitación-de-las-Princesas-del-Gutshaus", "bed": "1 cama king size", "view": "Jardín", "desc": "Habitación tranquila con un ambiente amable junto al jardín." }
   },
   "amenitiesSec": {
     "eyebrow": "Servicios",
@@ -109,14 +110,15 @@
       "Estacionamiento gratuito en el patio",
       "Gran jardín con avenida de tilos",
       "Fogata y terraza",
-      "Cambiador y tronas bajo petición"
+      "Cambiador y tronas bajo petición",
+      "Toda la planta baja es sin barreras, incluida la Habitación Senior"
     ]
   },
   "locationSec": {
     "eyebrow": "Ubicación",
     "titleA": "En el pueblo de Breechen,",
     "titleEm": " cerca de Greifswald y el Mar Báltico.",
-    "address": "Breechen 1 · 17506 Gützkow",
+    "address": "Peenestrassee 16, 17506",
     "nearby": [
       { "place": "Lago de Breechen",            "time": "≈ 5 min" },
       { "place": "Gützkow",                     "time": "≈ 7 min" },
@@ -209,7 +211,7 @@
     "tagline": "Una casa solariega histórica del siglo XVIII en Pomerania Occidental — para familias, bodas y retiros.",
     "navHeading": "Navegación",
     "contactHeading": "Contacto",
-    "address": "Breechen 1, 17506 Gützkow",
+    "address": "Peenestrassee 16, 17506",
     "region": "Mecklemburgo-Pomerania Occidental",
     "copyright": "Todos los derechos reservados.",
     "imprint": "Aviso legal",

@@ -12,11 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ZimmerRouteImport } from './routes/zimmer'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ReservationsRouteImport } from './routes/reservations'
+import { Route as PlansDemoRouteImport } from './routes/plans-demo'
 import { Route as ImpressumRouteImport } from './routes/impressum'
 import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as DatenschutzRouteImport } from './routes/datenschutz'
 import { Route as AgbRouteImport } from './routes/agb'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 
 const ZimmerRoute = ZimmerRouteImport.update({
   id: '/zimmer',
@@ -31,6 +34,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ReservationsRoute = ReservationsRouteImport.update({
   id: '/reservations',
   path: '/reservations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlansDemoRoute = PlansDemoRouteImport.update({
+  id: '/plans-demo',
+  path: '/plans-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImpressumRoute = ImpressumRouteImport.update({
@@ -53,82 +61,112 @@ const AgbRoute = AgbRouteImport.update({
   path: '/agb',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/agb': typeof AgbRoute
   '/datenschutz': typeof DatenschutzRoute
   '/galerie': typeof GalerieRoute
   '/impressum': typeof ImpressumRoute
+  '/plans-demo': typeof PlansDemoRoute
   '/reservations': typeof ReservationsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
+  '/admin/login': typeof AdminLoginRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/agb': typeof AgbRoute
   '/datenschutz': typeof DatenschutzRoute
   '/galerie': typeof GalerieRoute
   '/impressum': typeof ImpressumRoute
+  '/plans-demo': typeof PlansDemoRoute
   '/reservations': typeof ReservationsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
+  '/admin/login': typeof AdminLoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/agb': typeof AgbRoute
   '/datenschutz': typeof DatenschutzRoute
   '/galerie': typeof GalerieRoute
   '/impressum': typeof ImpressumRoute
+  '/plans-demo': typeof PlansDemoRoute
   '/reservations': typeof ReservationsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
+  '/admin/login': typeof AdminLoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/agb'
     | '/datenschutz'
     | '/galerie'
     | '/impressum'
+    | '/plans-demo'
     | '/reservations'
     | '/sitemap.xml'
     | '/zimmer'
+    | '/admin/login'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/agb'
     | '/datenschutz'
     | '/galerie'
     | '/impressum'
+    | '/plans-demo'
     | '/reservations'
     | '/sitemap.xml'
     | '/zimmer'
+    | '/admin/login'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/agb'
     | '/datenschutz'
     | '/galerie'
     | '/impressum'
+    | '/plans-demo'
     | '/reservations'
     | '/sitemap.xml'
     | '/zimmer'
+    | '/admin/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AgbRoute: typeof AgbRoute
   DatenschutzRoute: typeof DatenschutzRoute
   GalerieRoute: typeof GalerieRoute
   ImpressumRoute: typeof ImpressumRoute
+  PlansDemoRoute: typeof PlansDemoRoute
   ReservationsRoute: typeof ReservationsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ZimmerRoute: typeof ZimmerRoute
@@ -155,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/reservations'
       fullPath: '/reservations'
       preLoaderRoute: typeof ReservationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plans-demo': {
+      id: '/plans-demo'
+      path: '/plans-demo'
+      fullPath: '/plans-demo'
+      preLoaderRoute: typeof PlansDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/impressum': {
@@ -185,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AgbRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -192,15 +244,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AgbRoute: AgbRoute,
   DatenschutzRoute: DatenschutzRoute,
   GalerieRoute: GalerieRoute,
   ImpressumRoute: ImpressumRoute,
+  PlansDemoRoute: PlansDemoRoute,
   ReservationsRoute: ReservationsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ZimmerRoute: ZimmerRoute,

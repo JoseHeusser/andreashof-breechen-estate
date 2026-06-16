@@ -33,7 +33,7 @@ function DatenschutzPage() {
             <h2 className="font-display text-2xl">1. Verantwortlicher</h2>
             <p className="mt-3">
               Verantwortlich für die Datenverarbeitung auf dieser Website ist
-              der Andreashof Breechen, Breechen 1, 17506 Gützkow.
+              der Andreashof Breechen, Peenestrassee 16, 17506.
             </p>
           </section>
           <section>

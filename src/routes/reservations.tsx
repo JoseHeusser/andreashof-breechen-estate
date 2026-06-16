@@ -80,6 +80,8 @@ function ReservationsPage() {
   const [guests, setGuests] = useState<number>(12);
   const [occasion, setOccasion] = useState<OccasionKey | "">("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const nights =
     range?.from && range?.to ? Math.max(0, differenceInCalendarDays(range.to, range.from)) : 0;
@@ -211,9 +213,34 @@ function ReservationsPage() {
                 </div>
 
                 <form
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
-                    setSubmitted(true);
+                    if (!range?.from || !range?.to) return;
+                    setSubmitError(null);
+                    setSubmitting(true);
+                    try {
+                      const fd = new FormData(e.currentTarget);
+                      const { createBookingRequest } = await import("@/lib/admin/server-fns");
+                      await createBookingRequest({
+                        data: {
+                          arrival: format(range.from, "yyyy-MM-dd"),
+                          departure: format(range.to, "yyyy-MM-dd"),
+                          guests,
+                          occasion: occasion || undefined,
+                          name: String(fd.get("name") || ""),
+                          email: String(fd.get("email") || ""),
+                        },
+                      });
+                      setSubmitted(true);
+                    } catch (err) {
+                      setSubmitError(
+                        err instanceof Error
+                          ? err.message
+                          : "Beim Senden ist etwas schiefgegangen.",
+                      );
+                    } finally {
+                      setSubmitting(false);
+                    }
                   }}
                   className="mt-6 space-y-6"
                 >
@@ -273,11 +300,16 @@ function ReservationsPage() {
 
                   <button
                     type="submit"
-                    disabled={!range?.from || !range?.to}
+                    disabled={!range?.from || !range?.to || submitting}
                     className="mt-2 w-full border border-foreground bg-foreground px-6 py-4 text-[11px] uppercase tracking-[0.28em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep disabled:cursor-not-allowed disabled:border-border disabled:bg-border disabled:text-muted-foreground"
                   >
-                    {t("reservations.submit")}
+                    {submitting ? "…" : t("reservations.submit")}
                   </button>
+                  {submitError && (
+                    <p className="text-[11px] leading-relaxed text-red-700">
+                      {submitError}
+                    </p>
+                  )}
                   <p className="text-[11px] leading-relaxed text-muted-foreground">
                     {t("reservations.submitNote")}
                   </p>

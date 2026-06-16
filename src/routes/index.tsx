@@ -162,7 +162,7 @@ function Home() {
           <div className="grid grid-cols-12 gap-4 md:gap-6">
             {/* Row 1: hero-sized great room + tall salon-upper */}
             <div className="img-hover reveal col-span-12 md:col-span-8">
-              <img src="/gallery/great-room.jpg" alt={t("gallery.alt.greatRoom")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[320px] md:h-[560px]" />
+              <img src="/gallery/maenner-gespraechsecke.png" alt={t("gallery.alt.greatRoom")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[320px] md:h-[560px]" />
             </div>
             <div className="img-hover reveal col-span-12 md:col-span-4" style={{ transitionDelay: "120ms" }}>
               <img src="/gallery/salon-upper.jpg" alt={t("gallery.alt.salonUpper")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[320px] md:h-[560px]" />
@@ -173,9 +173,6 @@ function Home() {
             </div>
             <div className="img-hover reveal col-span-12 md:col-span-3" style={{ transitionDelay: "120ms" }}>
               <img src="/gallery/salon-second-a.jpg" alt={t("gallery.alt.salonSecondA")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[400px]" />
-            </div>
-            <div className="img-hover reveal col-span-12 md:col-span-3" style={{ transitionDelay: "240ms" }}>
-              <img src="/gallery/salon-second-b.jpg" alt={t("gallery.alt.salonSecondB")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[400px]" />
             </div>
             {/* Row 3: kitchen + outdoor games */}
             <div className="img-hover reveal col-span-12 md:col-span-7">

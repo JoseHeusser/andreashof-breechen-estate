@@ -1,0 +1,25 @@
+<svg width="844" height="434" viewBox="0 0 844 434" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Andreashof floor 1 plan</title>
+  <rect width="844" height="434" fill="#F5F5F5"/>
+  <g id="floor1_click_zones">
+    <polygon id="floor1_room_1" class="zone" points="6,6 100,6 100,178 6,178"/>
+    <polygon id="floor1_room_2" class="zone" points="106,6 228,6 228,178 106,178"/>
+    <polygon id="floor1_room_3" class="zone" points="234,6 402,6 402,178 234,178"/>
+    <polygon id="floor1_room_4" class="zone" points="406,6 707,6 707,178 406,178"/>
+    <polygon id="floor1_room_5" class="zone" points="6,184 265,184 265,430 6,430"/>
+    <polygon id="floor1_room_6" class="zone" points="271,184 575,184 575,430 271,430"/>
+    <polygon id="floor1_room_7" class="zone" points="581,184 707,184 707,430 581,430"/>
+    <polygon id="floor1_room_8" class="zone" points="713,6 838,6 838,430 713,430"/>
+  </g>
+  <path
+    id="floor1_outline"
+    d="M103.5 431.003H267.5M103.5 431.003H2.5V359.003H103.5M103.5 431.003V359.003M232.5 3.32847L103.5 3.50339V180.503M232.5 3.32847V180.503M711 2.67966L541 2.91017L404 3.09593L232.5 3.32847M232.5 180.503H267.5M232.5 180.503H218.5M103.5 180.503V252.503M103.5 180.503H218.5M404 3.09593V180.503H267.5M103.5 252.503H218.5M103.5 252.503V359.003M267.5 252.503V431.003M267.5 252.503V180.503M267.5 252.503H218.5M267.5 431.003H368M368 431.003V252.503H576.5M368 431.003H576.5M576.5 252.503V431.003M576.5 252.503H711M576.5 431.003H711M711 252.503V348.003M711 252.503V181.003M711 431.003H841V348.003M711 431.003V348.003M711 348.003H841M841 348.003V181.003M711 2.67966L841 2.50339V82.5034M711 2.67966V82.5034M711 181.003H841M711 181.003H541V2.91017M711 181.003V82.5034M841 181.003V82.5034M218.5 180.503V252.503M711 82.5034H841"
+    stroke="#111111"
+    stroke-width="5"
+    stroke-linecap="square"
+  />
+  <style>
+    .zone { fill: #16A34A; fill-opacity: 0; cursor: pointer; }
+    .zone:hover { fill-opacity: 0.22; }
+  </style>
+</svg>

@@ -9,7 +9,7 @@
     "reserve": "Reserve"
   },
   "hero": {
-    "eyebrow": "Breechen · Mecklenburg-Vorpommern · Est. 1782",
+    "eyebrow": "Breechen · Vorpommern · Est. 1782",
     "titleLine1": "A manor house,",
     "titleLine2": "in the village.",
     "subtitle": "Historic 18th-century Gustavian manor house, in the heart of the village of Breechen. Available exclusively as a whole — for up to 21 guests.",
@@ -27,11 +27,11 @@
   "uses": {
     "family": {
       "title": "Family gatherings",
-      "body": "Generous common rooms, ten bedrooms and a wide garden — room for three generations under one roof."
+      "body": "Generous common rooms, eleven bedrooms and a wide garden — room for three generations under one roof."
     },
     "weddings": {
-      "title": "Weddings",
-      "body": "A symmetrical façade, a garden long enough for a table of 21, the village just outside. A day that stays."
+      "title": "Birthdays",
+      "body": "Generous rooms, a garden with a long table for 21 guests and more — space for celebrations that stay with you."
     },
     "retreats": {
       "title": "Retreats & workshops",
@@ -55,10 +55,10 @@
   },
   "roomsTeaser": {
     "eyebrow": "The Rooms",
-    "titleA": "Ten chambers for",
+    "titleA": "Eleven chambers for",
     "titleEm": " twenty-one ",
     "titleB": "guests.",
-    "body": "Each room carries a name, each has its own view. High ceilings, white-painted floorboards, linen curtains.",
+    "body": "Each room carries a name, each has its own character. High ceilings, white-painted floorboards, linen curtains.",
     "cta": "View all rooms"
   },
   "galerieFull": {
@@ -76,8 +76,8 @@
   },
   "zimmer": {
     "pageEyebrow": "The Rooms",
-    "pageTitle": "Ten chambers, each its own.",
-    "pageSubtitle": "Choose a chamber to see bed, view and atmosphere.",
+    "pageTitle": "Eleven chambers, each its own.",
+    "pageSubtitle": "Choose a chamber to see bed and atmosphere.",
     "labelBed": "Bed",
     "labelView": "View",
     "labelNumber": "Chamber",
@@ -85,16 +85,17 @@
     "selectorLabel": "Choose a chamber"
   },
   "rooms": {
-    "I":    { "name": "Linden Room",      "bed": "1 king bed",     "view": "Lime-tree avenue", "desc": "Overlooking the old lime-tree avenue. High ceilings, white floorboards, a desk by the window." },
-    "II":   { "name": "Garden Suite",     "bed": "1 king bed",     "view": "South garden",      "desc": "Quietly facing the garden. Morning sun, lavender scent at dusk." },
-    "III":  { "name": "Gable Room",       "bed": "1 king bed",     "view": "Courtyard",         "desc": "Set high in the gable with exposed half-timbering. The stillness of the inner court." },
-    "IV":   { "name": "Salon Room",       "bed": "1 queen bed",    "view": "Park",              "desc": "Generous, with stucco ceiling and parquet. Next door to the salon." },
-    "V":    { "name": "Chamber Hesse",    "bed": "2 single beds",  "view": "Fields",            "desc": "Simple, bright, rural. View across the fields to the horizon." },
-    "VI":   { "name": "Chamber Storch",   "bed": "2 single beds",  "view": "Courtyard",         "desc": "Tucked at the rear, sheltered. Stork's nest on the chimney." },
-    "VII":  { "name": "North Mansard",    "bed": "3 single beds",  "view": "Skylight",          "desc": "Under the roof, ideal for siblings or friends travelling together." },
-    "VIII": { "name": "South Mansard",    "bed": "1 single bed",   "view": "Garden",            "desc": "A small chamber under the southern roof. Sun all day." },
-    "IX":   { "name": "Library Room",     "bed": "1 single bed",   "view": "Library",           "desc": "Built-in shelves, reading chair, private door to the library." },
-    "X":    { "name": "Servants' Chamber","bed": "2 single beds",  "view": "Inner courtyard",   "desc": "In the former servants' wing. Own entrance, snug." }
+    "I":    { "name": "Linden Room",      "bed": "2 single beds",  "view": "Lime-tree avenue", "desc": "Set along the old lime-tree avenue. High ceilings, white floorboards, a desk by the window." },
+    "II":   { "name": "Garden Suite",     "bed": "2 single beds",  "view": "South garden",      "desc": "Quietly facing the garden. Morning sun, lavender scent at dusk." },
+    "III":  { "name": "Harry Potter Room", "bed": "1 king bed",     "view": "Courtyard",         "desc": "Set high in the gable with exposed half-timbering. The stillness of the inner court." },
+    "IV":   { "name": "Gable Room",       "bed": "1 queen bed",    "view": "Park",              "desc": "Generous, with stucco ceiling and parquet. Next door to the salon." },
+    "V":    { "name": "Chamber Hesse",    "bed": "2 single beds",  "view": "Fields",            "desc": "Simple, bright, rural. Open fields stretching to the horizon." },
+    "VI":   { "name": "Gentlemen's Room",   "bed": "1 full bed",   "view": "Courtyard",         "desc": "Tucked at the rear, sheltered. Stork's nest on the chimney." },
+    "VII":  { "name": "Old Pink Chamber",    "bed": "1 queen bed",    "view": "Skylight",          "desc": "Under the roof, ideal for siblings or friends travelling together." },
+    "VIII": { "name": "Ladies' Room",     "bed": "1 full bed",   "view": "Garden",            "desc": "A small chamber under the southern roof. Sun all day." },
+    "IX":   { "name": "Long-Men-Beds Room", "bed": "1 extra-long king bed", "view": "Village", "desc": "Additional chamber with extra-long beds for tall guests. Quietly located with a simple, calm character." },
+    "X":    { "name": "Senior-Manor-Room", "bed": "1 king bed", "view": "Courtyard", "desc": "A bright, barrier-free room with an accessible bathroom in the manor house, quietly placed in the inner courtyard." },
+    "XI":   { "name": "Princesses-Manor-Room", "bed": "1 king bed", "view": "Garden", "desc": "A quiet room with a warm, welcoming feel by the garden." }
   },
   "amenitiesSec": {
     "eyebrow": "Amenities",
@@ -109,14 +110,15 @@
       "Free parking in the courtyard",
       "Large garden with lime-tree avenue",
       "Fire pit & terrace",
-      "Changing table & highchairs on request"
+      "Changing table & highchairs on request",
+      "The entire ground floor is barrier-free, including the Senior Room"
     ]
   },
   "locationSec": {
     "eyebrow": "Location",
     "titleA": "In the village of Breechen,",
     "titleEm": " close to Greifswald and the Baltic Sea.",
-    "address": "Breechen 1 · 17506 Gützkow",
+    "address": "Peenestrassee 16, 17506",
     "nearby": [
       { "place": "Breechen bathing lake", "time": "≈ 5 min" },
       { "place": "Gützkow",               "time": "≈ 7 min" },
@@ -209,7 +211,7 @@
     "tagline": "A historic 18th-century manor house in Western Pomerania — for families, weddings and retreats.",
     "navHeading": "Navigation",
     "contactHeading": "Contact",
-    "address": "Breechen 1, 17506 Gützkow",
+    "address": "Peenestrassee 16, 17506",
     "region": "Mecklenburg-Vorpommern",
     "copyright": "All rights reserved.",
     "imprint": "Imprint",

@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { GALLERY_PHOTOS, type GalleryCategory } from "@/data/galerie";
 
-const CATEGORIES: ("all" | GalleryCategory)[] = [
-  "all",
+const CATEGORIES: GalleryCategory[] = [
   "interior",
   "bath",
   "garden",
@@ -36,13 +35,10 @@ function GaleriePage() {
     string
   >;
 
-  const [active, setActive] = useState<"all" | GalleryCategory>("all");
+  const [active, setActive] = useState<GalleryCategory>("interior");
   const [lightbox, setLightbox] = useState<number | null>(null);
 
-  const photos = useMemo(
-    () => (active === "all" ? GALLERY_PHOTOS : GALLERY_PHOTOS.filter((p) => p.category === active)),
-    [active],
-  );
+  const photos = useMemo(() => GALLERY_PHOTOS.filter((p) => p.category === active), [active]);
 
   // Reset lightbox when filter changes.
   useEffect(() => setLightbox(null), [active]);
@@ -85,7 +81,7 @@ function GaleriePage() {
           <ul className="flex min-w-max gap-6 border-b border-border pb-3 md:gap-10">
             {CATEGORIES.map((c) => {
               const isActive = c === active;
-              const label = c === "all" ? "Alle" : labels[c];
+              const label = labels[c];
               return (
                 <li key={c}>
                   <button

@@ -26,8 +26,7 @@ function ImpressumPage() {
             <h2 className="font-display text-2xl">Angaben gemäß § 5 TMG</h2>
             <p className="mt-3">
               Andreashof Breechen<br />
-              Breechen 1<br />
-              17506 Gützkow<br />
+              Peenestrassee 16, 17506<br />
               Deutschland
             </p>
           </section>
@@ -37,10 +36,7 @@ function ImpressumPage() {
           </section>
           <section>
             <h2 className="font-display text-2xl">Kontakt</h2>
-            <p className="mt-3">
-              Telefon: +49 151 1234 5678<br />
-              E-Mail: willkommen@andreashof-breechen.de
-            </p>
+            <p className="mt-3"></p>
           </section>
           <section>
             <h2 className="font-display text-2xl">Umsatzsteuer-ID</h2>

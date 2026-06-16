@@ -84,9 +84,9 @@ export function SiteFooter() {
           <div>
             <h4 className="eyebrow">{t("footer.contactHeading")}</h4>
             <ul className="mt-5 space-y-3 text-sm">
-              <li><a href="mailto:willkommen@andreashof-breechen.de" className="hover:text-sage-deep">willkommen@andreashof-breechen.de</a></li>
-              <li><a href="https://wa.me/4915112345678" className="hover:text-sage-deep">WhatsApp +49 151 1234 5678</a></li>
-              <li className="text-muted-foreground">{t("footer.address")}<br/>{t("footer.region")}</li>
+              <li></li>
+              <li></li>
+              <li className="text-muted-foreground"></li>
             </ul>
           </div>
         </div>

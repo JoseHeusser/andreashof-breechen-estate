@@ -2,8 +2,9 @@ import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import { useEffect, useRef } from "react";
 
-const HOUSE: [number, number] = [53.9314, 13.3513];
+const HOUSE: [number, number] = [53.9317716, 13.3530925];
 const GREIFSWALD: [number, number] = [54.0865, 13.3923];
+const ADDRESS = "Peenestrassee 16, 17506";
 
 const houseIcon = L.divIcon({
   className: "andreashof-marker",
@@ -70,7 +71,7 @@ export function LocationMap() {
         />
         <Marker position={HOUSE} icon={houseIcon}>
           <Tooltip direction="top" offset={[0, -8]} permanent>
-            Andreashof
+            Andreashof<br />{ADDRESS}
           </Tooltip>
         </Marker>
         <Marker position={GREIFSWALD} icon={cityIcon}>

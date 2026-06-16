@@ -1,25 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { ROOM_IMAGES, ROOM_KEYS, type RoomKey } from "@/data/rooms";
 
-const ROOM_KEYS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"] as const;
-type RoomKey = (typeof ROOM_KEYS)[number];
-
-// Photos copied from the original Airbnb listing (public/rooms/).
-// Order: roman numeral I → bedroom 1, etc.
-const ROOM_IMAGES: Record<RoomKey, string[]> = {
-  I:    ["/rooms/room-01a.jpg", "/rooms/room-01b.jpg", "/rooms/room-01c.jpg"],
-  II:   ["/rooms/room-02a.jpg"],
-  III:  ["/rooms/room-03a.jpg"],
-  IV:   ["/rooms/room-04a.jpg"],
-  V:    ["/rooms/room-05a.jpg"],
-  VI:   ["/rooms/room-06a.jpg", "/rooms/room-06b.jpg"],
-  VII:  ["/rooms/room-07a.jpg", "/rooms/room-07b.jpg"],
-  VIII: ["/rooms/room-08a.jpg", "/rooms/room-08b.jpg", "/rooms/room-08c.jpg"],
-  IX:   ["/rooms/room-09a.jpg"],
-  X:    ["/rooms/room-10a.jpg"],
-};
+const ROOM_SWITCH_OUT_MS = 110;
+const ROOM_SWITCH_IN_MS = 220;
 
 export const Route = createFileRoute("/zimmer")({
   head: () => ({
@@ -39,27 +25,87 @@ export const Route = createFileRoute("/zimmer")({
 function ZimmerPage() {
   const { t } = useTranslation();
   const [active, setActive] = useState<RoomKey>("I");
+  const [displayedRoom, setDisplayedRoom] = useState<RoomKey>("I");
   const [imgIdx, setImgIdx] = useState(0);
+  const [transitionPhase, setTransitionPhase] = useState<"idle" | "out" | "in">("idle");
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const displayedRoomRef = useRef<RoomKey>("I");
 
-  const room = t(`rooms.${active}`, { returnObjects: true }) as {
+  const room = t(`rooms.${displayedRoom}`, { returnObjects: true }) as {
     name: string;
     bed: string;
     view: string;
     desc: string;
   };
 
-  const photos = useMemo(() => ROOM_IMAGES[active], [active]);
+  const photos = useMemo(() => ROOM_IMAGES[displayedRoom], [displayedRoom]);
   const currentPhoto = photos[Math.min(imgIdx, photos.length - 1)];
 
-  // Reset image index whenever the active room changes.
+  // Reset image index whenever the displayed room changes.
   useEffect(() => {
     setImgIdx(0);
-  }, [active]);
+  }, [displayedRoom]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = () => setReduceMotion(mediaQuery.matches);
+    onChange();
+    mediaQuery.addEventListener("change", onChange);
+    return () => mediaQuery.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
+    displayedRoomRef.current = displayedRoom;
+  }, [displayedRoom]);
+
+  useEffect(() => {
+    if (active === displayedRoomRef.current) {
+      setTransitionPhase("idle");
+      return;
+    }
+    if (reduceMotion) {
+      setDisplayedRoom(active);
+      displayedRoomRef.current = active;
+      setTransitionPhase("idle");
+      return;
+    }
+
+    let inTimer: number | undefined;
+    setTransitionPhase("out");
+    const outTimer = window.setTimeout(() => {
+      displayedRoomRef.current = active;
+      setDisplayedRoom(active);
+      setTransitionPhase("in");
+
+      inTimer = window.setTimeout(() => {
+        setTransitionPhase("idle");
+      }, ROOM_SWITCH_IN_MS);
+    }, ROOM_SWITCH_OUT_MS);
+
+    return () => {
+      window.clearTimeout(outTimer);
+      if (inTimer) window.clearTimeout(inTimer);
+    };
+  }, [active, reduceMotion]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, []);
+
+  const detailTransitionClass = reduceMotion
+    ? "opacity-100 translate-y-0"
+    : transitionPhase === "out"
+      ? "opacity-30 translate-y-0.5"
+      : transitionPhase === "in"
+        ? "opacity-100 translate-y-0"
+        : "opacity-100 translate-y-0";
+  const detailTransitionDurationMs = reduceMotion
+    ? 0
+    : transitionPhase === "out"
+      ? ROOM_SWITCH_OUT_MS
+      : ROOM_SWITCH_IN_MS;
 
   return (
     <div className="min-h-screen bg-background">
@@ -158,69 +204,76 @@ function ZimmerPage() {
           </aside>
 
           {/* Detail panel */}
-          <div className="md:col-span-8" key={active}>
-            <div className="img-hover animate-fade-up">
-              <img
-                src={currentPhoto}
-                alt={`${room.name} — ${imgIdx + 1}/${photos.length}`}
-                className="h-[320px] w-full object-cover md:h-[560px]"
-              />
-            </div>
-            {photos.length > 1 && (
-              <div
-                className="mt-4 grid gap-3 animate-fade-up"
-                style={{
-                  gridTemplateColumns: `repeat(${photos.length}, minmax(0, 1fr))`,
-                  animationDelay: "60ms",
-                }}
-              >
-                {photos.map((src, i) => {
-                  const isActive = i === imgIdx;
-                  return (
-                    <button
-                      key={src}
-                      type="button"
-                      onClick={() => setImgIdx(i)}
-                      aria-current={isActive ? "true" : undefined}
-                      className={`overflow-hidden transition-all duration-300 ${
-                        isActive
-                          ? "opacity-100 ring-1 ring-sage-deep ring-offset-2 ring-offset-background"
-                          : "opacity-60 hover:opacity-100"
-                      }`}
-                    >
-                      <img
-                        src={src}
-                        alt=""
-                        loading="lazy"
-                        className="h-20 w-full object-cover md:h-24"
-                      />
-                    </button>
-                  );
-                })}
+          <div className="md:col-span-8">
+            <div
+              className={`transition-[opacity,transform] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${detailTransitionClass}`}
+              style={{ transitionDuration: `${detailTransitionDurationMs}ms` }}
+            >
+              <div className="img-hover">
+                <img
+                  src={currentPhoto}
+                  alt={`${room.name} — ${imgIdx + 1}/${photos.length}`}
+                  className="h-[320px] w-full object-cover md:h-[560px]"
+                />
               </div>
-            )}
-            <div className="mt-10 animate-fade-up" style={{ animationDelay: "120ms" }}>
-              <p className="eyebrow text-sage-deep">
-                {t("zimmer.labelNumber")} {active}
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-light leading-tight md:text-5xl">
-                {room.name}
-              </h2>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
-                {room.desc}
-              </p>
+              {photos.length > 1 && (
+                <div
+                  className="mt-4 grid gap-3"
+                  style={{
+                    gridTemplateColumns: `repeat(${photos.length}, minmax(0, 1fr))`,
+                  }}
+                >
+                  {photos.map((src, i) => {
+                    const isActive = i === imgIdx;
+                    return (
+                      <button
+                        key={src}
+                        type="button"
+                        onClick={() => setImgIdx(i)}
+                        aria-current={isActive ? "true" : undefined}
+                        className={`overflow-hidden transition-all duration-300 ${
+                          isActive
+                            ? "opacity-100 ring-1 ring-sage-deep ring-offset-2 ring-offset-background"
+                            : "opacity-60 hover:opacity-100"
+                        }`}
+                      >
+                        <img
+                          src={src}
+                          alt=""
+                          loading="lazy"
+                          className="h-20 w-full object-cover md:h-24"
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+              <div className="mt-10">
+                <p className="eyebrow text-sage-deep">
+                  {t("zimmer.labelNumber")} {displayedRoom}
+                </p>
+                <h2 className="mt-3 font-display text-3xl font-light leading-tight md:text-5xl">
+                  {room.name}
+                </h2>
+                <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
+                  {room.desc}
+                </p>
 
-              <dl className="mt-10 grid max-w-md grid-cols-2 gap-6 border-t border-border pt-6">
-                <div>
-                  <dt className="eyebrow text-muted-foreground">{t("zimmer.labelBed")}</dt>
-                  <dd className="mt-2 font-display text-lg text-foreground">{room.bed}</dd>
-                </div>
-                <div>
-                  <dt className="eyebrow text-muted-foreground">{t("zimmer.labelView")}</dt>
-                  <dd className="mt-2 font-display text-lg text-foreground">{room.view}</dd>
-                </div>
-              </dl>
+                <dl className="mt-10 grid max-w-md grid-cols-2 gap-6 border-t border-border pt-6">
+                  <div>
+                    <dt className="eyebrow text-muted-foreground">{t("zimmer.labelBed")}</dt>
+                    <dd className="mt-2 font-display text-lg text-foreground">{room.bed}</dd>
+                  </div>
+                  <div>
+                    <dt className="eyebrow text-muted-foreground">{t("zimmer.labelView")}</dt>
+                    <dd className="mt-2 font-display text-lg text-foreground">{room.view}</dd>
+                  </div>
+                </dl>
+              </div>
             </div>
+            {!reduceMotion && transitionPhase === "out" && (
+              <div className="mt-4 h-px w-full bg-sage-deep/35" />
+            )}
           </div>
         </div>
       </section>

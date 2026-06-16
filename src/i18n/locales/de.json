@@ -9,9 +9,9 @@
     "reserve": "Reservieren"
   },
   "hero": {
-    "eyebrow": "Breechen · Mecklenburg-Vorpommern · Est. 1782",
+    "eyebrow": "Breechen · Vorpommern · Est. 1782",
     "titleLine1": "Ein Gutshaus,",
-    "titleLine2": "mitten im Dorf.",
+    "titleLine2": "im mitten seines Dorfes",
     "subtitle": "Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert, im Herzen von Breechen. Komplett mietbar für bis zu 21 Gäste.",
     "ctaPrimary": "Anfrage senden",
     "ctaSecondary": "Das Haus entdecken"
@@ -27,15 +27,15 @@
   "uses": {
     "family": {
       "title": "Familienfeste",
-      "body": "Großzügige gemeinsame Räume, zehn Schlafzimmer und ein weiter Garten — Platz für drei Generationen unter einem Dach."
+      "body": "Großzügige gemeinsame Räume, elf Schlafzimmer und ein weiter Garten — Platz für drei Generationen unter einem Dach."
     },
     "weddings": {
-      "title": "Hochzeiten",
-      "body": "Symmetrische Fassade, Garten mit langer Tafel für 21 Gäste, das Dorf gleich nebenan. Ein Tag, der bleibt."
+      "title": "Geburtstage",
+      "body": "Großzügige Räume, ein Garten mit langer Tafel für 21 Gäste und mehr — Raum für Feste, die in Erinnerung bleiben."
     },
     "retreats": {
       "title": "Retreats & Workshops",
-      "body": "Hohe Räume, ein vom Dorf abgeschirmter Hof, Badesee in der Nähe. Ein Ort für Teams und konzentrierte Tage."
+      "body": "Hohe Räume, ein großer Garten nur für die Gäste des Gutshauses, geschützt und privat, Badesee in der Nähe. Ein Ort für Teams und konzentrierte Tage."
     }
   },
   "gallery": {
@@ -44,7 +44,7 @@
     "subtitle": "Eindrücke aus Salon, Esszimmer, Kammern und Garten — fotografiert im weichen Licht des Vorpommerschen Sommers.",
     "cta": "Ganze Galerie ansehen",
     "alt": {
-      "greatRoom": "Großer Gemeinschaftsraum mit Esstisch für 14 und offener Küche",
+      "greatRoom": "Männer-Gesprächsecke mit Sesseln und Blick in den Salon",
       "salonUpper": "Salon im Obergeschoss, 100 m² Wohnraum",
       "salonSecondA": "Zweiter Salon — Sitzgruppe",
       "salonSecondB": "Zweiter Salon — Fensterseite",
@@ -55,10 +55,10 @@
   },
   "roomsTeaser": {
     "eyebrow": "Die Zimmer",
-    "titleA": "Zehn Kammern für",
+    "titleA": "Elf Kammern für",
     "titleEm": " einundzwanzig ",
     "titleB": "Gäste.",
-    "body": "Jedes Zimmer trägt einen Namen, jedes hat seinen Blick. Hohe Decken, weiß gestrichene Dielen, Leinenvorhänge.",
+    "body": "Jedes Zimmer trägt einen Namen, jedes hat seinen eigenen Charakter. Hohe Decken, weiß gestrichene Dielen, Leinenvorhänge.",
     "cta": "Alle Zimmer ansehen"
   },
   "galerieFull": {
@@ -76,8 +76,8 @@
   },
   "zimmer": {
     "pageEyebrow": "Die Zimmer",
-    "pageTitle": "Zehn Kammern, je eigen.",
-    "pageSubtitle": "Wählen Sie eine Kammer, um Bett, Aussicht und Atmosphäre zu sehen.",
+    "pageTitle": "Elf Kammern, jede sehr eigen.",
+    "pageSubtitle": "Wählen Sie eine Kammer, um Bett und Atmosphäre zu sehen.",
     "labelBed": "Bett",
     "labelView": "Aussicht",
     "labelNumber": "Kammer",
@@ -85,16 +85,17 @@
     "selectorLabel": "Kammer wählen"
   },
   "rooms": {
-    "I":    { "name": "Lindenzimmer",     "bed": "1 Kingsize-Bett",   "view": "Lindenallee", "desc": "Mit Blick in die alte Lindenallee. Hohe Decken, weiß gestrichene Dielen, ein Schreibtisch am Fenster." },
-    "II":   { "name": "Gartensuite",      "bed": "1 Kingsize-Bett",   "view": "Südgarten",   "desc": "Ruhig zum Garten gelegen. Morgens Sonne, abends Lavendelduft." },
-    "III":  { "name": "Giebelzimmer",     "bed": "1 Kingsize-Bett",   "view": "Hof",         "desc": "Im hohen Giebel mit freigelegtem Fachwerk. Stille des Innenhofs." },
-    "IV":   { "name": "Salonzimmer",      "bed": "1 Queensize-Bett",  "view": "Park",        "desc": "Großzügig, mit Stuckdecke und Parkett. Direkt neben dem Salon." },
-    "V":    { "name": "Kammer Hesse",     "bed": "2 Einzelbetten",    "view": "Felder",      "desc": "Schlicht, hell, ländlich. Blick über die Felder bis zum Horizont." },
-    "VI":   { "name": "Kammer Storch",    "bed": "2 Einzelbetten",    "view": "Hof",         "desc": "Im hinteren Trakt, geschützt. Storchennest am Schornstein." },
-    "VII":  { "name": "Mansarde Nord",    "bed": "3 Einzelbetten",    "view": "Dachfenster", "desc": "Unter dem Dach, ideal für Geschwister oder Freunde." },
-    "VIII": { "name": "Mansarde Süd",     "bed": "1 Einzelbett",      "view": "Garten",      "desc": "Kleine Kammer mit Süddach. Sonne den ganzen Tag." },
-    "IX":   { "name": "Bibliothekszimmer","bed": "1 Einzelbett",      "view": "Bibliothek",  "desc": "Eingebaute Regale, Lesesessel, eigene Tür zur Bibliothek." },
-    "X":    { "name": "Gesindekammer",    "bed": "2 Einzelbetten",    "view": "Innenhof",    "desc": "Im ehemaligen Gesindetrakt. Eigener Eingang, gemütlich." }
+    "I":    { "name": "Lindenzimmer",     "bed": "2 Einzelbetten",    "view": "Lindenallee", "desc": "An der alten Lindenallee. Hohe Decken, weiß gestrichene Dielen, ein Schreibtisch am Fenster." },
+    "II":   { "name": "Gartensuite",      "bed": "2 Einzelbetten",    "view": "Südgarten",   "desc": "Ruhig zum Garten gelegen. Morgens Sonne, abends Lavendelduft." },
+    "III":  { "name": "Harry Potter Zimmer", "bed": "1 Kingsize-Bett",   "view": "Hof",         "desc": "Im hohen Giebel mit freigelegtem Fachwerk. Stille des Innenhofs." },
+    "IV":   { "name": "Giebelzimmer",      "bed": "1 Queensize-Bett",  "view": "Park",        "desc": "Großzügig, mit Stuckdecke und Parkett. Direkt neben dem Salon." },
+    "V":    { "name": "Ostsee Zimmer",    "bed": "2 Einzelbetten",    "view": "Felder",      "desc": "Schlicht, hell, ländlich. Weit über die Felder bis zum Horizont." },
+    "VI":   { "name": "Herren Zimmer",    "bed": "1 Französisches Bett",      "view": "Hof",         "desc": "Im hinteren Trakt, geschützt. Storchennest am Schornstein." },
+    "VII":  { "name": "Alt Rosa Kammer",    "bed": "1 Queensize-Bett", "view": "Dachfenster", "desc": "Unter dem Dach, ideal für Geschwister oder Freunde." },
+    "VIII": { "name": "Damenzimmer",       "bed": "1 Französisches Bett",      "view": "Garten",      "desc": "Kleines Zimmer mit Süddach. Sonne den ganzen Tag." },
+    "IX":   { "name": "Lange-Männer-Betten-Zimmer", "bed": "1 Extralanges Kingsize-Bett", "view": "Dorf", "desc": "Zusätzliches Zimmer mit extralangen Betten für große Gäste. Ruhig gelegen und bewusst schlicht gehalten." },
+    "X":    { "name": "Senioren-Guthaus-Zimmer", "bed": "1 King-Size-Bett", "view": "Hof", "desc": "Helles, barrierefreies Zimmer mit barrierefreiem Bad im Gutshaus, ruhig gelegen im Innenhof." },
+    "XI":   { "name": "Prinzessinnen-Gutshaus-Zimmer", "bed": "1 King-Size-Bett", "view": "Garten", "desc": "Ruhiges Zimmer mit freundlicher Atmosphäre am Garten." }
   },
   "amenitiesSec": {
     "eyebrow": "Ausstattung",
@@ -109,14 +110,15 @@
       "Kostenfreie Parkplätze auf dem Hof",
       "Großer Garten mit Lindenallee",
       "Lagerfeuerstelle & Terrasse",
-      "Wickeltisch & Hochstühle auf Anfrage"
+      "Wickeltisch & Hochstühle auf Anfrage",
+      "Das gesamte Erdgeschoss ist barrierefrei, inklusive Seniorenzimmer"
     ]
   },
   "locationSec": {
     "eyebrow": "Lage",
     "titleA": "Im Dorf Breechen,",
     "titleEm": " nahe Greifswald und der Ostsee.",
-    "address": "Breechen 1 · 17506 Gützkow",
+    "address": "Peenestrassee 16, 17506",
     "nearby": [
       { "place": "Breechener Badesee",      "time": "≈ 5 Min" },
       { "place": "Gützkow",                 "time": "≈ 7 Min" },
@@ -209,7 +211,7 @@
     "tagline": "Ein historisches Gutshaus aus dem 18. Jahrhundert in Vorpommern — für Familien, Hochzeiten und Rückzüge.",
     "navHeading": "Navigation",
     "contactHeading": "Kontakt",
-    "address": "Breechen 1, 17506 Gützkow",
+    "address": "Peenestrassee 16, 17506",
     "region": "Mecklenburg-Vorpommern",
     "copyright": "Alle Rechte vorbehalten.",
     "imprint": "Impressum",
