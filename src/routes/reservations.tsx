@@ -85,43 +85,46 @@ function ReservationsPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [quoteCents, setQuoteCents] = useState<number | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
+  // The quote is invalidated as soon as the user changes any input after
+  // a quote was already fetched. Forces them to click 'Check availability'
+  // again — so they can't keep tweaking guests to fish for prices.
+  const [quoteStale, setQuoteStale] = useState(false);
 
   const nights =
     range?.from && range?.to ? Math.max(0, differenceInCalendarDays(range.to, range.from)) : 0;
   const locale = localeFor(i18n.language);
   const fmt = (d: Date) => format(d, "EEE, d MMM", { locale });
+  const MAX_GUESTS = 21;
+  const guestsTooMany = guests > MAX_GUESTS;
+  const canCheck = !!range?.from && !!range?.to && nights >= 1 && guests >= 1 && !guestsTooMany && occasion !== "";
+  const showQuote = quoteCents != null && !quoteStale;
 
-  // Fetch a server-side pricing quote whenever the date range or guest count
-  // changes. Debounced 250 ms to avoid spamming the API while the user is
-  // dragging the calendar selection.
+  // Mark the quote as stale whenever the user changes any input that
+  // affects the price (or the contact metadata).
   useEffect(() => {
-    if (!range?.from || !range?.to || nights < 1 || guests < 1) {
-      setQuoteCents(null);
-      return;
-    }
+    if (quoteCents != null) setQuoteStale(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [range?.from, range?.to, guests, occasion]);
+
+  const handleCheckAvailability = async () => {
+    if (!canCheck || !range?.from || !range?.to) return;
     setQuoteLoading(true);
-    let cancelled = false;
-    const timer = window.setTimeout(async () => {
-      try {
-        const res = await getPricingQuote({
-          data: {
-            arrival: format(range.from!, "yyyy-MM-dd"),
-            departure: format(range.to!, "yyyy-MM-dd"),
-            guests,
-          },
-        });
-        if (!cancelled) setQuoteCents(res.totalCents);
-      } catch {
-        if (!cancelled) setQuoteCents(null);
-      } finally {
-        if (!cancelled) setQuoteLoading(false);
-      }
-    }, 250);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timer);
-    };
-  }, [range?.from, range?.to, guests, nights]);
+    try {
+      const res = await getPricingQuote({
+        data: {
+          arrival: format(range.from, "yyyy-MM-dd"),
+          departure: format(range.to, "yyyy-MM-dd"),
+          guests,
+        },
+      });
+      setQuoteCents(res.totalCents);
+      setQuoteStale(false);
+    } catch {
+      setQuoteCents(null);
+    } finally {
+      setQuoteLoading(false);
+    }
+  };
 
   const totalFormatted =
     quoteCents != null
@@ -248,19 +251,26 @@ function ReservationsPage() {
                           {t("reservations.summaryNights", { count: nights })}
                         </p>
                       )}
-                      {nights > 0 && (
-                        <div className="mt-4 border-t border-border pt-4">
+                      {/* Total price block — fades in on successful check */}
+                      <div
+                        className={`mt-4 overflow-hidden transition-all duration-500 ease-out ${
+                          showQuote
+                            ? "max-h-40 translate-y-0 opacity-100"
+                            : "max-h-0 -translate-y-1 opacity-0"
+                        }`}
+                      >
+                        <div className="border-t border-border pt-4">
                           <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                             {t("reservations.summaryTotal")}
                           </p>
                           <p className="mt-1 font-display text-3xl leading-tight text-foreground">
-                            {quoteLoading || !totalFormatted ? "…" : totalFormatted}
+                            {totalFormatted ?? "…"}
                           </p>
                           <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
                             {t("reservations.summaryTotalNote")}
                           </p>
                         </div>
-                      )}
+                      </div>
                     </div>
                   ) : (
                     <p className="text-sm leading-relaxed text-muted-foreground">
@@ -303,19 +313,23 @@ function ReservationsPage() {
                   <div>
                     <label htmlFor="guests" className="eyebrow">
                       {t("reservations.fields.guests")}
-                      <span className="ml-2 normal-case tracking-normal text-muted-foreground">
-                        ({t("reservations.fields.guestsHint")})
-                      </span>
                     </label>
                     <input
                       id="guests"
                       type="number"
-                      min={11}
-                      max={21}
+                      min={1}
+                      max={MAX_GUESTS}
                       value={guests}
                       onChange={(e) => setGuests(Number(e.target.value))}
-                      className="mt-3 min-h-11 w-full border-0 border-b border-border bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
+                      className={`mt-3 min-h-11 w-full border-0 border-b bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep ${
+                        guestsTooMany ? "border-red-500" : "border-border"
+                      }`}
                     />
+                    {guestsTooMany && (
+                      <p className="mt-2 text-[11px] leading-relaxed text-red-700">
+                        {t("reservations.guestsMaxError")}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -344,28 +358,56 @@ function ReservationsPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <SmallField label={t("reservations.fields.name")} name="name" required />
-                    <SmallField
-                      label={t("reservations.fields.email")}
-                      name="email"
-                      type="email"
-                      required
-                    />
+                  {/* Step 1: Check availability — gates the contact form below */}
+                  <div
+                    className={`transition-all duration-500 ease-out ${
+                      showQuote ? "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden" : "max-h-40 translate-y-0 opacity-100"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      disabled={!canCheck || quoteLoading}
+                      onClick={handleCheckAvailability}
+                      className="mt-2 min-h-11 w-full border border-foreground bg-foreground px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep disabled:cursor-not-allowed disabled:border-border disabled:bg-border disabled:text-muted-foreground md:tracking-[0.28em]"
+                    >
+                      {quoteLoading ? t("reservations.checking") : t("reservations.checkAvailability")}
+                    </button>
+                    {!canCheck && !guestsTooMany && (
+                      <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+                        {t("reservations.selectFieldsFirst")}
+                      </p>
+                    )}
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={!range?.from || !range?.to || submitting}
-                    className="mt-2 min-h-11 w-full border border-foreground bg-foreground px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep disabled:cursor-not-allowed disabled:border-border disabled:bg-border disabled:text-muted-foreground md:tracking-[0.28em]"
+                  {/* Step 2: Contact form — fades in once a quote has been fetched */}
+                  <div
+                    className={`space-y-6 transition-all duration-500 ease-out ${
+                      showQuote ? "max-h-[40rem] translate-y-0 opacity-100" : "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden"
+                    }`}
                   >
-                    {submitting ? "…" : t("reservations.submit")}
-                  </button>
-                  {submitError && (
-                    <p className="text-[11px] leading-relaxed text-red-700">
-                      {submitError}
-                    </p>
-                  )}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <SmallField label={t("reservations.fields.name")} name="name" required />
+                      <SmallField
+                        label={t("reservations.fields.email")}
+                        name="email"
+                        type="email"
+                        required
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={!showQuote || submitting}
+                      className="mt-2 min-h-11 w-full border border-foreground bg-foreground px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep disabled:cursor-not-allowed disabled:border-border disabled:bg-border disabled:text-muted-foreground md:tracking-[0.28em]"
+                    >
+                      {submitting ? "…" : t("reservations.submit")}
+                    </button>
+                    {submitError && (
+                      <p className="text-[11px] leading-relaxed text-red-700">
+                        {submitError}
+                      </p>
+                    )}
+                  </div>
                   <p className="text-[11px] leading-relaxed text-muted-foreground">
                     {t("reservations.submitNote")}
                   </p>

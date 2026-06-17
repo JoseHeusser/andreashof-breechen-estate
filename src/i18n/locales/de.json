@@ -254,6 +254,10 @@
     "summaryGuests": "Gäste",
     "summaryTotal": "Gesamtpreis",
     "summaryTotalNote": "Alles inklusive — Reinigung und alle Aufschläge.",
+    "checkAvailability": "Verfügbarkeit prüfen",
+    "checking": "Wird geprüft…",
+    "selectFieldsFirst": "Bitte Daten, Personen und Anlass auswählen.",
+    "guestsMaxError": "Maximal 21 Gäste — bitte kontaktieren Sie uns direkt für größere Gruppen.",
     "stepsEyebrow": "Ablauf",
     "steps": [
       { "n": "01", "title": "Anfrage senden",        "body": "Wählen Sie Ihre Daten, Gruppengröße und den Anlass. Wir prüfen die Verfügbarkeit." },

@@ -164,6 +164,10 @@
     "summaryGuests": "Huéspedes",
     "summaryTotal": "Total",
     "summaryTotalNote": "Todo incluido — limpieza y cargos por persona.",
+    "checkAvailability": "Verificar disponibilidad",
+    "checking": "Verificando…",
+    "selectFieldsFirst": "Elige fechas, huéspedes y ocasión.",
+    "guestsMaxError": "Máximo 21 huéspedes — escríbenos directamente si son más.",
     "stepsEyebrow": "Cómo funciona",
     "steps": [
       { "n": "01", "title": "Envías tu solicitud",  "body": "Eliges fechas, número de huéspedes y ocasión. Verificamos disponibilidad." },
