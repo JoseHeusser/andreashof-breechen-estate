@@ -258,6 +258,7 @@
     "checking": "Checking…",
     "selectFieldsFirst": "Please pick dates, guests and occasion first.",
     "guestsMaxError": "Maximum 21 guests — please contact us directly for larger groups.",
+    "change": "Change",
     "stepsEyebrow": "How it works",
     "steps": [
       { "n": "01", "title": "Send your request",   "body": "Choose your dates, group size and occasion. We check availability." },

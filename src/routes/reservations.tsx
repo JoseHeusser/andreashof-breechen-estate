@@ -310,51 +310,93 @@ function ReservationsPage() {
                   }}
                   className="mt-6 space-y-6"
                 >
-                  <div>
-                    <label htmlFor="guests" className="eyebrow">
-                      {t("reservations.fields.guests")}
-                    </label>
-                    <input
-                      id="guests"
-                      type="number"
-                      min={1}
-                      max={MAX_GUESTS}
-                      value={guests}
-                      onChange={(e) => setGuests(Number(e.target.value))}
-                      className={`mt-3 min-h-11 w-full border-0 border-b bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep ${
-                        guestsTooMany ? "border-red-500" : "border-border"
-                      }`}
-                    />
-                    {guestsTooMany && (
-                      <p className="mt-2 text-[11px] leading-relaxed text-red-700">
-                        {t("reservations.guestsMaxError")}
-                      </p>
-                    )}
+                  {/* Editable inputs (Guests + Occasion) — collapse out once
+                       the user has checked availability so they can't keep
+                       tweaking values to fish for prices. 'Ändern' brings
+                       them back. */}
+                  <div
+                    className={`space-y-6 transition-all duration-500 ease-out ${
+                      showQuote
+                        ? "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden"
+                        : "max-h-[28rem] translate-y-0 opacity-100"
+                    }`}
+                  >
+                    <div>
+                      <label htmlFor="guests" className="eyebrow">
+                        {t("reservations.fields.guests")}
+                      </label>
+                      <input
+                        id="guests"
+                        type="number"
+                        min={1}
+                        max={MAX_GUESTS}
+                        value={guests}
+                        onChange={(e) => setGuests(Number(e.target.value))}
+                        className={`mt-3 min-h-11 w-full border-0 border-b bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep ${
+                          guestsTooMany ? "border-red-500" : "border-border"
+                        }`}
+                      />
+                      {guestsTooMany && (
+                        <p className="mt-2 text-[11px] leading-relaxed text-red-700">
+                          {t("reservations.guestsMaxError")}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label htmlFor="occasion" className="eyebrow">
+                        {t("reservations.fields.occasion")}
+                      </label>
+                      <div className="relative mt-3">
+                        <select
+                          id="occasion"
+                          value={occasion}
+                          onChange={(e) => setOccasion(e.target.value as OccasionKey)}
+                          className="min-h-11 w-full appearance-none border-0 border-b border-border bg-transparent py-2 pr-8 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
+                        >
+                          <option value="" disabled>
+                            —
+                          </option>
+                          {(Object.keys(occasionOptions) as OccasionKey[]).map((k) => (
+                            <option key={k} value={k}>
+                              {occasionOptions[k]}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 font-display text-base italic text-sage-deep">
+                          ▾
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div>
-                    <label htmlFor="occasion" className="eyebrow">
-                      {t("reservations.fields.occasion")}
-                    </label>
-                    <div className="relative mt-3">
-                      <select
-                        id="occasion"
-                        value={occasion}
-                        onChange={(e) => setOccasion(e.target.value as OccasionKey)}
-                        className="min-h-11 w-full appearance-none border-0 border-b border-border bg-transparent py-2 pr-8 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
+                  {/* Collapsed summary — shown after Check availability */}
+                  <div
+                    className={`transition-all duration-500 ease-out ${
+                      showQuote
+                        ? "max-h-32 translate-y-0 opacity-100"
+                        : "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden"
+                    }`}
+                  >
+                    <div className="flex items-baseline justify-between gap-3 border-b border-border pb-3">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                          {t("reservations.fields.guests")} · {t("reservations.fields.occasion")}
+                        </p>
+                        <p className="mt-1 font-display text-lg leading-tight text-foreground">
+                          {guests} · {occasion ? occasionOptions[occasion as OccasionKey] : ""}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setQuoteCents(null);
+                          setQuoteStale(false);
+                        }}
+                        className="shrink-0 text-[11px] uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:text-sage-deep"
                       >
-                        <option value="" disabled>
-                          —
-                        </option>
-                        {(Object.keys(occasionOptions) as OccasionKey[]).map((k) => (
-                          <option key={k} value={k}>
-                            {occasionOptions[k]}
-                          </option>
-                        ))}
-                      </select>
-                      <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 font-display text-base italic text-sage-deep">
-                        ▾
-                      </span>
+                        {t("reservations.change")}
+                      </button>
                     </div>
                   </div>
 
