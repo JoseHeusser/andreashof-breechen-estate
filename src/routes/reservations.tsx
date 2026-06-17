@@ -251,26 +251,6 @@ function ReservationsPage() {
                           {t("reservations.summaryNights", { count: nights })}
                         </p>
                       )}
-                      {/* Total price block — fades in on successful check */}
-                      <div
-                        className={`mt-4 overflow-hidden transition-all duration-500 ease-out ${
-                          showQuote
-                            ? "max-h-40 translate-y-0 opacity-100"
-                            : "max-h-0 -translate-y-1 opacity-0"
-                        }`}
-                      >
-                        <div className="border-t border-border pt-4">
-                          <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                            {t("reservations.summaryTotal")}
-                          </p>
-                          <p className="mt-1 font-display text-3xl leading-tight text-foreground">
-                            {totalFormatted ?? "…"}
-                          </p>
-                          <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                            {t("reservations.summaryTotalNote")}
-                          </p>
-                        </div>
-                      </div>
                     </div>
                   ) : (
                     <p className="text-sm leading-relaxed text-muted-foreground">
@@ -397,6 +377,27 @@ function ReservationsPage() {
                       >
                         {t("reservations.change")}
                       </button>
+                    </div>
+                  </div>
+
+                  {/* Total price block — sits below the collapsed summary */}
+                  <div
+                    className={`overflow-hidden transition-all duration-500 ease-out ${
+                      showQuote
+                        ? "max-h-40 translate-y-0 opacity-100"
+                        : "max-h-0 -translate-y-1 opacity-0"
+                    }`}
+                  >
+                    <div className="pt-4">
+                      <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                        {t("reservations.summaryTotal")}
+                      </p>
+                      <p className="mt-1 font-display text-3xl leading-tight text-foreground">
+                        {totalFormatted ?? "…"}
+                      </p>
+                      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                        {t("reservations.summaryTotalNote")}
+                      </p>
                     </div>
                   </div>
 
