@@ -6,6 +6,7 @@ import { de as deLocale, es as esLocale } from "date-fns/locale";
 import { differenceInCalendarDays, addDays, format, isSameMonth, startOfMonth } from "date-fns";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { cn } from "@/lib/utils";
+import { createBookingRequest, getPricingQuote } from "@/lib/admin/server-fns";
 
 export const Route = createFileRoute("/reservations")({
   head: () => ({
@@ -102,7 +103,6 @@ function ReservationsPage() {
     let cancelled = false;
     const timer = window.setTimeout(async () => {
       try {
-        const { getPricingQuote } = await import("@/lib/admin/server-fns");
         const res = await getPricingQuote({
           data: {
             arrival: format(range.from!, "yyyy-MM-dd"),
@@ -277,7 +277,6 @@ function ReservationsPage() {
                     setSubmitting(true);
                     try {
                       const fd = new FormData(e.currentTarget);
-                      const { createBookingRequest } = await import("@/lib/admin/server-fns");
                       await createBookingRequest({
                         data: {
                           arrival: format(range.from, "yyyy-MM-dd"),
