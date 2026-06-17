@@ -1,7 +1,7 @@
 import type { RoomDefinition } from "../types";
 
 export const SENIOR_GUTSHAUS_ZIMMER_ROOM: RoomDefinition = {
-  key: "X",
+  key: "III",
   folder: "senior-gutshaus-zimmer",
   photos: [
     "/rooms/by-room/senior-gutshaus-zimmer/room-10a.png",

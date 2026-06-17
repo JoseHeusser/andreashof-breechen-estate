@@ -35,7 +35,7 @@
     },
     "retreats": {
       "title": "Retiros y talleres",
-      "body": "Techos altos, un patio resguardado del pueblo, lago para bañarse cerca. Un lugar para equipos y días de concentración."
+      "body": "Un gran espacio abierto bajo el tejado para yoga, trabajo en equipo y seminarios, más un jardín para los huéspedes de la casa solariega: protegido, privado y tranquilo."
     }
   },
   "gallery": {
@@ -58,7 +58,7 @@
     "titleA": "Once recámaras para",
     "titleEm": " veintiún ",
     "titleB": "huéspedes.",
-    "body": "Cada habitación tiene un nombre y su propio carácter. Techos altos, suelos blancos, cortinas de lino.",
+    "body": "Cada recámara tiene un nombre y su propio carácter. Tarima de madera, parquet antiguo y cortinas de lino marcan el ambiente.",
     "cta": "Ver todas las habitaciones"
   },
   "galerieFull": {
@@ -85,33 +85,33 @@
     "selectorLabel": "Elegir recámara"
   },
   "rooms": {
-    "I":    { "name": "Recámara del Tilo",      "bed": "2 camas individuales", "view": "Avenida de tilos", "desc": "Junto a la antigua avenida de tilos. Techos altos, suelos blancos, un escritorio junto a la ventana." },
-    "II":   { "name": "Suite del Jardín",       "bed": "2 camas individuales", "view": "Jardín sur",       "desc": "Tranquila, abierta al jardín. Sol por la mañana, aroma a lavanda al anochecer." },
-    "III":  { "name": "Recámara Harry Potter",  "bed": "1 cama king size",  "view": "Patio",            "desc": "En lo alto del gablete con vigas de madera vistas. La calma del patio interior." },
-    "IV":   { "name": "Recámara del Gablete",   "bed": "1 cama queen size", "view": "Parque",           "desc": "Generosa, con techo de estuco y parquet. Junto al salón." },
-    "V":    { "name": "Cámara Hesse",           "bed": "2 camas individuales", "view": "Campos",         "desc": "Sencilla, luminosa, rural. Campos abiertos hasta el horizonte." },
-    "VI":   { "name": "Habitación de Caballeros",         "bed": "1 cama full", "view": "Patio",          "desc": "En el ala posterior, resguardada. Nido de cigüeña en la chimenea." },
-    "VII":  { "name": "Cámara Rosa Antigua",         "bed": "1 cama queen",      "view": "Tragaluz",       "desc": "Bajo el tejado, ideal para hermanos o amigos." },
-    "VIII": { "name": "Habitación de Damas",    "bed": "1 cama full", "view": "Jardín",            "desc": "Cámara pequeña bajo el techo sur. Sol todo el día." },
-    "IX":   { "name": "Habitación de Camas para Hombres Altos", "bed": "1 cama king size extralarga", "view": "Pueblo", "desc": "Recámara adicional con camas extralargas para huéspedes altos. Tranquila y de carácter sencillo." },
-    "X":    { "name": "Habitación-Senior-del-Gutshaus", "bed": "1 cama king size", "view": "Patio", "desc": "Habitación luminosa y sin barreras, con baño accesible, en la casa solariega, en una zona tranquila del patio interior." },
-    "XI":   { "name": "Habitación-de-las-Princesas-del-Gutshaus", "bed": "1 cama king size", "view": "Jardín", "desc": "Habitación tranquila con un ambiente amable junto al jardín." }
+    "I":    { "name": "Recámara de las Princesas", "bed": "1 cama king size", "view": "Jardín", "desc": "Recámara tranquila con ambiente amable junto al jardín." },
+    "II":   { "name": "Recámara de los Tilos", "bed": "2 camas individuales", "view": "Avenida de tilos", "desc": "En la antigua avenida de tilos. Techos altos, suelos pintados de blanco y escritorio junto a la ventana." },
+    "III":  { "name": "Recámara Senior de la Casa Solariega", "bed": "1 cama king size", "view": "Este · explanada de la casa", "desc": "Orientada al este hacia la explanada, en zona tranquila, con baño accesible en la casa solariega." },
+    "IV":   { "name": "Recámara del Jardín", "bed": "2 camas individuales", "view": "Jardín sur", "desc": "Tranquila, soleada, cálida y llena de luz, con vista al jardín." },
+    "V":    { "name": "Cámara Rosa Antigua", "bed": "1 cama queen size", "view": "Sur", "desc": "Situada detrás de la recámara del jardín, orientada al sur; ideal para hermanos o amigos." },
+    "VI":   { "name": "Recámara de Camas para Hombres Altos", "bed": "1 cama king size extralarga", "view": "Pueblo", "desc": "Recámara tranquila con cama extralarga y zócalo histórico original de meandro." },
+    "VII":  { "name": "Recámara Harry Potter", "bed": "1 cama king size", "view": "Patio", "desc": "Con antigua escalera de acceso al tejado, imágenes históricas y parquet antiguo." },
+    "VIII": { "name": "Recámara de Caballeros", "bed": "1 cama francesa", "view": "Oeste · jardín", "desc": "En el lado oeste con vista al jardín, más galería y entrepiso; buen lugar para leer y escribir." },
+    "IX":   { "name": "Recámara de Damas", "bed": "1 cama francesa", "view": "Jardín", "desc": "Con pared decorativa pintada a mano, cama francesa y sillón azul sobre tarima." },
+    "X":    { "name": "Recámara del Báltico", "bed": "2 + 1 camas", "view": "Sur · vecindario y Peenestrom", "desc": "Luminosa y de azul campestre, con vista al sur hacia el vecindario y el Peenestrom." },
+    "XI":   { "name": "Recámara del Gablete", "bed": "1 cama queen size", "view": "Peenestrom", "desc": "Pequeña y especial, con rincón bajo cubierta en el gablete, vigas antiguas y vista al Peenestrom." }
   },
   "amenitiesSec": {
     "eyebrow": "Servicios",
     "title": "Todo lo que importa, está.",
     "items": [
-      "Cocina de campo totalmente equipada",
+      "Dos cocinas de campo totalmente equipadas",
       "Mesa de comedor para 21 personas",
-      "Salón con chimenea abierta",
+      "Salón azul con chimenea",
       "Biblioteca con rincones de lectura",
       "Wi-Fi gratuito en toda la casa",
       "Ropa de cama y toallas incluidas",
-      "Estacionamiento gratuito en el patio",
-      "Gran jardín con avenida de tilos",
+      "Estacionamiento gratuito alrededor de la casa",
+      "Gran jardín con tilos y muchas zonas para sentarse",
       "Fogata y terraza",
-      "Cambiador y tronas bajo petición",
-      "Toda la planta baja es sin barreras, incluida la Habitación Senior"
+      "Dos tronas para niños",
+      "Toda la planta baja es accesible sin barreras, incluida la recámara senior"
     ]
   },
   "locationSec": {
@@ -120,12 +120,12 @@
     "titleEm": " cerca de Greifswald y el Mar Báltico.",
     "address": "Peenestrassee 16, 17506",
     "nearby": [
-      { "place": "Lago de Breechen",            "time": "≈ 5 min" },
-      { "place": "Gützkow",                     "time": "≈ 7 min" },
-      { "place": "Casco antiguo de Greifswald", "time": "≈ 20 min" },
-      { "place": "Mar Báltico",                 "time": "≈ 30 min" },
-      { "place": "Isla de Usedom",              "time": "≈ 45 min" },
-      { "place": "Berlín",                      "time": "≈ 2h 30min" }
+      { "place": "Lago Kosenow de Gützkow con restaurante italiano", "time": "Excursión" },
+      { "place": "Stralsund con el Ozeaneum", "time": "Excursión" },
+      { "place": "Lago Zarrentiner en Jarmen con piscina DLRG y zona natural de baño", "time": "Excursión" },
+      { "place": "Compras en Jarmen, Gützkow y Greifswald (incluida tienda de pescado)", "time": "cerca" },
+      { "place": "Lago de baño de Breechen", "time": "≈ 5 min" },
+      { "place": "Isla de Usedom", "time": "≈ 45 min" }
     ]
   },
   "reviewsSec": {

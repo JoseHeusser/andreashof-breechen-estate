@@ -1,7 +1,7 @@
 import type { RoomDefinition } from "../types";
 
 export const ALT_ROSA_KAMMER_ROOM: RoomDefinition = {
-  key: "VII",
+  key: "V",
   folder: "alt-rosa-kammer",
   photos: [
     "/rooms/by-room/alt-rosa-kammer/room-07a.jpg",

@@ -101,7 +101,7 @@
   "hero": {
     "eyebrow": "Breechen · Vorpommern · Est. 1782",
     "titleLine1": "Ein Gutshaus,",
-    "titleLine2": "im mitten seines Dorfes",
+    "titleLine2": "Inmitten seines Dorfes",
     "subtitle": "Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert, im Herzen von Breechen. Komplett mietbar für bis zu 21 Gäste.",
     "ctaPrimary": "Anfrage senden",
     "ctaSecondary": "Das Haus entdecken"
@@ -111,7 +111,7 @@
     "titleA": "Ein Haus, das seit",
     "titleEm": " zwei Jahrhunderten ",
     "titleB": "empfängt.",
-    "p1": "Der Andreashof wurde 1782 als Gutshaus eines pommerschen Landadels errichtet — mitten im kleinen Dorf Breechen, hinter Hecke und Hofeinfahrt. Die symmetrische Fassade, der hohe Fachwerkgiebel und die schlichten Proportionen erzählen vom gustavianischen Geschmack jener Zeit, einer skandinavischen Eleganz, die bis heute trägt.",
+    "p1": "Der Andreashof wurde 1782 als Gutshaus für den pommerschen Landadel errichtet — mitten im kleinen Dorf Breechen, hinter Hecke und Hofeinfahrt. Die symmetrische Fassade, der hohe Fachwerkgiebel und die schlichten Proportionen erzählen vom gustavianischen Geschmack jener Zeit, einer skandinavischen Eleganz, die bis heute trägt.",
     "p2": "Hinter den hohen Fenstern: helle Räume, weiß lasierte Dielen, Leinen und Stein. Platz für 21 Gäste, und doch ein Haus mit Anschluss — Nachbarschaft im Dorf, Badesee und Felder vor der Tür, Greifswald und die Ostsee nicht weit."
   },
   "uses": {
@@ -121,17 +121,17 @@
     },
     "weddings": {
       "title": "Geburtstage",
-      "body": "Großzügige Räume, ein Garten mit langer Tafel für 21 Gäste und mehr — Raum für Feste, die in Erinnerung bleiben."
+      "body": "Einladende Räume, ein Garten mit langer Tafel für 21 Gäste und mehr — Raum für Feste, die in Erinnerung bleiben."
     },
     "retreats": {
       "title": "Retreats & Workshops",
-      "body": "Hohe Räume, ein großer Garten nur für die Gäste des Gutshauses, geschützt und privat, Badesee in der Nähe. Ein Ort für Teams und konzentrierte Tage."
+      "body": "Ein großer, offener Dachraum für Yoga, Teamarbeit und Seminare, dazu ein passender Garten exklusiv für die Gäste des Gutshauses — geschützt, privat und ruhig."
     }
   },
   "gallery": {
     "eyebrow": "Galerie",
     "title": "Licht, Linie, Leinen.",
-    "subtitle": "Eindrücke aus Salon, Esszimmer, Kammern und Garten — fotografiert im weichen Licht des Vorpommerschen Sommers.",
+    "subtitle": "Eindrücke aus Salon, Esszimmer, Kammern und Garten — fotografiert im weichen Licht des vorpommerschen Sommers.",
     "cta": "Ganze Galerie ansehen",
     "alt": {
       "greatRoom": "Männer-Gesprächsecke mit Sesseln und Blick in den Salon",
@@ -148,7 +148,7 @@
     "titleA": "Elf Kammern für",
     "titleEm": " einundzwanzig ",
     "titleB": "Gäste.",
-    "body": "Jedes Zimmer trägt einen Namen, jedes hat seinen eigenen Charakter. Hohe Decken, weiß gestrichene Dielen, Leinenvorhänge.",
+    "body": "Jedes Zimmer trägt einen Namen, jedes hat seinen eigenen Charakter. Dielenböden, altes Parkett und Leinenvorhänge prägen die Atmosphäre.",
     "cta": "Alle Zimmer ansehen"
   },
   "galerieFull": {
@@ -175,32 +175,32 @@
     "selectorLabel": "Kammer wählen"
   },
   "rooms": {
-    "I":    { "name": "Lindenzimmer",     "bed": "2 Einzelbetten",    "view": "Lindenallee", "desc": "An der alten Lindenallee. Hohe Decken, weiß gestrichene Dielen, ein Schreibtisch am Fenster." },
-    "II":   { "name": "Gartensuite",      "bed": "2 Einzelbetten",    "view": "Südgarten",   "desc": "Ruhig zum Garten gelegen. Morgens Sonne, abends Lavendelduft." },
-    "III":  { "name": "Harry Potter Zimmer", "bed": "1 Kingsize-Bett",   "view": "Hof",         "desc": "Im hohen Giebel mit freigelegtem Fachwerk. Stille des Innenhofs." },
-    "IV":   { "name": "Giebelzimmer",      "bed": "1 Queensize-Bett",  "view": "Park",        "desc": "Großzügig, mit Stuckdecke und Parkett. Direkt neben dem Salon." },
-    "V":    { "name": "Ostsee Zimmer",    "bed": "2 Einzelbetten",    "view": "Felder",      "desc": "Schlicht, hell, ländlich. Weit über die Felder bis zum Horizont." },
-    "VI":   { "name": "Herren Zimmer",    "bed": "1 Französisches Bett",      "view": "Hof",         "desc": "Im hinteren Trakt, geschützt. Storchennest am Schornstein." },
-    "VII":  { "name": "Alt Rosa Kammer",    "bed": "1 Queensize-Bett", "view": "Dachfenster", "desc": "Unter dem Dach, ideal für Geschwister oder Freunde." },
-    "VIII": { "name": "Damenzimmer",       "bed": "1 Französisches Bett",      "view": "Garten",      "desc": "Kleines Zimmer mit Süddach. Sonne den ganzen Tag." },
-    "IX":   { "name": "Lange-Männer-Betten-Zimmer", "bed": "1 Extralanges Kingsize-Bett", "view": "Dorf", "desc": "Zusätzliches Zimmer mit extralangen Betten für große Gäste. Ruhig gelegen und bewusst schlicht gehalten." },
-    "X":    { "name": "Senioren-Guthaus-Zimmer", "bed": "1 King-Size-Bett", "view": "Hof", "desc": "Helles, barrierefreies Zimmer mit barrierefreiem Bad im Gutshaus, ruhig gelegen im Innenhof." },
-    "XI":   { "name": "Prinzessinnen-Gutshaus-Zimmer", "bed": "1 King-Size-Bett", "view": "Garten", "desc": "Ruhiges Zimmer mit freundlicher Atmosphäre am Garten." }
+    "I":    { "name": "Prinzessinnenzimmer", "bed": "1 King-Size-Bett", "view": "Garten", "desc": "Ruhiges Zimmer mit freundlicher Atmosphäre am Garten." },
+    "II":   { "name": "Lindenzimmer", "bed": "2 Einzelbetten", "view": "Lindenallee", "desc": "An der alten Lindenallee. Hohe Decken, weiß gestrichene Dielen und ein Schreibtisch am Fenster." },
+    "III":  { "name": "Senioren-Gutshaus-Zimmer", "bed": "1 King-Size-Bett", "view": "Osten · Gutshausvorplatz", "desc": "Ruhig nach Osten zum Gutshausvorplatz gelegen, mit barrierefreiem Bad im Gutshaus." },
+    "IV":   { "name": "Gartenzimmer", "bed": "2 Einzelbetten", "view": "Südgarten", "desc": "Ruhig, sonnig, warm und lichtdurchflutet — mit Blick in den Garten." },
+    "V":    { "name": "Alt-rosa Kammer", "bed": "1 Queensize-Bett", "view": "Süden", "desc": "Hinter dem Gartenzimmer gelegen, nach Süden ausgerichtet — ideal für Geschwister oder Freunde." },
+    "VI":   { "name": "Lange-Männer-Betten-Zimmer", "bed": "1 Extralanges Kingsize-Bett", "view": "Dorf", "desc": "Ruhig gelegenes Zimmer mit extralangem Bett und original historischer Meander-Sockelleiste." },
+    "VII":  { "name": "Harry-Potter-Zimmer", "bed": "1 Kingsize-Bett", "view": "Hof", "desc": "Mit alter Zugangsstiege zum Dach, historischen Bildern und altem Parkett." },
+    "VIII": { "name": "Herrenzimmer", "bed": "1 Französisches Bett", "view": "Westen · Garten", "desc": "Westseitig mit Gartenblick sowie Galerie und Empore — ein guter Ort zum Lesen und Schreiben." },
+    "IX":   { "name": "Damenzimmer", "bed": "1 Französisches Bett", "view": "Garten", "desc": "Mit handbemalter Dekorwand, französischem Bett und blauem Sessel auf Podest." },
+    "X":    { "name": "Ostseezimmer", "bed": "2 + 1 Betten", "view": "Süden · Nachbarschaft und Peenestrom", "desc": "Hell und ländlich blau, mit südlichem Blick zur Nachbarschaft und zum Peenestrom." },
+    "XI":   { "name": "Giebelzimmer", "bed": "1 Queensize-Bett", "view": "Peenestrom", "desc": "Klein und fein, mit Abseite im Giebel, altem Gebälk und Blick zum Peenestrom." }
   },
   "amenitiesSec": {
     "eyebrow": "Ausstattung",
     "title": "Alles, was bleibt, ist da.",
     "items": [
-      "Voll ausgestattete Landhausküche",
+      "Zwei voll ausgestattete Landhausküchen",
       "Esstisch für 21 Personen",
-      "Salon mit offenem Kamin",
+      "Blauer Salon mit Kamin",
       "Bibliothek mit Leseplätzen",
       "Kostenfreies WLAN im ganzen Haus",
       "Bettwäsche & Handtücher inklusive",
-      "Kostenfreie Parkplätze auf dem Hof",
-      "Großer Garten mit Lindenallee",
+      "Kostenfreie Parkplätze rund um das Gut",
+      "Großer Garten mit Linden und vielen Sitzmöglichkeiten",
       "Lagerfeuerstelle & Terrasse",
-      "Wickeltisch & Hochstühle auf Anfrage",
+      "Zwei Kinderhochstühle",
       "Das gesamte Erdgeschoss ist barrierefrei, inklusive Seniorenzimmer"
     ]
   },
@@ -210,12 +210,12 @@
     "titleEm": " nahe Greifswald und der Ostsee.",
     "address": "Peenestrassee 16, 17506",
     "nearby": [
-      { "place": "Breechener Badesee",      "time": "≈ 5 Min" },
-      { "place": "Gützkow",                 "time": "≈ 7 Min" },
-      { "place": "Greifswald Altstadt",     "time": "≈ 20 Min" },
-      { "place": "Ostsee",                  "time": "≈ 30 Min" },
-      { "place": "Insel Usedom",            "time": "≈ 45 Min" },
-      { "place": "Berlin",                  "time": "≈ 2 h 30 Min" }
+      { "place": "Gützkower Kosenow-See mit italienischem Restaurant", "time": "Ausflug" },
+      { "place": "Stralsund mit Ozeaneum", "time": "Ausflug" },
+      { "place": "Zarrentiner See in Jarmen mit DLRG-Freibad und Wildbadestelle", "time": "Ausflug" },
+      { "place": "Einkaufen in Jarmen, Gützkow und Greifswald (inkl. Fischladen)", "time": "nah" },
+      { "place": "Breechener Badesee", "time": "≈ 5 Min" },
+      { "place": "Insel Usedom", "time": "≈ 45 Min" }
     ]
   },
   "reviewsSec": {
