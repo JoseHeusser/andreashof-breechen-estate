@@ -40,15 +40,16 @@ export function MaintenancePage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-linen text-foreground">
+    <div className="relative min-h-screen overflow-hidden bg-foreground text-white">
       <img
         src={heroImg}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover opacity-80"
+        className="absolute inset-0 h-full w-full object-cover opacity-60"
       />
-      {/* Soft cream tint on top — keeps the image visible but warm + bright */}
-      <div className="absolute inset-0 bg-gradient-to-b from-linen/40 via-linen/30 to-linen/70" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_60%,rgba(244,239,230,0.55)_100%)]" />
+      {/* Gentle dark gradient + soft vignette — keeps the image visible
+          while ensuring legible white text */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/35 to-black/55" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.22)_100%)]" />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center md:px-10">
         <button
@@ -62,25 +63,34 @@ export function MaintenancePage() {
           <img
             src={logo}
             alt="Andreashof Breechen"
-            className="h-16 w-auto md:h-20"
+            className="h-16 w-auto mix-blend-screen md:h-20"
           />
         </button>
 
-        <p className="mt-12 text-[11px] uppercase tracking-[0.32em] text-foreground/55">
+        <p
+          className="mt-12 text-[11px] uppercase tracking-[0.32em] text-white/80"
+          style={{ textShadow: "0 1px 12px rgba(0,0,0,0.5)" }}
+        >
           Breechen · Vorpommern · Est. 1782
         </p>
-        <h1 className="mt-6 max-w-3xl font-display text-4xl font-light leading-[1.1] md:text-6xl">
+        <h1
+          className="mt-6 max-w-3xl font-display text-4xl font-light leading-[1.1] text-white md:text-6xl"
+          style={{ textShadow: "0 2px 20px rgba(0,0,0,0.55)" }}
+        >
           Bald wieder geöffnet.<br />
-          <em className="italic text-sage-deep">Coming soon.</em>
+          <em className="italic text-white/90">Coming soon.</em>
         </h1>
-        <p className="mt-8 max-w-md text-sm leading-relaxed text-foreground/70 md:text-base">
+        <p
+          className="mt-8 max-w-md text-sm leading-relaxed text-white/85 md:text-base"
+          style={{ textShadow: "0 1px 14px rgba(0,0,0,0.45)" }}
+        >
           Wir arbeiten an unserer neuen Webseite. Für Anfragen schreiben Sie uns gerne direkt.<br />
-          <span className="text-foreground/55">We're updating our site. Inquiries by email anytime.</span>
+          <span className="text-white/65">We're updating our site. Inquiries by email anytime.</span>
         </p>
 
         <a
           href="mailto:willkommen@andreashof-breechen.de"
-          className="mt-12 border border-foreground/80 px-6 py-3 text-[11px] uppercase tracking-[0.28em] text-foreground transition-colors hover:bg-foreground hover:text-background"
+          className="mt-12 border border-white/80 px-6 py-3 text-[11px] uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-foreground"
         >
           willkommen@andreashof-breechen.de
         </a>
