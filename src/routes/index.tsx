@@ -59,7 +59,7 @@ function Home() {
           className="absolute inset-0 h-full w-full object-cover animate-hero-zoom"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/80" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.45)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.22)_100%)]" />
 
         <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-5 pb-16 text-center md:px-10 md:pb-28">
           <span
