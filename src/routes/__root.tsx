@@ -15,6 +15,12 @@ import { useSmoothAnchorScroll } from "@/hooks/use-smooth-anchor-scroll";
 import { useRevealPage } from "@/hooks/use-reveal-page";
 import { useRouterState } from "@tanstack/react-router";
 import { FloatingLangSwitcher } from "@/components/floating-lang-switcher";
+import { MaintenancePage } from "@/components/maintenance-page";
+
+// Public site is hidden behind a "coming soon" page when this env var is true.
+// /admin/* and /api/* always bypass so Andrea can keep working and the iCal
+// feed for Airbnb stays live. Flip to "false" (or remove) in Vercel to release.
+const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === "true";
 
 function NotFoundComponent() {
   return (
@@ -116,13 +122,22 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const bypass = pathname.startsWith("/admin") || pathname.startsWith("/api");
+  const showMaintenance = MAINTENANCE_MODE && !bypass;
 
   return (
     <QueryClientProvider client={queryClient}>
       <LangProvider>
-        <GlobalScrollEffects />
-        <FloatingLangSwitcher />
-        <Outlet />
+        {showMaintenance ? (
+          <MaintenancePage />
+        ) : (
+          <>
+            <GlobalScrollEffects />
+            <FloatingLangSwitcher />
+            <Outlet />
+          </>
+        )}
       </LangProvider>
     </QueryClientProvider>
   );
