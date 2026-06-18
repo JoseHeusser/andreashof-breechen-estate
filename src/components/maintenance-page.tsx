@@ -1,12 +1,17 @@
-import { useRef, useState } from "react";
+import { useEffect } from "react";
 import logo from "@/assets/logo-andreashof.jpeg";
 import heroImg from "@/assets/hero-facade.jpeg";
 
 const BYPASS_KEY = "andreashof.preview";
-// Easter egg: 5 clicks on the logo within 3 s unlocks the real site.
-// Same effect as visiting any URL with ?key=1782.
-const UNLOCK_CLICKS = 5;
-const UNLOCK_WINDOW_MS = 3000;
+// Hidden access for Andrea on desktop: ↑ ↑ ↓ ↓ ← ← → →
+// Impossible to trigger by accident. Mobile uses the ?key=1782 URL
+// since touchscreens don't have arrow keys.
+const UNLOCK_SEQUENCE = [
+  "ArrowUp", "ArrowUp",
+  "ArrowDown", "ArrowDown",
+  "ArrowLeft", "ArrowLeft",
+  "ArrowRight", "ArrowRight",
+];
 
 function unlock() {
   try {
@@ -25,19 +30,25 @@ function unlock() {
  *   • Tap the logo 5 times in 3 seconds
  */
 export function MaintenancePage() {
-  const clicksRef = useRef<number[]>([]);
-  const [pop, setPop] = useState(false);
-
-  const handleLogoClick = () => {
-    const now = Date.now();
-    clicksRef.current = [
-      ...clicksRef.current.filter((t) => now - t < UNLOCK_WINDOW_MS),
-      now,
-    ];
-    setPop(true);
-    setTimeout(() => setPop(false), 180);
-    if (clicksRef.current.length >= UNLOCK_CLICKS) unlock();
-  };
+  // Arrow-key unlock listener — match the sequence anywhere on the page.
+  useEffect(() => {
+    let pos = 0;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === UNLOCK_SEQUENCE[pos]) {
+        pos++;
+        if (pos === UNLOCK_SEQUENCE.length) {
+          pos = 0;
+          unlock();
+        }
+      } else {
+        // Reset, but credit the keypress if it matches slot 0
+        // (so a wrong key followed by the start of a fresh attempt works).
+        pos = e.key === UNLOCK_SEQUENCE[0] ? 1 : 0;
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-foreground text-white">
@@ -52,20 +63,11 @@ export function MaintenancePage() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.22)_100%)]" />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center md:px-10">
-        <button
-          type="button"
-          onClick={handleLogoClick}
-          aria-label="Andreashof Breechen"
-          className={`group cursor-pointer transition-transform duration-150 ${
-            pop ? "scale-95" : "scale-100"
-          }`}
-        >
-          <img
-            src={logo}
-            alt="Andreashof Breechen"
-            className="h-16 w-auto mix-blend-screen md:h-20"
-          />
-        </button>
+        <img
+          src={logo}
+          alt="Andreashof Breechen"
+          className="h-16 w-auto mix-blend-screen md:h-20"
+        />
 
         <p
           className="mt-12 text-[11px] uppercase tracking-[0.32em] text-white/80"
