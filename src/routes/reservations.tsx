@@ -227,7 +227,7 @@ function ReservationsPage() {
 
                 <div
                   className={`mt-6 border-t border-border pt-6 transition-all ${
-                    showQuote ? "pb-3" : "border-b pb-6"
+                    showQuote ? "pb-3" : "border-b pb-4"
                   }`}
                 >
                   {range?.from ? (
@@ -292,7 +292,7 @@ function ReservationsPage() {
                       setSubmitting(false);
                     }
                   }}
-                  className="mt-6 space-y-6"
+                  className="mt-3 space-y-6"
                 >
                   {/* Editable inputs (Guests + Occasion) — collapse out once
                        the user has checked availability so they can't keep
