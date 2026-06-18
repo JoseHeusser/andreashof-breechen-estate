@@ -225,7 +225,11 @@ function ReservationsPage() {
               <div className="px-5 py-8 md:col-span-5 md:px-10 md:py-12">
                 <span className="eyebrow">{t("reservations.summaryTitle")}</span>
 
-                <div className="mt-6 border-y border-border py-6">
+                <div
+                  className={`mt-6 border-t border-border pt-6 transition-all ${
+                    showQuote ? "pb-3" : "border-b pb-6"
+                  }`}
+                >
                   {range?.from ? (
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -373,7 +377,7 @@ function ReservationsPage() {
                           setQuoteCents(null);
                           setQuoteStale(false);
                         }}
-                        className="shrink-0 text-[11px] uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:text-sage-deep"
+                        className="shrink-0 text-[11px] uppercase tracking-[0.22em] text-muted-foreground underline decoration-muted-foreground/30 underline-offset-[6px] transition-all duration-200 hover:text-sage-deep hover:decoration-sage-deep hover:underline-offset-4"
                       >
                         {t("reservations.change")}
                       </button>
@@ -394,9 +398,6 @@ function ReservationsPage() {
                       </p>
                       <p className="mt-1 font-display text-3xl leading-tight text-foreground">
                         {totalFormatted ?? "…"}
-                      </p>
-                      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                        {t("reservations.summaryTotalNote")}
                       </p>
                     </div>
                   </div>
