@@ -120,11 +120,39 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Preview key — when the URL has ?key=PREVIEW_KEY or the easter-egg
+// (5 logo clicks on the maintenance page) was triggered, a flag in
+// localStorage lets the visitor through the gate on every subsequent
+// page load. The flag is per-device.
+const PREVIEW_KEY = "1782";
+const PREVIEW_STORAGE = "andreashof.preview";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const bypass = pathname.startsWith("/admin") || pathname.startsWith("/api");
-  const showMaintenance = MAINTENANCE_MODE && !bypass;
+
+  // SSR sees no localStorage — render the maintenance page first to match
+  // the server, then flip after mount if the visitor is whitelisted.
+  const [previewUnlocked, setPreviewUnlocked] = useState(false);
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("key") === PREVIEW_KEY) {
+        localStorage.setItem(PREVIEW_STORAGE, "1");
+        // Strip the param so the URL stays clean and shareable.
+        params.delete("key");
+        const qs = params.toString();
+        const next = window.location.pathname + (qs ? `?${qs}` : "") + window.location.hash;
+        window.history.replaceState({}, "", next);
+      }
+      if (localStorage.getItem(PREVIEW_STORAGE) === "1") setPreviewUnlocked(true);
+    } catch {
+      // localStorage unavailable (Safari private mode etc.) — stay gated.
+    }
+  }, []);
+
+  const showMaintenance = MAINTENANCE_MODE && !bypass && !previewUnlocked;
 
   return (
     <QueryClientProvider client={queryClient}>
