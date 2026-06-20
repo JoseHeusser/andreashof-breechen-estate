@@ -83,6 +83,11 @@ function formatPrice(cents: number | null): string {
   return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(cents / 100);
 }
 
+function salutation(b: Booking): string {
+  const name = b.contact_name?.trim();
+  return name ? `Liebe/r ${escapeHtml(name)},` : "Liebe Gäste,";
+}
+
 function bookingSummary(b: Booking): string {
   const nights = nightCount(b.arrival, b.departure);
   const lines: string[] = [];
@@ -109,7 +114,7 @@ export function tplRequestedGuest(b: Booking) {
   const subject = `Wir haben Ihre Anfrage erhalten — Andreashof Breechen`;
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Wir haben Ihre Anfrage erhalten.</h1>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Liebe Gäste,</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">vielen Dank für Ihre Reservierungsanfrage für den Andreashof Breechen. Wir prüfen Ihre Anfrage und melden uns <strong>innerhalb von 12 Stunden</strong> persönlich bei Ihnen.</p>
     ${bookingSummary(b)}
     <p style="margin:18px 0 6px;font-size:13px;color:${COLORS.muted};">Bei Fragen erreichen Sie uns jederzeit unter <a href="mailto:willkommen@andreashof-breechen.de" style="color:${COLORS.sageDeep};">willkommen@andreashof-breechen.de</a>.</p>
@@ -152,7 +157,7 @@ export function tplAcceptedGuest(b: Booking) {
   const deposit = b.total_price_cents != null ? formatPrice(Math.round(b.total_price_cents * 0.5)) : "50% des Gesamtpreises";
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Ihre Buchung ist bestätigt.</h1>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Liebe Gäste,</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">wir freuen uns sehr, Ihre Reservierung am Andreashof Breechen bestätigen zu dürfen.</p>
     ${bookingSummary(b)}
     <h2 style="margin:28px 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Zahlung der Anzahlung</h2>
@@ -179,7 +184,7 @@ export function tplDepositPaidGuest(b: Booking) {
   const balance = b.total_price_cents != null ? formatPrice(Math.round(b.total_price_cents * 0.5)) : "die Restzahlung";
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Anzahlung erhalten.</h1>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Liebe Gäste,</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">vielen Dank — wir haben Ihre Anzahlung erhalten. Ihre Reservierung am Andreashof Breechen ist nun fest gebucht.</p>
     ${bookingSummary(b)}
     <h2 style="margin:28px 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Restzahlung</h2>
@@ -202,7 +207,7 @@ export function tplFullyPaidGuest(b: Booking) {
   const total = b.total_price_cents != null ? formatPrice(b.total_price_cents) : "den Gesamtbetrag";
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Restzahlung erhalten.</h1>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Liebe Gäste,</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">vielen Dank — wir haben Ihre Restzahlung erhalten. Damit ist Ihre Buchung vollständig bezahlt.</p>
     ${bookingSummary(b)}
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Der bezahlte Gesamtbetrag beträgt <strong>${total}</strong>. Wir freuen uns sehr auf Ihren Aufenthalt am Andreashof Breechen.</p>
@@ -219,7 +224,7 @@ export function tplBalanceReminderGuest(b: Booking) {
   const balance = b.total_price_cents != null ? formatPrice(Math.round(b.total_price_cents * 0.5)) : "die Restzahlung";
   const body = `
     <h1 style="margin:0 0 18px;font-size:22px;font-weight:300;">Freundliche Erinnerung</h1>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Liebe Gäste,</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Ihre Anreise am <strong>${formatDate(b.arrival)}</strong> rückt näher — wir freuen uns! Bitte überweisen Sie die <strong>Restzahlung von ${balance}</strong> in den nächsten 24 Stunden, damit alles für Ihren Aufenthalt vorbereitet ist.</p>
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0;padding:14px;background:${COLORS.bg};border:1px solid ${COLORS.border};width:100%;font-size:13px;">
       <tr><td style="padding:3px 0;color:${COLORS.muted};width:120px;">IBAN</td><td style="padding:3px 0;font-family:monospace;">${BANK.iban}</td></tr>
@@ -239,7 +244,7 @@ export function tplArrivalInstructionsGuest(b: Booking) {
   const subject = `Anreise zum Andreashof — alle Informationen`;
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Wir freuen uns auf Sie.</h1>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Liebe Gäste,</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">in wenigen Tagen heißen wir Sie auf dem Andreashof Breechen willkommen. Hier alle Informationen für Ihre Anreise am <strong>${formatDate(b.arrival)}</strong>:</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Adresse</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Andreashof Breechen<br>Peenestraße 16<br>17506 Gützkow</p>
