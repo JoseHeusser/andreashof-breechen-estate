@@ -195,7 +195,24 @@ export function tplDepositPaidGuest(b: Booking) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  5) Balance reminder (3 days before arrival, still not fully paid)
+//  5) Fully paid → guest
+// ═══════════════════════════════════════════════════════════════
+export function tplFullyPaidGuest(b: Booking) {
+  const subject = `Restzahlung erhalten — vielen Dank`;
+  const total = b.total_price_cents != null ? formatPrice(b.total_price_cents) : "den Gesamtbetrag";
+  const body = `
+    <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Restzahlung erhalten.</h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Liebe Gäste,</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">vielen Dank — wir haben Ihre Restzahlung erhalten. Damit ist Ihre Buchung vollständig bezahlt.</p>
+    ${bookingSummary(b)}
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Der bezahlte Gesamtbetrag beträgt <strong>${total}</strong>. Wir freuen uns sehr auf Ihren Aufenthalt am Andreashof Breechen.</p>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
+  `;
+  return { subject, html: shell(subject, body) };
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  6) Balance reminder (3 days before arrival, still not fully paid)
 // ═══════════════════════════════════════════════════════════════
 export function tplBalanceReminderGuest(b: Booking) {
   const subject = `Erinnerung: Restzahlung für Ihren Aufenthalt`;
@@ -216,7 +233,7 @@ export function tplBalanceReminderGuest(b: Booking) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  6) Arrival instructions (2 days before, fully paid)
+//  7) Arrival instructions (2 days before, fully paid)
 // ═══════════════════════════════════════════════════════════════
 export function tplArrivalInstructionsGuest(b: Booking) {
   const subject = `Anreise zum Andreashof — alle Informationen`;

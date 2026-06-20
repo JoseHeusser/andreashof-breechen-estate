@@ -9,6 +9,7 @@ import {
   tplRequestedAdmin,
   tplAcceptedGuest,
   tplDepositPaidGuest,
+  tplFullyPaidGuest,
 } from "@/lib/email/templates";
 
 type PricingQuoteInput = {
@@ -234,6 +235,9 @@ export const updateBooking = createServerFn({ method: "POST" })
           await sendEmail({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL });
         } else if (newStatus === "deposit_paid") {
           const tpl = tplDepositPaidGuest(booking);
+          await sendEmail({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL });
+        } else if (newStatus === "fully_paid") {
+          const tpl = tplFullyPaidGuest(booking);
           await sendEmail({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL });
         }
       }
