@@ -143,7 +143,7 @@ export const createBookingRequest = createServerFn({ method: "POST" })
       guests: number;
       children?: number;
       needsCrib?: boolean;
-      hasPet?: boolean;
+      pets?: number;
       needsWheelchair?: boolean;
       rentsDachboden?: boolean;
       occasion?: string;
@@ -171,7 +171,7 @@ export const createBookingRequest = createServerFn({ method: "POST" })
         guests: data.guests,
         children: data.children ?? 0,
         needs_crib: !!data.needsCrib,
-        has_pet: !!data.hasPet,
+        pets: Math.max(0, data.pets ?? 0),
         needs_wheelchair: !!data.needsWheelchair,
         rents_dachboden: !!data.rentsDachboden,
         occasion: data.occasion ?? null,
@@ -201,7 +201,7 @@ export const getPricingQuote = createServerFn({ method: "POST" })
       guests: number;
       children?: number;
       needsCrib?: boolean;
-      hasPet?: boolean;
+      pets?: number;
       rentsDachboden?: boolean;
     }) => data,
   )
@@ -261,7 +261,7 @@ export const getPricingQuote = createServerFn({ method: "POST" })
     const extraGuests = Math.max(0, data.guests - baseOccupancy);
     const extraTotal = extraGuests * extraPerNight * nights;
     const cribTotal = data.needsCrib && data.children ? data.children * cribCents : 0;
-    const petTotal = data.hasPet ? petCents : 0;
+    const petTotal = data.pets && data.pets > 0 ? data.pets * petCents : 0;
     const dachbodenTotal = data.rentsDachboden ? dachbodenCents : 0;
     const totalCents =
       nightlySum + cleaningCents + extraTotal + cribTotal + petTotal + dachbodenTotal;

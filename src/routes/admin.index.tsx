@@ -221,16 +221,16 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
             <p><strong>{t("admin.bookings.labelEmail")}</strong> <a href={`mailto:${booking.contact_email}`} className="underline">{booking.contact_email}</a></p>
             {booking.contact_phone && <p><strong>{t("admin.bookings.labelPhone")}</strong> {booking.contact_phone}</p>}
             {booking.occasion && <p><strong>{t("admin.bookings.labelOccasion")}</strong> {booking.occasion}</p>}
-            {(booking.children > 0 || booking.has_pet || booking.needs_wheelchair || booking.rents_dachboden) && (
+            {(booking.children > 0 || booking.pets > 0 || booking.needs_wheelchair || booking.rents_dachboden) && (
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {booking.children > 0 && (
                   <span className="border border-sage px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-sage-deep">
                     👶 {booking.children}{booking.needs_crib ? " + crib" : ""}
                   </span>
                 )}
-                {booking.has_pet && (
+                {booking.pets > 0 && (
                   <span className="border border-amber-300 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-amber-900">
-                    🐾 pet
+                    🐾 {booking.pets}
                   </span>
                 )}
                 {booking.needs_wheelchair && (
@@ -548,6 +548,7 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
   const [end, setEnd] = useState(row?.end_date ?? "");
   const [price, setPrice] = useState(row ? String(row.price_per_night_cents / 100) : "");
   const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
   const isNew = !row;
 
   return (
@@ -592,6 +593,12 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
         disabled={busy || !label || !start || !end || !price}
         onClick={async () => {
           setBusy(true);
+          setErr(null);
+          if (end <= start) {
+            setErr("End date must be after start date.");
+            setBusy(false);
+            return;
+          }
           try {
             await upsertSpecialPrice({
               data: {
@@ -609,6 +616,15 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
               setPrice("");
             }
             await onReload();
+          } catch (e) {
+            // Postgres errors come back as objects — extract a readable msg
+            const msg =
+              e instanceof Error
+                ? e.message
+                : typeof e === "object" && e && "message" in e
+                  ? String((e as { message: unknown }).message)
+                  : JSON.stringify(e);
+            setErr(msg);
           } finally {
             setBusy(false);
           }
@@ -626,6 +642,8 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
             try {
               await deleteSpecialPrice({ data: { id: row.id } });
               await onReload();
+            } catch (e) {
+              setErr(e instanceof Error ? e.message : "Delete failed");
             } finally {
               setBusy(false);
             }
@@ -634,6 +652,9 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
         >
           {t("admin.delete")}
         </button>
+      )}
+      {err && (
+        <p className="col-span-full text-xs text-red-700">{err}</p>
       )}
     </li>
   );

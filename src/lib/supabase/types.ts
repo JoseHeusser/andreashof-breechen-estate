@@ -18,7 +18,7 @@ export interface Booking {
   guests: number;
   children: number;
   needs_crib: boolean;
-  has_pet: boolean;
+  pets: number;
   needs_wheelchair: boolean;
   rents_dachboden: boolean;
   occasion: string | null;

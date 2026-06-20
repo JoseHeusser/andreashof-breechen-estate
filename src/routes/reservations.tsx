@@ -97,7 +97,7 @@ function ReservationsPage() {
   const [guests, setGuests] = useState<number>(12);
   const [children, setChildren] = useState<number>(0);
   const [needsCrib, setNeedsCrib] = useState<boolean>(false);
-  const [hasPet, setHasPet] = useState<boolean>(false);
+  const [pets, setPets] = useState<number>(0);
   const [needsWheelchair, setNeedsWheelchair] = useState<boolean>(false);
   const [rentsDachboden, setRentsDachboden] = useState<boolean>(false);
   const [occasion, setOccasion] = useState<OccasionKey | "">("");
@@ -132,7 +132,7 @@ function ReservationsPage() {
     occasion,
     children,
     needsCrib,
-    hasPet,
+    pets,
     needsWheelchair,
     rentsDachboden,
   ]);
@@ -148,7 +148,7 @@ function ReservationsPage() {
           guests,
           children,
           needsCrib: children > 0 && needsCrib,
-          hasPet,
+          pets,
           rentsDachboden,
         },
       });
@@ -313,7 +313,7 @@ function ReservationsPage() {
                           guests,
                           children,
                           needsCrib: children > 0 && needsCrib,
-                          hasPet,
+                          pets,
                           needsWheelchair,
                           rentsDachboden,
                           occasion: occasion || undefined,
@@ -427,12 +427,25 @@ function ReservationsPage() {
                             onChange={setNeedsCrib}
                           />
                         )}
-                        <Toggle
-                          label={t("reservations.petQuestion")}
-                          note={t("reservations.petNote")}
-                          checked={hasPet}
-                          onChange={setHasPet}
-                        />
+                        {/* Pets — number input rather than yes/no, so Andrea
+                            knows how many are coming. Price per animal stays
+                            hidden from the public. */}
+                        <div className="flex items-center justify-between gap-3">
+                          <label htmlFor="pets" className="flex-1">
+                            <span className="block text-[13px] text-foreground/90">
+                              {t("reservations.petsQuestion")}
+                            </span>
+                          </label>
+                          <input
+                            id="pets"
+                            type="number"
+                            min={0}
+                            max={5}
+                            value={pets}
+                            onChange={(e) => setPets(Math.max(0, Number(e.target.value)))}
+                            className="w-16 border-0 border-b border-border bg-transparent py-1 text-center text-sm focus:border-sage-deep focus:outline-none"
+                          />
+                        </div>
                         <Toggle
                           label={t("reservations.wheelchairQuestion")}
                           note={t("reservations.wheelchairNote")}
@@ -468,11 +481,11 @@ function ReservationsPage() {
                           {" · "}
                           {occasion ? occasionOptions[occasion as OccasionKey] : ""}
                         </p>
-                        {(needsCrib || hasPet || needsWheelchair || rentsDachboden) && (
+                        {(needsCrib || pets > 0 || needsWheelchair || rentsDachboden) && (
                           <p className="mt-1 text-[11px] text-muted-foreground">
                             {[
                               needsCrib && "🛏",
-                              hasPet && "🐾",
+                              pets > 0 && `🐾 ${pets}`,
                               needsWheelchair && "♿",
                               rentsDachboden && "🧘",
                             ]
