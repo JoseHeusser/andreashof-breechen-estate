@@ -6,7 +6,7 @@ import { de as deLocale, es as esLocale } from "date-fns/locale";
 import { differenceInCalendarDays, addDays, format, isSameMonth, startOfMonth } from "date-fns";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { cn } from "@/lib/utils";
-import { createBookingRequest, getPricingQuote } from "@/lib/admin/server-fns";
+import { createBookingRequest, getBlockedRanges, getPricingQuote } from "@/lib/admin/server-fns";
 
 export const Route = createFileRoute("/reservations")({
   head: () => ({
@@ -25,15 +25,8 @@ export const Route = createFileRoute("/reservations")({
 
 type OccasionKey = "wedding" | "family" | "retreat" | "other";
 
-// Sample unavailable ranges (placeholder until wired to a real availability source).
-function buildBlockedRanges(today: Date): { from: Date; to: Date }[] {
-  const base = startOfMonth(today);
-  return [
-    { from: addDays(base, 12), to: addDays(base, 15) },
-    { from: addDays(base, 40), to: addDays(base, 46) },
-    { from: addDays(base, 78), to: addDays(base, 82) },
-  ];
-}
+// (placeholder buildBlockedRanges removed — real blocked ranges come from
+//  getBlockedRanges, sourced from the bookings + airbnb_uid rows)
 
 function localeFor(lang: string) {
   if (lang.startsWith("de")) return deLocale;
@@ -75,7 +68,30 @@ function ReservationsPage() {
     return () => mql.removeEventListener("change", apply);
   }, []);
 
-  const blocked = useMemo(() => (today ? buildBlockedRanges(today) : []), [today]);
+  // Fetched once on mount from /api server fn — confirmed-or-paid bookings
+  // (web + Airbnb iCal sync) become disabled days in the calendar.
+  const [blocked, setBlocked] = useState<{ from: Date; to: Date }[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    getBlockedRanges()
+      .then((rows) => {
+        if (cancelled) return;
+        setBlocked(
+          rows.map((r) => ({
+            from: new Date(r.arrival + "T00:00:00"),
+            // iCal/DB departure is exclusive; day-picker disable wants the
+            // last blocked night, so subtract one day.
+            to: addDays(new Date(r.departure + "T00:00:00"), -1),
+          })),
+        );
+      })
+      .catch(() => {
+        if (!cancelled) setBlocked([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const [range, setRange] = useState<DateRange | undefined>(undefined);
   const [guests, setGuests] = useState<number>(12);
