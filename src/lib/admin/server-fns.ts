@@ -161,10 +161,10 @@ export const updateBooking = createServerFn({ method: "POST" })
       if (!isFakeAirbnbEmail) {
         if (prevStatus === "requested" && newStatus === "accepted") {
           const tpl = tplAcceptedGuest(booking);
-          await sendEmail({ to: booking.contact_email, ...tpl });
+          await sendEmail({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL });
         } else if (newStatus === "deposit_paid") {
           const tpl = tplDepositPaidGuest(booking);
-          await sendEmail({ to: booking.contact_email, ...tpl });
+          await sendEmail({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL });
         }
       }
     }
@@ -224,11 +224,14 @@ export const createBookingRequest = createServerFn({ method: "POST" })
     if (error) throw error;
 
     // Best-effort: confirmation to guest + new-request alert to Andrea.
+    // Guest "Reply" goes to Andrea's personal inbox (the brand domain has
+    // no MX record, so a direct reply to andrea@andreashof-breechen.de
+    // would bounce).
     const booking = row as Booking;
     const guestTpl = tplRequestedGuest(booking);
     const adminTpl = tplRequestedAdmin(booking);
     await Promise.all([
-      sendEmail({ to: booking.contact_email, ...guestTpl }),
+      sendEmail({ to: booking.contact_email, ...guestTpl, replyTo: ADMIN_EMAIL }),
       sendEmail({ to: ADMIN_EMAIL, ...adminTpl, replyTo: booking.contact_email }),
     ]);
 

@@ -11,6 +11,8 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
 const EMAIL_FROM = Deno.env.get("EMAIL_FROM") ?? "Andreashof Breechen <andrea@andreashof-breechen.de>";
+// Guest "Reply" goes here so it doesn't bounce off the brand domain.
+const REPLY_TO = Deno.env.get("EMAIL_TO_ADMIN") ?? "andrea.lietz@web.de";
 
 const BANK = {
   holder: "Andreashof Breechen",
@@ -64,7 +66,7 @@ async function sendResend(to: string, subject: string, html: string): Promise<bo
         authorization: `Bearer ${RESEND_API_KEY}`,
         "content-type": "application/json",
       },
-      body: JSON.stringify({ from: EMAIL_FROM, to: [to], subject, html }),
+      body: JSON.stringify({ from: EMAIL_FROM, to: [to], subject, html, reply_to: REPLY_TO }),
     });
     if (!res.ok) {
       console.error("resend", res.status, await res.text());
