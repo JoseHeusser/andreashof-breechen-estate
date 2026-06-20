@@ -221,6 +221,30 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
             <p><strong>{t("admin.bookings.labelEmail")}</strong> <a href={`mailto:${booking.contact_email}`} className="underline">{booking.contact_email}</a></p>
             {booking.contact_phone && <p><strong>{t("admin.bookings.labelPhone")}</strong> {booking.contact_phone}</p>}
             {booking.occasion && <p><strong>{t("admin.bookings.labelOccasion")}</strong> {booking.occasion}</p>}
+            {(booking.children > 0 || booking.has_pet || booking.needs_wheelchair || booking.rents_dachboden) && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {booking.children > 0 && (
+                  <span className="border border-sage px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-sage-deep">
+                    👶 {booking.children}{booking.needs_crib ? " + crib" : ""}
+                  </span>
+                )}
+                {booking.has_pet && (
+                  <span className="border border-amber-300 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-amber-900">
+                    🐾 pet
+                  </span>
+                )}
+                {booking.needs_wheelchair && (
+                  <span className="border border-blue-300 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-blue-900">
+                    ♿ EG
+                  </span>
+                )}
+                {booking.rents_dachboden && (
+                  <span className="border border-stone-400 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-stone-700">
+                    🧘 Dachboden
+                  </span>
+                )}
+              </div>
+            )}
             {booking.message && <p className="mt-3 italic text-muted-foreground">"{booking.message}"</p>}
             <p className="mt-3 text-xs text-muted-foreground">{t("admin.bookings.labelReceived", { when: format(parseISO(booking.created_at), "d MMM yyyy, HH:mm", { locale }) })}</p>
           </div>
@@ -319,12 +343,21 @@ function PricingTab({
   const [extraPerson, setExtraPerson] = useState(
     String((lookup("extra_person_fee_per_night_cents") ?? 0) / 100),
   );
+  const [crib, setCrib] = useState(String((lookup("child_crib_fee_cents") ?? 0) / 100));
+  const [pet, setPet] = useState(String((lookup("pet_fee_cents") ?? 0) / 100));
+  const [dachboden, setDachboden] = useState(
+    String((lookup("dachboden_fee_cents") ?? 0) / 100),
+  );
+  const maxCapacity = lookup("max_capacity_extended") ?? 25;
   const [feesBusy, setFeesBusy] = useState(false);
 
   useEffect(() => {
     setCleaning(String((lookup("cleaning_fee_cents") ?? 0) / 100));
     setOccupancy(String(lookup("base_occupancy") ?? 10));
     setExtraPerson(String((lookup("extra_person_fee_per_night_cents") ?? 0) / 100));
+    setCrib(String((lookup("child_crib_fee_cents") ?? 0) / 100));
+    setPet(String((lookup("pet_fee_cents") ?? 0) / 100));
+    setDachboden(String((lookup("dachboden_fee_cents") ?? 0) / 100));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings]);
 
@@ -413,7 +446,53 @@ function PricingTab({
               <span className="text-xs text-muted-foreground">{t("admin.pricing.extraPersonSuffix")}</span>
             </div>
           </label>
+
+          <label className="block">
+            <span className="eyebrow block mb-2">{t("admin.pricing.cribFee")}</span>
+            <div className="flex items-baseline gap-2">
+              <input
+                type="number"
+                step="1"
+                value={crib}
+                onChange={(e) => setCrib(e.target.value)}
+                className="w-28 border border-border bg-background px-2 py-1.5 font-display text-lg"
+              />
+              <span className="text-xs text-muted-foreground">{t("admin.pricing.cribSuffix")}</span>
+            </div>
+          </label>
+
+          <label className="block">
+            <span className="eyebrow block mb-2">{t("admin.pricing.petFee")}</span>
+            <div className="flex items-baseline gap-2">
+              <input
+                type="number"
+                step="1"
+                value={pet}
+                onChange={(e) => setPet(e.target.value)}
+                className="w-28 border border-border bg-background px-2 py-1.5 font-display text-lg"
+              />
+              <span className="text-xs text-muted-foreground">{t("admin.pricing.petSuffix")}</span>
+            </div>
+          </label>
+
+          <label className="block">
+            <span className="eyebrow block mb-2">{t("admin.pricing.dachbodenFee")}</span>
+            <div className="flex items-baseline gap-2">
+              <input
+                type="number"
+                step="1"
+                value={dachboden}
+                onChange={(e) => setDachboden(e.target.value)}
+                className="w-28 border border-border bg-background px-2 py-1.5 font-display text-lg"
+              />
+              <span className="text-xs text-muted-foreground">{t("admin.pricing.dachbodenSuffix")}</span>
+            </div>
+          </label>
         </div>
+
+        <p className="mt-4 max-w-2xl text-xs italic leading-relaxed text-muted-foreground">
+          {t("admin.pricing.capacityNote", { n: maxCapacity })}
+        </p>
 
         <button
           disabled={feesBusy}
@@ -425,6 +504,9 @@ function PricingTab({
                   cleaningFeeCents: Math.round(parseFloat(cleaning) * 100),
                   baseOccupancy: parseInt(occupancy, 10),
                   extraPersonFeePerNightCents: Math.round(parseFloat(extraPerson) * 100),
+                  childCribFeeCents: Math.round(parseFloat(crib) * 100),
+                  petFeeCents: Math.round(parseFloat(pet) * 100),
+                  dachbodenFeeCents: Math.round(parseFloat(dachboden) * 100),
                 },
               });
               await onReload();

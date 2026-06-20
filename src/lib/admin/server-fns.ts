@@ -141,6 +141,11 @@ export const createBookingRequest = createServerFn({ method: "POST" })
       arrival: string;
       departure: string;
       guests: number;
+      children?: number;
+      needsCrib?: boolean;
+      hasPet?: boolean;
+      needsWheelchair?: boolean;
+      rentsDachboden?: boolean;
       occasion?: string;
       name: string;
       email: string;
@@ -164,6 +169,11 @@ export const createBookingRequest = createServerFn({ method: "POST" })
         arrival: data.arrival,
         departure: data.departure,
         guests: data.guests,
+        children: data.children ?? 0,
+        needs_crib: !!data.needsCrib,
+        has_pet: !!data.hasPet,
+        needs_wheelchair: !!data.needsWheelchair,
+        rents_dachboden: !!data.rentsDachboden,
         occasion: data.occasion ?? null,
         contact_name: data.name,
         contact_email: data.email,
@@ -185,7 +195,15 @@ export const createBookingRequest = createServerFn({ method: "POST" })
  * -------------------------------------------------------------- */
 export const getPricingQuote = createServerFn({ method: "POST" })
   .inputValidator(
-    (data: { arrival: string; departure: string; guests: number }) => data,
+    (data: {
+      arrival: string;
+      departure: string;
+      guests: number;
+      children?: number;
+      needsCrib?: boolean;
+      hasPet?: boolean;
+      rentsDachboden?: boolean;
+    }) => data,
   )
   .handler(async ({ data }) => {
     if (!data.arrival || !data.departure || data.arrival >= data.departure) {
@@ -203,6 +221,9 @@ export const getPricingQuote = createServerFn({ method: "POST" })
           "cleaning_fee_cents",
           "base_occupancy",
           "extra_person_fee_per_night_cents",
+          "child_crib_fee_cents",
+          "pet_fee_cents",
+          "dachboden_fee_cents",
         ]),
     ]);
     if (pricingRes.error) throw pricingRes.error;
@@ -214,6 +235,9 @@ export const getPricingQuote = createServerFn({ method: "POST" })
     const cleaningCents = (settings.cleaning_fee_cents as number) ?? 0;
     const baseOccupancy = (settings.base_occupancy as number) ?? 10;
     const extraPerNight = (settings.extra_person_fee_per_night_cents as number) ?? 0;
+    const cribCents = (settings.child_crib_fee_cents as number) ?? 0;
+    const petCents = (settings.pet_fee_cents as number) ?? 0;
+    const dachbodenCents = (settings.dachboden_fee_cents as number) ?? 0;
 
     const base = (pricingRes.data ?? []).find((p) => p.type === "base");
     const baseCents = base?.price_per_night_cents ?? 0;
@@ -236,7 +260,11 @@ export const getPricingQuote = createServerFn({ method: "POST" })
 
     const extraGuests = Math.max(0, data.guests - baseOccupancy);
     const extraTotal = extraGuests * extraPerNight * nights;
-    const totalCents = nightlySum + cleaningCents + extraTotal;
+    const cribTotal = data.needsCrib && data.children ? data.children * cribCents : 0;
+    const petTotal = data.hasPet ? petCents : 0;
+    const dachbodenTotal = data.rentsDachboden ? dachbodenCents : 0;
+    const totalCents =
+      nightlySum + cleaningCents + extraTotal + cribTotal + petTotal + dachbodenTotal;
 
     return { totalCents, nights };
   });
@@ -278,21 +306,24 @@ export const updateFees = createServerFn({ method: "POST" })
       cleaningFeeCents?: number;
       baseOccupancy?: number;
       extraPersonFeePerNightCents?: number;
+      childCribFeeCents?: number;
+      petFeeCents?: number;
+      dachbodenFeeCents?: number;
     }) => data,
   )
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
     const rows: { key: string; value: number }[] = [];
-    if (data.cleaningFeeCents !== undefined)
-      rows.push({ key: "cleaning_fee_cents", value: data.cleaningFeeCents });
-    if (data.baseOccupancy !== undefined)
-      rows.push({ key: "base_occupancy", value: data.baseOccupancy });
-    if (data.extraPersonFeePerNightCents !== undefined)
-      rows.push({
-        key: "extra_person_fee_per_night_cents",
-        value: data.extraPersonFeePerNightCents,
-      });
+    const push = (key: string, value: number | undefined) => {
+      if (value !== undefined) rows.push({ key, value });
+    };
+    push("cleaning_fee_cents", data.cleaningFeeCents);
+    push("base_occupancy", data.baseOccupancy);
+    push("extra_person_fee_per_night_cents", data.extraPersonFeePerNightCents);
+    push("child_crib_fee_cents", data.childCribFeeCents);
+    push("pet_fee_cents", data.petFeeCents);
+    push("dachboden_fee_cents", data.dachbodenFeeCents);
     if (rows.length === 0) return;
     const { error } = await admin.from("settings").upsert(rows);
     if (error) throw error;

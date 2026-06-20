@@ -79,6 +79,11 @@ function ReservationsPage() {
 
   const [range, setRange] = useState<DateRange | undefined>(undefined);
   const [guests, setGuests] = useState<number>(12);
+  const [children, setChildren] = useState<number>(0);
+  const [needsCrib, setNeedsCrib] = useState<boolean>(false);
+  const [hasPet, setHasPet] = useState<boolean>(false);
+  const [needsWheelchair, setNeedsWheelchair] = useState<boolean>(false);
+  const [rentsDachboden, setRentsDachboden] = useState<boolean>(false);
   const [occasion, setOccasion] = useState<OccasionKey | "">("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -104,7 +109,17 @@ function ReservationsPage() {
   useEffect(() => {
     if (quoteCents != null) setQuoteStale(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [range?.from, range?.to, guests, occasion]);
+  }, [
+    range?.from,
+    range?.to,
+    guests,
+    occasion,
+    children,
+    needsCrib,
+    hasPet,
+    needsWheelchair,
+    rentsDachboden,
+  ]);
 
   const handleCheckAvailability = async () => {
     if (!canCheck || !range?.from || !range?.to) return;
@@ -115,6 +130,10 @@ function ReservationsPage() {
           arrival: format(range.from, "yyyy-MM-dd"),
           departure: format(range.to, "yyyy-MM-dd"),
           guests,
+          children,
+          needsCrib: children > 0 && needsCrib,
+          hasPet,
+          rentsDachboden,
         },
       });
       setQuoteCents(res.totalCents);
@@ -276,6 +295,11 @@ function ReservationsPage() {
                           arrival: format(range.from, "yyyy-MM-dd"),
                           departure: format(range.to, "yyyy-MM-dd"),
                           guests,
+                          children,
+                          needsCrib: children > 0 && needsCrib,
+                          hasPet,
+                          needsWheelchair,
+                          rentsDachboden,
                           occasion: occasion || undefined,
                           name: String(fd.get("name") || ""),
                           email: String(fd.get("email") || ""),
@@ -305,27 +329,48 @@ function ReservationsPage() {
                         : "max-h-[28rem] translate-y-0 opacity-100"
                     }`}
                   >
-                    <div>
-                      <label htmlFor="guests" className="eyebrow">
-                        {t("reservations.fields.guests")}
-                      </label>
-                      <input
-                        id="guests"
-                        type="number"
-                        min={1}
-                        max={MAX_GUESTS}
-                        value={guests}
-                        onChange={(e) => setGuests(Number(e.target.value))}
-                        className={`mt-3 min-h-11 w-full border-0 border-b bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep ${
-                          guestsTooMany ? "border-red-500" : "border-border"
-                        }`}
-                      />
-                      {guestsTooMany && (
-                        <p className="mt-2 text-[11px] leading-relaxed text-red-700">
-                          {t("reservations.guestsMaxError")}
-                        </p>
-                      )}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="guests" className="eyebrow">
+                          {t("reservations.adults")}
+                        </label>
+                        <input
+                          id="guests"
+                          type="number"
+                          min={1}
+                          max={MAX_GUESTS}
+                          value={guests}
+                          onChange={(e) => setGuests(Number(e.target.value))}
+                          className={`mt-3 min-h-11 w-full border-0 border-b bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep ${
+                            guestsTooMany ? "border-red-500" : "border-border"
+                          }`}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="children" className="eyebrow">
+                          {t("reservations.children")}
+                        </label>
+                        <input
+                          id="children"
+                          type="number"
+                          min={0}
+                          max={10}
+                          value={children}
+                          onChange={(e) => setChildren(Math.max(0, Number(e.target.value)))}
+                          className="mt-3 min-h-11 w-full border-0 border-b border-border bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
+                        />
+                      </div>
                     </div>
+                    {guestsTooMany && (
+                      <p className="text-[11px] leading-relaxed text-red-700">
+                        {t("reservations.guestsMaxError")}
+                      </p>
+                    )}
+                    {children > 0 && (
+                      <p className="-mt-3 text-[11px] leading-relaxed text-muted-foreground">
+                        {t("reservations.childrenHint")}
+                      </p>
+                    )}
 
                     <div>
                       <label htmlFor="occasion" className="eyebrow">
@@ -352,6 +397,40 @@ function ReservationsPage() {
                         </span>
                       </div>
                     </div>
+
+                    {/* Extras: pets, wheelchair, dachboden — plus the crib question
+                         that only shows when children > 0 */}
+                    <div className="border-t border-border pt-5">
+                      <p className="eyebrow mb-3">{t("reservations.extrasTitle")}</p>
+                      <div className="space-y-3 text-sm">
+                        {children > 0 && (
+                          <Toggle
+                            label={t("reservations.cribQuestion")}
+                            note={t("reservations.cribNote")}
+                            checked={needsCrib}
+                            onChange={setNeedsCrib}
+                          />
+                        )}
+                        <Toggle
+                          label={t("reservations.petQuestion")}
+                          note={t("reservations.petNote")}
+                          checked={hasPet}
+                          onChange={setHasPet}
+                        />
+                        <Toggle
+                          label={t("reservations.wheelchairQuestion")}
+                          note={t("reservations.wheelchairNote")}
+                          checked={needsWheelchair}
+                          onChange={setNeedsWheelchair}
+                        />
+                        <Toggle
+                          label={t("reservations.dachbodenQuestion")}
+                          note={t("reservations.dachbodenNote")}
+                          checked={rentsDachboden}
+                          onChange={setRentsDachboden}
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   {/* Collapsed summary — shown after Check availability */}
@@ -363,13 +442,28 @@ function ReservationsPage() {
                     }`}
                   >
                     <div className="flex items-baseline justify-between gap-3 border-b border-border pb-3">
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                           {t("reservations.fields.guests")} · {t("reservations.fields.occasion")}
                         </p>
                         <p className="mt-1 font-display text-lg leading-tight text-foreground">
-                          {guests} · {occasion ? occasionOptions[occasion as OccasionKey] : ""}
+                          {guests}
+                          {children > 0 ? ` + ${children} 👶` : ""}
+                          {" · "}
+                          {occasion ? occasionOptions[occasion as OccasionKey] : ""}
                         </p>
+                        {(needsCrib || hasPet || needsWheelchair || rentsDachboden) && (
+                          <p className="mt-1 text-[11px] text-muted-foreground">
+                            {[
+                              needsCrib && "🛏",
+                              hasPet && "🐾",
+                              needsWheelchair && "♿",
+                              rentsDachboden && "🧘",
+                            ]
+                              .filter(Boolean)
+                              .join(" · ")}
+                          </p>
+                        )}
                       </div>
                       <button
                         type="button"
@@ -541,6 +635,41 @@ function SmallField({
         className="mt-3 min-h-11 w-full border-0 border-b border-border bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
       />
     </div>
+  );
+}
+
+function Toggle({
+  label,
+  note,
+  checked,
+  onChange,
+}: {
+  label: string;
+  note?: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <label className="flex cursor-pointer items-start justify-between gap-3">
+      <span className="flex-1">
+        <span className="block text-[13px] text-foreground/90">{label}</span>
+        {note && <span className="mt-0.5 block text-[11px] leading-relaxed text-muted-foreground">{note}</span>}
+      </span>
+      <span
+        role="switch"
+        aria-checked={checked}
+        onClick={() => onChange(!checked)}
+        className={`relative mt-1 inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border transition-colors ${
+          checked ? "border-sage-deep bg-sage-deep" : "border-border bg-background"
+        }`}
+      >
+        <span
+          className={`absolute h-3 w-3 rounded-full transition-transform ${
+            checked ? "translate-x-5 bg-white" : "translate-x-1 bg-muted-foreground"
+          }`}
+        />
+      </span>
+    </label>
   );
 }
 

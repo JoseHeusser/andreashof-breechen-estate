@@ -16,6 +16,11 @@ export interface Booking {
   arrival: string; // YYYY-MM-DD
   departure: string;
   guests: number;
+  children: number;
+  needs_crib: boolean;
+  has_pet: boolean;
+  needs_wheelchair: boolean;
+  rents_dachboden: boolean;
   occasion: string | null;
   contact_name: string;
   contact_email: string;
