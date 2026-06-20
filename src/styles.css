@@ -288,6 +288,84 @@
   border-radius: 9999px;
   color: color-mix(in oklab, var(--color-muted-foreground) 60%, transparent);
 }
+
+/* Stay night — solid sage circle. Higher specificity than .rdp-disabled
+ * so the stay colour wins. */
+.andreashof-calendar .rdp-day.rdp-stay-day .rdp-day_button,
+.andreashof-calendar .rdp-day.rdp-disabled.rdp-stay-day .rdp-day_button {
+  text-decoration: none;
+  background-color: var(--color-sage-deep);
+  border: none;
+  border-radius: 9999px;
+  color: var(--color-background);
+}
+
+/* Arrival / departure — half-coloured circles to indicate the PM check-in
+ * and AM check-out. Uses a linear-gradient fill on a circular clip. */
+.andreashof-calendar .rdp-day.rdp-arrival-day .rdp-day_button,
+.andreashof-calendar .rdp-day.rdp-disabled.rdp-arrival-day .rdp-day_button {
+  text-decoration: none;
+  border: 1px solid color-mix(in oklab, var(--color-sage-deep) 40%, transparent);
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0,
+    transparent calc(50% - 1px),
+    var(--color-sage-deep) calc(50% + 1px),
+    var(--color-sage-deep) 100%
+  );
+  color: var(--color-foreground);
+}
+.andreashof-calendar .rdp-day.rdp-departure-day .rdp-day_button,
+.andreashof-calendar .rdp-day.rdp-disabled.rdp-departure-day .rdp-day_button {
+  text-decoration: none;
+  border: 1px solid color-mix(in oklab, var(--color-sage-deep) 40%, transparent);
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    var(--color-sage-deep) 0,
+    var(--color-sage-deep) calc(50% - 1px),
+    transparent calc(50% + 1px),
+    transparent 100%
+  );
+  color: var(--color-foreground);
+}
+
+/* Pending (admin only) — amber solid */
+.andreashof-calendar .rdp-day.rdp-pending-day .rdp-day_button,
+.andreashof-calendar .rdp-day.rdp-disabled.rdp-pending-day .rdp-day_button {
+  text-decoration: none;
+  background-color: oklch(0.76 0.16 75);
+  border: none;
+  border-radius: 9999px;
+  color: var(--color-foreground);
+}
+
+/* Airbnb-tone (admin only) — swap sage-deep for stone wherever it appears.
+ * Stacks with rdp-stay-day / rdp-arrival-day / rdp-departure-day. */
+.andreashof-calendar .rdp-day.rdp-airbnb-tone.rdp-stay-day .rdp-day_button {
+  background-color: oklch(0.52 0.015 80);
+}
+.andreashof-calendar .rdp-day.rdp-airbnb-tone.rdp-arrival-day .rdp-day_button {
+  background: linear-gradient(
+    90deg,
+    transparent 0,
+    transparent calc(50% - 1px),
+    oklch(0.52 0.015 80) calc(50% + 1px),
+    oklch(0.52 0.015 80) 100%
+  );
+  border-color: color-mix(in oklab, oklch(0.52 0.015 80) 40%, transparent);
+}
+.andreashof-calendar .rdp-day.rdp-airbnb-tone.rdp-departure-day .rdp-day_button {
+  background: linear-gradient(
+    90deg,
+    oklch(0.52 0.015 80) 0,
+    oklch(0.52 0.015 80) calc(50% - 1px),
+    transparent calc(50% + 1px),
+    transparent 100%
+  );
+  border-color: color-mix(in oklab, oklch(0.52 0.015 80) 40%, transparent);
+}
 .andreashof-calendar .rdp-day.rdp-range_start .rdp-day_button,
 .andreashof-calendar .rdp-day.rdp-range_end .rdp-day_button {
   background-color: var(--color-sage-deep);

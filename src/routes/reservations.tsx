@@ -68,34 +68,79 @@ function ReservationsPage() {
     return () => mql.removeEventListener("change", apply);
   }, []);
 
-  // Fetched once on mount: confirmed-or-paid bookings + their ±2 day
-  // cleaning buffers + Airbnb "Not available" cleaning entries.
-  const [blocked, setBlocked] = useState<{ from: Date; to: Date }[]>([]);
-  const [cleaning, setCleaning] = useState<{ from: Date; to: Date }[]>([]);
+  // Fetched once on mount: raw booking rows from getBlockedRanges.
+  // The client unfolds each booking into per-day modifiers below.
+  const [bookingsRaw, setBookingsRaw] = useState<
+    { arrival: string; departure: string; source: string; is_cleaning: boolean }[]
+  >([]);
   useEffect(() => {
     let cancelled = false;
     getBlockedRanges()
       .then((rows) => {
-        if (cancelled) return;
-        const toRange = (r: { arrival: string; departure: string }) => ({
-          from: new Date(r.arrival + "T00:00:00"),
-          // iCal/DB departure is exclusive; day-picker disable wants the
-          // last blocked night, so subtract one day.
-          to: addDays(new Date(r.departure + "T00:00:00"), -1),
-        });
-        setBlocked(rows.map(toRange));
-        setCleaning(rows.filter((r) => r.kind === "cleaning").map(toRange));
+        if (!cancelled) setBookingsRaw(rows);
       })
       .catch(() => {
-        if (!cancelled) {
-          setBlocked([]);
-          setCleaning([]);
-        }
+        if (!cancelled) setBookingsRaw([]);
       });
     return () => {
       cancelled = true;
     };
   }, []);
+
+  // Compute the per-day modifiers + the disabled list from raw bookings.
+  //   stay         → full sage circle (booked night)
+  //   arrival      → right-half circle (guest checks in PM)
+  //   departure    → left-half circle (guest checks out AM)
+  //   cleaning     → dashed circle (Airbnb "not available" or ±2-day buffer)
+  // Every day in any of these buckets is also disabled for selection.
+  const { stayDays, arrivalDays, departureDays, cleaningDays, blocked } = useMemo(() => {
+    const stay: Date[] = [];
+    const arrivals: Date[] = [];
+    const departures: Date[] = [];
+    const cleaning: Date[] = [];
+    const allDisabled: Date[] = [];
+
+    const toDate = (iso: string) => new Date(iso + "T00:00:00");
+    const pushDay = (d: Date, bucket: Date[]) => {
+      bucket.push(d);
+      allDisabled.push(d);
+    };
+
+    for (const b of bookingsRaw) {
+      const arr = toDate(b.arrival);
+      const dep = toDate(b.departure); // exclusive checkout
+      const nights = Math.max(1, differenceInCalendarDays(dep, arr));
+
+      if (b.is_cleaning) {
+        for (let i = 0; i < nights; i++) {
+          pushDay(addDays(arr, i), cleaning);
+        }
+        continue;
+      }
+
+      // Arrival = half-right
+      pushDay(arr, arrivals);
+      // Full stay nights between arrival and departure (exclusive)
+      for (let i = 1; i < nights; i++) {
+        pushDay(addDays(arr, i), stay);
+      }
+      // Departure (checkout day) = half-left
+      if (nights >= 1) pushDay(dep, departures);
+      // ±2-day cleaning buffer (full days, no halves)
+      pushDay(addDays(arr, -1), cleaning);
+      pushDay(addDays(arr, -2), cleaning);
+      pushDay(addDays(dep, 1), cleaning);
+      pushDay(addDays(dep, 2), cleaning);
+    }
+
+    return {
+      stayDays: stay,
+      arrivalDays: arrivals,
+      departureDays: departures,
+      cleaningDays: cleaning,
+      blocked: allDisabled,
+    };
+  }, [bookingsRaw]);
 
   const [range, setRange] = useState<DateRange | undefined>(undefined);
   const [guests, setGuests] = useState<number>(12);
@@ -235,8 +280,18 @@ function ReservationsPage() {
                       navLayout={numberOfMonths === 2 ? "around" : undefined}
                       pagedNavigation
                       disabled={[{ before: today }, ...blocked]}
-                      modifiers={{ cleaning }}
-                      modifiersClassNames={{ cleaning: "rdp-cleaning-day" }}
+                      modifiers={{
+                        cleaning: cleaningDays,
+                        stay: stayDays,
+                        arrivalHalf: arrivalDays,
+                        departureHalf: departureDays,
+                      }}
+                      modifiersClassNames={{
+                        cleaning: "rdp-cleaning-day",
+                        stay: "rdp-stay-day",
+                        arrivalHalf: "rdp-arrival-day",
+                        departureHalf: "rdp-departure-day",
+                      }}
                       locale={locale}
                       showOutsideDays={false}
                       weekStartsOn={1}

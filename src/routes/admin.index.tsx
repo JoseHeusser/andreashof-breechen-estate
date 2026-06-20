@@ -669,46 +669,60 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
 function CalendarTab({ bookings }: { bookings: Booking[] }) {
   const { t } = useTranslation();
   const locale = useLocale();
-  // Visualise web + Airbnb bookings + cleaning days on one calendar.
-  //   web (accepted/paid)   = sage
-  //   web (pending)         = amber
-  //   airbnb reservation    = stone
-  //   cleaning day          = light grey (Airbnb "Not available" + ±2-day
-  //                            auto-buffer around every reservation)
+  // Per-day modifiers built from raw bookings. Mirrors the public
+  // calendar's logic but uses 3 source colors (web sage / pending amber
+  // / airbnb stone) instead of the public single sage.
   const modifiers = useMemo(() => {
-    const web: Date[] = [];
-    const airbnb: Date[] = [];
+    const webStay: Date[] = [];
+    const webArrival: Date[] = [];
+    const webDeparture: Date[] = [];
+    const airbnbStay: Date[] = [];
+    const airbnbArrival: Date[] = [];
+    const airbnbDeparture: Date[] = [];
     const pending: Date[] = [];
     const cleaning: Date[] = [];
-    const pushRange = (start: Date, days: number, bucket: Date[]) => {
-      for (let i = 0; i < days; i++) {
-        const d = new Date(start);
-        d.setDate(d.getDate() + i);
-        bucket.push(d);
-      }
-    };
+
     for (const b of bookings) {
       if (b.status === "cancelled" || b.status === "completed") continue;
-      const start = parseISO(b.arrival);
-      const end = parseISO(b.departure);
-      const days = Math.max(1, differenceInCalendarDays(end, start));
+      const arr = parseISO(b.arrival);
+      const dep = parseISO(b.departure);
+      const nights = Math.max(1, differenceInCalendarDays(dep, arr));
+
       if (b.is_cleaning) {
-        pushRange(start, days, cleaning);
+        for (let i = 0; i < nights; i++) cleaning.push(addDays(arr, i));
         continue;
       }
-      // Reservation itself
-      if (b.source === "airbnb") pushRange(start, days, airbnb);
-      else if (b.status === "requested") pushRange(start, days, pending);
-      else pushRange(start, days, web);
-      // ±2 cleaning buffer for every real reservation
-      if (b.status !== "requested") {
-        const beforeStart = new Date(start);
-        beforeStart.setDate(beforeStart.getDate() - 2);
-        pushRange(beforeStart, 2, cleaning);
-        pushRange(end, 2, cleaning);
+      if (b.status === "requested") {
+        for (let i = 0; i < nights; i++) pending.push(addDays(arr, i));
+        continue;
       }
+
+      const isAirbnb = b.source === "airbnb";
+      const stayBucket = isAirbnb ? airbnbStay : webStay;
+      const arrivalBucket = isAirbnb ? airbnbArrival : webArrival;
+      const departureBucket = isAirbnb ? airbnbDeparture : webDeparture;
+
+      arrivalBucket.push(arr);
+      for (let i = 1; i < nights; i++) stayBucket.push(addDays(arr, i));
+      departureBucket.push(dep);
+
+      // ±2 cleaning buffer
+      cleaning.push(addDays(arr, -1));
+      cleaning.push(addDays(arr, -2));
+      cleaning.push(addDays(dep, 1));
+      cleaning.push(addDays(dep, 2));
     }
-    return { web, airbnb, pending, cleaning };
+
+    return {
+      webStay,
+      webArrival,
+      webDeparture,
+      airbnbStay,
+      airbnbArrival,
+      airbnbDeparture,
+      pending,
+      cleaning,
+    };
   }, [bookings]);
 
   return (
@@ -730,9 +744,13 @@ function CalendarTab({ bookings }: { bookings: Booking[] }) {
           weekStartsOn={1}
           modifiers={modifiers}
           modifiersClassNames={{
-            web: "bg-sage-deep text-background font-medium",
-            airbnb: "bg-stone-500 text-background font-medium",
-            pending: "bg-amber-400 text-background font-medium",
+            webStay: "rdp-stay-day",
+            webArrival: "rdp-arrival-day",
+            webDeparture: "rdp-departure-day",
+            airbnbStay: "rdp-stay-day rdp-airbnb-tone",
+            airbnbArrival: "rdp-arrival-day rdp-airbnb-tone",
+            airbnbDeparture: "rdp-departure-day rdp-airbnb-tone",
+            pending: "rdp-pending-day",
             cleaning: "rdp-cleaning-day",
           }}
         />
