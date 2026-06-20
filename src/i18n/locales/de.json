@@ -266,6 +266,7 @@
     "checkAvailability": "Verfügbarkeit prüfen",
     "checking": "Wird geprüft…",
     "selectFieldsFirst": "Bitte Daten, Personen und Anlass auswählen.",
+    "minNightsError": "Der Mindestaufenthalt beträgt {{count}} Nächte.",
     "guestsMaxError": "Maximal 21 Gäste — bitte kontaktieren Sie uns direkt für größere Gruppen.",
     "change": "Ändern",
     "adults": "Erwachsene",

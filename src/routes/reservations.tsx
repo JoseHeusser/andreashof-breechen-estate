@@ -146,9 +146,17 @@ function ReservationsPage() {
     range?.from && range?.to ? Math.max(0, differenceInCalendarDays(range.to, range.from)) : 0;
   const locale = localeFor(i18n.language);
   const fmt = (d: Date) => format(d, "EEE, d MMM", { locale });
+  const MIN_NIGHTS = 2;
   const MAX_GUESTS = 21;
   const guestsTooMany = guests > MAX_GUESTS;
-  const canCheck = !!range?.from && !!range?.to && nights >= 1 && guests >= 1 && !guestsTooMany && occasion !== "";
+  const stayTooShort = !!range?.from && !!range?.to && nights > 0 && nights < MIN_NIGHTS;
+  const canCheck =
+    !!range?.from &&
+    !!range?.to &&
+    nights >= MIN_NIGHTS &&
+    guests >= 1 &&
+    !guestsTooMany &&
+    occasion !== "";
   const showQuote = quoteCents != null && !quoteStale;
 
   // Mark the quote as stale whenever the user changes any input that
@@ -338,7 +346,7 @@ function ReservationsPage() {
                 <form
                   onSubmit={async (e) => {
                     e.preventDefault();
-                    if (!range?.from || !range?.to) return;
+                    if (!range?.from || !range?.to || nights < MIN_NIGHTS) return;
                     setSubmitError(null);
                     setSubmitting(true);
                     try {
@@ -576,11 +584,15 @@ function ReservationsPage() {
                     >
                       {quoteLoading ? t("reservations.checking") : t("reservations.checkAvailability")}
                     </button>
-                    {!canCheck && !guestsTooMany && (
+                    {stayTooShort ? (
+                      <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+                        {t("reservations.minNightsError", { count: MIN_NIGHTS })}
+                      </p>
+                    ) : !canCheck && !guestsTooMany ? (
                       <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
                         {t("reservations.selectFieldsFirst")}
                       </p>
-                    )}
+                    ) : null}
                   </div>
 
                   {/* Step 2: Contact form — fades in once a quote has been fetched */}

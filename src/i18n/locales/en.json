@@ -266,6 +266,7 @@
     "checkAvailability": "Check availability",
     "checking": "Checking…",
     "selectFieldsFirst": "Please pick dates, guests and occasion first.",
+    "minNightsError": "The minimum stay is {{count}} nights.",
     "guestsMaxError": "Maximum 21 guests — please contact us directly for larger groups.",
     "change": "Change",
     "adults": "Adults",

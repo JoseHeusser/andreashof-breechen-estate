@@ -168,6 +168,7 @@
     "checkAvailability": "Verificar disponibilidad",
     "checking": "Verificando…",
     "selectFieldsFirst": "Elige fechas, huéspedes y ocasión.",
+    "minNightsError": "La estancia mínima es de {{count}} noches.",
     "guestsMaxError": "Máximo 21 huéspedes — escríbenos directamente si son más.",
     "change": "Cambiar",
     "adults": "Adultos",
