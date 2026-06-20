@@ -127,7 +127,6 @@ function ReservationsPage() {
   const [range, setRange] = useState<DateRange | undefined>(undefined);
   const [guests, setGuests] = useState<number>(12);
   const [children, setChildren] = useState<number>(0);
-  const [needsCrib, setNeedsCrib] = useState<boolean>(false);
   const [pets, setPets] = useState<number>(0);
   const [needsWheelchair, setNeedsWheelchair] = useState<boolean>(false);
   const [rentsDachboden, setRentsDachboden] = useState<boolean>(false);
@@ -170,7 +169,6 @@ function ReservationsPage() {
     guests,
     occasion,
     children,
-    needsCrib,
     pets,
     needsWheelchair,
     rentsDachboden,
@@ -186,7 +184,7 @@ function ReservationsPage() {
           departure: format(range.to, "yyyy-MM-dd"),
           guests,
           children,
-          needsCrib: children > 0 && needsCrib,
+          needsCrib: children > 0,
           pets,
           rentsDachboden,
         },
@@ -357,7 +355,7 @@ function ReservationsPage() {
                           departure: format(range.to, "yyyy-MM-dd"),
                           guests,
                           children,
-                          needsCrib: children > 0 && needsCrib,
+                          needsCrib: children > 0,
                           pets,
                           needsWheelchair,
                           rentsDachboden,
@@ -459,19 +457,10 @@ function ReservationsPage() {
                       </div>
                     </div>
 
-                    {/* Extras: pets, wheelchair, dachboden — plus the crib question
-                         that only shows when children > 0 */}
+                    {/* Extras: pets, wheelchair, dachboden. */}
                     <div className="border-t border-border pt-5">
                       <p className="eyebrow mb-3">{t("reservations.extrasTitle")}</p>
                       <div className="space-y-3 text-sm">
-                        {children > 0 && (
-                          <Toggle
-                            label={t("reservations.cribQuestion")}
-                            note={t("reservations.cribNote")}
-                            checked={needsCrib}
-                            onChange={setNeedsCrib}
-                          />
-                        )}
                         {/* Pets — number input rather than yes/no, so Andrea
                             knows how many are coming. Price per animal stays
                             hidden from the public. */}
@@ -526,10 +515,10 @@ function ReservationsPage() {
                           {" · "}
                           {occasion ? occasionOptions[occasion as OccasionKey] : ""}
                         </p>
-                        {(needsCrib || pets > 0 || needsWheelchair || rentsDachboden) && (
+                        {(children > 0 || pets > 0 || needsWheelchair || rentsDachboden) && (
                           <p className="mt-1 text-[11px] text-muted-foreground">
                             {[
-                              needsCrib && "🛏",
+                              children > 0 && "🛏",
                               pets > 0 && `🐾 ${pets}`,
                               needsWheelchair && "♿",
                               rentsDachboden && "🧘",

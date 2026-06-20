@@ -209,7 +209,7 @@ export const createBookingRequest = createServerFn({ method: "POST" })
         departure: data.departure,
         guests: data.guests,
         children: data.children ?? 0,
-        needs_crib: !!data.needsCrib,
+        needs_crib: (data.children ?? 0) > 0 || !!data.needsCrib,
         pets: Math.max(0, data.pets ?? 0),
         needs_wheelchair: !!data.needsWheelchair,
         rents_dachboden: !!data.rentsDachboden,
@@ -312,7 +312,7 @@ export const getPricingQuote = createServerFn({ method: "POST" })
 
     const extraGuests = Math.max(0, data.guests - baseOccupancy);
     const extraTotal = extraGuests * extraPerNight * nights;
-    const cribTotal = data.needsCrib && data.children ? data.children * cribCents : 0;
+    const cribTotal = data.children ? data.children * cribCents : 0;
     const petTotal = data.pets && data.pets > 0 ? data.pets * petCents : 0;
     const dachbodenTotal = data.rentsDachboden ? dachbodenCents : 0;
     const totalCents =

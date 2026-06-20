@@ -86,8 +86,8 @@ function bookingSummary(b: Booking): string {
   const lines: string[] = [];
   lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;width:140px;">Anreise</td><td style="padding:4px 0;font-size:14px;">${formatDate(b.arrival)}</td></tr>`);
   lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Abreise</td><td style="padding:4px 0;font-size:14px;">${formatDate(b.departure)} <span style="color:${COLORS.muted};">(${nights} ${nights === 1 ? "Nacht" : "Nächte"})</span></td></tr>`);
-  lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Erwachsene</td><td style="padding:4px 0;font-size:14px;">${b.guests}</td></tr>`);
-  if (b.children > 0) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Kinder (&lt;2 J.)</td><td style="padding:4px 0;font-size:14px;">${b.children}${b.needs_crib ? " · Babybett" : ""}</td></tr>`);
+  lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Gäste</td><td style="padding:4px 0;font-size:14px;">${b.guests}</td></tr>`);
+  if (b.children > 0) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Kleinkinder</td><td style="padding:4px 0;font-size:14px;">${b.children}${b.needs_crib ? " · Bett/Babybett" : ""}</td></tr>`);
   if (b.pets > 0) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Haustiere</td><td style="padding:4px 0;font-size:14px;">${b.pets}</td></tr>`);
   if (b.needs_wheelchair) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Barrierefrei</td><td style="padding:4px 0;font-size:14px;">EG vorbereiten</td></tr>`);
   if (b.rents_dachboden) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Dachboden</td><td style="padding:4px 0;font-size:14px;">inkl. Yoga-Zentrum</td></tr>`);

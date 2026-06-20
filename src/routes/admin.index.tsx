@@ -273,7 +273,7 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {booking.children > 0 && (
                   <span className="border border-sage px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-sage-deep">
-                    👶 {booking.children}{booking.needs_crib ? " + crib" : ""}
+                    👶 {booking.children} Kleinkind{booking.children === 1 ? "" : "er"}{booking.needs_crib ? " + Bett" : ""}
                   </span>
                 )}
                 {booking.pets > 0 && (
