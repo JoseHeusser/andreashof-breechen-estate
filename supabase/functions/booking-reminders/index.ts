@@ -29,6 +29,7 @@ const COLORS = {
   sage: "#7A8B72",
   sageDeep: "#556A50",
 };
+const SIGNATURE = "Andrea & Andreas & das Andreashof-Team";
 
 interface BookingRow {
   id: string;
@@ -123,7 +124,7 @@ function balanceReminderHtml(b: BookingRow): string {
       <tr><td style="padding:3px 0;color:${COLORS.muted};">Verwendungszweck</td><td style="padding:3px 0;">Restzahlung ${b.id.slice(0, 8)}</td></tr>
     </table>
     <p style="margin:18px 0 0;font-size:14px;color:${COLORS.muted};line-height:1.6;">Sollten Sie bereits überwiesen haben, betrachten Sie diese Erinnerung bitte als gegenstandslos.</p>
-    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">Andrea</em></p>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return shell("Erinnerung: Restzahlung", body);
 }
@@ -142,7 +143,7 @@ function arrivalInstructionsHtml(b: BookingRow): string {
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Abreise</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-out bis <strong>11:00 Uhr</strong> am ${formatDate(b.departure)}. Bitte bringen Sie die Schlüssel auf den Esstisch, alles Weitere übernehmen wir.</p>
     <p style="margin:24px 0 0;font-size:15px;line-height:1.6;">Sollten Sie irgendwelche Fragen haben — vor, während oder nach Ihrem Aufenthalt — sind wir jederzeit für Sie da.</p>
-    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">Andrea & das Andreashof-Team</em></p>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return shell("Anreise zum Andreashof", body);
 }

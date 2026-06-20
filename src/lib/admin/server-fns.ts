@@ -11,6 +11,15 @@ import {
   tplDepositPaidGuest,
 } from "@/lib/email/templates";
 
+type PricingQuoteInput = {
+  arrival: string;
+  departure: string;
+  guests: number;
+  children?: number;
+  pets?: number;
+  rentsDachboden?: boolean;
+};
+
 /* -----------------------------------------------------------------
  * Auth helper — every protected fn calls requireAdmin(). It reads
  * the Bearer token sent by the client (Supabase access token) and
@@ -112,6 +121,67 @@ export const deleteSpecialPrice = createServerFn({ method: "POST" })
     if (error) throw error;
   });
 
+async function calculatePricingQuote(
+  admin: ReturnType<typeof getSupabaseAdmin>,
+  data: PricingQuoteInput,
+) {
+  const [pricingRes, settingsRes] = await Promise.all([
+    admin.from("pricing").select("*"),
+    admin
+      .from("settings")
+      .select("key,value")
+      .in("key", [
+        "cleaning_fee_cents",
+        "base_occupancy",
+        "extra_person_fee_per_night_cents",
+        "child_crib_fee_cents",
+        "pet_fee_cents",
+        "dachboden_fee_cents",
+      ]),
+  ]);
+  if (pricingRes.error) throw pricingRes.error;
+  if (settingsRes.error) throw settingsRes.error;
+
+  const settings = Object.fromEntries(
+    (settingsRes.data ?? []).map((s) => [s.key, s.value as number]),
+  );
+  const cleaningCents = (settings.cleaning_fee_cents as number) ?? 0;
+  const baseOccupancy = (settings.base_occupancy as number) ?? 10;
+  const extraPerNight = (settings.extra_person_fee_per_night_cents as number) ?? 0;
+  const cribCents = (settings.child_crib_fee_cents as number) ?? 0;
+  const petCents = (settings.pet_fee_cents as number) ?? 0;
+  const dachbodenCents = (settings.dachboden_fee_cents as number) ?? 0;
+
+  const base = (pricingRes.data ?? []).find((p) => p.type === "base");
+  const baseCents = base?.price_per_night_cents ?? 0;
+  const specials = (pricingRes.data ?? [])
+    .filter((p) => p.type === "special")
+    .sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+
+  let nightlySum = 0;
+  let nights = 0;
+  const start = new Date(data.arrival + "T00:00:00Z");
+  const end = new Date(data.departure + "T00:00:00Z");
+  for (let d = new Date(start); d < end; d.setUTCDate(d.getUTCDate() + 1)) {
+    const iso = d.toISOString().slice(0, 10);
+    const special = specials.find(
+      (s) => s.start_date && s.end_date && iso >= s.start_date && iso <= s.end_date,
+    );
+    nightlySum += special ? special.price_per_night_cents : baseCents;
+    nights++;
+  }
+
+  const extraGuests = Math.max(0, data.guests - baseOccupancy);
+  const extraTotal = extraGuests * extraPerNight * nights;
+  const cribTotal = data.children ? data.children * cribCents : 0;
+  const petTotal = data.pets && data.pets > 0 ? data.pets * petCents : 0;
+  const dachbodenTotal = data.rentsDachboden ? dachbodenCents : 0;
+  const totalCents =
+    nightlySum + cleaningCents + extraTotal + cribTotal + petTotal + dachbodenTotal;
+
+  return { totalCents, nights };
+}
+
 /* -----------------------------------------------------------------
  * BOOKINGS — status change + notes + price
  * -------------------------------------------------------------- */
@@ -200,6 +270,14 @@ export const createBookingRequest = createServerFn({ method: "POST" })
     if (data.guests < 1 || data.guests > 30) throw new Error("Invalid guest count");
 
     const admin = getSupabaseAdmin();
+    const quote = await calculatePricingQuote(admin, {
+      arrival: data.arrival,
+      departure: data.departure,
+      guests: data.guests,
+      children: data.children,
+      pets: data.pets,
+      rentsDachboden: data.rentsDachboden,
+    });
     const { data: row, error } = await admin
       .from("bookings")
       .insert({
@@ -218,6 +296,8 @@ export const createBookingRequest = createServerFn({ method: "POST" })
         contact_email: data.email,
         contact_phone: data.phone ?? null,
         message: data.message ?? null,
+        total_price_cents: quote.totalCents,
+        deposit_amount_cents: Math.round(quote.totalCents * 0.5),
       })
       .select("*")
       .single();
@@ -264,61 +344,7 @@ export const getPricingQuote = createServerFn({ method: "POST" })
     if (!data.guests || data.guests < 1) throw new Error("invalid_guests");
 
     const admin = getSupabaseAdmin();
-    const [pricingRes, settingsRes] = await Promise.all([
-      admin.from("pricing").select("*"),
-      admin
-        .from("settings")
-        .select("key,value")
-        .in("key", [
-          "cleaning_fee_cents",
-          "base_occupancy",
-          "extra_person_fee_per_night_cents",
-          "child_crib_fee_cents",
-          "pet_fee_cents",
-          "dachboden_fee_cents",
-        ]),
-    ]);
-    if (pricingRes.error) throw pricingRes.error;
-    if (settingsRes.error) throw settingsRes.error;
-
-    const settings = Object.fromEntries(
-      (settingsRes.data ?? []).map((s) => [s.key, s.value as number]),
-    );
-    const cleaningCents = (settings.cleaning_fee_cents as number) ?? 0;
-    const baseOccupancy = (settings.base_occupancy as number) ?? 10;
-    const extraPerNight = (settings.extra_person_fee_per_night_cents as number) ?? 0;
-    const cribCents = (settings.child_crib_fee_cents as number) ?? 0;
-    const petCents = (settings.pet_fee_cents as number) ?? 0;
-    const dachbodenCents = (settings.dachboden_fee_cents as number) ?? 0;
-
-    const base = (pricingRes.data ?? []).find((p) => p.type === "base");
-    const baseCents = base?.price_per_night_cents ?? 0;
-    const specials = (pricingRes.data ?? [])
-      .filter((p) => p.type === "special")
-      .sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
-
-    let nightlySum = 0;
-    let nights = 0;
-    const start = new Date(data.arrival + "T00:00:00Z");
-    const end = new Date(data.departure + "T00:00:00Z");
-    for (let d = new Date(start); d < end; d.setUTCDate(d.getUTCDate() + 1)) {
-      const iso = d.toISOString().slice(0, 10);
-      const special = specials.find(
-        (s) => s.start_date && s.end_date && iso >= s.start_date && iso <= s.end_date,
-      );
-      nightlySum += special ? special.price_per_night_cents : baseCents;
-      nights++;
-    }
-
-    const extraGuests = Math.max(0, data.guests - baseOccupancy);
-    const extraTotal = extraGuests * extraPerNight * nights;
-    const cribTotal = data.children ? data.children * cribCents : 0;
-    const petTotal = data.pets && data.pets > 0 ? data.pets * petCents : 0;
-    const dachbodenTotal = data.rentsDachboden ? dachbodenCents : 0;
-    const totalCents =
-      nightlySum + cleaningCents + extraTotal + cribTotal + petTotal + dachbodenTotal;
-
-    return { totalCents, nights };
+    return calculatePricingQuote(admin, data);
   });
 
 /* -----------------------------------------------------------------

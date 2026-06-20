@@ -20,6 +20,8 @@ const COLORS = {
   sageDeep: "#556A50",
 };
 
+const SIGNATURE = "Andrea & Andreas & das Andreashof-Team";
+
 function shell(title: string, body: string) {
   // Inline-styled email shell. Email clients only support a tiny subset
   // of CSS so everything goes inline.
@@ -111,7 +113,7 @@ export function tplRequestedGuest(b: Booking) {
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">vielen Dank für Ihre Reservierungsanfrage für den Andreashof Breechen. Wir prüfen Ihre Anfrage und melden uns <strong>innerhalb von 12 Stunden</strong> persönlich bei Ihnen.</p>
     ${bookingSummary(b)}
     <p style="margin:18px 0 6px;font-size:13px;color:${COLORS.muted};">Bei Fragen erreichen Sie uns jederzeit unter <a href="mailto:willkommen@andreashof-breechen.de" style="color:${COLORS.sageDeep};">willkommen@andreashof-breechen.de</a>.</p>
-    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">Andrea & das Andreashof-Team</em></p>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return { subject, html: shell(subject, body) };
 }
@@ -164,7 +166,7 @@ export function tplAcceptedGuest(b: Booking) {
     </table>
     <h2 style="margin:28px 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Stornierungsbedingungen</h2>
     <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${COLORS.muted};">Kostenfreie Stornierung bis <strong>30 Tage vor Anreise</strong>. Danach werden 50% des Gesamtpreises in Rechnung gestellt.</p>
-    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">Andrea & das Andreashof-Team</em></p>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return { subject, html: shell(subject, body) };
 }
@@ -187,7 +189,7 @@ export function tplDepositPaidGuest(b: Booking) {
       <tr><td style="padding:3px 0;color:${COLORS.muted};">Verwendungszweck</td><td style="padding:3px 0;">Restzahlung ${b.id.slice(0, 8)}</td></tr>
     </table>
     <p style="margin:24px 0 14px;font-size:15px;line-height:1.6;">Wir freuen uns sehr darauf, Sie bei uns begrüßen zu dürfen — bringen Sie gute Laune und vielleicht ein gutes Buch mit. Den Rest übernimmt das Haus.</p>
-    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">Andrea & das Andreashof-Team</em></p>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return { subject, html: shell(subject, body) };
 }
@@ -208,7 +210,7 @@ export function tplBalanceReminderGuest(b: Booking) {
       <tr><td style="padding:3px 0;color:${COLORS.muted};">Verwendungszweck</td><td style="padding:3px 0;">Restzahlung ${b.id.slice(0, 8)}</td></tr>
     </table>
     <p style="margin:18px 0 0;font-size:14px;color:${COLORS.muted};line-height:1.6;">Sollten Sie bereits überwiesen haben, betrachten Sie diese Erinnerung bitte als gegenstandslos.</p>
-    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">Andrea</em></p>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return { subject, html: shell(subject, body) };
 }
@@ -231,7 +233,7 @@ export function tplArrivalInstructionsGuest(b: Booking) {
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Abreise</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-out bis <strong>11:00 Uhr</strong> am ${formatDate(b.departure)}. Bitte bringen Sie die Schlüssel auf den Esstisch, alles Weitere übernehmen wir.</p>
     <p style="margin:24px 0 0;font-size:15px;line-height:1.6;">Sollten Sie irgendwelche Fragen haben — vor, während oder nach Ihrem Aufenthalt — sind wir jederzeit für Sie da.</p>
-    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">Andrea & das Andreashof-Team</em></p>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return { subject, html: shell(subject, body) };
 }

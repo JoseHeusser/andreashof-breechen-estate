@@ -30,6 +30,16 @@ function useLocale() {
   return i18n.language?.startsWith("en") ? enLocale : deLocale;
 }
 
+function formatCents(cents: number | null, language: string) {
+  if (cents == null) return null;
+  const locale = language.startsWith("en") ? "en-GB" : language.startsWith("es") ? "es-ES" : "de-DE";
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
+}
+
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "Admin · Andreashof" }] }),
   component: AdminPage,
@@ -239,7 +249,7 @@ function FilterChip({ active, onClick, label }: { active: boolean; onClick: () =
 }
 
 function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => void }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState(booking.status);
@@ -247,6 +257,13 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
   const [price, setPrice] = useState(booking.total_price_cents != null ? String(booking.total_price_cents / 100) : "");
   const [busy, setBusy] = useState(false);
   const nights = differenceInCalendarDays(parseISO(booking.departure), parseISO(booking.arrival));
+  const totalFormatted = formatCents(booking.total_price_cents, i18n.language);
+
+  useEffect(() => {
+    setStatus(booking.status);
+    setNotes(booking.internal_notes ?? "");
+    setPrice(booking.total_price_cents != null ? String(booking.total_price_cents / 100) : "");
+  }, [booking.status, booking.internal_notes, booking.total_price_cents]);
 
   return (
     <li className="border border-border bg-card">
@@ -257,6 +274,9 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
             {format(parseISO(booking.arrival), "d MMM", { locale })} → {format(parseISO(booking.departure), "d MMM yyyy", { locale })} · {nights}{t("admin.bookings.nightsShort")} · {booking.guests} {t("admin.bookings.personsShort")}
           </span>
         </span>
+        {totalFormatted && (
+          <span className="text-sm tabular-nums text-sage-deep">{totalFormatted}</span>
+        )}
         <span className={`border px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${STATUS_COLOR[booking.status]}`}>
           {t(`admin.statusShort.${booking.status}`)}
         </span>
