@@ -143,17 +143,20 @@ function AdminPage() {
 function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: () => void }) {
   const { t } = useTranslation();
   const [filter, setFilter] = useState<BookingStatus | "all">("all");
-  const filtered = filter === "all" ? bookings : bookings.filter((b) => b.status === filter);
+  // Hide auto-generated Airbnb cleaning entries from the main list — they
+  // show up in the Kalender tab instead (no contact data, no editing).
+  const guestBookings = useMemo(() => bookings.filter((b) => !b.is_cleaning), [bookings]);
+  const filtered = filter === "all" ? guestBookings : guestBookings.filter((b) => b.status === filter);
   const counts = useMemo(() => {
     const c: Record<string, number> = {};
-    for (const b of bookings) c[b.status] = (c[b.status] ?? 0) + 1;
+    for (const b of guestBookings) c[b.status] = (c[b.status] ?? 0) + 1;
     return c;
-  }, [bookings]);
+  }, [guestBookings]);
 
   return (
     <div>
       <div className="mb-6 flex flex-wrap gap-2 text-xs">
-        <FilterChip active={filter === "all"} onClick={() => setFilter("all")} label={t("admin.bookings.filterAll", { n: bookings.length })} />
+        <FilterChip active={filter === "all"} onClick={() => setFilter("all")} label={t("admin.bookings.filterAll", { n: guestBookings.length })} />
         {(["requested", "accepted", "deposit_paid", "fully_paid", "cancelled", "completed"] as BookingStatus[]).map((s) => (
           <FilterChip
             key={s}
@@ -666,34 +669,55 @@ function SpecialPriceRow({ row, onReload }: { row: PricingRow | null; onReload: 
 function CalendarTab({ bookings }: { bookings: Booking[] }) {
   const { t } = useTranslation();
   const locale = useLocale();
-  // Visualise web + Airbnb bookings on a single calendar.
-  // Web (accepted/paid) = sage. Airbnb = stone. Requested (pending review) = amber.
+  // Visualise web + Airbnb bookings + cleaning days on one calendar.
+  //   web (accepted/paid)   = sage
+  //   web (pending)         = amber
+  //   airbnb reservation    = stone
+  //   cleaning day          = light grey (Airbnb "Not available" + ±2-day
+  //                            auto-buffer around every reservation)
   const modifiers = useMemo(() => {
     const web: Date[] = [];
     const airbnb: Date[] = [];
     const pending: Date[] = [];
+    const cleaning: Date[] = [];
+    const pushRange = (start: Date, days: number, bucket: Date[]) => {
+      for (let i = 0; i < days; i++) {
+        const d = new Date(start);
+        d.setDate(d.getDate() + i);
+        bucket.push(d);
+      }
+    };
     for (const b of bookings) {
       if (b.status === "cancelled" || b.status === "completed") continue;
       const start = parseISO(b.arrival);
       const end = parseISO(b.departure);
       const days = Math.max(1, differenceInCalendarDays(end, start));
-      for (let i = 0; i < days; i++) {
-        const d = new Date(start);
-        d.setDate(d.getDate() + i);
-        if (b.source === "airbnb") airbnb.push(d);
-        else if (b.status === "requested") pending.push(d);
-        else web.push(d);
+      if (b.is_cleaning) {
+        pushRange(start, days, cleaning);
+        continue;
+      }
+      // Reservation itself
+      if (b.source === "airbnb") pushRange(start, days, airbnb);
+      else if (b.status === "requested") pushRange(start, days, pending);
+      else pushRange(start, days, web);
+      // ±2 cleaning buffer for every real reservation
+      if (b.status !== "requested") {
+        const beforeStart = new Date(start);
+        beforeStart.setDate(beforeStart.getDate() - 2);
+        pushRange(beforeStart, 2, cleaning);
+        pushRange(end, 2, cleaning);
       }
     }
-    return { web, airbnb, pending };
+    return { web, airbnb, pending, cleaning };
   }, [bookings]);
 
   return (
     <div>
-      <ul className="mb-6 flex gap-6 text-xs">
+      <ul className="mb-6 flex flex-wrap gap-x-6 gap-y-2 text-xs">
         <Legend color="bg-sage-deep" label={t("admin.calendar.legendWeb")} />
         <Legend color="bg-amber-400" label={t("admin.calendar.legendPending")} />
         <Legend color="bg-stone-500" label={t("admin.calendar.legendAirbnb")} />
+        <Legend color="bg-sage/30 border border-dashed border-sage-deep/50" label={t("admin.calendar.legendCleaning")} />
       </ul>
 
       <div className="andreashof-calendar admin-calendar">
@@ -709,6 +733,7 @@ function CalendarTab({ bookings }: { bookings: Booking[] }) {
             web: "bg-sage-deep text-background font-medium",
             airbnb: "bg-stone-500 text-background font-medium",
             pending: "bg-amber-400 text-background font-medium",
+            cleaning: "rdp-cleaning-day",
           }}
         />
       </div>

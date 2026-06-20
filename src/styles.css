@@ -281,6 +281,13 @@
 .andreashof-calendar .rdp-day.rdp-disabled .rdp-day_button:hover {
   background-color: transparent;
 }
+.andreashof-calendar .rdp-day.rdp-cleaning-day .rdp-day_button {
+  text-decoration: none;
+  background-color: color-mix(in oklab, var(--color-sage) 18%, transparent);
+  border: 1px dashed color-mix(in oklab, var(--color-sage-deep) 40%, transparent);
+  border-radius: 9999px;
+  color: color-mix(in oklab, var(--color-muted-foreground) 60%, transparent);
+}
 .andreashof-calendar .rdp-day.rdp-range_start .rdp-day_button,
 .andreashof-calendar .rdp-day.rdp-range_end .rdp-day_button {
   background-color: var(--color-sage-deep);

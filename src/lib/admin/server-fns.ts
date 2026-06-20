@@ -271,15 +271,64 @@ export const getPricingQuote = createServerFn({ method: "POST" })
 
 /* -----------------------------------------------------------------
  * PUBLIC — fetch blocked ranges so the public calendar greys them
- * out. Only returns accepted / paid bookings, never raw requests.
+ * out. Only returns accepted / paid bookings + their ±2 day cleaning
+ * buffers. Cleaning entries from Airbnb (is_cleaning=true) come
+ * through as-is without an additional buffer.
+ *
+ * Each entry is { arrival, departure, source, kind } where
+ *   kind === 'reservation' → real stay
+ *   kind === 'cleaning'    → buffer day (auto) OR Airbnb-pushed
+ *                            "Not available" entry
  * -------------------------------------------------------------- */
+const BUFFER_DAYS = 2;
+function shift(iso: string, days: number) {
+  const d = new Date(iso + "T00:00:00Z");
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
 export const getBlockedRanges = createServerFn({ method: "GET" }).handler(async () => {
   const admin = getSupabaseAdmin();
   const { data, error } = await admin
-    .from("blocked_ranges")
-    .select("arrival,departure,source");
+    .from("bookings")
+    .select("arrival,departure,source,is_cleaning")
+    .in("status", ["accepted", "deposit_paid", "fully_paid"]);
   if (error) throw error;
-  return data as { arrival: string; departure: string; source: string }[];
+
+  const out: { arrival: string; departure: string; source: string; kind: "reservation" | "cleaning" }[] = [];
+  for (const b of data ?? []) {
+    if (b.is_cleaning) {
+      out.push({
+        arrival: b.arrival,
+        departure: b.departure,
+        source: b.source,
+        kind: "cleaning",
+      });
+      continue;
+    }
+    // The reservation itself
+    out.push({
+      arrival: b.arrival,
+      departure: b.departure,
+      source: b.source,
+      kind: "reservation",
+    });
+    // 2 cleaning days before arrival
+    out.push({
+      arrival: shift(b.arrival, -BUFFER_DAYS),
+      departure: b.arrival,
+      source: b.source,
+      kind: "cleaning",
+    });
+    // 2 cleaning days starting at departure
+    out.push({
+      arrival: b.departure,
+      departure: shift(b.departure, BUFFER_DAYS),
+      source: b.source,
+      kind: "cleaning",
+    });
+  }
+  return out;
 });
 
 /* -----------------------------------------------------------------

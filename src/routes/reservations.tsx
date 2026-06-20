@@ -68,25 +68,29 @@ function ReservationsPage() {
     return () => mql.removeEventListener("change", apply);
   }, []);
 
-  // Fetched once on mount from /api server fn — confirmed-or-paid bookings
-  // (web + Airbnb iCal sync) become disabled days in the calendar.
+  // Fetched once on mount: confirmed-or-paid bookings + their ±2 day
+  // cleaning buffers + Airbnb "Not available" cleaning entries.
   const [blocked, setBlocked] = useState<{ from: Date; to: Date }[]>([]);
+  const [cleaning, setCleaning] = useState<{ from: Date; to: Date }[]>([]);
   useEffect(() => {
     let cancelled = false;
     getBlockedRanges()
       .then((rows) => {
         if (cancelled) return;
-        setBlocked(
-          rows.map((r) => ({
-            from: new Date(r.arrival + "T00:00:00"),
-            // iCal/DB departure is exclusive; day-picker disable wants the
-            // last blocked night, so subtract one day.
-            to: addDays(new Date(r.departure + "T00:00:00"), -1),
-          })),
-        );
+        const toRange = (r: { arrival: string; departure: string }) => ({
+          from: new Date(r.arrival + "T00:00:00"),
+          // iCal/DB departure is exclusive; day-picker disable wants the
+          // last blocked night, so subtract one day.
+          to: addDays(new Date(r.departure + "T00:00:00"), -1),
+        });
+        setBlocked(rows.map(toRange));
+        setCleaning(rows.filter((r) => r.kind === "cleaning").map(toRange));
       })
       .catch(() => {
-        if (!cancelled) setBlocked([]);
+        if (!cancelled) {
+          setBlocked([]);
+          setCleaning([]);
+        }
       });
     return () => {
       cancelled = true;
@@ -231,6 +235,8 @@ function ReservationsPage() {
                       navLayout={numberOfMonths === 2 ? "around" : undefined}
                       pagedNavigation
                       disabled={[{ before: today }, ...blocked]}
+                      modifiers={{ cleaning }}
+                      modifiersClassNames={{ cleaning: "rdp-cleaning-day" }}
                       locale={locale}
                       showOutsideDays={false}
                       weekStartsOn={1}
@@ -252,6 +258,10 @@ function ReservationsPage() {
                   <li className="flex items-center gap-2">
                     <span className="h-2.5 w-2.5 bg-border line-through" />
                     {t("reservations.legendBlocked")}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full border border-dashed border-sage-deep/50 bg-sage/20" />
+                    {t("reservations.legendCleaning")}
                   </li>
                 </ul>
               </div>

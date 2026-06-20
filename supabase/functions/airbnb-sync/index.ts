@@ -111,14 +111,19 @@ Deno.serve(async (req) => {
 
     for (const ev of events) {
       seen.add(ev.uid);
+      // Airbnb host-blocked days arrive with summary "Airbnb (Not available)".
+      // Tag them so the calendars can colour them as cleaning days and the
+      // admin bookings list can hide them from the main view.
+      const isCleaning = /not available/i.test(ev.summary);
       const row = {
         source: "airbnb" as const,
         status: "accepted" as const,
+        is_cleaning: isCleaning,
         airbnb_uid: ev.uid,
         arrival: ev.start,
         departure: ev.end,
         guests: 1, // unknown from iCal; we just need a value > 0
-        contact_name: ev.summary || "Airbnb Reservation",
+        contact_name: isCleaning ? "🧹 Reinigungstag" : ev.summary || "Airbnb Reservation",
         contact_email: `airbnb+${ev.uid}@andreashof-breechen.de`,
       };
       const prior = existingByUid.get(ev.uid);
@@ -128,7 +133,12 @@ Deno.serve(async (req) => {
       } else if (prior.arrival !== ev.start || prior.departure !== ev.end) {
         await pg(`bookings?airbnb_uid=eq.${encodeURIComponent(ev.uid)}`, {
           method: "PATCH",
-          body: JSON.stringify({ arrival: ev.start, departure: ev.end }),
+          body: JSON.stringify({
+            arrival: ev.start,
+            departure: ev.end,
+            is_cleaning: isCleaning,
+            contact_name: isCleaning ? "🧹 Reinigungstag" : ev.summary || "Airbnb Reservation",
+          }),
         });
         updated++;
       }

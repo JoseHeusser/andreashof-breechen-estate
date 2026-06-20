@@ -21,6 +21,7 @@ export interface Booking {
   pets: number;
   needs_wheelchair: boolean;
   rents_dachboden: boolean;
+  is_cleaning: boolean;
   occasion: string | null;
   contact_name: string;
   contact_email: string;
