@@ -130,7 +130,10 @@ Deno.serve(async (req) => {
       if (!prior) {
         await pg("bookings", { method: "POST", body: JSON.stringify(row) });
         inserted++;
-      } else if (prior.arrival !== ev.start || prior.departure !== ev.end) {
+      } else {
+        // Always PATCH metadata (dates, is_cleaning, name) — Airbnb can
+        // re-classify a date from booking → cleaning or vice versa, and
+        // our sync should converge to whatever the iCal currently says.
         await pg(`bookings?airbnb_uid=eq.${encodeURIComponent(ev.uid)}`, {
           method: "PATCH",
           body: JSON.stringify({
@@ -140,7 +143,7 @@ Deno.serve(async (req) => {
             contact_name: isCleaning ? "🧹 Reinigungstag" : ev.summary || "Airbnb Reservation",
           }),
         });
-        updated++;
+        if (prior.arrival !== ev.start || prior.departure !== ev.end) updated++;
       }
     }
 
