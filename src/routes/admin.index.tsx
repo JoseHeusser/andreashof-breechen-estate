@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DayPicker } from "react-day-picker";
 import { de as deLocale, enUS as enLocale } from "date-fns/locale";
-import { differenceInCalendarDays, format, parseISO } from "date-fns";
+import { addDays, differenceInCalendarDays, format, parseISO } from "date-fns";
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { installAdminFetch } from "@/lib/admin/auth-fetch";
 import { AdminLangSwitcher } from "@/components/admin/admin-lang-switcher";
