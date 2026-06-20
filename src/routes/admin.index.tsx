@@ -82,6 +82,43 @@ function AdminPage() {
     if (ready) reload();
   }, [ready]);
 
+  // One-click action from Andrea's email: ?action=accept|reject&id=<uuid>
+  // Runs after auth + first reload, applies the status change, reloads,
+  // then strips the query string so a refresh doesn't repeat the action.
+  const [quickResult, setQuickResult] = useState<string | null>(null);
+  useEffect(() => {
+    if (!ready || loading) return;
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const action = params.get("action");
+    const id = params.get("id");
+    if (!id || (action !== "accept" && action !== "reject")) return;
+    const target = bookings.find((b) => b.id === id);
+    if (!target) {
+      setQuickResult(`Buchung ${id.slice(0, 8)} nicht gefunden`);
+      window.history.replaceState({}, "", window.location.pathname);
+      return;
+    }
+    (async () => {
+      try {
+        await updateBooking({
+          data: { id, status: action === "accept" ? "accepted" : "cancelled" },
+        });
+        setQuickResult(
+          action === "accept"
+            ? `✓ ${target.contact_name} bestätigt — Bestätigungsmail verschickt.`
+            : `✗ ${target.contact_name} abgelehnt.`,
+        );
+        await reload();
+      } catch (e) {
+        setQuickResult(`Fehler: ${e instanceof Error ? e.message : "unbekannt"}`);
+      } finally {
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, loading, bookings.length]);
+
   if (!ready) return <div className="p-10 text-muted-foreground">…</div>;
 
   return (
@@ -104,6 +141,14 @@ function AdminPage() {
             </button>
           </div>
         </div>
+        {quickResult ? (
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 border-t border-border bg-sage/10 px-6 py-3 text-sm">
+            <span>{quickResult}</span>
+            <button onClick={() => setQuickResult(null)} className="text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground">
+              schließen
+            </button>
+          </div>
+        ) : null}
         <nav className="mx-auto flex max-w-6xl gap-8 px-6 text-[11px] uppercase tracking-[0.28em]">
           {(["bookings", "pricing", "calendar", "settings"] as const).map((k) => (
             <button

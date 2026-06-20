@@ -252,7 +252,7 @@
     "calendarHint": "Click on arrival and departure. Grey days are not available.",
     "legendAvailable": "Available",
     "legendSelected": "Selected",
-    "legendBlocked": "Reserved",
+    "legendBlocked": "Not available",
     "legendCleaning": "Cleaning day",
     "summaryTitle": "Your selection",
     "summaryEmpty": "Select arrival and departure on the calendar.",

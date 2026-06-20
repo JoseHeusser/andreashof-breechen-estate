@@ -252,7 +252,7 @@
     "calendarHint": "Klicken Sie auf Anreise und Abreise. Grau markierte Tage sind nicht verfügbar.",
     "legendAvailable": "Verfügbar",
     "legendSelected": "Ausgewählt",
-    "legendBlocked": "Reserviert",
+    "legendBlocked": "Nicht verfügbar",
     "legendCleaning": "Reinigungstag",
     "summaryTitle": "Ihre Auswahl",
     "summaryEmpty": "Wählen Sie Anreise und Abreise im Kalender.",

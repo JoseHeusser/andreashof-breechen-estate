@@ -87,22 +87,12 @@ function ReservationsPage() {
     };
   }, []);
 
-  // Compute the per-day modifiers + the disabled list from raw bookings.
-  //   stay         → full sage circle (booked night)
-  //   arrival      → right-half circle (guest checks in PM)
-  //   departure    → left-half circle (guest checks out AM)
-  //   cleaning     → dashed circle (Airbnb "not available" or ±2-day buffer)
-  // Every day in any of these buckets is also disabled for selection.
-  const { stayDays, arrivalDays, departureDays, cleaningDays, blocked } = useMemo(() => {
-    const stay: Date[] = [];
-    const arrivals: Date[] = [];
-    const departures: Date[] = [];
-    const cleaning: Date[] = [];
+  // Public availability only exposes one state: not available.
+  const { blocked } = useMemo(() => {
     const allDisabled: Date[] = [];
 
     const toDate = (iso: string) => new Date(iso + "T00:00:00");
-    const pushDay = (d: Date, bucket: Date[]) => {
-      bucket.push(d);
+    const pushDay = (d: Date) => {
       allDisabled.push(d);
     };
 
@@ -113,31 +103,23 @@ function ReservationsPage() {
 
       if (b.is_cleaning) {
         for (let i = 0; i < nights; i++) {
-          pushDay(addDays(arr, i), cleaning);
+          pushDay(addDays(arr, i));
         }
         continue;
       }
 
-      // Arrival = half-right
-      pushDay(arr, arrivals);
-      // Full stay nights between arrival and departure (exclusive)
+      pushDay(arr);
       for (let i = 1; i < nights; i++) {
-        pushDay(addDays(arr, i), stay);
+        pushDay(addDays(arr, i));
       }
-      // Departure (checkout day) = half-left
-      if (nights >= 1) pushDay(dep, departures);
-      // ±2-day cleaning buffer (full days, no halves)
-      pushDay(addDays(arr, -1), cleaning);
-      pushDay(addDays(arr, -2), cleaning);
-      pushDay(addDays(dep, 1), cleaning);
-      pushDay(addDays(dep, 2), cleaning);
+      if (nights >= 1) pushDay(dep);
+      pushDay(addDays(arr, -1));
+      pushDay(addDays(arr, -2));
+      pushDay(addDays(dep, 1));
+      pushDay(addDays(dep, 2));
     }
 
     return {
-      stayDays: stay,
-      arrivalDays: arrivals,
-      departureDays: departures,
-      cleaningDays: cleaning,
       blocked: allDisabled,
     };
   }, [bookingsRaw]);
@@ -265,7 +247,7 @@ function ReservationsPage() {
                   </p>
                 </div>
 
-                <div className="andreashof-calendar">
+                <div className="andreashof-calendar public-reservation-calendar">
                   {today && month ? (
                     <DayPicker
                       mode="range"
@@ -281,16 +263,10 @@ function ReservationsPage() {
                       pagedNavigation
                       disabled={[{ before: today }, ...blocked]}
                       modifiers={{
-                        cleaning: cleaningDays,
-                        stay: stayDays,
-                        arrivalHalf: arrivalDays,
-                        departureHalf: departureDays,
+                        blockedDay: blocked,
                       }}
                       modifiersClassNames={{
-                        cleaning: "rdp-cleaning-day",
-                        stay: "rdp-stay-day",
-                        arrivalHalf: "rdp-arrival-day",
-                        departureHalf: "rdp-departure-day",
+                        blockedDay: "rdp-public-blocked-day",
                       }}
                       locale={locale}
                       showOutsideDays={false}
@@ -311,12 +287,8 @@ function ReservationsPage() {
                     {t("reservations.legendSelected")}
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 bg-border line-through" />
+                    <span className="h-2.5 w-2.5 bg-border" />
                     {t("reservations.legendBlocked")}
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full border border-dashed border-sage-deep/50 bg-sage/20" />
-                    {t("reservations.legendCleaning")}
                   </li>
                 </ul>
               </div>

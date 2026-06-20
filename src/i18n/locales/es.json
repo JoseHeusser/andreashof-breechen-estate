@@ -154,7 +154,7 @@
     "calendarHint": "Haz click en llegada y salida. Los días grises no están disponibles.",
     "legendAvailable": "Disponible",
     "legendSelected": "Seleccionado",
-    "legendBlocked": "Reservado",
+    "legendBlocked": "No disponible",
     "legendCleaning": "Día de limpieza",
     "summaryTitle": "Tu selección",
     "summaryEmpty": "Selecciona llegada y salida en el calendario.",

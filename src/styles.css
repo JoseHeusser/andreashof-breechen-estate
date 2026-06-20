@@ -288,6 +288,13 @@
   border-radius: 9999px;
   color: color-mix(in oklab, var(--color-muted-foreground) 60%, transparent);
 }
+.public-reservation-calendar .rdp-day.rdp-public-blocked-day .rdp-day_button,
+.public-reservation-calendar .rdp-day.rdp-disabled.rdp-public-blocked-day .rdp-day_button {
+  color: color-mix(in oklab, var(--color-muted-foreground) 72%, transparent);
+  text-decoration: line-through;
+  background: transparent;
+  border: none;
+}
 
 /* Stay night — solid sage circle. Higher specificity than .rdp-disabled
  * so the stay colour wins. */

@@ -3,6 +3,13 @@ import { getRequestHeaders } from "@tanstack/react-start/server";
 import { createClient } from "@supabase/supabase-js";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import type { Booking, BookingStatus, PricingRow } from "@/lib/supabase/types";
+import { sendEmail, ADMIN_EMAIL } from "@/lib/email/client";
+import {
+  tplRequestedGuest,
+  tplRequestedAdmin,
+  tplAcceptedGuest,
+  tplDepositPaidGuest,
+} from "@/lib/email/templates";
 
 /* -----------------------------------------------------------------
  * Auth helper — every protected fn calls requireAdmin(). It reads
@@ -121,14 +128,46 @@ export const updateBooking = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
+
+    // Read current state first to detect status transitions for emails.
+    const { data: prev, error: prevErr } = await admin
+      .from("bookings")
+      .select("*")
+      .eq("id", data.id)
+      .single();
+    if (prevErr) throw prevErr;
+
     const patch: Record<string, unknown> = {};
     if (data.status !== undefined) patch.status = data.status;
     if (data.totalPriceCents !== undefined) patch.total_price_cents = data.totalPriceCents;
     if (data.depositAmountCents !== undefined) patch.deposit_amount_cents = data.depositAmountCents;
     if (data.internalNotes !== undefined) patch.internal_notes = data.internalNotes;
 
-    const { error } = await admin.from("bookings").update(patch).eq("id", data.id);
+    const { data: updated, error } = await admin
+      .from("bookings")
+      .update(patch)
+      .eq("id", data.id)
+      .select("*")
+      .single();
     if (error) throw error;
+
+    // Send transition emails. Never throw on email failure — bookings
+    // are the source of truth; emails are best-effort.
+    const prevStatus = (prev as Booking).status;
+    const newStatus = (updated as Booking).status;
+    const booking = updated as Booking;
+    if (newStatus !== prevStatus && !booking.is_cleaning && booking.contact_email) {
+      const isFakeAirbnbEmail = booking.contact_email.endsWith("@andreashof-breechen.de");
+      if (!isFakeAirbnbEmail) {
+        if (prevStatus === "requested" && newStatus === "accepted") {
+          const tpl = tplAcceptedGuest(booking);
+          await sendEmail({ to: booking.contact_email, ...tpl });
+        } else if (newStatus === "deposit_paid") {
+          const tpl = tplDepositPaidGuest(booking);
+          await sendEmail({ to: booking.contact_email, ...tpl });
+        }
+      }
+    }
   });
 
 /* -----------------------------------------------------------------
@@ -180,10 +219,20 @@ export const createBookingRequest = createServerFn({ method: "POST" })
         contact_phone: data.phone ?? null,
         message: data.message ?? null,
       })
-      .select("id")
+      .select("*")
       .single();
     if (error) throw error;
-    return { id: row.id };
+
+    // Best-effort: confirmation to guest + new-request alert to Andrea.
+    const booking = row as Booking;
+    const guestTpl = tplRequestedGuest(booking);
+    const adminTpl = tplRequestedAdmin(booking);
+    await Promise.all([
+      sendEmail({ to: booking.contact_email, ...guestTpl }),
+      sendEmail({ to: ADMIN_EMAIL, ...adminTpl, replyTo: booking.contact_email }),
+    ]);
+
+    return { id: booking.id };
   });
 
 /* -----------------------------------------------------------------
