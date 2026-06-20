@@ -125,8 +125,9 @@ function ReservationsPage() {
   }, [bookingsRaw]);
 
   const [range, setRange] = useState<DateRange | undefined>(undefined);
-  const [guests, setGuests] = useState<number>(12);
-  const [children, setChildren] = useState<number>(0);
+  const [adults, setAdults] = useState<number>(12);
+  const [regularChildren, setRegularChildren] = useState<number>(0);
+  const [smallChildren, setSmallChildren] = useState<number>(0);
   const [pets, setPets] = useState<number>(0);
   const [needsWheelchair, setNeedsWheelchair] = useState<boolean>(false);
   const [rentsDachboden, setRentsDachboden] = useState<boolean>(false);
@@ -147,13 +148,14 @@ function ReservationsPage() {
   const fmt = (d: Date) => format(d, "EEE, d MMM", { locale });
   const MIN_NIGHTS = 2;
   const MAX_GUESTS = 21;
-  const guestsTooMany = guests > MAX_GUESTS;
+  const totalGuests = adults + regularChildren;
+  const guestsTooMany = totalGuests > MAX_GUESTS;
   const stayTooShort = !!range?.from && !!range?.to && nights > 0 && nights < MIN_NIGHTS;
   const canCheck =
     !!range?.from &&
     !!range?.to &&
     nights >= MIN_NIGHTS &&
-    guests >= 1 &&
+    totalGuests >= 1 &&
     !guestsTooMany &&
     occasion !== "";
   const showQuote = quoteCents != null && !quoteStale;
@@ -166,9 +168,10 @@ function ReservationsPage() {
   }, [
     range?.from,
     range?.to,
-    guests,
+    adults,
+    regularChildren,
     occasion,
-    children,
+    smallChildren,
     pets,
     needsWheelchair,
     rentsDachboden,
@@ -182,9 +185,9 @@ function ReservationsPage() {
         data: {
           arrival: format(range.from, "yyyy-MM-dd"),
           departure: format(range.to, "yyyy-MM-dd"),
-          guests,
-          children,
-          needsCrib: children > 0,
+          guests: totalGuests,
+          children: smallChildren,
+          needsCrib: smallChildren > 0,
           pets,
           rentsDachboden,
         },
@@ -353,9 +356,9 @@ function ReservationsPage() {
                         data: {
                           arrival: format(range.from, "yyyy-MM-dd"),
                           departure: format(range.to, "yyyy-MM-dd"),
-                          guests,
-                          children,
-                          needsCrib: children > 0,
+                          guests: totalGuests,
+                          children: smallChildren,
+                          needsCrib: smallChildren > 0,
                           pets,
                           needsWheelchair,
                           rentsDachboden,
@@ -388,18 +391,18 @@ function ReservationsPage() {
                         : "max-h-[28rem] translate-y-0 opacity-100"
                     }`}
                   >
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                       <div>
-                        <label htmlFor="guests" className="eyebrow">
+                        <label htmlFor="adults" className="eyebrow">
                           {t("reservations.adults")}
                         </label>
                         <input
-                          id="guests"
+                          id="adults"
                           type="number"
                           min={1}
                           max={MAX_GUESTS}
-                          value={guests}
-                          onChange={(e) => setGuests(Number(e.target.value))}
+                          value={adults}
+                          onChange={(e) => setAdults(Math.max(1, Number(e.target.value)))}
                           className={`mt-3 min-h-11 w-full border-0 border-b bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep ${
                             guestsTooMany ? "border-red-500" : "border-border"
                           }`}
@@ -414,8 +417,24 @@ function ReservationsPage() {
                           type="number"
                           min={0}
                           max={10}
-                          value={children}
-                          onChange={(e) => setChildren(Math.max(0, Number(e.target.value)))}
+                          value={regularChildren}
+                          onChange={(e) => setRegularChildren(Math.max(0, Number(e.target.value)))}
+                          className={`mt-3 min-h-11 w-full border-0 border-b bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep ${
+                            guestsTooMany ? "border-red-500" : "border-border"
+                          }`}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="smallChildren" className="eyebrow">
+                          {t("reservations.smallChildren")}
+                        </label>
+                        <input
+                          id="smallChildren"
+                          type="number"
+                          min={0}
+                          max={10}
+                          value={smallChildren}
+                          onChange={(e) => setSmallChildren(Math.max(0, Number(e.target.value)))}
                           className="mt-3 min-h-11 w-full border-0 border-b border-border bg-transparent py-2 font-sans text-base text-foreground outline-none transition-colors focus:border-sage-deep"
                         />
                       </div>
@@ -425,9 +444,9 @@ function ReservationsPage() {
                         {t("reservations.guestsMaxError")}
                       </p>
                     )}
-                    {children > 0 && (
+                    {smallChildren > 0 && (
                       <p className="-mt-3 text-[11px] leading-relaxed text-muted-foreground">
-                        {t("reservations.childrenHint")}
+                        {t("reservations.smallChildrenHint")}
                       </p>
                     )}
 
@@ -510,15 +529,16 @@ function ReservationsPage() {
                           {t("reservations.fields.guests")} · {t("reservations.fields.occasion")}
                         </p>
                         <p className="mt-1 font-display text-lg leading-tight text-foreground">
-                          {guests}
-                          {children > 0 ? ` + ${children} 👶` : ""}
+                          {totalGuests}
+                          {regularChildren > 0 ? ` (${adults}+${regularChildren})` : ""}
+                          {smallChildren > 0 ? ` + ${smallChildren} 👶` : ""}
                           {" · "}
                           {occasion ? occasionOptions[occasion as OccasionKey] : ""}
                         </p>
-                        {(children > 0 || pets > 0 || needsWheelchair || rentsDachboden) && (
+                        {(smallChildren > 0 || pets > 0 || needsWheelchair || rentsDachboden) && (
                           <p className="mt-1 text-[11px] text-muted-foreground">
                             {[
-                              children > 0 && "🛏",
+                              smallChildren > 0 && "🛏",
                               pets > 0 && `🐾 ${pets}`,
                               needsWheelchair && "♿",
                               rentsDachboden && "🧘",
@@ -574,7 +594,7 @@ function ReservationsPage() {
                       {quoteLoading ? t("reservations.checking") : t("reservations.checkAvailability")}
                     </button>
                     {stayTooShort ? (
-                      <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+                      <p className="mt-2 text-[11px] leading-relaxed text-red-700">
                         {t("reservations.minNightsError", { count: MIN_NIGHTS })}
                       </p>
                     ) : !canCheck && !guestsTooMany ? (
