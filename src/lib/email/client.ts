@@ -43,6 +43,6 @@ export async function sendEmail(args: SendArgs): Promise<{ id: string } | null> 
   }
 }
 
-export const ADMIN_EMAIL = process.env.EMAIL_TO_ADMIN ?? "andrea@andreashof-breechen.de";
+export const ADMIN_EMAIL = process.env.EMAIL_TO_ADMIN ?? "andrea.lietz@web.de";
 export const SITE_URL =
   process.env.SITE_URL ?? "https://andreashof-breechen.de";
