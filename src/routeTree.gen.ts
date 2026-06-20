@@ -20,6 +20,7 @@ import { Route as AgbRouteImport } from './routes/agb'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as ApiResendInboundRouteImport } from './routes/api/resend-inbound'
 import { Route as ApiCalendarDoticsRouteImport } from './routes/api/calendar[.]ics'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 
@@ -78,6 +79,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const ApiResendInboundRoute = ApiResendInboundRouteImport.update({
+  id: '/api/resend-inbound',
+  path: '/api/resend-inbound',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCalendarDoticsRoute = ApiCalendarDoticsRouteImport.update({
   id: '/api/calendar.ics',
   path: '/api/calendar.ics',
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/zimmer': typeof ZimmerRoute
   '/admin/login': typeof AdminLoginRoute
   '/api/calendar.ics': typeof ApiCalendarDoticsRoute
+  '/api/resend-inbound': typeof ApiResendInboundRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/zimmer': typeof ZimmerRoute
   '/admin/login': typeof AdminLoginRoute
   '/api/calendar.ics': typeof ApiCalendarDoticsRoute
+  '/api/resend-inbound': typeof ApiResendInboundRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/zimmer': typeof ZimmerRoute
   '/admin/login': typeof AdminLoginRoute
   '/api/calendar.ics': typeof ApiCalendarDoticsRoute
+  '/api/resend-inbound': typeof ApiResendInboundRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/zimmer'
     | '/admin/login'
     | '/api/calendar.ics'
+    | '/api/resend-inbound'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/zimmer'
     | '/admin/login'
     | '/api/calendar.ics'
+    | '/api/resend-inbound'
     | '/admin'
   id:
     | '__root__'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
     | '/zimmer'
     | '/admin/login'
     | '/api/calendar.ics'
+    | '/api/resend-inbound'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -193,6 +205,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ZimmerRoute: typeof ZimmerRoute
   ApiCalendarDoticsRoute: typeof ApiCalendarDoticsRoute
+  ApiResendInboundRoute: typeof ApiResendInboundRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -274,6 +287,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/api/resend-inbound': {
+      id: '/api/resend-inbound'
+      path: '/api/resend-inbound'
+      fullPath: '/api/resend-inbound'
+      preLoaderRoute: typeof ApiResendInboundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/calendar.ics': {
       id: '/api/calendar.ics'
       path: '/api/calendar.ics'
@@ -315,6 +335,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ZimmerRoute: ZimmerRoute,
   ApiCalendarDoticsRoute: ApiCalendarDoticsRoute,
+  ApiResendInboundRoute: ApiResendInboundRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
