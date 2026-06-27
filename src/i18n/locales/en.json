@@ -288,7 +288,7 @@
     "steps": [
       { "n": "01", "title": "Send your request",   "body": "Choose your dates, group size and occasion. We check availability." },
       { "n": "02", "title": "Personal confirmation","body": "Andrea replies within 24 hours with a tailored offer." },
-      { "n": "03", "title": "Secure your stay",     "body": "30% deposit confirms the booking. Balance due 14 days before arrival." }
+      { "n": "03", "title": "Secure your stay",     "body": "50% deposit confirms the booking. Balance due 14 days before arrival." }
     ],
     "formEyebrow": "Your request",
     "formTitle": "Reservation details",

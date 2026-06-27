@@ -31,7 +31,7 @@ create index pricing_special_range_idx on public.pricing (start_date, end_date) 
 create type booking_status as enum (
   'requested',      -- guest filled the form, not reviewed
   'accepted',       -- Andrea approved, awaiting deposit
-  'deposit_paid',   -- 30% in, awaiting balance
+  'deposit_paid',   -- 50% in, awaiting balance
   'fully_paid',     -- 100% paid, confirmed
   'cancelled',      -- declined or cancelled
   'completed'       -- stay finished
@@ -84,7 +84,7 @@ insert into public.pricing (type, price_per_night_cents, priority)
 
 insert into public.settings (key, value) values
   ('airbnb_ical_url', '""'::jsonb),
-  ('deposit_percentage', '30'::jsonb),
+  ('deposit_percentage', '50'::jsonb),
   ('min_nights', '2'::jsonb);
 
 ------------------------------------------------------------------

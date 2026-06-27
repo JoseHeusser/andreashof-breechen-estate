@@ -288,7 +288,7 @@
     "steps": [
       { "n": "01", "title": "Anfrage senden",        "body": "Wählen Sie Ihre Daten, Gruppengröße und den Anlass. Wir prüfen die Verfügbarkeit." },
       { "n": "02", "title": "Persönliche Bestätigung","body": "Andrea meldet sich innerhalb von 24 Stunden mit einem maßgeschneiderten Angebot." },
-      { "n": "03", "title": "Buchung sichern",        "body": "30% Anzahlung bestätigt die Buchung. Restzahlung 14 Tage vor Anreise." }
+      { "n": "03", "title": "Buchung sichern",        "body": "50% Anzahlung bestätigt die Buchung. Restzahlung 14 Tage vor Anreise." }
     ],
     "formEyebrow": "Ihre Anfrage",
     "formTitle": "Daten für Ihre Reservierung",
@@ -326,7 +326,7 @@
       { "q": "Gibt es Parkplätze?",                                       "a": "Auf dem Innenhof stehen kostenfreie Parkplätze für bis zu zwölf Fahrzeuge zur Verfügung." },
       { "q": "Sind Haustiere erlaubt?",                                   "a": "Gut erzogene Hunde sind nach Absprache willkommen. Bitte geben Sie uns bei der Anfrage Bescheid." },
       { "q": "Wie ist die Stornierungsrichtlinie?",                       "a": "Kostenfreie Stornierung bis 60 Tage vor Anreise. Details finden Sie in unseren AGB." },
-      { "q": "Wie läuft der Check-in?",                                   "a": "Persönliche Begrüßung am Anreisetag ab 16:00 Uhr. Schlüsselübergabe und Hausführung inklusive." }
+      { "q": "Wie läuft der Check-in?",                                   "a": "Persönliche Begrüßung am Anreisetag ab 14:00 Uhr. Schlüsselübergabe und Hausführung inklusive." }
     ]
   },
   "footer": {

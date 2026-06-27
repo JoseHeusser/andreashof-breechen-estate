@@ -46,7 +46,7 @@ function AGBPage() {
           <section>
             <h2 className="font-display text-2xl">3. Zahlungsbedingungen</h2>
             <p className="mt-3">
-              Eine Anzahlung in Höhe von 30 % ist innerhalb von 14 Tagen nach
+              Eine Anzahlung in Höhe von 50 % ist innerhalb von 14 Tagen nach
               Buchung fällig. Der Restbetrag ist 30 Tage vor Anreise zu
               entrichten.
             </p>
@@ -62,7 +62,7 @@ function AGBPage() {
           <section>
             <h2 className="font-display text-2xl">5. An- und Abreise</h2>
             <p className="mt-3">
-              Check-in: ab 16:00 Uhr · Check-out: bis 11:00 Uhr.
+              Check-in: ab 14:00 Uhr · Check-out: bis 11:00 Uhr.
               Eine persönliche Begrüßung ist Bestandteil der Anreise.
             </p>
           </section>

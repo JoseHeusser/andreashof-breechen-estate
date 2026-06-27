@@ -249,7 +249,7 @@ export function tplArrivalInstructionsGuest(b: Booking) {
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Adresse</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Andreashof Breechen<br>Peenestraße 16<br>17506 Gützkow</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Anreise</h2>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-in ab <strong>16:00 Uhr</strong>. Bitte geben Sie uns kurz Bescheid, wann Sie voraussichtlich eintreffen — entweder per E-Mail oder WhatsApp an <a href="tel:+4915112345678" style="color:${COLORS.sageDeep};">+49 151 1234 5678</a>.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-in ab <strong>14:00 Uhr</strong>. Bitte geben Sie uns kurz Bescheid, wann Sie voraussichtlich eintreffen — per E-Mail an <a href="mailto:willkommen@andreashof-breechen.de" style="color:${COLORS.sageDeep};">willkommen@andreashof-breechen.de</a> oder per WhatsApp an <a href="tel:+4915112345678" style="color:${COLORS.sageDeep};">+49 151 1234 5678</a>.</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Vor Ort</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Sie werden persönlich begrüßt, die Schlüsselübergabe und eine kurze Hausführung sind selbstverständlich inklusive. Ein Parkplatz für Ihr Fahrzeug steht direkt am Hof bereit.</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Abreise</h2>

@@ -190,7 +190,7 @@
     "steps": [
       { "n": "01", "title": "Envías tu solicitud",  "body": "Eliges fechas, número de huéspedes y ocasión. Verificamos disponibilidad." },
       { "n": "02", "title": "Confirmación personal","body": "Andrea responde en menos de 24 horas con una oferta a medida." },
-      { "n": "03", "title": "Aseguras tu estancia", "body": "30% de anticipo confirma la reserva. Saldo 14 días antes de la llegada." }
+      { "n": "03", "title": "Aseguras tu estancia", "body": "50% de anticipo confirma la reserva. Saldo 14 días antes de la llegada." }
     ],
     "formEyebrow": "Tu solicitud",
     "formTitle": "Datos de tu reserva",
@@ -228,7 +228,7 @@
       { "q": "¿Hay estacionamiento?",                               "a": "Estacionamiento gratuito para hasta doce vehículos en el patio interior." },
       { "q": "¿Se permiten mascotas?",                              "a": "Aceptamos perros bien educados previa consulta. Avísanos al hacer tu solicitud." },
       { "q": "¿Cuál es la política de cancelación?",                "a": "Cancelación gratuita hasta 60 días antes de la llegada. Detalles en nuestros términos." },
-      { "q": "¿Cómo es el check-in?",                               "a": "Recibimiento personal el día de llegada a partir de las 16:00. Entrega de llaves y breve recorrido por la casa." }
+      { "q": "¿Cómo es el check-in?",                               "a": "Recibimiento personal el día de llegada a partir de las 14:00. Entrega de llaves y breve recorrido por la casa." }
     ]
   },
   "footer": {
