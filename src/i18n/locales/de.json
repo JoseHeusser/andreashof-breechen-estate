@@ -115,7 +115,9 @@
     "house": "Das Haus",
     "rooms": "Zimmer",
     "gallery": "Galerie",
+    "history": "Rückblicke",
     "location": "Lage",
+    "partners": "Partner",
     "inquiry": "Reservierung",
     "reserve": "Reservieren"
   },
@@ -185,6 +187,59 @@
       "plans":    "Grundrisse",
       "atmos":    "Atmosphäre"
     }
+  },
+  "partners": {
+    "eyebrow": "Unsere Empfehlungen",
+    "title": "Partner und gute Adressen rund um den Andreashof.",
+    "subtitle": "Für Feiern, Familienwochenenden und Retreats empfehlen wir gern Menschen und Betriebe aus der Umgebung, mit denen Gäste vor Ort unkompliziert planen können.",
+    "items": [
+      {
+        "id": "peenefeeling",
+        "category": "Wasser & Ausflüge",
+        "title": "Peenefeeling Bootsverleih Jarmen",
+        "description": "Bootsverleih auf der Hafeninsel in Jarmen: 5 Dreier-Kanus, 2 Zweier-Kajaks, ein führerscheinfreies 15-PS-Motorboot sowie Ausfahrten mit großem Rettungsboot für bis zu 10 Personen. Grillen, Chillen, Volleyball, Tischtennis und kleine Feierlichkeiten im Partyzelt sind vor Ort möglich. Preise nach Absprache per Telefon oder direkt auf der Hafeninsel.",
+        "area": "Hafeninsel Jarmen",
+        "phone": "0151 16542503"
+      },
+      {
+        "id": "gran-gusto",
+        "category": "Catering & Feiern",
+        "title": "Gran Gusto Catering",
+        "description": "Catering aus Greifswald für Events, Familienfeiern und Buffets: Fingerfood, Antipasti, warme Speisen und süße Köstlichkeiten. Gran Gusto arbeitet mit hochwertigen Lebensmitteln, achtet auf kurze Lieferwege und bietet auch vegane und vegetarische Speisen an.",
+        "area": "Greifswald",
+        "phone": "0172 3123419",
+        "websiteUrl": "https://gran-gusto.de/",
+        "websiteLabel": "gran-gusto.de"
+      }
+    ]
+  },
+  "history": {
+    "eyebrow": "Rückblicke",
+    "title": "Eindrücke vom Bauverlauf bis heute.",
+    "subtitle": "Der Andreashof ist kein Neubauprojekt, sondern ein Haus mit Schichten: Gutshaus, Dorfmittelpunkt, Familienort und heute ein Platz für gemeinsame Aufenthalte, Feiern und Rückzug.",
+    "timelineEyebrow": "Hausgeschichte",
+    "timeline": [
+      {
+        "year": "1782",
+        "title": "Ein Gutshaus entsteht",
+        "body": "Der Andreashof wird als pommersches Gutshaus errichtet. Die klare Fassade, der Fachwerkgiebel und die hohen Fenster erzählen bis heute vom gustavianischen Geschmack jener Zeit."
+      },
+      {
+        "year": "19. Jh.",
+        "title": "Leben im Dorf Breechen",
+        "body": "Das Haus bleibt eng mit dem Dorf verbunden: Hof, Garten, Nachbarschaft und die ländliche Umgebung prägen seinen Charakter stärker als repräsentative Distanz."
+      },
+      {
+        "year": "Sanierung",
+        "title": "Erhalten, öffnen, weiterbauen",
+        "body": "Historische Elemente, Dielen, Fensterachsen und Raumfolgen werden bewahrt und mit heutigen Bedürfnissen verbunden: Küchen, Bäder, Gästezimmer und Aufenthaltsräume entstehen Schritt für Schritt."
+      },
+      {
+        "year": "Heute",
+        "title": "Ein Haus für gemeinsame Zeit",
+        "body": "Heute wird der Andreashof als ganzes Haus vermietet: für Familien, Geburtstage, Hochzeiten, Retreats und Gruppen, die einen ruhigen Ort mit Geschichte suchen."
+      }
+    ]
   },
   "zimmer": {
     "pageEyebrow": "Die Zimmer",

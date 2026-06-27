@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ZimmerRouteImport } from './routes/zimmer'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RueckblickeRouteImport } from './routes/rueckblicke'
 import { Route as ReservationsRouteImport } from './routes/reservations'
 import { Route as PlansDemoRouteImport } from './routes/plans-demo'
+import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as ImpressumRouteImport } from './routes/impressum'
 import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as DatenschutzRouteImport } from './routes/datenschutz'
@@ -35,6 +37,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RueckblickeRoute = RueckblickeRouteImport.update({
+  id: '/rueckblicke',
+  path: '/rueckblicke',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReservationsRoute = ReservationsRouteImport.update({
   id: '/reservations',
   path: '/reservations',
@@ -43,6 +50,11 @@ const ReservationsRoute = ReservationsRouteImport.update({
 const PlansDemoRoute = PlansDemoRouteImport.update({
   id: '/plans-demo',
   path: '/plans-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnerRoute = PartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImpressumRoute = ImpressumRouteImport.update({
@@ -108,8 +120,10 @@ export interface FileRoutesByFullPath {
   '/datenschutz': typeof DatenschutzRoute
   '/galerie': typeof GalerieRoute
   '/impressum': typeof ImpressumRoute
+  '/partner': typeof PartnerRoute
   '/plans-demo': typeof PlansDemoRoute
   '/reservations': typeof ReservationsRoute
+  '/rueckblicke': typeof RueckblickeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
   '/admin/login': typeof AdminLoginRoute
@@ -124,8 +138,10 @@ export interface FileRoutesByTo {
   '/datenschutz': typeof DatenschutzRoute
   '/galerie': typeof GalerieRoute
   '/impressum': typeof ImpressumRoute
+  '/partner': typeof PartnerRoute
   '/plans-demo': typeof PlansDemoRoute
   '/reservations': typeof ReservationsRoute
+  '/rueckblicke': typeof RueckblickeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
   '/admin/login': typeof AdminLoginRoute
@@ -142,8 +158,10 @@ export interface FileRoutesById {
   '/datenschutz': typeof DatenschutzRoute
   '/galerie': typeof GalerieRoute
   '/impressum': typeof ImpressumRoute
+  '/partner': typeof PartnerRoute
   '/plans-demo': typeof PlansDemoRoute
   '/reservations': typeof ReservationsRoute
+  '/rueckblicke': typeof RueckblickeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
   '/admin/login': typeof AdminLoginRoute
@@ -161,8 +179,10 @@ export interface FileRouteTypes {
     | '/datenschutz'
     | '/galerie'
     | '/impressum'
+    | '/partner'
     | '/plans-demo'
     | '/reservations'
+    | '/rueckblicke'
     | '/sitemap.xml'
     | '/zimmer'
     | '/admin/login'
@@ -177,8 +197,10 @@ export interface FileRouteTypes {
     | '/datenschutz'
     | '/galerie'
     | '/impressum'
+    | '/partner'
     | '/plans-demo'
     | '/reservations'
+    | '/rueckblicke'
     | '/sitemap.xml'
     | '/zimmer'
     | '/admin/login'
@@ -194,8 +216,10 @@ export interface FileRouteTypes {
     | '/datenschutz'
     | '/galerie'
     | '/impressum'
+    | '/partner'
     | '/plans-demo'
     | '/reservations'
+    | '/rueckblicke'
     | '/sitemap.xml'
     | '/zimmer'
     | '/admin/login'
@@ -212,8 +236,10 @@ export interface RootRouteChildren {
   DatenschutzRoute: typeof DatenschutzRoute
   GalerieRoute: typeof GalerieRoute
   ImpressumRoute: typeof ImpressumRoute
+  PartnerRoute: typeof PartnerRoute
   PlansDemoRoute: typeof PlansDemoRoute
   ReservationsRoute: typeof ReservationsRoute
+  RueckblickeRoute: typeof RueckblickeRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ZimmerRoute: typeof ZimmerRoute
   ApiCalendarDoticsRoute: typeof ApiCalendarDoticsRoute
@@ -237,6 +263,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rueckblicke': {
+      id: '/rueckblicke'
+      path: '/rueckblicke'
+      fullPath: '/rueckblicke'
+      preLoaderRoute: typeof RueckblickeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reservations': {
       id: '/reservations'
       path: '/reservations'
@@ -249,6 +282,13 @@ declare module '@tanstack/react-router' {
       path: '/plans-demo'
       fullPath: '/plans-demo'
       preLoaderRoute: typeof PlansDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partner': {
+      id: '/partner'
+      path: '/partner'
+      fullPath: '/partner'
+      preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/impressum': {
@@ -350,8 +390,10 @@ const rootRouteChildren: RootRouteChildren = {
   DatenschutzRoute: DatenschutzRoute,
   GalerieRoute: GalerieRoute,
   ImpressumRoute: ImpressumRoute,
+  PartnerRoute: PartnerRoute,
   PlansDemoRoute: PlansDemoRoute,
   ReservationsRoute: ReservationsRoute,
+  RueckblickeRoute: RueckblickeRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ZimmerRoute: ZimmerRoute,
   ApiCalendarDoticsRoute: ApiCalendarDoticsRoute,

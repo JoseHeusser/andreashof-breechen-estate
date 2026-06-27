@@ -12,7 +12,9 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
     { href: "/#haus", label: t("nav.house") },
     { href: "/zimmer", label: t("nav.rooms"), to: "/zimmer" as const },
     { href: "/galerie", label: t("nav.gallery"), to: "/galerie" as const },
+    { href: "/rueckblicke", label: t("nav.history"), to: "/rueckblicke" as const },
     { href: "/#lage", label: t("nav.location") },
+    { href: "/partner", label: t("nav.partners"), to: "/partner" as const },
     { href: "/reservations", label: t("nav.inquiry"), to: "/reservations" as const },
   ];
 
@@ -125,7 +127,9 @@ export function SiteFooter() {
               <li><a href="/#haus" className="hover:text-sage-deep">{t("nav.house")}</a></li>
               <li><Link to="/zimmer" className="hover:text-sage-deep">{t("nav.rooms")}</Link></li>
               <li><Link to="/galerie" className="hover:text-sage-deep">{t("nav.gallery")}</Link></li>
+              <li><Link to="/rueckblicke" className="hover:text-sage-deep">{t("nav.history")}</Link></li>
               <li><a href="/#lage" className="hover:text-sage-deep">{t("nav.location")}</a></li>
+              <li><Link to="/partner" className="hover:text-sage-deep">{t("nav.partners")}</Link></li>
               <li><Link to="/reservations" className="hover:text-sage-deep">{t("nav.inquiry")}</Link></li>
             </ul>
           </div>

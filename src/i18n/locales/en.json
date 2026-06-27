@@ -115,7 +115,9 @@
     "house": "The House",
     "rooms": "Rooms",
     "gallery": "Gallery",
+    "history": "History",
     "location": "Location",
+    "partners": "Partners",
     "inquiry": "Reservations",
     "reserve": "Reserve"
   },
@@ -185,6 +187,59 @@
       "plans":    "Floor plans",
       "atmos":    "Atmosphere"
     }
+  },
+  "partners": {
+    "eyebrow": "Our recommendations",
+    "title": "Partners and trusted local addresses around Andreashof.",
+    "subtitle": "For celebrations, family weekends and retreats, we are glad to recommend people and businesses nearby who make planning on site easier.",
+    "items": [
+      {
+        "id": "peenefeeling",
+        "category": "Water & outings",
+        "title": "Peenefeeling Boat Rental Jarmen",
+        "description": "Boat rental on Hafeninsel in Jarmen: five 3-person canoes, two 2-person kayaks, one licence-free 15 hp motorboat, plus trips with a large rescue boat for up to 10 people. Grilling, relaxing, volleyball, table tennis and small celebrations in a party tent are possible on site. Prices by phone or directly on Hafeninsel.",
+        "area": "Hafeninsel Jarmen",
+        "phone": "0151 16542503"
+      },
+      {
+        "id": "gran-gusto",
+        "category": "Catering & celebrations",
+        "title": "Gran Gusto Catering",
+        "description": "Catering from Greifswald for events, family celebrations and buffets: finger food, antipasti, warm dishes and sweet treats. Gran Gusto works with high-quality ingredients, keeps supply routes short and also offers vegan and vegetarian dishes.",
+        "area": "Greifswald",
+        "phone": "0172 3123419",
+        "websiteUrl": "https://gran-gusto.de/",
+        "websiteLabel": "gran-gusto.de"
+      }
+    ]
+  },
+  "history": {
+    "eyebrow": "Retrospective",
+    "title": "Impressions from building and restoration to today.",
+    "subtitle": "Andreashof is not a new project, but a house with layers: manor house, village anchor, family place and today a setting for shared stays, celebrations and retreats.",
+    "timelineEyebrow": "House history",
+    "timeline": [
+      {
+        "year": "1782",
+        "title": "A manor house is built",
+        "body": "Andreashof is built as a Pomeranian manor house. Its clear facade, half-timbered gable and tall windows still speak of the Gustavian taste of that period."
+      },
+      {
+        "year": "19th c.",
+        "title": "Life in the village of Breechen",
+        "body": "The house remains closely connected to the village: courtyard, garden, neighbours and the rural surroundings shape its character more than formal distance."
+      },
+      {
+        "year": "Restoration",
+        "title": "Preserve, open, continue",
+        "body": "Historic elements, floorboards, window axes and room sequences are preserved and joined with present-day needs: kitchens, bathrooms, guest rooms and shared spaces take shape step by step."
+      },
+      {
+        "year": "Today",
+        "title": "A house for time together",
+        "body": "Today Andreashof is rented as a whole house: for families, birthdays, weddings, retreats and groups looking for a calm place with history."
+      }
+    ]
   },
   "zimmer": {
     "pageEyebrow": "The Rooms",

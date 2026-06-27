@@ -4,7 +4,9 @@
     "house": "La Casa",
     "rooms": "Habitaciones",
     "gallery": "Galería",
+    "history": "Historia",
     "location": "Ubicación",
+    "partners": "Aliados",
     "inquiry": "Reservas",
     "reserve": "Reservar"
   },
@@ -74,6 +76,59 @@
       "plans":    "Planos",
       "atmos":    "Ambiente"
     }
+  },
+  "partners": {
+    "eyebrow": "Nuestras recomendaciones",
+    "title": "Aliados y buenas direcciones cerca del Andreashof.",
+    "subtitle": "Para celebraciones, fines de semana familiares y retiros, recomendamos con gusto personas y empresas cercanas que ayudan a organizar mejor la estadía.",
+    "items": [
+      {
+        "id": "peenefeeling",
+        "category": "Agua y paseos",
+        "title": "Peenefeeling arriendo de botes Jarmen",
+        "description": "Arriendo de botes en la Hafeninsel de Jarmen: cinco canoas para 3 personas, dos kayaks para 2 personas, un bote a motor de 15 PS sin licencia y paseos en bote grande de rescate para hasta 10 personas. En el lugar también se puede hacer parrilla, descansar, jugar vóleibol y ping-pong, y organizar pequeñas celebraciones en carpa. Precios por teléfono o directamente en la Hafeninsel.",
+        "area": "Hafeninsel Jarmen",
+        "phone": "0151 16542503"
+      },
+      {
+        "id": "gran-gusto",
+        "category": "Catering y celebraciones",
+        "title": "Gran Gusto Catering",
+        "description": "Catering de Greifswald para eventos, celebraciones familiares y buffets: finger food, antipasti, platos calientes y preparaciones dulces. Gran Gusto trabaja con ingredientes de calidad, cuida los trayectos cortos de sus productos y también ofrece opciones veganas y vegetarianas.",
+        "area": "Greifswald",
+        "phone": "0172 3123419",
+        "websiteUrl": "https://gran-gusto.de/",
+        "websiteLabel": "gran-gusto.de"
+      }
+    ]
+  },
+  "history": {
+    "eyebrow": "Retrospectiva",
+    "title": "Impresiones desde la construcción hasta hoy.",
+    "subtitle": "El Andreashof no es un proyecto nuevo, sino una casa con capas: casa señorial, punto de vida del pueblo, lugar familiar y hoy un espacio para estadías compartidas, celebraciones y retiros.",
+    "timelineEyebrow": "Historia de la casa",
+    "timeline": [
+      {
+        "year": "1782",
+        "title": "Nace una casa señorial",
+        "body": "El Andreashof se construye como casa señorial pomerana. Su fachada clara, el gablete de entramado de madera y las ventanas altas siguen hablando del gusto gustaviano de esa época."
+      },
+      {
+        "year": "s. XIX",
+        "title": "Vida en el pueblo de Breechen",
+        "body": "La casa permanece estrechamente ligada al pueblo: patio, jardín, vecinos y paisaje rural marcan su carácter más que una distancia representativa."
+      },
+      {
+        "year": "Restauración",
+        "title": "Conservar, abrir, continuar",
+        "body": "Elementos históricos, suelos, ejes de ventanas y secuencias de habitaciones se conservan y se conectan con necesidades actuales: cocinas, baños, habitaciones y espacios comunes toman forma paso a paso."
+      },
+      {
+        "year": "Hoy",
+        "title": "Una casa para estar juntos",
+        "body": "Hoy el Andreashof se alquila como casa completa: para familias, cumpleaños, bodas, retiros y grupos que buscan un lugar tranquilo con historia."
+      }
+    ]
   },
   "zimmer": {
     "pageEyebrow": "Las Habitaciones",

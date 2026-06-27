@@ -40,8 +40,8 @@ function ImpressumPage() {
             <h2 className="font-display text-2xl">Kontakt</h2>
             <p className="mt-3">
               E-Mail:{" "}
-              <a href="mailto:willkommen@andreashof-breechen.de" className="underline decoration-border underline-offset-4 hover:text-sage-deep">
-                willkommen@andreashof-breechen.de
+              <a href="mailto:andrea.lietz@web.de" className="underline decoration-border underline-offset-4 hover:text-sage-deep">
+                andrea.lietz@web.de
               </a>
               <br />
               Telefon / WhatsApp: +49 172 3813606
