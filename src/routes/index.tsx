@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useMemo, useRef, useState, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import heroImg from "@/assets/hero-facade.jpeg";
+import { NEARBY_COORDS, type NearbyPlaceId } from "@/data/nearby-places";
+import type { NearbyPlaceMarker } from "@/components/location-map";
 
 // Lazy — leaflet touches `window` on import, so it cannot live in the SSR bundle.
 const LocationMap = lazy(() =>
@@ -39,13 +41,35 @@ function Home() {
     { title: string; body: string }
   >;
   const amenityItems = t("amenitiesSec.items", { returnObjects: true }) as string[];
-  const nearby = t("locationSec.nearby", { returnObjects: true }) as { place: string; time: string }[];
+  const nearby = t("locationSec.nearby", { returnObjects: true }) as {
+    id: NearbyPlaceId;
+    place: string;
+    time: string;
+  }[];
   const reviews = t("reviewsSec.items", { returnObjects: true }) as { q: string; a: string }[];
   const faqs = t("faq.items", { returnObjects: true }) as { q: string; a: string }[];
 
   const [open, setOpen] = useState<number | null>(0);
   const [mounted, setMounted] = useState(false);
+  const [activePlaceId, setActivePlaceId] = useState<NearbyPlaceId | null>(null);
+  const mapAnchorRef = useRef<HTMLDivElement>(null);
   useEffect(() => setMounted(true), []);
+
+  const mapPlaces = useMemo<NearbyPlaceMarker[]>(
+    () =>
+      nearby.flatMap((entry) => {
+        const position = NEARBY_COORDS[entry.id];
+        return position ? [{ id: entry.id, position, label: entry.place }] : [];
+      }),
+    [nearby],
+  );
+
+  const focusPlace = (id: NearbyPlaceId) => {
+    setActivePlaceId(id);
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      mapAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  };
 
   return (
     <div id="top" className="min-h-screen bg-background">
@@ -79,7 +103,10 @@ function Home() {
             className="mt-6 max-w-xl animate-fade-up text-[0.95rem] leading-relaxed text-white/85 md:mt-8 md:text-lg"
             style={{ animationDelay: "700ms", textShadow: "0 1px 14px rgba(0,0,0,0.5)" }}
           >
-            {t("hero.subtitle")}
+            {t("hero.subtitleBeforeBreak")}
+            <br className="hidden md:block" />
+            <span className="md:hidden"> </span>
+            {t("hero.subtitleAfterBreak")}
           </p>
           <div
             className="mt-8 flex animate-fade-up flex-wrap items-center justify-center gap-3 md:mt-10 md:gap-4"
@@ -266,26 +293,41 @@ function Home() {
             </div>
           </div>
           <div className="grid gap-10 md:grid-cols-12">
-            <div className="md:col-span-7">
+            <div ref={mapAnchorRef} className="md:col-span-7">
               {mounted ? (
                 <Suspense fallback={<div className="h-[420px] w-full bg-linen md:h-[520px]" />}>
-                  <LocationMap />
+                  <LocationMap
+                    places={mapPlaces}
+                    activePlaceId={activePlaceId}
+                    onPlaceSelect={focusPlace}
+                  />
                 </Suspense>
               ) : (
                 <div className="h-[420px] w-full bg-linen md:h-[520px]" />
               )}
             </div>
-            <div className="md:col-span-5">
+            <div className="md:col-span-5 md:flex md:flex-col md:max-h-[520px]">
               <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">
                 {t("locationSec.address")}
               </p>
-              <ul className="mt-8 border-t border-border">
-                {nearby.map((p) => (
-                  <li key={p.place} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-border py-4">
-                    <span className="font-display text-lg md:text-xl">{p.place}</span>
-                    <span className="text-sm text-muted-foreground">{p.time}</span>
-                  </li>
-                ))}
+              <ul className="mt-8 border-t border-border md:min-h-0 md:flex-1 md:overflow-y-auto">
+                {nearby.map((p) => {
+                  const isActive = activePlaceId === p.id;
+                  return (
+                    <li key={p.id}>
+                      <button
+                        type="button"
+                        onClick={() => focusPlace(p.id)}
+                        className={`flex w-full flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-border py-4 text-left transition-colors hover:text-sage-deep ${
+                          isActive ? "text-sage-deep" : ""
+                        }`}
+                      >
+                        <span className="font-display text-lg md:text-xl">{p.place}</span>
+                        <span className="text-sm text-muted-foreground">{p.time}</span>
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>

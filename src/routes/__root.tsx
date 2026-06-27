@@ -157,6 +157,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LangProvider>
+        <PageVisitTracker />
         {showMaintenance ? (
           <MaintenancePage />
         ) : (
@@ -169,6 +170,53 @@ function RootComponent() {
       </LangProvider>
     </QueryClientProvider>
   );
+}
+
+const ANALYTICS_SESSION_STORAGE = "andreashof.analyticsSession";
+
+function PageVisitTracker() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => {
+    if (pathname.startsWith("/admin") || pathname.startsWith("/api")) return;
+    if (navigator.doNotTrack === "1") return;
+
+    let sessionId = "";
+    try {
+      sessionId = localStorage.getItem(ANALYTICS_SESSION_STORAGE) ?? "";
+      if (!sessionId) {
+        sessionId =
+          globalThis.crypto?.randomUUID?.() ??
+          `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+        localStorage.setItem(ANALYTICS_SESSION_STORAGE, sessionId);
+      }
+    } catch {
+      // Storage can be unavailable in private browsing. Counting the visit is
+      // still useful; it simply won't contribute to the unique-session metric.
+    }
+
+    const payload = JSON.stringify({
+      path: window.location.pathname,
+      referrer: document.referrer,
+      language: navigator.language,
+      sessionId,
+    });
+
+    if (navigator.sendBeacon) {
+      const blob = new Blob([payload], { type: "application/json" });
+      navigator.sendBeacon("/api/track-visit", blob);
+      return;
+    }
+
+    fetch("/api/track-visit", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: payload,
+      keepalive: true,
+    }).catch(() => {});
+  }, [pathname]);
+
+  return null;
 }
 
 function GlobalScrollEffects() {

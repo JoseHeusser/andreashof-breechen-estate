@@ -12,6 +12,7 @@
       "bookings": "Bookings",
       "pricing": "Pricing",
       "calendar": "Calendar",
+      "analytics": "Visits",
       "settings": "Settings"
     },
     "login": {
@@ -84,6 +85,18 @@
       "legendAirbnb": "Airbnb",
       "legendCleaning": "Cleaning / buffer"
     },
+    "analytics": {
+      "total": "Total visits",
+      "today": "Today",
+      "last7": "Last 7 days",
+      "unique7": "Visitors 7 days",
+      "hourlyTitle": "Visits by hour",
+      "hourlyHint": "Last 24 hours",
+      "dailyTitle": "Visits per day",
+      "topPages": "Top pages",
+      "recent": "Recent visits",
+      "empty": "No visits tracked yet."
+    },
     "settings": {
       "pullTitle": "Airbnb → Andreashof (pull)",
       "pullBody": "Grab the iCal link from your Airbnb host dashboard: Listing → Calendar → Sync calendars → Export calendar. We read it every hour and on every booking change (30 s rate-limit).",
@@ -109,8 +122,9 @@
   "hero": {
     "eyebrow": "Breechen · Vorpommern · Est. 1782",
     "titleLine1": "A manor house,",
-    "titleLine2": "in the village.",
-    "subtitle": "Historic 18th-century Gustavian manor house, in the heart of the village of Breechen. Available exclusively as a whole — for up to 21 guests.",
+    "titleLine2": "A village, Vorpommern",
+    "subtitleBeforeBreak": "Historic 18th-century Gustavian manor house",
+    "subtitleAfterBreak": "in the heart of the village of Breechen. Available exclusively as a whole — for up to 21 guests.",
     "ctaPrimary": "Send inquiry",
     "ctaSecondary": "Discover the house"
   },
@@ -216,14 +230,18 @@
     "eyebrow": "Location",
     "titleA": "In the village of Breechen,",
     "titleEm": " close to Greifswald and the Baltic Sea.",
-    "address": "Peenestrassee 16, 17506",
+    "address": "Peenestraße 16, 17506 Gützkow",
     "nearby": [
-      { "place": "Gützkow Kosenow Lake with Italian restaurant", "time": "Excursion" },
-      { "place": "Stralsund with Ozeaneum", "time": "Excursion" },
-      { "place": "Zarrentiner Lake in Jarmen with DLRG outdoor pool and wild swimming spot", "time": "Excursion" },
-      { "place": "Shopping in Jarmen, Gützkow and Greifswald (including fish shop)", "time": "nearby" },
-      { "place": "Breechen bathing lake", "time": "≈ 5 min" },
-      { "place": "Usedom island", "time": "≈ 45 min" }
+      { "id": "kosenow-see", "place": "Gützkow Kosenow Lake with Italian restaurant", "time": "≈ 7 min" },
+      { "id": "stralsund", "place": "Stralsund with Ozeaneum", "time": "≈ 45 min" },
+      { "id": "zarrentiner-see", "place": "Zarrentiner Lake, Jarmen", "time": "≈ 5 min" },
+      { "id": "greifswalder-bodden", "place": "Greifswalder Bodden", "time": "≈ 20 min" },
+      { "id": "eldena-ruins", "place": "Eldena Abbey Ruins in Greifswald", "time": "≈ 20 min" },
+      { "id": "greifswald-harbour", "place": "Old Harbour Greifswald", "time": "≈ 20 min" },
+      { "id": "cdf-centre", "place": "Caspar David Friedrich Centre in Greifswald", "time": "≈ 20 min" },
+      { "id": "jarmen-centre", "place": "Jarmen town centre", "time": "≈ 5 min" },
+      { "id": "shopping", "place": "Shopping in Jarmen, Gützkow and Greifswald", "time": "≈ 5 min" },
+      { "id": "usedom", "place": "Usedom island", "time": "≈ 45 min" }
     ]
   },
   "reviewsSec": {
@@ -326,14 +344,14 @@
       { "q": "Is there parking?",                                  "a": "Free parking for up to twelve vehicles in the inner courtyard." },
       { "q": "Are pets allowed?",                                  "a": "Well-mannered dogs are welcome on request. Please let us know when you inquire." },
       { "q": "What is the cancellation policy?",                   "a": "Free cancellation up to 60 days before arrival. Details in our terms." },
-      { "q": "How does check-in work?",                            "a": "Personal welcome on arrival day from 4 pm. Key handover and a short tour included." }
+      { "q": "How does check-in work?",                            "a": "Personal welcome on arrival day from 2 pm. Key handover and a short tour included." }
     ]
   },
   "footer": {
     "tagline": "A historic 18th-century manor house in Western Pomerania — for families, weddings and retreats.",
     "navHeading": "Navigation",
     "contactHeading": "Contact",
-    "address": "Peenestrassee 16, 17506",
+    "address": "Peenestraße 16, 17506 Gützkow",
     "region": "Mecklenburg-Vorpommern",
     "copyright": "All rights reserved.",
     "imprint": "Imprint",

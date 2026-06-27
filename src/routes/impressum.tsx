@@ -23,30 +23,37 @@ function ImpressumPage() {
         <h1 className="mt-4 break-words font-display text-[2.4rem] font-light leading-[1.1] md:text-5xl">Impressum</h1>
         <div className="mt-12 space-y-8 text-[0.95rem] leading-relaxed text-foreground/85">
           <section>
-            <h2 className="font-display text-2xl">Angaben gemäß § 5 TMG</h2>
+            <h2 className="font-display text-2xl">Angaben gemäß § 5 DDG</h2>
             <p className="mt-3">
               Andreashof Breechen<br />
-              Peenestrassee 16, 17506<br />
+              Andrea Lietz-Kreher und Andreas Kreher GbR<br />
+              Peenestraße 16<br />
+              17506 Gützkow<br />
               Deutschland
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">Vertreten durch</h2>
-            <p className="mt-3">[Name des Inhabers / Geschäftsführers]</p>
+            <p className="mt-3">Andrea Lietz-Kreher und Andreas Kreher</p>
           </section>
           <section>
             <h2 className="font-display text-2xl">Kontakt</h2>
-            <p className="mt-3"></p>
-          </section>
-          <section>
-            <h2 className="font-display text-2xl">Umsatzsteuer-ID</h2>
             <p className="mt-3">
-              Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG: [USt-IdNr.]
+              E-Mail:{" "}
+              <a href="mailto:willkommen@andreashof-breechen.de" className="underline decoration-border underline-offset-4 hover:text-sage-deep">
+                willkommen@andreashof-breechen.de
+              </a>
+              <br />
+              Telefon / WhatsApp: +49 172 3813606
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
-            <p className="mt-3">[Name], [Adresse]</p>
+            <h2 className="font-display text-2xl">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+            <p className="mt-3">
+              Andrea Lietz-Kreher und Andreas Kreher<br />
+              Peenestraße 16<br />
+              17506 Gützkow
+            </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">Haftungsausschluss</h2>
@@ -54,6 +61,13 @@ function ImpressumPage() {
               Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt.
               Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte
               kann jedoch keine Gewähr übernommen werden.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">Verbraucherstreitbeilegung</h2>
+            <p className="mt-3">
+              Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren
+              vor einer Verbraucherschlichtungsstelle teilzunehmen.
             </p>
           </section>
         </div>

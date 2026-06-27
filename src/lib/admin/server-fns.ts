@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeaders } from "@tanstack/react-start/server";
 import { createClient } from "@supabase/supabase-js";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
-import type { Booking, BookingStatus, PricingRow } from "@/lib/supabase/types";
+import type { AnalyticsStats, Booking, BookingStatus, PricingRow } from "@/lib/supabase/types";
 import { sendEmail, ADMIN_EMAIL } from "@/lib/email/client";
 import {
   tplRequestedGuest,
@@ -48,10 +48,11 @@ async function requireAdmin(): Promise<{ userId: string; email: string }> {
 export const getDashboardData = createServerFn({ method: "GET" }).handler(async () => {
   await requireAdmin();
   const admin = getSupabaseAdmin();
-  const [pricingRes, bookingsRes, settingsRes] = await Promise.all([
+  const [pricingRes, bookingsRes, settingsRes, analytics] = await Promise.all([
     admin.from("pricing").select("*").order("priority", { ascending: false }).order("start_date"),
     admin.from("bookings").select("*").order("arrival"),
     admin.from("settings").select("*"),
+    getAnalyticsStats(admin),
   ]);
   if (pricingRes.error) throw pricingRes.error;
   if (bookingsRes.error) throw bookingsRes.error;
@@ -60,8 +61,143 @@ export const getDashboardData = createServerFn({ method: "GET" }).handler(async 
     pricing: pricingRes.data as PricingRow[],
     bookings: bookingsRes.data as Booking[],
     settings: settingsRes.data as { key: string; value: unknown }[],
+    analytics,
   };
 });
+
+type PageVisitRow = {
+  occurred_at: string;
+  path: string;
+  referrer: string | null;
+  language: string | null;
+  session_id: string | null;
+};
+
+async function getAnalyticsStats(
+  admin: ReturnType<typeof getSupabaseAdmin>,
+): Promise<AnalyticsStats> {
+  const now = new Date();
+  const startToday = new Date(now);
+  startToday.setHours(0, 0, 0, 0);
+  const start7 = new Date(now);
+  start7.setDate(start7.getDate() - 7);
+  const start14 = new Date(now);
+  start14.setDate(start14.getDate() - 14);
+
+  const [totalRes, todayRes, last7Res, rowsRes] = await Promise.all([
+    admin.from("page_visits").select("id", { count: "exact", head: true }),
+    admin
+      .from("page_visits")
+      .select("id", { count: "exact", head: true })
+      .gte("occurred_at", startToday.toISOString()),
+    admin
+      .from("page_visits")
+      .select("id", { count: "exact", head: true })
+      .gte("occurred_at", start7.toISOString()),
+    admin
+      .from("page_visits")
+      .select("occurred_at,path,referrer,language,session_id")
+      .gte("occurred_at", start14.toISOString())
+      .order("occurred_at", { ascending: false })
+      .limit(3000),
+  ]);
+
+  const analyticsError = totalRes.error ?? todayRes.error ?? last7Res.error ?? rowsRes.error;
+  if (analyticsError && isMissingPageVisitsTable(analyticsError)) {
+    return emptyAnalyticsStats();
+  }
+  if (totalRes.error) throw totalRes.error;
+  if (todayRes.error) throw todayRes.error;
+  if (last7Res.error) throw last7Res.error;
+  if (rowsRes.error) throw rowsRes.error;
+
+  const rows = (rowsRes.data ?? []) as PageVisitRow[];
+  const rows7 = rows.filter((row) => new Date(row.occurred_at) >= start7);
+  const uniqueSessions7Days = new Set(rows7.map((row) => row.session_id).filter(Boolean)).size;
+
+  const hourly = new Map<string, number>();
+  for (let i = 23; i >= 0; i--) {
+    const d = new Date(now);
+    d.setHours(d.getHours() - i, 0, 0, 0);
+    hourly.set(formatHourKey(d), 0);
+  }
+
+  const dayAgo = new Date(now);
+  dayAgo.setHours(dayAgo.getHours() - 24);
+  for (const row of rows) {
+    const d = new Date(row.occurred_at);
+    if (d < dayAgo) continue;
+    const key = formatHourKey(d);
+    if (hourly.has(key)) hourly.set(key, (hourly.get(key) ?? 0) + 1);
+  }
+
+  const daily = new Map<string, number>();
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    daily.set(formatDateKey(d), 0);
+  }
+  for (const row of rows) {
+    const key = formatDateKey(new Date(row.occurred_at));
+    if (daily.has(key)) daily.set(key, (daily.get(key) ?? 0) + 1);
+  }
+
+  const pageCounts = new Map<string, number>();
+  for (const row of rows7) {
+    pageCounts.set(row.path, (pageCounts.get(row.path) ?? 0) + 1);
+  }
+
+  return {
+    totalVisits: totalRes.count ?? 0,
+    todayVisits: todayRes.count ?? 0,
+    last7DaysVisits: last7Res.count ?? 0,
+    uniqueSessions7Days,
+    hourly: [...hourly.entries()].map(([hour, visits]) => ({ hour, visits })),
+    daily: [...daily.entries()].map(([date, visits]) => ({ date, visits })),
+    topPages: [...pageCounts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([path, visits]) => ({ path, visits })),
+    recent: rows.slice(0, 12).map(({ occurred_at, path, referrer, language }) => ({
+      occurred_at,
+      path,
+      referrer,
+      language,
+    })),
+  };
+}
+
+function emptyAnalyticsStats(): AnalyticsStats {
+  return {
+    totalVisits: 0,
+    todayVisits: 0,
+    last7DaysVisits: 0,
+    uniqueSessions7Days: 0,
+    hourly: [],
+    daily: [],
+    topPages: [],
+    recent: [],
+  };
+}
+
+function isMissingPageVisitsTable(error: { code?: string; message?: string }): boolean {
+  return error.code === "42P01" || error.message?.includes("page_visits") === true;
+}
+
+function formatHourKey(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  const h = String(date.getHours()).padStart(2, "0");
+  return `${y}-${m}-${d} ${h}:00`;
+}
+
+function formatDateKey(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
 
 /* -----------------------------------------------------------------
  * PRICING — base price update + create / delete special date ranges

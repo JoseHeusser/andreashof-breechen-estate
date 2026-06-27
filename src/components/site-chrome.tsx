@@ -132,9 +132,17 @@ export function SiteFooter() {
           <div>
             <h4 className="eyebrow">{t("footer.contactHeading")}</h4>
             <ul className="mt-5 space-y-3 text-sm">
-              <li></li>
-              <li></li>
-              <li className="text-muted-foreground"></li>
+              <li>
+                <a href="mailto:willkommen@andreashof-breechen.de" className="hover:text-sage-deep">
+                  willkommen@andreashof-breechen.de
+                </a>
+              </li>
+              <li>
+                <a href="tel:+491723813606" className="hover:text-sage-deep">
+                  +49 172 3813606
+                </a>
+              </li>
+              <li className="text-muted-foreground">{t("footer.address")}</li>
             </ul>
           </div>
         </div>

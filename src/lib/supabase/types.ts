@@ -55,6 +55,17 @@ export interface SettingsRow {
   updated_at: string;
 }
 
+export interface AnalyticsStats {
+  totalVisits: number;
+  todayVisits: number;
+  last7DaysVisits: number;
+  uniqueSessions7Days: number;
+  hourly: { hour: string; visits: number }[];
+  daily: { date: string; visits: number }[];
+  topPages: { path: string; visits: number }[];
+  recent: { occurred_at: string; path: string; referrer: string | null; language: string | null }[];
+}
+
 export const STATUS_LABEL_DE: Record<BookingStatus, string> = {
   requested: "Angefragt — noch nicht geprüft",
   accepted: "Bestätigt — wartet auf Anzahlung",

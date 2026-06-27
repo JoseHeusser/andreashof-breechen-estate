@@ -11,8 +11,9 @@
   "hero": {
     "eyebrow": "Breechen · Pomerania Occidental · Est. 1782",
     "titleLine1": "Una casa solariega,",
-    "titleLine2": "en el pueblo.",
-    "subtitle": "Casa solariega histórica de estilo gustaviano del siglo XVIII, en el corazón del pueblo de Breechen. Se alquila completa, para hasta 21 huéspedes.",
+    "titleLine2": "Un pueblo, Vorpommern",
+    "subtitleBeforeBreak": "Casa solariega histórica de estilo gustaviano del siglo XVIII",
+    "subtitleAfterBreak": "en el corazón del pueblo de Breechen. Se alquila completa, para hasta 21 huéspedes.",
     "ctaPrimary": "Enviar consulta",
     "ctaSecondary": "Descubrir la casa"
   },
@@ -118,14 +119,18 @@
     "eyebrow": "Ubicación",
     "titleA": "En el pueblo de Breechen,",
     "titleEm": " cerca de Greifswald y el Mar Báltico.",
-    "address": "Peenestrassee 16, 17506",
+    "address": "Peenestraße 16, 17506 Gützkow",
     "nearby": [
-      { "place": "Lago Kosenow de Gützkow con restaurante italiano", "time": "Excursión" },
-      { "place": "Stralsund con el Ozeaneum", "time": "Excursión" },
-      { "place": "Lago Zarrentiner en Jarmen con piscina DLRG y zona natural de baño", "time": "Excursión" },
-      { "place": "Compras en Jarmen, Gützkow y Greifswald (incluida tienda de pescado)", "time": "cerca" },
-      { "place": "Lago de baño de Breechen", "time": "≈ 5 min" },
-      { "place": "Isla de Usedom", "time": "≈ 45 min" }
+      { "id": "kosenow-see", "place": "Lago Kosenow de Gützkow con restaurante italiano", "time": "≈ 7 min" },
+      { "id": "stralsund", "place": "Stralsund con el Ozeaneum", "time": "≈ 45 min" },
+      { "id": "zarrentiner-see", "place": "Lago Zarrentiner, Jarmen", "time": "≈ 5 min" },
+      { "id": "greifswalder-bodden", "place": "Bodden de Greifswald", "time": "≈ 20 min" },
+      { "id": "eldena-ruins", "place": "Ruinas del monasterio Eldena en Greifswald", "time": "≈ 20 min" },
+      { "id": "greifswald-harbour", "place": "Puerto viejo de Greifswald", "time": "≈ 20 min" },
+      { "id": "cdf-centre", "place": "Centro Caspar David Friedrich en Greifswald", "time": "≈ 20 min" },
+      { "id": "jarmen-centre", "place": "Centro de Jarmen", "time": "≈ 5 min" },
+      { "id": "shopping", "place": "Compras en Jarmen, Gützkow y Greifswald", "time": "≈ 5 min" },
+      { "id": "usedom", "place": "Isla de Usedom", "time": "≈ 45 min" }
     ]
   },
   "reviewsSec": {
@@ -235,7 +240,7 @@
     "tagline": "Una casa solariega histórica del siglo XVIII en Pomerania Occidental — para familias, bodas y retiros.",
     "navHeading": "Navegación",
     "contactHeading": "Contacto",
-    "address": "Peenestrassee 16, 17506",
+    "address": "Peenestraße 16, 17506 Gützkow",
     "region": "Mecklemburgo-Pomerania Occidental",
     "copyright": "Todos los derechos reservados.",
     "imprint": "Aviso legal",

@@ -33,7 +33,8 @@ function AGBPage() {
             <h2 className="font-display text-2xl">1. Geltungsbereich</h2>
             <p className="mt-3">
               Diese AGB gelten für alle Buchungen und Mietverträge zwischen
-              Gästen und dem Andreashof Breechen.
+              Gästen und dem Andreashof Breechen, Andrea Lietz-Kreher und
+              Andreas Kreher GbR.
             </p>
           </section>
           <section>
@@ -47,8 +48,8 @@ function AGBPage() {
             <h2 className="font-display text-2xl">3. Zahlungsbedingungen</h2>
             <p className="mt-3">
               Eine Anzahlung in Höhe von 50 % ist innerhalb von 14 Tagen nach
-              Buchung fällig. Der Restbetrag ist 30 Tage vor Anreise zu
-              entrichten.
+              Buchungsbestätigung fällig. Der Restbetrag ist spätestens 2 Tage
+              vor Anreise zu entrichten, sofern nichts anderes vereinbart wurde.
             </p>
           </section>
           <section>

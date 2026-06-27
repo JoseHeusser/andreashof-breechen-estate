@@ -50,6 +50,7 @@ export const GALLERY_PHOTOS: GalleryPhoto[] = [
   { src: "/galerie/guetzkow-lake.jpg",      alt: "Gützkower Badesee — 7 Minuten",                       category: "around" },
   { src: "/galerie/usedom-morning.jpg",     alt: "Usedom am Morgen",                                    category: "around" },
   { src: "/galerie/user-mapping/around-01-bus-haltestelle.png", alt: "Bushaltestelle im Dorf",         category: "around" },
+  { src: "/galerie/user-mapping/around-02-getreidefeld-wildblumen.jpg", alt: "Getreidefeld mit Wildblumen bei Breechen", category: "around", aspect: "wide" },
 
   // Floor plans
   { src: "/galerie/floor-plan-ground.jpg",  alt: "Grundriss Erdgeschoss",                               category: "plans", aspect: "wide" },

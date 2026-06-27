@@ -32,8 +32,18 @@ function DatenschutzPage() {
           <section>
             <h2 className="font-display text-2xl">1. Verantwortlicher</h2>
             <p className="mt-3">
-              Verantwortlich für die Datenverarbeitung auf dieser Website ist
-              der Andreashof Breechen, Peenestrassee 16, 17506.
+              Verantwortlich für die Datenverarbeitung auf dieser Website ist:
+            </p>
+            <p className="mt-3">
+              Andreashof Breechen<br />
+              Andrea Lietz-Kreher und Andreas Kreher GbR<br />
+              Peenestraße 16<br />
+              17506 Gützkow<br />
+              Deutschland<br />
+              E-Mail:{" "}
+              <a href="mailto:willkommen@andreashof-breechen.de" className="underline decoration-border underline-offset-4 hover:text-sage-deep">
+                willkommen@andreashof-breechen.de
+              </a>
             </p>
           </section>
           <section>
@@ -45,27 +55,78 @@ function DatenschutzPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">3. Kontaktformular</h2>
+            <h2 className="font-display text-2xl">3. Reservierungsanfragen und Kontakt</h2>
             <p className="mt-3">
-              Wenn Sie uns über das Kontaktformular Anfragen zukommen lassen,
-              werden Ihre Angaben zur Bearbeitung der Anfrage und für mögliche
-              Anschlussfragen gespeichert.
+              Wenn Sie über die Website eine Reservierungsanfrage senden oder
+              per E-Mail Kontakt aufnehmen, verarbeiten wir die von Ihnen
+              angegebenen Daten, insbesondere Name, E-Mail-Adresse, Reisedaten,
+              Gästezahl, Sonderwünsche und Nachrichtentext. Die Verarbeitung
+              erfolgt zur Bearbeitung Ihrer Anfrage, zur Vorbereitung oder
+              Durchführung eines Vertrags sowie für Anschlussfragen.
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">4. Ihre Rechte</h2>
+            <h2 className="font-display text-2xl">4. Buchungsverwaltung und E-Mail-Versand</h2>
+            <p className="mt-3">
+              Reservierungsdaten werden in einer geschützten Datenbank
+              verarbeitet. Für den Versand von Bestätigungen, Zahlungs- und
+              Anreiseinformationen nutzen wir einen E-Mail-Dienstleister. Die
+              Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO
+              für vorvertragliche Maßnahmen und Vertragsdurchführung sowie,
+              soweit erforderlich, Art. 6 Abs. 1 lit. f DSGVO.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">5. Reichweitenmessung</h2>
+            <p className="mt-3">
+              Wir erfassen einfache, eigene Besuchsstatistiken, um zu verstehen,
+              welche Seiten aufgerufen werden und zu welchen Zeiten die Website
+              genutzt wird. Dabei werden Seitenpfad, Zeitpunkt, Referrer,
+              Sprache, User-Agent und eine zufällig erzeugte Sitzungskennung im
+              lokalen Speicher Ihres Browsers verarbeitet. Diese Statistik dient
+              ausschließlich dem Betrieb und der Verbesserung der Website. Sie
+              können die Speicherung der Sitzungskennung durch Löschen des
+              lokalen Speichers in Ihrem Browser entfernen; bei aktivem
+              „Do Not Track“ wird kein Besuch erfasst.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">6. Karten</h2>
+            <p className="mt-3">
+              Diese Website verwendet OpenStreetMap-Karten zur Darstellung der
+              Lage. Beim Aufruf der Karte können technische Daten wie Ihre
+              IP-Adresse an Server der OpenStreetMap Foundation oder deren
+              technische Dienstleister übertragen werden.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">7. Hosting und technische Dienstleister</h2>
+            <p className="mt-3">
+              Die Website wird über technische Dienstleister betrieben. Dabei
+              können Server-Logdaten und technische Nutzungsdaten verarbeitet
+              werden, um die Website auszuliefern, abzusichern und Fehler zu
+              analysieren. Mit Dienstleistern, die personenbezogene Daten in
+              unserem Auftrag verarbeiten, werden entsprechende Vereinbarungen
+              zur Auftragsverarbeitung geschlossen.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">8. Speicherdauer</h2>
+            <p className="mt-3">
+              Wir speichern personenbezogene Daten nur so lange, wie dies für
+              die jeweiligen Zwecke erforderlich ist oder gesetzliche
+              Aufbewahrungspflichten bestehen. Reservierungs- und
+              Geschäftsunterlagen können aufgrund handels- und steuerrechtlicher
+              Pflichten länger aufbewahrt werden.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">9. Ihre Rechte</h2>
             <p className="mt-3">
               Sie haben jederzeit das Recht auf Auskunft, Berichtigung,
               Löschung, Einschränkung der Verarbeitung sowie das Recht auf
-              Datenübertragbarkeit und Widerspruch.
-            </p>
-          </section>
-          <section>
-            <h2 className="font-display text-2xl">5. Karten</h2>
-            <p className="mt-3">
-              Diese Website verwendet OpenStreetMap zur Darstellung der Lage.
-              Bei Aufruf der Karte werden Daten an die OpenStreetMap
-              Foundation übertragen.
+              Datenübertragbarkeit und Widerspruch. Außerdem haben Sie das
+              Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren.
             </p>
           </section>
         </div>

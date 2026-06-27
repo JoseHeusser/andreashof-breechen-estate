@@ -683,8 +683,8 @@ function ReservationsPage() {
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/4915112345678" className="hover:text-sage-deep">
-                  WhatsApp · +49 151 1234 5678
+                <a href="https://wa.me/491723813606" className="hover:text-sage-deep">
+                  WhatsApp · +49 172 3813606
                 </a>
               </li>
             </ul>

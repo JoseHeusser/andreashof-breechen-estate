@@ -20,6 +20,7 @@ import { Route as AgbRouteImport } from './routes/agb'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as ApiTrackVisitRouteImport } from './routes/api/track-visit'
 import { Route as ApiResendInboundRouteImport } from './routes/api/resend-inbound'
 import { Route as ApiCalendarDoticsRouteImport } from './routes/api/calendar[.]ics'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -79,6 +80,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const ApiTrackVisitRoute = ApiTrackVisitRouteImport.update({
+  id: '/api/track-visit',
+  path: '/api/track-visit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiResendInboundRoute = ApiResendInboundRouteImport.update({
   id: '/api/resend-inbound',
   path: '/api/resend-inbound',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/api/calendar.ics': typeof ApiCalendarDoticsRoute
   '/api/resend-inbound': typeof ApiResendInboundRoute
+  '/api/track-visit': typeof ApiTrackVisitRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/api/calendar.ics': typeof ApiCalendarDoticsRoute
   '/api/resend-inbound': typeof ApiResendInboundRoute
+  '/api/track-visit': typeof ApiTrackVisitRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -141,6 +149,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/api/calendar.ics': typeof ApiCalendarDoticsRoute
   '/api/resend-inbound': typeof ApiResendInboundRoute
+  '/api/track-visit': typeof ApiTrackVisitRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -159,6 +168,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/api/calendar.ics'
     | '/api/resend-inbound'
+    | '/api/track-visit'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/api/calendar.ics'
     | '/api/resend-inbound'
+    | '/api/track-visit'
     | '/admin'
   id:
     | '__root__'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/api/calendar.ics'
     | '/api/resend-inbound'
+    | '/api/track-visit'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -206,6 +218,7 @@ export interface RootRouteChildren {
   ZimmerRoute: typeof ZimmerRoute
   ApiCalendarDoticsRoute: typeof ApiCalendarDoticsRoute
   ApiResendInboundRoute: typeof ApiResendInboundRoute
+  ApiTrackVisitRoute: typeof ApiTrackVisitRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -287,6 +300,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/api/track-visit': {
+      id: '/api/track-visit'
+      path: '/api/track-visit'
+      fullPath: '/api/track-visit'
+      preLoaderRoute: typeof ApiTrackVisitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/resend-inbound': {
       id: '/api/resend-inbound'
       path: '/api/resend-inbound'
@@ -336,6 +356,7 @@ const rootRouteChildren: RootRouteChildren = {
   ZimmerRoute: ZimmerRoute,
   ApiCalendarDoticsRoute: ApiCalendarDoticsRoute,
   ApiResendInboundRoute: ApiResendInboundRoute,
+  ApiTrackVisitRoute: ApiTrackVisitRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

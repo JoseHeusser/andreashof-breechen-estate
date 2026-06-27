@@ -18,6 +18,7 @@ import {
   updateFees,
 } from "@/lib/admin/server-fns";
 import {
+  type AnalyticsStats,
   STATUS_COLOR,
   type Booking,
   type BookingStatus,
@@ -45,7 +46,18 @@ export const Route = createFileRoute("/admin/")({
   component: AdminPage,
 });
 
-type Tab = "bookings" | "pricing" | "calendar" | "settings";
+type Tab = "bookings" | "pricing" | "calendar" | "analytics" | "settings";
+
+const EMPTY_ANALYTICS: AnalyticsStats = {
+  totalVisits: 0,
+  todayVisits: 0,
+  last7DaysVisits: 0,
+  uniqueSessions7Days: 0,
+  hourly: [],
+  daily: [],
+  topPages: [],
+  recent: [],
+};
 
 function AdminPage() {
   const { t } = useTranslation();
@@ -56,6 +68,7 @@ function AdminPage() {
   const [pricing, setPricing] = useState<PricingRow[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [settings, setSettings] = useState<{ key: string; value: unknown }[]>([]);
+  const [analytics, setAnalytics] = useState<AnalyticsStats>(EMPTY_ANALYTICS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -80,6 +93,7 @@ function AdminPage() {
       setPricing(res.pricing);
       setBookings(res.bookings);
       setSettings(res.settings);
+      setAnalytics(res.analytics);
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Fehler beim Laden");
@@ -160,7 +174,7 @@ function AdminPage() {
           </div>
         ) : null}
         <nav className="mx-auto flex max-w-6xl gap-8 px-6 text-[11px] uppercase tracking-[0.28em]">
-          {(["bookings", "pricing", "calendar", "settings"] as const).map((k) => (
+          {(["bookings", "pricing", "calendar", "analytics", "settings"] as const).map((k) => (
             <button
               key={k}
               onClick={() => setTab(k)}
@@ -184,6 +198,8 @@ function AdminPage() {
           <PricingTab pricing={pricing} settings={settings} onReload={reload} />
         ) : tab === "calendar" ? (
           <CalendarTab bookings={bookings} />
+        ) : tab === "analytics" ? (
+          <AnalyticsTab analytics={analytics} />
         ) : (
           <SettingsTab settings={settings} onReload={reload} />
         )}
@@ -830,6 +846,130 @@ function Legend({ color, label }: { color: string; label: string }) {
       <span className={`h-3 w-3 ${color}`} />
       <span className="text-muted-foreground">{label}</span>
     </li>
+  );
+}
+
+/* ============================================================
+ *  ANALYTICS TAB — lightweight first-party visit counter
+ * ========================================================== */
+function AnalyticsTab({ analytics }: { analytics: AnalyticsStats }) {
+  const { t } = useTranslation();
+  const locale = useLocale();
+  const maxHourly = Math.max(1, ...analytics.hourly.map((row) => row.visits));
+  const maxDaily = Math.max(1, ...analytics.daily.map((row) => row.visits));
+
+  return (
+    <div className="space-y-10">
+      <div className="grid gap-4 md:grid-cols-4">
+        <Metric label={t("admin.analytics.total")} value={analytics.totalVisits} />
+        <Metric label={t("admin.analytics.today")} value={analytics.todayVisits} />
+        <Metric label={t("admin.analytics.last7")} value={analytics.last7DaysVisits} />
+        <Metric label={t("admin.analytics.unique7")} value={analytics.uniqueSessions7Days} />
+      </div>
+
+      <section>
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="eyebrow">{t("admin.analytics.hourlyTitle")}</h2>
+          <span className="text-xs text-muted-foreground">{t("admin.analytics.hourlyHint")}</span>
+        </div>
+        <div className="mt-4 flex h-44 items-end gap-1 border border-border bg-card px-3 py-4">
+          {analytics.hourly.map((row) => (
+            <div key={row.hour} className="flex min-w-0 flex-1 flex-col items-center gap-2">
+              <div className="flex h-32 w-full items-end">
+                <div
+                  title={`${row.hour}: ${row.visits}`}
+                  className="w-full bg-sage-deep/80 transition-colors hover:bg-sage-deep"
+                  style={{ height: `${Math.max(row.visits ? 8 : 2, (row.visits / maxHourly) * 100)}%` }}
+                />
+              </div>
+              <span className="text-[9px] text-muted-foreground">
+                {row.hour.slice(11, 13)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="eyebrow">{t("admin.analytics.dailyTitle")}</h2>
+        <div className="mt-4 space-y-2">
+          {analytics.daily.map((row) => (
+            <BarRow
+              key={row.date}
+              label={format(parseISO(row.date), "d MMM", { locale })}
+              value={row.visits}
+              max={maxDaily}
+            />
+          ))}
+        </div>
+      </section>
+
+      <div className="grid gap-8 md:grid-cols-2">
+        <section>
+          <h2 className="eyebrow">{t("admin.analytics.topPages")}</h2>
+          <div className="mt-4 space-y-2">
+            {analytics.topPages.length === 0 ? (
+              <p className="text-sm text-muted-foreground">{t("admin.analytics.empty")}</p>
+            ) : (
+              analytics.topPages.map((row) => (
+                <BarRow key={row.path} label={row.path} value={row.visits} max={analytics.topPages[0]?.visits ?? 1} />
+              ))
+            )}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="eyebrow">{t("admin.analytics.recent")}</h2>
+          <div className="mt-4 divide-y divide-border border border-border bg-card">
+            {analytics.recent.length === 0 ? (
+              <p className="px-4 py-5 text-sm text-muted-foreground">{t("admin.analytics.empty")}</p>
+            ) : (
+              analytics.recent.map((row) => (
+                <div key={`${row.occurred_at}-${row.path}`} className="px-4 py-3 text-sm">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="font-mono text-xs">{row.path}</span>
+                    <span className="shrink-0 text-[11px] text-muted-foreground">
+                      {format(parseISO(row.occurred_at), "d MMM HH:mm", { locale })}
+                    </span>
+                  </div>
+                  <p className="mt-1 truncate text-xs text-muted-foreground">
+                    {row.referrer || row.language || "direct"}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+function Metric({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="border border-border bg-card px-4 py-5">
+      <p className="eyebrow">{label}</p>
+      <p className="mt-3 font-display text-4xl leading-none tabular-nums">{value}</p>
+    </div>
+  );
+}
+
+function BarRow({ label, value, max }: { label: string; value: number; max: number }) {
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)_4rem] items-center gap-3 text-sm">
+      <div className="min-w-0">
+        <div className="mb-1 flex items-baseline justify-between gap-2">
+          <span className="truncate text-xs text-muted-foreground">{label}</span>
+        </div>
+        <div className="h-2 bg-border">
+          <div
+            className="h-full bg-sage-deep"
+            style={{ width: `${Math.max(value ? 4 : 0, (value / Math.max(1, max)) * 100)}%` }}
+          />
+        </div>
+      </div>
+      <span className="text-right font-mono text-xs tabular-nums">{value}</span>
+    </div>
   );
 }
 

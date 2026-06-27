@@ -1,10 +1,15 @@
-import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import { useEffect, useRef } from "react";
+import { ANDREASHOF, NEARBY_FOCUS_ZOOM, type NearbyPlaceId } from "@/data/nearby-places";
 
-const HOUSE: [number, number] = [53.9317716, 13.3530925];
-const GREIFSWALD: [number, number] = [54.0865, 13.3923];
-const ADDRESS = "Peenestrassee 16, 17506";
+const ADDRESS = "Peenestraße 16, 17506 Gützkow";
+
+export type NearbyPlaceMarker = {
+  id: NearbyPlaceId;
+  position: [number, number];
+  label: string;
+};
 
 const houseIcon = L.divIcon({
   className: "andreashof-marker",
@@ -13,14 +18,72 @@ const houseIcon = L.divIcon({
   iconAnchor: [7, 7],
 });
 
-const cityIcon = L.divIcon({
-  className: "city-marker",
+const destinationIcon = L.divIcon({
+  className: "destination-marker",
   html: `<div style="width:10px;height:10px;border-radius:9999px;background:white;border:1.5px solid oklch(0.45 0.04 130);"></div>`,
   iconSize: [10, 10],
   iconAnchor: [5, 5],
 });
 
-export function LocationMap() {
+function MapFocusController({
+  places,
+  activePlaceId,
+}: {
+  places: NearbyPlaceMarker[];
+  activePlaceId: NearbyPlaceId | null;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!activePlaceId) return;
+    const place = places.find((p) => p.id === activePlaceId);
+    if (!place) return;
+
+    const zoom = NEARBY_FOCUS_ZOOM[activePlaceId] ?? (window.innerWidth < 768 ? 12 : 13);
+    map.flyTo(place.position, zoom, { duration: 0.75 });
+  }, [activePlaceId, map, places]);
+
+  return null;
+}
+
+function DestinationMarker({
+  place,
+  isActive,
+  onSelect,
+}: {
+  place: NearbyPlaceMarker;
+  isActive: boolean;
+  onSelect: (id: NearbyPlaceId) => void;
+}) {
+  const markerRef = useRef<L.Marker>(null);
+
+  useEffect(() => {
+    if (isActive) markerRef.current?.openPopup();
+  }, [isActive]);
+
+  return (
+    <Marker
+      ref={markerRef}
+      position={place.position}
+      icon={destinationIcon}
+      eventHandlers={{
+        click: () => onSelect(place.id),
+      }}
+    >
+      <Popup closeButton={false} offset={[0, -4]}>
+        {place.label}
+      </Popup>
+    </Marker>
+  );
+}
+
+type LocationMapProps = {
+  places: NearbyPlaceMarker[];
+  activePlaceId: NearbyPlaceId | null;
+  onPlaceSelect: (id: NearbyPlaceId) => void;
+};
+
+export function LocationMap({ places, activePlaceId, onPlaceSelect }: LocationMapProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
 
@@ -28,10 +91,6 @@ export function LocationMap() {
     const map = mapRef.current;
     if (!map) return;
 
-    // Leaflet measures its container on init. If it sees 0px (lazy mount,
-    // CSS not yet applied, reveal animation still mid-transition…) it only
-    // paints the central tile. Repeated invalidateSize() calls cover that
-    // window, and a ResizeObserver picks up any later size change.
     const intervals = [50, 200, 500, 1000, 2000].map((d) =>
       window.setTimeout(() => map.invalidateSize(), d),
     );
@@ -55,13 +114,11 @@ export function LocationMap() {
     >
       <MapContainer
         ref={mapRef}
-        center={[(HOUSE[0] + GREIFSWALD[0]) / 2, (HOUSE[1] + GREIFSWALD[1]) / 2]}
+        center={ANDREASHOF}
         zoom={11}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
         whenReady={() => {
-          // Initial paint sometimes still measures 0px — kick the tile
-          // grid into sync once Leaflet says it's ready.
           requestAnimationFrame(() => mapRef.current?.invalidateSize());
         }}
       >
@@ -69,16 +126,22 @@ export function LocationMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={HOUSE} icon={houseIcon}>
+        <MapFocusController places={places} activePlaceId={activePlaceId} />
+        <Marker position={ANDREASHOF} icon={houseIcon}>
           <Tooltip direction="top" offset={[0, -8]} permanent>
-            Andreashof<br />{ADDRESS}
+            Andreashof
+            <br />
+            {ADDRESS}
           </Tooltip>
         </Marker>
-        <Marker position={GREIFSWALD} icon={cityIcon}>
-          <Tooltip direction="top" offset={[0, -6]} permanent>
-            Greifswald
-          </Tooltip>
-        </Marker>
+        {places.map((place) => (
+          <DestinationMarker
+            key={place.id}
+            place={place}
+            isActive={activePlaceId === place.id}
+            onSelect={onPlaceSelect}
+          />
+        ))}
       </MapContainer>
     </div>
   );

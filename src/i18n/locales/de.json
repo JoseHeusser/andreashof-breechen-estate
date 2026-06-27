@@ -12,6 +12,7 @@
       "bookings": "Buchungen",
       "pricing": "Preise",
       "calendar": "Kalender",
+      "analytics": "Besuche",
       "settings": "Einstellungen"
     },
     "login": {
@@ -84,6 +85,18 @@
       "legendAirbnb": "Airbnb",
       "legendCleaning": "Reinigung / Puffer"
     },
+    "analytics": {
+      "total": "Besuche gesamt",
+      "today": "Heute",
+      "last7": "Letzte 7 Tage",
+      "unique7": "Besucher 7 Tage",
+      "hourlyTitle": "Besuche nach Uhrzeit",
+      "hourlyHint": "Letzte 24 Stunden",
+      "dailyTitle": "Besuche pro Tag",
+      "topPages": "Meistbesuchte Seiten",
+      "recent": "Letzte Besuche",
+      "empty": "Noch keine Besuche erfasst."
+    },
     "settings": {
       "pullTitle": "Airbnb → Andreashof (pull)",
       "pullBody": "Hol dir den iCal-Link aus deinem Airbnb-Hostbereich: Listing → Kalender → Kalender synchronisieren → Kalender exportieren. Wir lesen ihn stündlich + bei jeder Buchungsänderung (Rate-Limit 30 s).",
@@ -109,8 +122,9 @@
   "hero": {
     "eyebrow": "Breechen · Vorpommern · Est. 1782",
     "titleLine1": "Ein Gutshaus,",
-    "titleLine2": "Inmitten seines Dorfes",
-    "subtitle": "Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert, im Herzen von Breechen. Komplett mietbar für bis zu 21 Gäste.",
+    "titleLine2": "Ein Dorf, Vorpommern",
+    "subtitleBeforeBreak": "Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert",
+    "subtitleAfterBreak": "im Herzen von Breechen. Komplett mietbar für bis zu 21 Gäste.",
     "ctaPrimary": "Anfrage senden",
     "ctaSecondary": "Das Haus entdecken"
   },
@@ -216,14 +230,18 @@
     "eyebrow": "Lage",
     "titleA": "Im Dorf Breechen,",
     "titleEm": " nahe Greifswald und der Ostsee.",
-    "address": "Peenestrassee 16, 17506",
+    "address": "Peenestraße 16, 17506 Gützkow",
     "nearby": [
-      { "place": "Gützkower Kosenow-See mit italienischem Restaurant", "time": "Ausflug" },
-      { "place": "Stralsund mit Ozeaneum", "time": "Ausflug" },
-      { "place": "Zarrentiner See in Jarmen mit DLRG-Freibad und Wildbadestelle", "time": "Ausflug" },
-      { "place": "Einkaufen in Jarmen, Gützkow und Greifswald (inkl. Fischladen)", "time": "nah" },
-      { "place": "Breechener Badesee", "time": "≈ 5 Min" },
-      { "place": "Insel Usedom", "time": "≈ 45 Min" }
+      { "id": "kosenow-see", "place": "Gützkower Kosenow-See mit italienischem Restaurant", "time": "≈ 7 Min" },
+      { "id": "stralsund", "place": "Stralsund mit Ozeaneum", "time": "≈ 45 Min" },
+      { "id": "zarrentiner-see", "place": "Zarrentiner See, Jarmen", "time": "≈ 5 Min" },
+      { "id": "greifswalder-bodden", "place": "Greifswalder Bodden", "time": "≈ 20 Min" },
+      { "id": "eldena-ruins", "place": "Klosterruine Eldena in Greifswald", "time": "≈ 20 Min" },
+      { "id": "greifswald-harbour", "place": "Alter Hafen Greifswald", "time": "≈ 20 Min" },
+      { "id": "cdf-centre", "place": "Caspar-David-Friedrich-Zentrum in Greifswald", "time": "≈ 20 Min" },
+      { "id": "jarmen-centre", "place": "Jarmener Stadtzentrum", "time": "≈ 5 Min" },
+      { "id": "shopping", "place": "Einkaufen in Jarmen, Gützkow und Greifswald", "time": "≈ 5 Min" },
+      { "id": "usedom", "place": "Insel Usedom", "time": "≈ 45 Min" }
     ]
   },
   "reviewsSec": {
@@ -333,7 +351,7 @@
     "tagline": "Ein historisches Gutshaus aus dem 18. Jahrhundert in Vorpommern — für Familien, Hochzeiten und Rückzüge.",
     "navHeading": "Navigation",
     "contactHeading": "Kontakt",
-    "address": "Peenestrassee 16, 17506",
+    "address": "Peenestraße 16, 17506 Gützkow",
     "region": "Mecklenburg-Vorpommern",
     "copyright": "Alle Rechte vorbehalten.",
     "imprint": "Impressum",
