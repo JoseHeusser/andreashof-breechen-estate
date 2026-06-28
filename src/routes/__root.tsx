@@ -16,6 +16,7 @@ import { useRevealPage } from "@/hooks/use-reveal-page";
 import { useRouterState } from "@tanstack/react-router";
 import { FloatingLangSwitcher } from "@/components/floating-lang-switcher";
 import { MaintenancePage } from "@/components/maintenance-page";
+import { APPLE_TOUCH_ICON, FAVICON_ICO, FAVICON_SVG } from "@/lib/logos";
 
 // Public site is hidden behind a "coming soon" page when this env var is true.
 // /admin/* and /api/* always bypass so Andrea can keep working and the iCal
@@ -98,6 +99,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "icon", href: FAVICON_SVG, type: "image/svg+xml" },
+      { rel: "icon", href: FAVICON_ICO, sizes: "any" },
+      { rel: "apple-touch-icon", href: APPLE_TOUCH_ICON },
     ],
   }),
   shellComponent: RootShell,
