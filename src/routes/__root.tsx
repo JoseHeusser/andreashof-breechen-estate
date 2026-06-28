@@ -147,10 +147,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
-        <noscript>
-          {/* If JS is disabled or broken, never hide content. */}
-          <style>{`.reveal{opacity:1!important;transform:none!important;}`}</style>
-        </noscript>
+        {/* Reveal: .reveal is visible by default now (see styles.css). The
+         * inline script + React-side observer still add .is-visible when
+         * possible, but it's purely a progressive enhancement — content
+         * never depends on JS to appear. */}
         <script dangerouslySetInnerHTML={{ __html: REVEAL_FALLBACK_SCRIPT }} />
       </head>
       <body>
