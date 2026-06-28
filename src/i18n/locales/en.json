@@ -215,31 +215,33 @@
   },
   "history": {
     "eyebrow": "Retrospective",
-    "title": "Impressions from building and restoration to today.",
-    "subtitle": "Andreashof is not a new project, but a house with layers: manor house, village anchor, family place and today a setting for shared stays, celebrations and retreats.",
-    "timelineEyebrow": "House history",
-    "timeline": [
-      {
-        "year": "1782",
-        "title": "A manor house is built",
-        "body": "Andreashof is built as a Pomeranian manor house. Its clear facade, half-timbered gable and tall windows still speak of the Gustavian taste of that period."
-      },
-      {
-        "year": "19th c.",
-        "title": "Life in the village of Breechen",
-        "body": "The house remains closely connected to the village: courtyard, garden, neighbours and the rural surroundings shape its character more than formal distance."
-      },
-      {
-        "year": "Restoration",
-        "title": "Preserve, open, continue",
-        "body": "Historic elements, floorboards, window axes and room sequences are preserved and joined with present-day needs: kitchens, bathrooms, guest rooms and shared spaces take shape step by step."
-      },
-      {
-        "year": "Today",
-        "title": "A house for time together",
-        "body": "Today Andreashof is rented as a whole house: for families, birthdays, weddings, retreats and groups looking for a calm place with history."
-      }
-    ]
+    "title": "The story of Andreashof Breechen.",
+    "subtitle": "Written by Andreas — from the Swedish era to our restoration.",
+    "mapEyebrow": "Historic map",
+    "mapCaption": "Swedish situation map of the region around Jarmen — Breechen is marked at the top right. From the period of Swedish Pomerania.",
+    "section1Title": "Location and origin",
+    "section1": [
+      "Breechen (from the Slavic Bereg or Berg, meaning shore) lies on a rise above the river Peene.",
+      "The manor house — no early documents survive — stands in its current form on foundations from the early 18th century and was rebuilt in the 20th century in the Gustavian style. The two cross-gables, large dormers front and back rising from the old peasant saddle roof, were added to lend the upper floor with its hall, galleries and balustrades a more representative character.",
+      "The reason for the originally Swedish Gustavian style was likely the period after the Thirty Years' War, when parts of Pomerania, as Swedish Pomerania, were assigned to the Swedish kingdom under the Peace of Westphalia. With the successful end of the wars of liberation against Napoleon, that era closed in 1815 with the decisions of the Congress of Vienna, and Western Pomerania became Prussian."
+    ],
+    "section2Title": "Changing owners and uses",
+    "section2": [
+      "In 1939 the estate was dissolved by its owner Ernst von Heyden. Ernst Fründ became the new owner and ran a flourishing inn with a beer garden, an ice-cream shop, a tennis court and dance evenings.",
+      "After Germany's capitulation in 1945 and the subsequent expropriation, Breechen became home to many refugees and displaced people from the East.",
+      "At the end of 1945 the conversion of the manor house and side wing began so that a shoe factory could move in. At the same time around fifty people lived in the house and production ramped up. From this period — added to strengthen the load-bearing capacity of the ceiling — come the additional pillars and beams in the ground-floor hall. The heavy sewing machines stood in the hall on the first floor, and the ground-floor kitchen was converted into a canteen kitchen with a food-service window.",
+      "In the early 1970s the shoe factory closed and the manor house became a Konsum outlet, alongside its hospitality and event use.",
+      "By the late 1990s the house stood empty. The new owner began clean-up and securing work around 2016, successfully preserving the manor along with its outbuildings and grounds."
+    ],
+    "section3Title": "Our restoration from 2021",
+    "section3": [
+      "Our restoration from 2021 reversed a number of GDR-era alterations on the ground floor and added access to the roof via an extension of the stairwell — the old steep stair is still there to find.",
+      "We designed the concept for a holiday house, seminar venue and meeting place, with bedrooms and bathrooms across two floors and generous common spaces.",
+      "A new heating system with underfloor heating, all the installations, and several ceiling and roof-beam restorations fell to us.",
+      "In 2026 the attic was completed for group work — yoga sessions, for example.",
+      "In the garden, a soon-to-be green-shaded table emerged for all guests, along with several covered seating areas for unstable weather, including a charcoal grill and a fire pit."
+    ],
+    "impressionsEyebrow": "Construction and restoration"
   },
   "zimmer": {
     "pageEyebrow": "The Rooms",

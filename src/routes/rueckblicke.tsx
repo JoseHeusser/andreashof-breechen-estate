@@ -3,12 +3,7 @@ import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 const historyHero = "/galerie/history/img_3432.jpg";
-
-type TimelineItem = {
-  year: string;
-  title: string;
-  body: string;
-};
+const historicMap = "/galerie/history/breechen-historisch.jpg";
 
 type ImpressionItem = {
   src: string;
@@ -84,9 +79,28 @@ export const Route = createFileRoute("/rueckblicke")({
   component: RueckblickePage,
 });
 
+function NarrativeSection({ title, paragraphs }: { title: string; paragraphs: string[] }) {
+  return (
+    <section className="border-t border-border/60 px-5 py-14 md:px-10 md:py-20">
+      <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-[200px_1fr] md:gap-16">
+        <h2 className="font-display text-2xl font-light leading-tight text-sage-deep md:text-3xl">
+          {title}
+        </h2>
+        <div className="space-y-5 text-base leading-relaxed text-foreground/85 md:text-[1.05rem]">
+          {paragraphs.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function RueckblickePage() {
   const { t } = useTranslation();
-  const timeline = t("history.timeline", { returnObjects: true }) as TimelineItem[];
+  const section1 = t("history.section1", { returnObjects: true }) as string[];
+  const section2 = t("history.section2", { returnObjects: true }) as string[];
+  const section3 = t("history.section3", { returnObjects: true }) as string[];
 
   return (
     <div className="min-h-screen bg-background">
@@ -96,6 +110,7 @@ function RueckblickePage() {
       </div>
 
       <main>
+        {/* HERO */}
         <section className="px-5 pt-12 pb-12 md:px-10 md:pt-16 md:pb-20">
           <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-end md:gap-16">
             <div>
@@ -117,39 +132,43 @@ function RueckblickePage() {
           </div>
         </section>
 
-        <section className="px-5 pb-16 md:px-10 md:pb-24">
-          <div className="mx-auto grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {IMPRESSIONS.map((photo) => (
-              <figure key={photo.src} className="img-hover overflow-hidden border border-border bg-card">
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  loading="lazy"
-                  className="aspect-[4/5] w-full object-cover"
-                />
-              </figure>
-            ))}
+        {/* HISTORIC MAP */}
+        <section className="bg-linen px-5 py-16 md:px-10 md:py-24">
+          <div className="mx-auto max-w-5xl">
+            <span className="eyebrow">{t("history.mapEyebrow")}</span>
+            <figure className="mt-8 overflow-hidden border border-border bg-card">
+              <img
+                src={historicMap}
+                alt="Schwedische Situationskarte von Jarmen mit Breechen"
+                loading="lazy"
+                className="w-full object-contain"
+              />
+              <figcaption className="border-t border-border/60 px-5 py-4 text-xs leading-relaxed text-muted-foreground md:px-7 md:text-sm">
+                {t("history.mapCaption")}
+              </figcaption>
+            </figure>
           </div>
         </section>
 
-        <section className="border-y border-border/70 bg-linen px-5 py-16 md:px-10 md:py-24">
-          <div className="mx-auto max-w-5xl">
-            <span className="eyebrow">{t("history.timelineEyebrow")}</span>
-            <div className="mt-10 divide-y divide-border/80 border-y border-border/80">
-              {timeline.map((item) => (
-                <article key={`${item.year}-${item.title}`} className="grid gap-4 py-8 md:grid-cols-[180px_1fr] md:gap-10">
-                  <p className="font-display text-3xl font-light text-sage-deep md:text-4xl">
-                    {item.year}
-                  </p>
-                  <div>
-                    <h2 className="font-display text-2xl font-light leading-tight md:text-3xl">
-                      {item.title}
-                    </h2>
-                    <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
-                      {item.body}
-                    </p>
-                  </div>
-                </article>
+        {/* NARRATIVE — Andreas's text */}
+        <NarrativeSection title={t("history.section1Title")} paragraphs={section1} />
+        <NarrativeSection title={t("history.section2Title")} paragraphs={section2} />
+        <NarrativeSection title={t("history.section3Title")} paragraphs={section3} />
+
+        {/* IMPRESSIONS (renovation photos) */}
+        <section className="border-t border-border/60 bg-linen px-5 py-16 md:px-10 md:py-24">
+          <div className="mx-auto max-w-6xl">
+            <span className="eyebrow">{t("history.impressionsEyebrow")}</span>
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {IMPRESSIONS.map((photo) => (
+                <figure key={photo.src} className="img-hover overflow-hidden border border-border bg-card">
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    loading="lazy"
+                    className="aspect-[4/5] w-full object-cover"
+                  />
+                </figure>
               ))}
             </div>
           </div>

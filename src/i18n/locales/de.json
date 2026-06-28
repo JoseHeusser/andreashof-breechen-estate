@@ -215,31 +215,33 @@
   },
   "history": {
     "eyebrow": "Rückblicke",
-    "title": "Eindrücke vom Bauverlauf bis heute.",
-    "subtitle": "Der Andreashof ist kein Neubauprojekt, sondern ein Haus mit Schichten: Gutshaus, Dorfmittelpunkt, Familienort und heute ein Platz für gemeinsame Aufenthalte, Feiern und Rückzug.",
-    "timelineEyebrow": "Hausgeschichte",
-    "timeline": [
-      {
-        "year": "1782",
-        "title": "Ein Gutshaus entsteht",
-        "body": "Der Andreashof wird als pommersches Gutshaus errichtet. Die klare Fassade, der Fachwerkgiebel und die hohen Fenster erzählen bis heute vom gustavianischen Geschmack jener Zeit."
-      },
-      {
-        "year": "19. Jh.",
-        "title": "Leben im Dorf Breechen",
-        "body": "Das Haus bleibt eng mit dem Dorf verbunden: Hof, Garten, Nachbarschaft und die ländliche Umgebung prägen seinen Charakter stärker als repräsentative Distanz."
-      },
-      {
-        "year": "Sanierung",
-        "title": "Erhalten, öffnen, weiterbauen",
-        "body": "Historische Elemente, Dielen, Fensterachsen und Raumfolgen werden bewahrt und mit heutigen Bedürfnissen verbunden: Küchen, Bäder, Gästezimmer und Aufenthaltsräume entstehen Schritt für Schritt."
-      },
-      {
-        "year": "Heute",
-        "title": "Ein Haus für gemeinsame Zeit",
-        "body": "Heute wird der Andreashof als ganzes Haus vermietet: für Familien, Geburtstage, Hochzeiten, Retreats und Gruppen, die einen ruhigen Ort mit Geschichte suchen."
-      }
-    ]
+    "title": "Geschichte des Andreashof Breechen.",
+    "subtitle": "Aufgeschrieben von Andreas — von der schwedischen Epoche bis zu unserem Umbau.",
+    "mapEyebrow": "Historische Karte",
+    "mapCaption": "Schwedische Situationskarte der Region um Jarmen — Breechen ist rechts oben verzeichnet. Aus der Zeit von Schwedisch-Pommern.",
+    "section1Title": "Lage und Ursprung",
+    "section1": [
+      "Breechen (Herkunft: slawisch Bereg oder Berg für Ufer) liegt am Ufer der Peene auf einer Anhöhe.",
+      "Das Gutshaus — alte Dokumente sind leider nicht vorhanden — steht in seiner jetzigen Form auf Fundamenten aus dem frühen 18. Jahrhundert und wurde im 20. Jahrhundert im gustavianischen Stil umgebaut. Die beiden Zwerchhäuser, große Gauben nach vorn und hinten im alten bäuerlichen Satteldach, sollten mit dem Umbau des Obergeschosses mit Saal, Emporen und Geländer die Repräsentativität steigern.",
+      "Anlass für den ursprünglich aus Schweden stammenden gustavianischen Stil war wahrscheinlich die Phase nach dem 30-jährigen Krieg, in welcher Teile Pommerns als Schwedisch-Pommern den Beschlüssen des Westfälischen Friedens folgend dem schwedischen Königreich zugeschlagen wurden. Zum erfolgreichen Ende der Befreiungskriege gegen Napoleon endete 1815 mit den Beschlüssen des Wiener Kongresses diese Epoche, und Vorpommern wurde preußisch."
+    ],
+    "section2Title": "Wechselnde Eigentümer und Nutzungen",
+    "section2": [
+      "1939 wurde seitens des Eigentümers Ernst von Heyden das Gut aufgelöst. Ernst Fründ wird neuer Eigentümer und betreibt eine florierende Gastwirtschaft mit Gartenlokal, Eisverkauf, Tennisplatz und Tanzveranstaltungen.",
+      "Nach der Kapitulation Deutschlands 1945 und der folgenden Enteignung wurde Breechen zur Heimstatt zahlreicher Ostflüchtlinge und Vertriebener.",
+      "Am Ende des Jahres 1945 begann der Umbau im Gutshaus und im Seitentrakt, um die Schuhfabrik in Betrieb zu nehmen. Gleichzeitig wohnten etwa 50 Menschen im Haus und die Produktion lief an. Aus dieser Zeit stammen — um die Tragfähigkeit der Decke zu erhöhen — die zusätzlichen Säulen und Träger in der Diele im Erdgeschoss. Die schweren Nähmaschinen standen im Saal im 1. Obergeschoss. Die Küche im Erdgeschoss wurde als Betriebsküche mit Speiseausgabe-Fenster umfunktioniert.",
+      "Anfang der 70er Jahre stellte die Schuhfabrik ihre Tätigkeit ein und das Gutshaus wurde zur Verkaufsstelle des Konsums, parallel mit Gastronomie und Veranstaltungen.",
+      "Ende der 90er Jahre stand das Haus leer. Die neue Eigentümerin war ab etwa 2016 mit Aufräum- und Sicherungsarbeiten aktiv und erhielt damit erfolgreich das Gutshaus inklusive Nebengebäude und Grundstück."
+    ],
+    "section3Title": "Unser Umbau seit 2021",
+    "section3": [
+      "Unser Umbau ab 2021 veränderte im Erdgeschoss einige DDR-Umbauten und ergänzte den Zugang zum Dach über eine Treppenverlängerung im Treppenhaus — die alte Stiege ist noch zu finden.",
+      "Wir entwarfen das Ferienhaus-, Seminar- und Begegnungsstätten-Konzept mit Zimmern und Bädern auf zwei Etagen und großzügigen Gemeinschaftsräumen.",
+      "Neue Heizungsanlage mit Flächenheizung und sämtliche Installationen sowie mehrere Decken- und Dachbalkensanierungen fielen in unsere Zuständigkeit.",
+      "2026 erfolgte die Fertigstellung des Dachgeschosses für Gruppenarbeit — zum Beispiel Yoga-Sessions.",
+      "Im Garten entstand eine bald grün überschattete Tafel für alle Gäste sowie mehrere bedachte Sitzgelegenheiten für instabileres Wetter, inklusive Grillmöglichkeit mit Kohlegrill und Feuerplatz."
+    ],
+    "impressionsEyebrow": "Bauphase und Sanierung"
   },
   "zimmer": {
     "pageEyebrow": "Die Zimmer",

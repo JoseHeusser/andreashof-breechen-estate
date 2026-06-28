@@ -104,31 +104,33 @@
   },
   "history": {
     "eyebrow": "Retrospectiva",
-    "title": "Impresiones desde la construcción hasta hoy.",
-    "subtitle": "El Andreashof no es un proyecto nuevo, sino una casa con capas: casa señorial, punto de vida del pueblo, lugar familiar y hoy un espacio para estadías compartidas, celebraciones y retiros.",
-    "timelineEyebrow": "Historia de la casa",
-    "timeline": [
-      {
-        "year": "1782",
-        "title": "Nace una casa señorial",
-        "body": "El Andreashof se construye como casa señorial pomerana. Su fachada clara, el gablete de entramado de madera y las ventanas altas siguen hablando del gusto gustaviano de esa época."
-      },
-      {
-        "year": "s. XIX",
-        "title": "Vida en el pueblo de Breechen",
-        "body": "La casa permanece estrechamente ligada al pueblo: patio, jardín, vecinos y paisaje rural marcan su carácter más que una distancia representativa."
-      },
-      {
-        "year": "Restauración",
-        "title": "Conservar, abrir, continuar",
-        "body": "Elementos históricos, suelos, ejes de ventanas y secuencias de habitaciones se conservan y se conectan con necesidades actuales: cocinas, baños, habitaciones y espacios comunes toman forma paso a paso."
-      },
-      {
-        "year": "Hoy",
-        "title": "Una casa para estar juntos",
-        "body": "Hoy el Andreashof se alquila como casa completa: para familias, cumpleaños, bodas, retiros y grupos que buscan un lugar tranquilo con historia."
-      }
-    ]
+    "title": "La historia del Andreashof Breechen.",
+    "subtitle": "Escrito por Andreas — desde la época sueca hasta nuestra restauración.",
+    "mapEyebrow": "Mapa histórico",
+    "mapCaption": "Mapa sueco de la región de Jarmen — Breechen aparece marcado arriba a la derecha. De la época de la Pomerania sueca.",
+    "section1Title": "Ubicación y origen",
+    "section1": [
+      "Breechen (del eslavo Bereg o Berg, 'orilla') se asienta sobre una loma a orillas del río Peene.",
+      "El Gutshaus — no se conservan documentos antiguos — se levanta en su forma actual sobre cimientos del siglo XVIII temprano y fue reformado en el siglo XX al estilo gustaviano. Las dos buhardillas grandes, hacia el frente y hacia atrás del antiguo tejado a dos aguas campesino, se sumaron con la reforma del piso superior — con sala, balcones y barandales — para darle un carácter más representativo.",
+      "El motivo del estilo gustaviano, originario de Suecia, probablemente fue la etapa posterior a la Guerra de los Treinta Años, cuando partes de Pomerania, como Pomerania Sueca, fueron asignadas al reino sueco según los acuerdos de la Paz de Westfalia. Con el éxito de las guerras de liberación contra Napoleón, en 1815 esa época terminó con las decisiones del Congreso de Viena, y Pomerania Occidental pasó a ser prusiana."
+    ],
+    "section2Title": "Propietarios y usos cambiantes",
+    "section2": [
+      "En 1939 el dueño Ernst von Heyden disolvió la finca. Ernst Fründ se convirtió en el nuevo propietario y abrió un próspero negocio gastronómico con jardín, venta de helados, cancha de tenis y eventos de baile.",
+      "Tras la capitulación de Alemania en 1945 y la posterior expropiación, Breechen se convirtió en hogar de numerosos refugiados y desplazados del este.",
+      "A finales de 1945 comenzaron las reformas en el Gutshaus y en el ala lateral para instalar una fábrica de zapatos. Al mismo tiempo vivían unas cincuenta personas en la casa y la producción arrancó. De esa época — colocadas para aumentar la capacidad portante del techo — provienen las columnas y vigas adicionales en el zaguán de la planta baja. Las pesadas máquinas de coser se ubicaban en el salón de la primera planta. La cocina de la planta baja se convirtió en cocina industrial con ventanilla de servicio.",
+      "A inicios de los años 70 la fábrica cerró y el Gutshaus se convirtió en un punto de venta del Konsum, en paralelo con gastronomía y eventos.",
+      "A finales de los 90 la casa quedó vacía. La nueva propietaria comenzó alrededor de 2016 con trabajos de limpieza y aseguramiento, logrando conservar el Gutshaus junto con sus dependencias y terreno."
+    ],
+    "section3Title": "Nuestra restauración desde 2021",
+    "section3": [
+      "Nuestra restauración a partir de 2021 deshizo varias modificaciones de la era de la RDA en la planta baja y añadió acceso al desván mediante una prolongación de la escalera — la escalera empinada original aún puede encontrarse.",
+      "Diseñamos el concepto de casa de vacaciones, centro de seminarios y lugar de encuentro, con habitaciones y baños en dos plantas y amplios espacios comunes.",
+      "Una nueva instalación de calefacción con suelo radiante, todas las instalaciones y varias restauraciones de techos y vigas de cubierta corrieron por nuestra cuenta.",
+      "En 2026 se finalizó el ático para trabajo en grupo — por ejemplo, sesiones de yoga.",
+      "En el jardín surgió una mesa larga pronto sombreada por el verde para todos los huéspedes, junto con varias zonas con techo para climas inestables, incluyendo una parrilla a carbón y una fogata."
+    ],
+    "impressionsEyebrow": "Obra y restauración"
   },
   "zimmer": {
     "pageEyebrow": "Las Habitaciones",
