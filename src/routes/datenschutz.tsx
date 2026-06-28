@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/site-chrome";
-import logo from "@/assets/logo-andreashof.jpeg";
+import { LOGO_ALT, LOGO_BLACK } from "@/lib/logos";
 
 export const Route = createFileRoute("/datenschutz")({
   head: () => ({
@@ -20,7 +20,7 @@ function DatenschutzPage() {
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 md:px-10 md:py-6">
           <Link to="/" className="flex items-center gap-3">
-            <img src={logo} alt="Andreashof" className="h-10 w-auto md:h-12" />
+            <img src={LOGO_BLACK} alt={LOGO_ALT} className="h-10 w-auto md:h-12" />
           </Link>
           <Link
             to="/"

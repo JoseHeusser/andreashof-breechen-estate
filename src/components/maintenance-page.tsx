@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import logo from "@/assets/logo-andreashof.jpeg";
 import heroImg from "@/assets/hero-facade.jpeg";
+import { LOGO_ALT, LOGO_WHITE } from "@/lib/logos";
 
 const BYPASS_KEY = "andreashof.preview";
 // Hidden access for Andrea on desktop: ↑ ↑ ↓ ↓ ← ← → →
@@ -70,9 +70,9 @@ export function MaintenancePage() {
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center md:px-10">
         <img
-          src={logo}
-          alt="Andreashof Breechen"
-          className="h-16 w-auto mix-blend-screen md:h-20"
+          src={LOGO_WHITE}
+          alt={LOGO_ALT}
+          className="h-16 w-auto md:h-20"
         />
 
         <p

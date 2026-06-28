@@ -1,4 +1,4 @@
-import logo from "@/assets/logo-andreashof.jpeg";
+import { LOGO_ALT, LOGO_BLACK, LOGO_WHITE } from "@/lib/logos";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,7 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
   const borderColor = isLight
     ? "border-white/80 text-white hover:bg-white hover:text-foreground"
     : "border-foreground/80 text-foreground hover:bg-foreground hover:text-background";
-  const blend = isLight ? "mix-blend-screen" : "";
+  const logoSrc = isLight ? LOGO_WHITE : LOGO_BLACK;
   const mobilePanelBg = isLight
     ? "bg-black/70 backdrop-blur-sm border-white/25"
     : "bg-background/95 backdrop-blur-sm border-border";
@@ -36,7 +36,7 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 md:gap-6 md:px-10 md:py-6">
         <Link to="/" className="flex items-center gap-3">
-          <img src={logo} alt="Andreashof Breechen" className={`h-10 w-auto md:h-14 ${blend}`} />
+          <img src={logoSrc} alt={LOGO_ALT} className="h-10 w-auto md:h-14" />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {nav.map((n) =>
@@ -120,7 +120,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
         <div className="grid gap-12 md:grid-cols-3">
           <div>
-            <img src={logo} alt="Andreashof Breechen" className="h-16 w-auto" />
+            <img src={LOGO_BLACK} alt={LOGO_ALT} className="h-16 w-auto" />
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">
               {t("footer.tagline")}
             </p>

@@ -56,6 +56,10 @@ const IMPRESSIONS: ImpressionItem[] = [
     src: "/galerie/history/history-fundstuecke.jpg",
     alt: "Historische Fundstuecke aus der Bauphase im Andreashof Breechen",
   },
+  {
+    src: "/galerie/history/img_2999.jpg",
+    alt: "Eindruck aus der Geschichte des Andreashof Breechen",
+  },
 ];
 
 export const Route = createFileRoute("/rueckblicke")({
