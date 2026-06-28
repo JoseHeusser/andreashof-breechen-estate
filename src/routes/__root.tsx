@@ -111,17 +111,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 // Bulletproof reveal fallback — runs before React hydrates so that
-// .reveal sections always become visible, even if the React-side
-// IntersectionObserver fails (slow hydration on Safari, JS error, etc.).
+// .reveal sections always become visible, even when:
+//   - hydration is slow (Safari with ITP)
+//   - the maintenance gate swaps to real content client-side AFTER
+//     the initial script already ran (new .reveal nodes appear later)
+//   - the user hits back/forward (BFCache)
+// Strategy: fire show() multiple times + watch for newly inserted
+// .reveal nodes via MutationObserver for the first 6 seconds.
 const REVEAL_FALLBACK_SCRIPT = `(function(){
   function show(){
     var els=document.querySelectorAll('.reveal:not(.is-visible)');
     for(var i=0;i<els.length;i++)els[i].classList.add('is-visible');
   }
+  function start(){
+    show();
+    setTimeout(show,150);
+    setTimeout(show,600);
+    setTimeout(show,1500);
+    if(typeof MutationObserver!=='undefined'&&document.body){
+      var mo=new MutationObserver(function(){show();});
+      mo.observe(document.body,{childList:true,subtree:true});
+      setTimeout(function(){mo.disconnect();show();},6000);
+    }
+    window.addEventListener('pageshow',show);
+  }
   if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',function(){setTimeout(show,900);});
+    document.addEventListener('DOMContentLoaded',start);
   } else {
-    setTimeout(show,900);
+    start();
   }
 })();`;
 
