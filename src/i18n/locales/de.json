@@ -451,7 +451,7 @@
       {
         "n": "03",
         "title": "Buchung sichern",
-        "body": "50% Anzahlung bestätigt die Buchung. Restzahlung 14 Tage vor Anreise."
+        "body": "50% Anzahlung sichert die Buchung. Die Restzahlung ist 2 Tage vor Anreise fällig."
       }
     ],
     "formEyebrow": "Ihre Anfrage",
@@ -505,11 +505,11 @@
       },
       {
         "q": "Wie ist die Stornierungsrichtlinie?",
-        "a": "Kostenfreie Stornierung bis 60 Tage vor Anreise. Details finden Sie in unseren AGB."
+        "a": "Kostenfreie Stornierung bis 30 Tage vor Anreise. Details finden Sie in unseren AGB."
       },
       {
         "q": "Wie läuft der Check-in?",
-        "a": "Check-in ab 14:00 Uhr. Der Schlüssel liegt im Schlüsselsafe bereit — den Code senden wir vor Anreise per E-Mail."
+        "a": "Check-in ab 14:00 Uhr über die Schlüsselbox. Den aktuellen Code senden wir einen Tag vor Anreise per E-Mail. Hausvater Gunter ist am ersten Abend vor Ort, um bei Bedarf Fragen zu beantworten."
       }
     ]
   },

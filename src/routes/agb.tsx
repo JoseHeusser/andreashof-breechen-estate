@@ -55,16 +55,16 @@ function AGBPage() {
           <section>
             <h2 className="font-display text-2xl">3. Zahlungsbedingungen</h2>
             <p className="mt-3">
-              Eine Anzahlung in Höhe von 50 % ist innerhalb von 14 Tagen nach Buchungsbestätigung
-              fällig. Der Restbetrag ist spätestens 2 Tage vor Anreise zu entrichten, sofern nichts
-              anderes vereinbart wurde. Maßgeblich ist der Zahlungseingang auf dem angegebenen
-              Konto.
+              Zur verbindlichen Sicherung der Buchung ist eine Anzahlung in Höhe von 50 % des
+              Gesamtbetrags gemäß Buchungsbestätigung bzw. Zahlungsaufforderung zu leisten. Der
+              Restbetrag ist spätestens 2 Tage vor Anreise zu entrichten, sofern nichts anderes
+              vereinbart wurde. Maßgeblich ist der Zahlungseingang auf dem angegebenen Konto.
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">4. Stornierungsbedingungen</h2>
             <p className="mt-3">
-              Kostenfreie Stornierung bis 60 Tage vor Anreise. Bei späterer Stornierung werden 50 %
+              Kostenfreie Stornierung bis 30 Tage vor Anreise. Bei späterer Stornierung werden 50 %
               des Gesamtbetrags fällig. Ab 14 Tagen vor Anreise wird der volle Betrag berechnet.
               Maßgeblich ist der Zugang der Stornierungserklärung bei uns. Wir bemühen uns um eine
               anderweitige Vermietung; soweit dadurch Einnahmen erzielt werden, werden diese auf die
@@ -74,8 +74,10 @@ function AGBPage() {
           <section>
             <h2 className="font-display text-2xl">5. An- und Abreise</h2>
             <p className="mt-3">
-              Check-in: ab 14:00 Uhr · Check-out: bis 11:00 Uhr. Eine persönliche Begrüßung ist
-              Bestandteil der Anreise.
+              Check-in: ab 14:00 Uhr · Check-out: bis 11:00 Uhr. Der Check-in erfolgt in der Regel
+              über die Schlüsselbox. Den aktuellen Code erhalten Gäste einen Tag vor Anreise per
+              E-Mail. Hausvater Gunter ist am ersten Abend vor Ort und beantwortet bei Bedarf
+              auftretende Fragen.
             </p>
           </section>
           <section>

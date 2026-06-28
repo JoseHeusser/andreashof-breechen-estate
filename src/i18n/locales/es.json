@@ -340,7 +340,7 @@
       {
         "n": "03",
         "title": "Aseguras tu estancia",
-        "body": "50% de anticipo confirma la reserva. Saldo 14 días antes de la llegada."
+        "body": "Un anticipo del 50% asegura la reserva. El saldo vence 2 días antes de la llegada."
       }
     ],
     "formEyebrow": "Tu solicitud",
@@ -394,11 +394,11 @@
       },
       {
         "q": "¿Cuál es la política de cancelación?",
-        "a": "Cancelación gratuita hasta 60 días antes de la llegada. Detalles en nuestros términos."
+        "a": "Cancelación gratuita hasta 30 días antes de la llegada. Detalles en nuestros términos."
       },
       {
         "q": "¿Cómo es el check-in?",
-        "a": "Check-in a partir de las 14:00. La llave está en el buzón de llaves — te enviamos el código por correo antes de tu llegada."
+        "a": "Check-in a partir de las 14:00 mediante caja de llaves. Enviamos el código actualizado por correo un día antes de la llegada. Gunter, el encargado de la casa, está disponible la primera noche para responder preguntas si hace falta."
       }
     ]
   },

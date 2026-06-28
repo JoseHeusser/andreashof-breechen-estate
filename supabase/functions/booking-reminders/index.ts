@@ -2,7 +2,7 @@
 // Sends two kinds of emails:
 //   1. Restzahlung-Erinnerung: status=deposit_paid AND arrival = today + 3 days
 //      and not already reminded
-//   2. Anreise-Instruktionen: status=fully_paid AND arrival = today + 2 days
+//   2. Anreise-Instruktionen: status=fully_paid AND arrival = today + 1 day
 //      and not already sent
 // Both flags persist in the booking row so we don't double-send.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
@@ -10,9 +10,10 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
-const EMAIL_FROM = Deno.env.get("EMAIL_FROM") ?? "Andreashof Breechen <andrea@andreashof-breechen.de>";
+const EMAIL_FROM = Deno.env.get("EMAIL_FROM") ?? "Andreashof Breechen <andrea.lietz@web.de>";
 // Guest "Reply" goes here so it doesn't bounce off the brand domain.
 const REPLY_TO = Deno.env.get("EMAIL_TO_ADMIN") ?? "andrea.lietz@web.de";
+const KEYBOX_CODE = Deno.env.get("KEYBOX_CODE")?.trim();
 
 const BANK = {
   holder: "Andreashof Breechen",
@@ -85,14 +86,31 @@ function formatDate(iso: string): string {
   return `${d}.${m}.${y}`;
 }
 function formatPrice(cents: number): string {
-  return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(cents / 100);
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
 }
 function escapeHtml(s: string): string {
-  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+  return s.replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!,
+  );
 }
 function salutation(b: BookingRow): string {
   const name = b.contact_name?.trim();
   return name ? `Liebe/r ${escapeHtml(name)},` : "Liebe Gäste,";
+}
+
+function keyboxCodeBlock(): string {
+  if (!KEYBOX_CODE) {
+    return `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Den aktuellen Schlüsselbox-Code erhalten Sie in einer separaten Nachricht einen Tag vor Anreise.</p>`;
+  }
+
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0;padding:16px;background:${COLORS.bg};border:1px solid ${COLORS.border};width:100%;">
+      <tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;width:140px;">Schlüsselbox-Code</td><td style="padding:4px 0;font-size:20px;font-family:monospace;font-weight:600;letter-spacing:0.08em;">${escapeHtml(KEYBOX_CODE)}</td></tr>
+    </table>`;
 }
 
 function shell(title: string, body: string) {
@@ -108,7 +126,7 @@ function shell(title: string, body: string) {
         <tr><td style="padding:24px 40px 40px;">${body}</td></tr>
         <tr><td style="padding:20px 40px;border-top:1px solid ${COLORS.border};font-size:11px;color:${COLORS.muted};">
           Andreashof Breechen · Peenestraße 16 · 17506 Gützkow<br>
-          <a href="mailto:willkommen@andreashof-breechen.de" style="color:${COLORS.sageDeep};text-decoration:none;">willkommen@andreashof-breechen.de</a>
+          <a href="mailto:andrea.lietz@web.de" style="color:${COLORS.sageDeep};text-decoration:none;">andrea.lietz@web.de</a>
         </td></tr>
       </table>
     </td></tr>
@@ -117,7 +135,10 @@ function shell(title: string, body: string) {
 }
 
 function balanceReminderHtml(b: BookingRow): string {
-  const balance = b.total_price_cents != null ? formatPrice(Math.round(b.total_price_cents * 0.5)) : "die Restzahlung";
+  const balance =
+    b.total_price_cents != null
+      ? formatPrice(Math.round(b.total_price_cents * 0.5))
+      : "die Restzahlung";
   const body = `
     <h1 style="margin:0 0 18px;font-size:22px;font-weight:300;">Freundliche Erinnerung</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
@@ -137,13 +158,14 @@ function arrivalInstructionsHtml(b: BookingRow): string {
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Wir freuen uns auf Sie.</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">in wenigen Tagen heißen wir Sie auf dem Andreashof Breechen willkommen. Hier alle Informationen für Ihre Anreise am <strong>${formatDate(b.arrival)}</strong>:</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">morgen heißen wir Sie auf dem Andreashof Breechen willkommen. Hier alle Informationen für Ihre Anreise am <strong>${formatDate(b.arrival)}</strong>:</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Adresse</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Andreashof Breechen<br>Peenestraße 16<br>17506 Gützkow</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Anreise</h2>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-in ab <strong>14:00 Uhr</strong>. Bitte geben Sie uns kurz Bescheid, wann Sie voraussichtlich eintreffen — per E-Mail an <a href="mailto:willkommen@andreashof-breechen.de" style="color:${COLORS.sageDeep};">willkommen@andreashof-breechen.de</a> oder per WhatsApp an <a href="tel:+491723813606" style="color:${COLORS.sageDeep};">+49 172 3813606</a>.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-in ab <strong>14:00 Uhr</strong> über die Schlüsselbox. Bei Fragen erreichen Sie uns per E-Mail an <a href="mailto:andrea.lietz@web.de" style="color:${COLORS.sageDeep};">andrea.lietz@web.de</a> oder per WhatsApp an <a href="tel:+491723813606" style="color:${COLORS.sageDeep};">+49 172 3813606</a>.</p>
+    ${keyboxCodeBlock()}
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Vor Ort</h2>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Der Schlüssel liegt im Schlüsselsafe bereit — den Code finden Sie weiter unten in dieser E-Mail. Vor und neben dem Gutshaus gibt es genügend Parkplätze für Ihre Fahrzeuge.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Der Schlüssel liegt in der Schlüsselbox bereit. Vor und neben dem Gutshaus gibt es genügend Parkplätze für Ihre Fahrzeuge. Hausvater Gunter ist am ersten Abend vor Ort, um bei Bedarf auftretende Fragen zu beantworten.</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Abreise</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-out bis <strong>11:00 Uhr</strong> am ${formatDate(b.departure)}. Bitte bringen Sie die Schlüssel auf den Esstisch, alles Weitere übernehmen wir.</p>
     <p style="margin:24px 0 0;font-size:15px;line-height:1.6;">Sollten Sie irgendwelche Fragen haben — vor, während oder nach Ihrem Aufenthalt — sind wir jederzeit für Sie da.</p>
@@ -162,13 +184,18 @@ function todayPlus(days: number): string {
 Deno.serve(async () => {
   try {
     const target3 = todayPlus(3); // balance reminder
-    const target2 = todayPlus(2); // arrival instructions
+    const target1 = todayPlus(1); // arrival instructions
 
     // Pull both buckets in parallel.
-    const select = "id,arrival,departure,contact_name,contact_email,status,total_price_cents,is_cleaning,reminder_balance_sent_at,reminder_arrival_sent_at";
+    const select =
+      "id,arrival,departure,contact_name,contact_email,status,total_price_cents,is_cleaning,reminder_balance_sent_at,reminder_arrival_sent_at";
     const [balanceCandidates, arrivalCandidates] = await Promise.all([
-      pg<BookingRow[]>(`bookings?status=eq.deposit_paid&arrival=eq.${target3}&is_cleaning=eq.false&select=${select}`),
-      pg<BookingRow[]>(`bookings?status=eq.fully_paid&arrival=eq.${target2}&is_cleaning=eq.false&select=${select}`),
+      pg<BookingRow[]>(
+        `bookings?status=eq.deposit_paid&arrival=eq.${target3}&is_cleaning=eq.false&select=${select}`,
+      ),
+      pg<BookingRow[]>(
+        `bookings?status=eq.fully_paid&arrival=eq.${target1}&is_cleaning=eq.false&select=${select}`,
+      ),
     ]);
 
     let sentBalance = 0;
@@ -177,7 +204,11 @@ Deno.serve(async () => {
     for (const b of balanceCandidates) {
       if (b.reminder_balance_sent_at) continue;
       if (b.contact_email.endsWith("@andreashof-breechen.de")) continue;
-      const ok = await sendResend(b.contact_email, "Erinnerung: Restzahlung für Ihren Aufenthalt", balanceReminderHtml(b));
+      const ok = await sendResend(
+        b.contact_email,
+        "Erinnerung: Restzahlung für Ihren Aufenthalt",
+        balanceReminderHtml(b),
+      );
       if (ok) {
         await pg(`bookings?id=eq.${b.id}`, {
           method: "PATCH",
@@ -190,7 +221,11 @@ Deno.serve(async () => {
     for (const b of arrivalCandidates) {
       if (b.reminder_arrival_sent_at) continue;
       if (b.contact_email.endsWith("@andreashof-breechen.de")) continue;
-      const ok = await sendResend(b.contact_email, "Anreise zum Andreashof — alle Informationen", arrivalInstructionsHtml(b));
+      const ok = await sendResend(
+        b.contact_email,
+        "Anreise zum Andreashof — alle Informationen",
+        arrivalInstructionsHtml(b),
+      );
       if (ok) {
         await pg(`bookings?id=eq.${b.id}`, {
           method: "PATCH",
@@ -204,7 +239,7 @@ Deno.serve(async () => {
       JSON.stringify({
         ok: true,
         target_balance: target3,
-        target_arrival: target2,
+        target_arrival: target1,
         candidates: { balance: balanceCandidates.length, arrival: arrivalCandidates.length },
         sent: { balance: sentBalance, arrival: sentArrival },
       }),
@@ -212,9 +247,12 @@ Deno.serve(async () => {
     );
   } catch (e) {
     console.error(e);
-    return new Response(JSON.stringify({ ok: false, error: e instanceof Error ? e.message : String(e) }), {
-      status: 500,
-      headers: { "content-type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ ok: false, error: e instanceof Error ? e.message : String(e) }),
+      {
+        status: 500,
+        headers: { "content-type": "application/json" },
+      },
+    );
   }
 });

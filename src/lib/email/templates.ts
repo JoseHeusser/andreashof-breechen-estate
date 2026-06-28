@@ -21,6 +21,7 @@ const COLORS = {
 };
 
 const SIGNATURE = "Andrea & Andreas & das Andreashof-Team";
+const KEYBOX_CODE = process.env.KEYBOX_CODE?.trim();
 
 function shell(title: string, body: string) {
   // Inline-styled email shell. Email clients only support a tiny subset
@@ -138,6 +139,16 @@ function ctaButton(label: string, href: string, color = COLORS.fg): string {
   return `<a href="${href}" style="display:inline-block;padding:14px 24px;background:${color};color:#fff;text-decoration:none;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;border:1px solid ${color};">${escapeHtml(label)}</a>`;
 }
 
+function keyboxCodeBlock(): string {
+  if (!KEYBOX_CODE) {
+    return `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Den aktuellen Schlüsselbox-Code erhalten Sie in einer separaten Nachricht einen Tag vor Anreise.</p>`;
+  }
+
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0;padding:16px;background:${COLORS.bg};border:1px solid ${COLORS.border};width:100%;">
+      <tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;width:140px;">Schlüsselbox-Code</td><td style="padding:4px 0;font-size:20px;font-family:monospace;font-weight:600;letter-spacing:0.08em;">${escapeHtml(KEYBOX_CODE)}</td></tr>
+    </table>`;
+}
+
 // ═══════════════════════════════════════════════════════════════
 //  1) Booking request → guest
 // ═══════════════════════════════════════════════════════════════
@@ -204,7 +215,7 @@ export function tplAcceptedGuest(b: Booking) {
       <tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Verwendungszweck</td><td style="padding:4px 0;font-size:14px;">Anzahlung ${b.id.slice(0, 8)} · ${formatDate(b.arrival)}</td></tr>
     </table>
     <h2 style="margin:28px 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Stornierungsbedingungen</h2>
-    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${COLORS.muted};">Kostenfreie Stornierung bis <strong>60 Tage vor Anreise</strong>. Danach werden 50% des Gesamtpreises berechnet; ab 14 Tagen vor Anreise wird der volle Betrag fällig.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${COLORS.muted};">Kostenfreie Stornierung bis <strong>30 Tage vor Anreise</strong>. Danach werden 50% des Gesamtpreises berechnet; ab 14 Tagen vor Anreise wird der volle Betrag fällig.</p>
     <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return { subject, html: shell(subject, body) };
@@ -278,20 +289,21 @@ export function tplBalanceReminderGuest(b: Booking) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  7) Arrival instructions (2 days before, fully paid)
+//  7) Arrival instructions (1 day before, fully paid)
 // ═══════════════════════════════════════════════════════════════
 export function tplArrivalInstructionsGuest(b: Booking) {
   const subject = `Anreise zum Andreashof — alle Informationen`;
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Wir freuen uns auf Sie.</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">in wenigen Tagen heißen wir Sie auf dem Andreashof Breechen willkommen. Hier alle Informationen für Ihre Anreise am <strong>${formatDate(b.arrival)}</strong>:</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">morgen heißen wir Sie auf dem Andreashof Breechen willkommen. Hier alle Informationen für Ihre Anreise am <strong>${formatDate(b.arrival)}</strong>:</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Adresse</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Andreashof Breechen<br>Peenestraße 16<br>17506 Gützkow</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Anreise</h2>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-in ab <strong>14:00 Uhr</strong>. Bitte geben Sie uns kurz Bescheid, wann Sie voraussichtlich eintreffen — per E-Mail an <a href="mailto:andrea.lietz@web.de" style="color:${COLORS.sageDeep};">andrea.lietz@web.de</a> oder per WhatsApp an <a href="tel:+491723813606" style="color:${COLORS.sageDeep};">+49 172 3813606</a>.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-in ab <strong>14:00 Uhr</strong> über die Schlüsselbox. Bei Fragen erreichen Sie uns per E-Mail an <a href="mailto:andrea.lietz@web.de" style="color:${COLORS.sageDeep};">andrea.lietz@web.de</a> oder per WhatsApp an <a href="tel:+491723813606" style="color:${COLORS.sageDeep};">+49 172 3813606</a>.</p>
+    ${keyboxCodeBlock()}
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Vor Ort</h2>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Der Schlüssel liegt im Schlüsselsafe bereit — den Code finden Sie weiter unten in dieser E-Mail. Vor und neben dem Gutshaus gibt es genügend Parkplätze für Ihre Fahrzeuge.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Der Schlüssel liegt in der Schlüsselbox bereit. Vor und neben dem Gutshaus gibt es genügend Parkplätze für Ihre Fahrzeuge. Hausvater Gunter ist am ersten Abend vor Ort, um bei Bedarf auftretende Fragen zu beantworten.</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Abreise</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-out bis <strong>11:00 Uhr</strong> am ${formatDate(b.departure)}. Bitte bringen Sie die Schlüssel auf den Esstisch, alles Weitere übernehmen wir.</p>
     <p style="margin:24px 0 0;font-size:15px;line-height:1.6;">Sollten Sie irgendwelche Fragen haben — vor, während oder nach Ihrem Aufenthalt — sind wir jederzeit für Sie da.</p>
