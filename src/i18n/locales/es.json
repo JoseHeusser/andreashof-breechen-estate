@@ -384,7 +384,7 @@
       },
       {
         "q": "¿Hay estacionamiento?",
-        "a": "Estacionamiento gratuito para hasta doce vehículos en el patio interior."
+        "a": "Estacionamiento gratuito de sobra delante y al lado del Gutshaus."
       },
       {
         "q": "¿Se permiten mascotas?",
@@ -396,7 +396,7 @@
       },
       {
         "q": "¿Cómo es el check-in?",
-        "a": "Recibimiento personal el día de llegada a partir de las 14:00. Entrega de llaves y breve recorrido por la casa."
+        "a": "Check-in a partir de las 14:00. La llave está en el buzón de llaves — te enviamos el código por correo antes de tu llegada."
       }
     ]
   },

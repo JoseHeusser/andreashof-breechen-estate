@@ -291,7 +291,7 @@ export function tplArrivalInstructionsGuest(b: Booking) {
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Anreise</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-in ab <strong>14:00 Uhr</strong>. Bitte geben Sie uns kurz Bescheid, wann Sie voraussichtlich eintreffen — per E-Mail an <a href="mailto:andrea.lietz@web.de" style="color:${COLORS.sageDeep};">andrea.lietz@web.de</a> oder per WhatsApp an <a href="tel:+491723813606" style="color:${COLORS.sageDeep};">+49 172 3813606</a>.</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Vor Ort</h2>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Sie werden persönlich begrüßt, die Schlüsselübergabe und eine kurze Hausführung sind selbstverständlich inklusive. Ein Parkplatz für Ihr Fahrzeug steht direkt am Hof bereit.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Der Schlüssel liegt im Schlüsselsafe bereit — den Code finden Sie weiter unten in dieser E-Mail. Vor und neben dem Gutshaus gibt es genügend Parkplätze für Ihre Fahrzeuge.</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Abreise</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-out bis <strong>11:00 Uhr</strong> am ${formatDate(b.departure)}. Bitte bringen Sie die Schlüssel auf den Esstisch, alles Weitere übernehmen wir.</p>
     <p style="margin:24px 0 0;font-size:15px;line-height:1.6;">Sollten Sie irgendwelche Fragen haben — vor, während oder nach Ihrem Aufenthalt — sind wir jederzeit für Sie da.</p>
