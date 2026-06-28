@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DayPicker, type DateRange } from "react-day-picker";
@@ -203,11 +203,14 @@ function ReservationsPage() {
 
   const totalFormatted =
     quoteCents != null
-      ? new Intl.NumberFormat(i18n.language === "en" ? "en-GB" : i18n.language === "es" ? "es-ES" : "de-DE", {
-          style: "currency",
-          currency: "EUR",
-          maximumFractionDigits: 0,
-        }).format(quoteCents / 100)
+      ? new Intl.NumberFormat(
+          i18n.language === "en" ? "en-GB" : i18n.language === "es" ? "es-ES" : "de-DE",
+          {
+            style: "currency",
+            currency: "EUR",
+            maximumFractionDigits: 0,
+          },
+        ).format(quoteCents / 100)
       : null;
 
   return (
@@ -582,7 +585,9 @@ function ReservationsPage() {
                   {/* Step 1: Check availability — gates the contact form below */}
                   <div
                     className={`transition-all duration-500 ease-out ${
-                      showQuote ? "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden" : "max-h-40 translate-y-0 opacity-100"
+                      showQuote
+                        ? "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden"
+                        : "max-h-40 translate-y-0 opacity-100"
                     }`}
                   >
                     <button
@@ -591,7 +596,9 @@ function ReservationsPage() {
                       onClick={handleCheckAvailability}
                       className="mt-2 min-h-11 w-full border border-foreground bg-foreground px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep disabled:cursor-not-allowed disabled:border-border disabled:bg-border disabled:text-muted-foreground md:tracking-[0.28em]"
                     >
-                      {quoteLoading ? t("reservations.checking") : t("reservations.checkAvailability")}
+                      {quoteLoading
+                        ? t("reservations.checking")
+                        : t("reservations.checkAvailability")}
                     </button>
                     {stayTooShort ? (
                       <p className="mt-2 text-[11px] leading-relaxed text-red-700">
@@ -607,7 +614,9 @@ function ReservationsPage() {
                   {/* Step 2: Contact form — fades in once a quote has been fetched */}
                   <div
                     className={`space-y-6 transition-all duration-500 ease-out ${
-                      showQuote ? "max-h-[40rem] translate-y-0 opacity-100" : "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden"
+                      showQuote
+                        ? "max-h-[40rem] translate-y-0 opacity-100"
+                        : "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden"
                     }`}
                   >
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -628,13 +637,21 @@ function ReservationsPage() {
                       {submitting ? "…" : t("reservations.submit")}
                     </button>
                     {submitError && (
-                      <p className="text-[11px] leading-relaxed text-red-700">
-                        {submitError}
-                      </p>
+                      <p className="text-[11px] leading-relaxed text-red-700">{submitError}</p>
                     )}
                   </div>
                   <p className="text-[11px] leading-relaxed text-muted-foreground">
                     {t("reservations.submitNote")}
+                  </p>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    {t("reservations.privacyNotePrefix")}{" "}
+                    <Link
+                      to="/datenschutz"
+                      className="underline decoration-muted-foreground/40 underline-offset-4 hover:text-sage-deep"
+                    >
+                      {t("reservations.privacyNoteLink")}
+                    </Link>
+                    .
                   </p>
                 </form>
               </div>
@@ -678,8 +695,8 @@ function ReservationsPage() {
           <div className="md:col-span-7">
             <ul className="space-y-4 text-base">
               <li>
-                <a href="mailto:willkommen@andreashof-breechen.de" className="hover:text-sage-deep">
-                  willkommen@andreashof-breechen.de
+                <a href="mailto:andrea.lietz@web.de" className="hover:text-sage-deep">
+                  andrea.lietz@web.de
                 </a>
               </li>
               <li>
@@ -740,7 +757,11 @@ function Toggle({
     <label className="flex cursor-pointer items-start justify-between gap-3">
       <span className="flex-1">
         <span className="block text-[13px] text-foreground/90">{label}</span>
-        {note && <span className="mt-0.5 block text-[11px] leading-relaxed text-muted-foreground">{note}</span>}
+        {note && (
+          <span className="mt-0.5 block text-[11px] leading-relaxed text-muted-foreground">
+            {note}
+          </span>
+        )}
       </span>
       <span
         role="switch"

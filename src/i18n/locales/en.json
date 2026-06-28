@@ -181,11 +181,11 @@
     "subtitle": "Rooms, baths, garden — and the village of Breechen with its swimming lakes nearby, Gützkow and the Baltic island of Usedom.",
     "categories": {
       "interior": "Interiors",
-      "bath":     "Baths",
-      "garden":   "Garden & exterior",
-      "around":   "Village & surroundings",
-      "plans":    "Floor plans",
-      "atmos":    "Atmosphere"
+      "bath": "Baths",
+      "garden": "Garden & exterior",
+      "around": "Village & surroundings",
+      "plans": "Floor plans",
+      "atmos": "Atmosphere"
     }
   },
   "partners": {
@@ -252,17 +252,72 @@
     "selectorLabel": "Choose a chamber"
   },
   "rooms": {
-    "I":    { "name": "Princess Room", "bed": "1 king-size bed", "view": "Garden", "desc": "Quiet room with a friendly atmosphere by the garden." },
-    "II":   { "name": "Linden Room", "bed": "2 single beds", "view": "Linden avenue", "desc": "On the old linden avenue. High ceilings, white-painted floorboards and a desk by the window." },
-    "III":  { "name": "Senior Manor Room", "bed": "1 king-size bed", "view": "East · manor forecourt", "desc": "Quietly facing east toward the manor forecourt, with an accessible bathroom in the manor house." },
-    "IV":   { "name": "Garden Room", "bed": "2 single beds", "view": "South garden", "desc": "Quiet, sunny, warm and filled with light — with a view into the garden." },
-    "V":    { "name": "Old Pink Chamber", "bed": "1 queen-size bed", "view": "South", "desc": "Located behind the garden room, facing south — ideal for siblings or friends." },
-    "VI":   { "name": "Long-Men-Beds Room", "bed": "1 extra-long king-size bed", "view": "Village", "desc": "Quiet room with an extra-long bed and original historic meander skirting." },
-    "VII":  { "name": "Harry Potter Room", "bed": "1 king-size bed", "view": "Courtyard", "desc": "With an old access stair to the attic, historic pictures and old parquet." },
-    "VIII": { "name": "Gentlemen's Room", "bed": "1 French bed", "view": "West · garden", "desc": "On the west side with garden view, plus gallery and mezzanine — a good place to read and write." },
-    "IX":   { "name": "Ladies' Room", "bed": "1 French bed", "view": "Garden", "desc": "With hand-painted decorative wall, French bed and blue armchair on a platform." },
-    "X":    { "name": "Baltic Sea Room", "bed": "2 + 1 beds", "view": "South · neighbourhood and Peenestrom", "desc": "Bright and rural blue, with a southern view toward the neighbourhood and the Peenestrom." },
-    "XI":   { "name": "Gable Room", "bed": "1 queen-size bed", "view": "Peenestrom", "desc": "Small and fine, with side attic in the gable, old beams and a view of the Peenestrom." }
+    "I": {
+      "name": "Princess Room",
+      "bed": "1 king-size bed",
+      "view": "Garden",
+      "desc": "Quiet room with a friendly atmosphere by the garden."
+    },
+    "II": {
+      "name": "Linden Room",
+      "bed": "2 single beds",
+      "view": "Linden avenue",
+      "desc": "On the old linden avenue. High ceilings, white-painted floorboards and a desk by the window."
+    },
+    "III": {
+      "name": "Senior Manor Room",
+      "bed": "1 king-size bed",
+      "view": "East · manor forecourt",
+      "desc": "Quietly facing east toward the manor forecourt, with an accessible bathroom in the manor house."
+    },
+    "IV": {
+      "name": "Garden Room",
+      "bed": "2 single beds",
+      "view": "South garden",
+      "desc": "Quiet, sunny, warm and filled with light — with a view into the garden."
+    },
+    "V": {
+      "name": "Old Pink Chamber",
+      "bed": "1 queen-size bed",
+      "view": "South",
+      "desc": "Located behind the garden room, facing south — ideal for siblings or friends."
+    },
+    "VI": {
+      "name": "Long-Men-Beds Room",
+      "bed": "1 extra-long king-size bed",
+      "view": "Village",
+      "desc": "Quiet room with an extra-long bed and original historic meander skirting."
+    },
+    "VII": {
+      "name": "Harry Potter Room",
+      "bed": "1 king-size bed",
+      "view": "Courtyard",
+      "desc": "With an old access stair to the attic, historic pictures and old parquet."
+    },
+    "VIII": {
+      "name": "Gentlemen's Room",
+      "bed": "1 French bed",
+      "view": "West · garden",
+      "desc": "On the west side with garden view, plus gallery and mezzanine — a good place to read and write."
+    },
+    "IX": {
+      "name": "Ladies' Room",
+      "bed": "1 French bed",
+      "view": "Garden",
+      "desc": "With hand-painted decorative wall, French bed and blue armchair on a platform."
+    },
+    "X": {
+      "name": "Baltic Sea Room",
+      "bed": "2 + 1 beds",
+      "view": "South · neighbourhood and Peenestrom",
+      "desc": "Bright and rural blue, with a southern view toward the neighbourhood and the Peenestrom."
+    },
+    "XI": {
+      "name": "Gable Room",
+      "bed": "1 queen-size bed",
+      "view": "Peenestrom",
+      "desc": "Small and fine, with side attic in the gable, old beams and a view of the Peenestrom."
+    }
   },
   "amenitiesSec": {
     "eyebrow": "Amenities",
@@ -287,15 +342,27 @@
     "titleEm": " close to Greifswald and the Baltic Sea.",
     "address": "Peenestraße 16, 17506 Gützkow",
     "nearby": [
-      { "id": "kosenow-see", "place": "Gützkow Kosenow Lake with Italian restaurant", "time": "≈ 7 min" },
+      {
+        "id": "kosenow-see",
+        "place": "Gützkow Kosenow Lake with Italian restaurant",
+        "time": "≈ 7 min"
+      },
       { "id": "stralsund", "place": "Stralsund with Ozeaneum", "time": "≈ 45 min" },
       { "id": "zarrentiner-see", "place": "Zarrentiner Lake, Jarmen", "time": "≈ 5 min" },
       { "id": "greifswalder-bodden", "place": "Greifswalder Bodden", "time": "≈ 20 min" },
       { "id": "eldena-ruins", "place": "Eldena Abbey Ruins in Greifswald", "time": "≈ 20 min" },
       { "id": "greifswald-harbour", "place": "Old Harbour Greifswald", "time": "≈ 20 min" },
-      { "id": "cdf-centre", "place": "Caspar David Friedrich Centre in Greifswald", "time": "≈ 20 min" },
+      {
+        "id": "cdf-centre",
+        "place": "Caspar David Friedrich Centre in Greifswald",
+        "time": "≈ 20 min"
+      },
       { "id": "jarmen-centre", "place": "Jarmen town centre", "time": "≈ 5 min" },
-      { "id": "shopping", "place": "Shopping in Jarmen, Gützkow and Greifswald", "time": "≈ 5 min" },
+      {
+        "id": "shopping",
+        "place": "Shopping in Jarmen, Gützkow and Greifswald",
+        "time": "≈ 5 min"
+      },
       { "id": "usedom", "place": "Usedom island", "time": "≈ 45 min" }
     ]
   },
@@ -304,9 +371,18 @@
     "title": "What our guests leave behind.",
     "badge": "★ 5.0 · 21 reviews on Airbnb",
     "items": [
-      { "q": "We spent a weekend in the house with the whole family. It was simply fantastic — even more beautiful than in the photos. The hostess is very friendly and helpful.", "a": "Anne · family weekend" },
-      { "q": "A wonderful birthday weekend here with my best friends — we felt more than at home. The interior is carefully chosen and beautifully suits the house.", "a": "Tjerk · birthday with friends" },
-      { "q": "Our company offsite at Andrea's was absolutely incredible. The space was comfortable, clean and perfectly suited for our team. Andrea is a fantastic host — attentive, welcoming, helpful.", "a": "Clemens · company offsite" }
+      {
+        "q": "We spent a weekend in the house with the whole family. It was simply fantastic — even more beautiful than in the photos. The hostess is very friendly and helpful.",
+        "a": "Anne · family weekend"
+      },
+      {
+        "q": "A wonderful birthday weekend here with my best friends — we felt more than at home. The interior is carefully chosen and beautifully suits the house.",
+        "a": "Tjerk · birthday with friends"
+      },
+      {
+        "q": "Our company offsite at Andrea's was absolutely incredible. The space was comfortable, clean and perfectly suited for our team. Andrea is a fantastic host — attentive, welcoming, helpful.",
+        "a": "Clemens · company offsite"
+      }
     ]
   },
   "bookingTeaser": {
@@ -359,9 +435,21 @@
     "no": "No",
     "stepsEyebrow": "How it works",
     "steps": [
-      { "n": "01", "title": "Send your request",   "body": "Choose your dates, group size and occasion. We check availability." },
-      { "n": "02", "title": "Personal confirmation","body": "Andrea replies within 24 hours with a tailored offer." },
-      { "n": "03", "title": "Secure your stay",     "body": "50% deposit confirms the booking. Balance due 14 days before arrival." }
+      {
+        "n": "01",
+        "title": "Send your request",
+        "body": "Choose your dates, group size and occasion. We check availability."
+      },
+      {
+        "n": "02",
+        "title": "Personal confirmation",
+        "body": "Andrea replies within 24 hours with a tailored offer."
+      },
+      {
+        "n": "03",
+        "title": "Secure your stay",
+        "body": "50% deposit confirms the booking. Balance due 14 days before arrival."
+      }
     ],
     "formEyebrow": "Your request",
     "formTitle": "Reservation details",
@@ -385,6 +473,8 @@
     },
     "submit": "Send reservation request",
     "submitNote": "Sending this does not book the house yet. We reply within 24 hours with a tailored offer.",
+    "privacyNotePrefix": "Information about how we process your details is available in the",
+    "privacyNoteLink": "privacy policy",
     "thanks": "Thank you — we'll be in touch shortly.",
     "contactEyebrow": "Prefer to talk?",
     "contactBody": "Write to Andrea by email or WhatsApp.",
@@ -394,12 +484,30 @@
     "eyebrow": "Frequently asked",
     "title": "Before you write.",
     "items": [
-      { "q": "Can you rent part of the house, or only the whole?", "a": "Andreashof is rented exclusively as a whole, to preserve the atmosphere for your group." },
-      { "q": "Are weddings and celebrations allowed?",             "a": "Yes. We regularly host weddings, family gatherings and private celebrations. We're glad to recommend caterers and local services." },
-      { "q": "Is there parking?",                                  "a": "Free parking for up to twelve vehicles in the inner courtyard." },
-      { "q": "Are pets allowed?",                                  "a": "Well-mannered dogs are welcome on request. Please let us know when you inquire." },
-      { "q": "What is the cancellation policy?",                   "a": "Free cancellation up to 60 days before arrival. Details in our terms." },
-      { "q": "How does check-in work?",                            "a": "Personal welcome on arrival day from 2 pm. Key handover and a short tour included." }
+      {
+        "q": "Can you rent part of the house, or only the whole?",
+        "a": "Andreashof is rented exclusively as a whole, to preserve the atmosphere for your group."
+      },
+      {
+        "q": "Are weddings and celebrations allowed?",
+        "a": "Yes. We regularly host weddings, family gatherings and private celebrations. We're glad to recommend caterers and local services."
+      },
+      {
+        "q": "Is there parking?",
+        "a": "Free parking for up to twelve vehicles in the inner courtyard."
+      },
+      {
+        "q": "Are pets allowed?",
+        "a": "Well-mannered dogs are welcome on request. Please let us know when you inquire."
+      },
+      {
+        "q": "What is the cancellation policy?",
+        "a": "Free cancellation up to 60 days before arrival. Details in our terms."
+      },
+      {
+        "q": "How does check-in work?",
+        "a": "Personal welcome on arrival day from 2 pm. Key handover and a short tour included."
+      }
     ]
   },
   "footer": {

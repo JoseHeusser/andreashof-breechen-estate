@@ -181,11 +181,11 @@
     "subtitle": "Räume, Bäder, Garten — und das Dorf Breechen mit den nahen Badeseen, Gützkow und der Ostseeinsel Usedom.",
     "categories": {
       "interior": "Innenräume",
-      "bath":     "Bäder",
-      "garden":   "Garten & Außen",
-      "around":   "Dorf & Umgebung",
-      "plans":    "Grundrisse",
-      "atmos":    "Atmosphäre"
+      "bath": "Bäder",
+      "garden": "Garten & Außen",
+      "around": "Dorf & Umgebung",
+      "plans": "Grundrisse",
+      "atmos": "Atmosphäre"
     }
   },
   "partners": {
@@ -252,17 +252,72 @@
     "selectorLabel": "Kammer wählen"
   },
   "rooms": {
-    "I":    { "name": "Prinzessinnenzimmer", "bed": "1 King-Size-Bett", "view": "Garten", "desc": "Ruhiges Zimmer mit freundlicher Atmosphäre am Garten." },
-    "II":   { "name": "Lindenzimmer", "bed": "2 Einzelbetten", "view": "Lindenallee", "desc": "An der alten Lindenallee. Hohe Decken, weiß gestrichene Dielen und ein Schreibtisch am Fenster." },
-    "III":  { "name": "Senioren-Gutshaus-Zimmer", "bed": "1 King-Size-Bett", "view": "Osten · Gutshausvorplatz", "desc": "Ruhig nach Osten zum Gutshausvorplatz gelegen, mit barrierefreiem Bad im Gutshaus." },
-    "IV":   { "name": "Gartenzimmer", "bed": "2 Einzelbetten", "view": "Südgarten", "desc": "Ruhig, sonnig, warm und lichtdurchflutet — mit Blick in den Garten." },
-    "V":    { "name": "Alt-rosa Kammer", "bed": "1 Queensize-Bett", "view": "Süden", "desc": "Hinter dem Gartenzimmer gelegen, nach Süden ausgerichtet — ideal für Geschwister oder Freunde." },
-    "VI":   { "name": "Lange-Männer-Betten-Zimmer", "bed": "1 Extralanges Kingsize-Bett", "view": "Dorf", "desc": "Ruhig gelegenes Zimmer mit extralangem Bett und original historischer Meander-Sockelleiste." },
-    "VII":  { "name": "Harry-Potter-Zimmer", "bed": "1 Kingsize-Bett", "view": "Hof", "desc": "Mit alter Zugangsstiege zum Dach, historischen Bildern und altem Parkett." },
-    "VIII": { "name": "Herrenzimmer", "bed": "1 Französisches Bett", "view": "Westen · Garten", "desc": "Westseitig mit Gartenblick sowie Galerie und Empore — ein guter Ort zum Lesen und Schreiben." },
-    "IX":   { "name": "Damenzimmer", "bed": "1 Französisches Bett", "view": "Garten", "desc": "Mit handbemalter Dekorwand, französischem Bett und blauem Sessel auf Podest." },
-    "X":    { "name": "Ostseezimmer", "bed": "2 + 1 Betten", "view": "Süden · Nachbarschaft und Peenestrom", "desc": "Hell und ländlich blau, mit südlichem Blick zur Nachbarschaft und zum Peenestrom." },
-    "XI":   { "name": "Giebelzimmer", "bed": "1 Queensize-Bett", "view": "Peenestrom", "desc": "Klein und fein, mit Abseite im Giebel, altem Gebälk und Blick zum Peenestrom." }
+    "I": {
+      "name": "Prinzessinnenzimmer",
+      "bed": "1 King-Size-Bett",
+      "view": "Garten",
+      "desc": "Ruhiges Zimmer mit freundlicher Atmosphäre am Garten."
+    },
+    "II": {
+      "name": "Lindenzimmer",
+      "bed": "2 Einzelbetten",
+      "view": "Lindenallee",
+      "desc": "An der alten Lindenallee. Hohe Decken, weiß gestrichene Dielen und ein Schreibtisch am Fenster."
+    },
+    "III": {
+      "name": "Senioren-Gutshaus-Zimmer",
+      "bed": "1 King-Size-Bett",
+      "view": "Osten · Gutshausvorplatz",
+      "desc": "Ruhig nach Osten zum Gutshausvorplatz gelegen, mit barrierefreiem Bad im Gutshaus."
+    },
+    "IV": {
+      "name": "Gartenzimmer",
+      "bed": "2 Einzelbetten",
+      "view": "Südgarten",
+      "desc": "Ruhig, sonnig, warm und lichtdurchflutet — mit Blick in den Garten."
+    },
+    "V": {
+      "name": "Alt-rosa Kammer",
+      "bed": "1 Queensize-Bett",
+      "view": "Süden",
+      "desc": "Hinter dem Gartenzimmer gelegen, nach Süden ausgerichtet — ideal für Geschwister oder Freunde."
+    },
+    "VI": {
+      "name": "Lange-Männer-Betten-Zimmer",
+      "bed": "1 Extralanges Kingsize-Bett",
+      "view": "Dorf",
+      "desc": "Ruhig gelegenes Zimmer mit extralangem Bett und original historischer Meander-Sockelleiste."
+    },
+    "VII": {
+      "name": "Harry-Potter-Zimmer",
+      "bed": "1 Kingsize-Bett",
+      "view": "Hof",
+      "desc": "Mit alter Zugangsstiege zum Dach, historischen Bildern und altem Parkett."
+    },
+    "VIII": {
+      "name": "Herrenzimmer",
+      "bed": "1 Französisches Bett",
+      "view": "Westen · Garten",
+      "desc": "Westseitig mit Gartenblick sowie Galerie und Empore — ein guter Ort zum Lesen und Schreiben."
+    },
+    "IX": {
+      "name": "Damenzimmer",
+      "bed": "1 Französisches Bett",
+      "view": "Garten",
+      "desc": "Mit handbemalter Dekorwand, französischem Bett und blauem Sessel auf Podest."
+    },
+    "X": {
+      "name": "Ostseezimmer",
+      "bed": "2 + 1 Betten",
+      "view": "Süden · Nachbarschaft und Peenestrom",
+      "desc": "Hell und ländlich blau, mit südlichem Blick zur Nachbarschaft und zum Peenestrom."
+    },
+    "XI": {
+      "name": "Giebelzimmer",
+      "bed": "1 Queensize-Bett",
+      "view": "Peenestrom",
+      "desc": "Klein und fein, mit Abseite im Giebel, altem Gebälk und Blick zum Peenestrom."
+    }
   },
   "amenitiesSec": {
     "eyebrow": "Ausstattung",
@@ -287,15 +342,27 @@
     "titleEm": " nahe Greifswald und der Ostsee.",
     "address": "Peenestraße 16, 17506 Gützkow",
     "nearby": [
-      { "id": "kosenow-see", "place": "Gützkower Kosenow-See mit italienischem Restaurant", "time": "≈ 7 Min" },
+      {
+        "id": "kosenow-see",
+        "place": "Gützkower Kosenow-See mit italienischem Restaurant",
+        "time": "≈ 7 Min"
+      },
       { "id": "stralsund", "place": "Stralsund mit Ozeaneum", "time": "≈ 45 Min" },
       { "id": "zarrentiner-see", "place": "Zarrentiner See, Jarmen", "time": "≈ 5 Min" },
       { "id": "greifswalder-bodden", "place": "Greifswalder Bodden", "time": "≈ 20 Min" },
       { "id": "eldena-ruins", "place": "Klosterruine Eldena in Greifswald", "time": "≈ 20 Min" },
       { "id": "greifswald-harbour", "place": "Alter Hafen Greifswald", "time": "≈ 20 Min" },
-      { "id": "cdf-centre", "place": "Caspar-David-Friedrich-Zentrum in Greifswald", "time": "≈ 20 Min" },
+      {
+        "id": "cdf-centre",
+        "place": "Caspar-David-Friedrich-Zentrum in Greifswald",
+        "time": "≈ 20 Min"
+      },
       { "id": "jarmen-centre", "place": "Jarmener Stadtzentrum", "time": "≈ 5 Min" },
-      { "id": "shopping", "place": "Einkaufen in Jarmen, Gützkow und Greifswald", "time": "≈ 5 Min" },
+      {
+        "id": "shopping",
+        "place": "Einkaufen in Jarmen, Gützkow und Greifswald",
+        "time": "≈ 5 Min"
+      },
       { "id": "usedom", "place": "Insel Usedom", "time": "≈ 45 Min" }
     ]
   },
@@ -304,9 +371,18 @@
     "title": "Was unsere Gäste zurücklassen.",
     "badge": "★ 5,0 · 21 Bewertungen auf Airbnb",
     "items": [
-      { "q": "Wir waren mit der ganzen Familie ein Wochenende im Haus. Es war einfach fantastisch — noch schöner als auf den Fotos. Die Gastgeberin ist sehr freundlich und hilfsbereit.", "a": "Anne · Familie am Wochenende" },
-      { "q": "Ein wunderbares Geburtstagswochenende mit meinen besten Freunden — wir haben uns mehr als zu Hause gefühlt. Die Einrichtung ist mit viel Sorgfalt gewählt und passt wunderbar zum Haus.", "a": "Tjerk · Geburtstag mit Freunden" },
-      { "q": "Unser Firmen-Offsite bei Andrea war absolut großartig. Der Raum war angenehm, sauber und perfekt für unser Team. Andrea ist eine fantastische Gastgeberin — aufmerksam, herzlich, hilfsbereit.", "a": "Clemens · Firmen-Offsite" }
+      {
+        "q": "Wir waren mit der ganzen Familie ein Wochenende im Haus. Es war einfach fantastisch — noch schöner als auf den Fotos. Die Gastgeberin ist sehr freundlich und hilfsbereit.",
+        "a": "Anne · Familie am Wochenende"
+      },
+      {
+        "q": "Ein wunderbares Geburtstagswochenende mit meinen besten Freunden — wir haben uns mehr als zu Hause gefühlt. Die Einrichtung ist mit viel Sorgfalt gewählt und passt wunderbar zum Haus.",
+        "a": "Tjerk · Geburtstag mit Freunden"
+      },
+      {
+        "q": "Unser Firmen-Offsite bei Andrea war absolut großartig. Der Raum war angenehm, sauber und perfekt für unser Team. Andrea ist eine fantastische Gastgeberin — aufmerksam, herzlich, hilfsbereit.",
+        "a": "Clemens · Firmen-Offsite"
+      }
     ]
   },
   "bookingTeaser": {
@@ -359,9 +435,21 @@
     "no": "Nein",
     "stepsEyebrow": "Ablauf",
     "steps": [
-      { "n": "01", "title": "Anfrage senden",        "body": "Wählen Sie Ihre Daten, Gruppengröße und den Anlass. Wir prüfen die Verfügbarkeit." },
-      { "n": "02", "title": "Persönliche Bestätigung","body": "Andrea meldet sich innerhalb von 24 Stunden mit einem maßgeschneiderten Angebot." },
-      { "n": "03", "title": "Buchung sichern",        "body": "50% Anzahlung bestätigt die Buchung. Restzahlung 14 Tage vor Anreise." }
+      {
+        "n": "01",
+        "title": "Anfrage senden",
+        "body": "Wählen Sie Ihre Daten, Gruppengröße und den Anlass. Wir prüfen die Verfügbarkeit."
+      },
+      {
+        "n": "02",
+        "title": "Persönliche Bestätigung",
+        "body": "Andrea meldet sich innerhalb von 24 Stunden mit einem maßgeschneiderten Angebot."
+      },
+      {
+        "n": "03",
+        "title": "Buchung sichern",
+        "body": "50% Anzahlung bestätigt die Buchung. Restzahlung 14 Tage vor Anreise."
+      }
     ],
     "formEyebrow": "Ihre Anfrage",
     "formTitle": "Daten für Ihre Reservierung",
@@ -385,6 +473,8 @@
     },
     "submit": "Reservierungsanfrage senden",
     "submitNote": "Mit dem Senden wird noch nichts gebucht. Wir antworten innerhalb von 24 Stunden mit einem persönlichen Angebot.",
+    "privacyNotePrefix": "Informationen zur Verarbeitung Ihrer Angaben finden Sie in der",
+    "privacyNoteLink": "Datenschutzerklärung",
     "thanks": "Vielen Dank — wir melden uns in Kürze.",
     "contactEyebrow": "Lieber direkt sprechen?",
     "contactBody": "Schreiben Sie Andrea per E-Mail oder WhatsApp.",
@@ -394,12 +484,30 @@
     "eyebrow": "Häufige Fragen",
     "title": "Bevor Sie schreiben.",
     "items": [
-      { "q": "Kann man Teile des Hauses mieten oder nur das ganze Haus?", "a": "Der Andreashof wird ausschließlich als Ganzes vermietet, um die besondere Atmosphäre für Ihre Gruppe zu wahren." },
-      { "q": "Sind Hochzeiten und Feiern erlaubt?",                       "a": "Ja. Wir empfangen regelmäßig Hochzeiten, Familienfeste und private Feiern. Gerne empfehlen wir Caterer und lokale Dienstleister." },
-      { "q": "Gibt es Parkplätze?",                                       "a": "Auf dem Innenhof stehen kostenfreie Parkplätze für bis zu zwölf Fahrzeuge zur Verfügung." },
-      { "q": "Sind Haustiere erlaubt?",                                   "a": "Gut erzogene Hunde sind nach Absprache willkommen. Bitte geben Sie uns bei der Anfrage Bescheid." },
-      { "q": "Wie ist die Stornierungsrichtlinie?",                       "a": "Kostenfreie Stornierung bis 60 Tage vor Anreise. Details finden Sie in unseren AGB." },
-      { "q": "Wie läuft der Check-in?",                                   "a": "Persönliche Begrüßung am Anreisetag ab 14:00 Uhr. Schlüsselübergabe und Hausführung inklusive." }
+      {
+        "q": "Kann man Teile des Hauses mieten oder nur das ganze Haus?",
+        "a": "Der Andreashof wird ausschließlich als Ganzes vermietet, um die besondere Atmosphäre für Ihre Gruppe zu wahren."
+      },
+      {
+        "q": "Sind Hochzeiten und Feiern erlaubt?",
+        "a": "Ja. Wir empfangen regelmäßig Hochzeiten, Familienfeste und private Feiern. Gerne empfehlen wir Caterer und lokale Dienstleister."
+      },
+      {
+        "q": "Gibt es Parkplätze?",
+        "a": "Auf dem Innenhof stehen kostenfreie Parkplätze für bis zu zwölf Fahrzeuge zur Verfügung."
+      },
+      {
+        "q": "Sind Haustiere erlaubt?",
+        "a": "Gut erzogene Hunde sind nach Absprache willkommen. Bitte geben Sie uns bei der Anfrage Bescheid."
+      },
+      {
+        "q": "Wie ist die Stornierungsrichtlinie?",
+        "a": "Kostenfreie Stornierung bis 60 Tage vor Anreise. Details finden Sie in unseren AGB."
+      },
+      {
+        "q": "Wie läuft der Check-in?",
+        "a": "Persönliche Begrüßung am Anreisetag ab 14:00 Uhr. Schlüsselübergabe und Hausführung inklusive."
+      }
     ]
   },
   "footer": {

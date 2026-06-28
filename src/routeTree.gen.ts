@@ -26,6 +26,7 @@ import { Route as ApiTrackVisitRouteImport } from './routes/api/track-visit'
 import { Route as ApiResendInboundRouteImport } from './routes/api/resend-inbound'
 import { Route as ApiCalendarDoticsRouteImport } from './routes/api/calendar[.]ics'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminAvailableRouteImport } from './routes/admin.available'
 
 const ZimmerRoute = ZimmerRouteImport.update({
   id: '/zimmer',
@@ -112,6 +113,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAvailableRoute = AdminAvailableRouteImport.update({
+  id: '/available',
+  path: '/available',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/rueckblicke': typeof RueckblickeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
+  '/admin/available': typeof AdminAvailableRoute
   '/admin/login': typeof AdminLoginRoute
   '/api/calendar.ics': typeof ApiCalendarDoticsRoute
   '/api/resend-inbound': typeof ApiResendInboundRoute
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/rueckblicke': typeof RueckblickeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
+  '/admin/available': typeof AdminAvailableRoute
   '/admin/login': typeof AdminLoginRoute
   '/api/calendar.ics': typeof ApiCalendarDoticsRoute
   '/api/resend-inbound': typeof ApiResendInboundRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/rueckblicke': typeof RueckblickeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/zimmer': typeof ZimmerRoute
+  '/admin/available': typeof AdminAvailableRoute
   '/admin/login': typeof AdminLoginRoute
   '/api/calendar.ics': typeof ApiCalendarDoticsRoute
   '/api/resend-inbound': typeof ApiResendInboundRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
     | '/rueckblicke'
     | '/sitemap.xml'
     | '/zimmer'
+    | '/admin/available'
     | '/admin/login'
     | '/api/calendar.ics'
     | '/api/resend-inbound'
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/rueckblicke'
     | '/sitemap.xml'
     | '/zimmer'
+    | '/admin/available'
     | '/admin/login'
     | '/api/calendar.ics'
     | '/api/resend-inbound'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/rueckblicke'
     | '/sitemap.xml'
     | '/zimmer'
+    | '/admin/available'
     | '/admin/login'
     | '/api/calendar.ics'
     | '/api/resend-inbound'
@@ -368,15 +380,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/available': {
+      id: '/admin/available'
+      path: '/available'
+      fullPath: '/admin/available'
+      preLoaderRoute: typeof AdminAvailableRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminAvailableRoute: typeof AdminAvailableRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAvailableRoute: AdminAvailableRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminIndexRoute: AdminIndexRoute,
 }

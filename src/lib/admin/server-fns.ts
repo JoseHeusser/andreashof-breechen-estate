@@ -250,11 +250,7 @@ export const deleteSpecialPrice = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
-    const { error } = await admin
-      .from("pricing")
-      .delete()
-      .eq("id", data.id)
-      .eq("type", "special");
+    const { error } = await admin.from("pricing").delete().eq("id", data.id).eq("type", "special");
     if (error) throw error;
   });
 
@@ -444,9 +440,7 @@ export const createBookingRequest = createServerFn({ method: "POST" })
     if (error) throw error;
 
     // Best-effort: confirmation to guest + new-request alert to Andrea.
-    // Guest "Reply" goes to Andrea's personal inbox (the brand domain has
-    // no MX record, so a direct reply to andrea@andreashof-breechen.de
-    // would bounce).
+    // Guest "Reply" goes to Andrea's personal inbox.
     const booking = row as Booking;
     const guestTpl = tplRequestedGuest(booking);
     const adminTpl = tplRequestedAdmin(booking);

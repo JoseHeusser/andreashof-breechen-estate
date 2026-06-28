@@ -54,14 +54,14 @@ function PartnerPage() {
         </section>
 
         <section className="px-5 py-16 md:px-10 md:py-24">
-          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-6 md:grid-cols-2 md:gap-8">
             {items.map((item) => {
               const photos = PARTNER_PHOTOS[item.id] ?? [];
 
               return (
                 <article
                   key={item.id}
-                  className="flex flex-col border border-border bg-card"
+                  className="flex h-full flex-col border border-border bg-card"
                 >
                   {photos.length > 0 && (
                     <div className="grid grid-cols-3 gap-0.5 border-b border-border sm:gap-1">
@@ -85,34 +85,36 @@ function PartnerPage() {
                     <h2 className="mt-3 font-display text-xl font-light leading-tight md:text-2xl">
                       {item.title}
                     </h2>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
                       {item.description}
                     </p>
-                    <p className="mt-4 border-t border-border pt-3 text-[11px] uppercase tracking-[0.18em] text-sage-deep">
-                      {item.area}
-                    </p>
-                    {(item.phone || item.websiteUrl) && (
-                      <div className="mt-4 flex flex-wrap gap-2 text-xs md:text-sm">
-                        {item.phone && (
-                          <a
-                            href={`tel:${item.phone.replace(/[^\d+]/g, "")}`}
-                            className="inline-flex min-h-9 items-center border border-border px-3 py-1.5 transition-colors hover:border-sage-deep hover:text-sage-deep"
-                          >
-                            {item.phone}
-                          </a>
-                        )}
-                        {item.websiteUrl && (
-                          <a
-                            href={item.websiteUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex min-h-9 items-center border border-border px-3 py-1.5 transition-colors hover:border-sage-deep hover:text-sage-deep"
-                          >
-                            {item.websiteLabel ?? item.websiteUrl}
-                          </a>
-                        )}
-                      </div>
-                    )}
+                    <div className="mt-auto">
+                      <p className="mt-4 border-t border-border pt-3 text-[11px] uppercase tracking-[0.18em] text-sage-deep">
+                        {item.area}
+                      </p>
+                      {(item.phone || item.websiteUrl) && (
+                        <div className="mt-4 flex flex-wrap gap-2 text-xs md:text-sm">
+                          {item.phone && (
+                            <a
+                              href={`tel:${item.phone.replace(/[^\d+]/g, "")}`}
+                              className="inline-flex min-h-9 items-center border border-border px-3 py-1.5 transition-colors hover:border-sage-deep hover:text-sage-deep"
+                            >
+                              {item.phone}
+                            </a>
+                          )}
+                          {item.websiteUrl && (
+                            <a
+                              href={item.websiteUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex min-h-9 items-center border border-border px-3 py-1.5 transition-colors hover:border-sage-deep hover:text-sage-deep"
+                            >
+                              {item.websiteLabel ?? item.websiteUrl}
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </article>
               );

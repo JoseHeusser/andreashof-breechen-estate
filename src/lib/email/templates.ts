@@ -51,7 +51,7 @@ function shell(title: string, body: string) {
           <tr>
             <td style="padding:20px 40px;border-top:1px solid ${COLORS.border};font-size:11px;color:${COLORS.muted};">
               Andreashof Breechen · Peenestraße 16 · 17506 Gützkow<br>
-              <a href="mailto:willkommen@andreashof-breechen.de" style="color:${COLORS.sageDeep};text-decoration:none;">willkommen@andreashof-breechen.de</a>
+              <a href="mailto:andrea.lietz@web.de" style="color:${COLORS.sageDeep};text-decoration:none;">andrea.lietz@web.de</a>
             </td>
           </tr>
         </table>
@@ -63,7 +63,10 @@ function shell(title: string, body: string) {
 }
 
 function escapeHtml(s: string): string {
-  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+  return s.replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!,
+  );
 }
 
 function formatDate(iso: string): string {
@@ -80,7 +83,11 @@ function nightCount(arrival: string, departure: string): number {
 
 function formatPrice(cents: number | null): string {
   if (cents == null) return "—";
-  return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(cents / 100);
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
 }
 
 function salutation(b: Booking): string {
@@ -91,15 +98,39 @@ function salutation(b: Booking): string {
 function bookingSummary(b: Booking): string {
   const nights = nightCount(b.arrival, b.departure);
   const lines: string[] = [];
-  lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;width:140px;">Anreise</td><td style="padding:4px 0;font-size:14px;">${formatDate(b.arrival)}</td></tr>`);
-  lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Abreise</td><td style="padding:4px 0;font-size:14px;">${formatDate(b.departure)} <span style="color:${COLORS.muted};">(${nights} ${nights === 1 ? "Nacht" : "Nächte"})</span></td></tr>`);
-  lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Gäste</td><td style="padding:4px 0;font-size:14px;">${b.guests}</td></tr>`);
-  if (b.children > 0) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Kleinkinder</td><td style="padding:4px 0;font-size:14px;">${b.children}${b.needs_crib ? " · Bett/Babybett" : ""}</td></tr>`);
-  if (b.pets > 0) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Haustiere</td><td style="padding:4px 0;font-size:14px;">${b.pets}</td></tr>`);
-  if (b.needs_wheelchair) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Barrierefrei</td><td style="padding:4px 0;font-size:14px;">EG vorbereiten</td></tr>`);
-  if (b.rents_dachboden) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Dachboden</td><td style="padding:4px 0;font-size:14px;">inkl. Yoga-Zentrum</td></tr>`);
-  if (b.occasion) lines.push(`<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Anlass</td><td style="padding:4px 0;font-size:14px;">${escapeHtml(b.occasion)}</td></tr>`);
-  if (b.total_price_cents != null) lines.push(`<tr><td style="padding:8px 0 4px;color:${COLORS.muted};font-size:13px;border-top:1px solid ${COLORS.border};">Gesamtpreis</td><td style="padding:8px 0 4px;font-size:18px;font-weight:500;border-top:1px solid ${COLORS.border};">${formatPrice(b.total_price_cents)}</td></tr>`);
+  lines.push(
+    `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;width:140px;">Anreise</td><td style="padding:4px 0;font-size:14px;">${formatDate(b.arrival)}</td></tr>`,
+  );
+  lines.push(
+    `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Abreise</td><td style="padding:4px 0;font-size:14px;">${formatDate(b.departure)} <span style="color:${COLORS.muted};">(${nights} ${nights === 1 ? "Nacht" : "Nächte"})</span></td></tr>`,
+  );
+  lines.push(
+    `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Gäste</td><td style="padding:4px 0;font-size:14px;">${b.guests}</td></tr>`,
+  );
+  if (b.children > 0)
+    lines.push(
+      `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Kleinkinder</td><td style="padding:4px 0;font-size:14px;">${b.children}${b.needs_crib ? " · Bett/Babybett" : ""}</td></tr>`,
+    );
+  if (b.pets > 0)
+    lines.push(
+      `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Haustiere</td><td style="padding:4px 0;font-size:14px;">${b.pets}</td></tr>`,
+    );
+  if (b.needs_wheelchair)
+    lines.push(
+      `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Barrierefrei</td><td style="padding:4px 0;font-size:14px;">EG vorbereiten</td></tr>`,
+    );
+  if (b.rents_dachboden)
+    lines.push(
+      `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Dachboden</td><td style="padding:4px 0;font-size:14px;">inkl. Yoga-Zentrum</td></tr>`,
+    );
+  if (b.occasion)
+    lines.push(
+      `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Anlass</td><td style="padding:4px 0;font-size:14px;">${escapeHtml(b.occasion)}</td></tr>`,
+    );
+  if (b.total_price_cents != null)
+    lines.push(
+      `<tr><td style="padding:8px 0 4px;color:${COLORS.muted};font-size:13px;border-top:1px solid ${COLORS.border};">Gesamtpreis</td><td style="padding:8px 0 4px;font-size:18px;font-weight:500;border-top:1px solid ${COLORS.border};">${formatPrice(b.total_price_cents)}</td></tr>`,
+    );
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;margin:20px 0;">${lines.join("")}</table>`;
 }
 
@@ -117,7 +148,7 @@ export function tplRequestedGuest(b: Booking) {
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">vielen Dank für Ihre Reservierungsanfrage für den Andreashof Breechen. Wir prüfen Ihre Anfrage und melden uns <strong>innerhalb von 12 Stunden</strong> persönlich bei Ihnen.</p>
     ${bookingSummary(b)}
-    <p style="margin:18px 0 6px;font-size:13px;color:${COLORS.muted};">Bei Fragen erreichen Sie uns jederzeit unter <a href="mailto:willkommen@andreashof-breechen.de" style="color:${COLORS.sageDeep};">willkommen@andreashof-breechen.de</a>.</p>
+    <p style="margin:18px 0 6px;font-size:13px;color:${COLORS.muted};">Bei Fragen erreichen Sie uns jederzeit unter <a href="mailto:andrea.lietz@web.de" style="color:${COLORS.sageDeep};">andrea.lietz@web.de</a>.</p>
     <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return { subject, html: shell(subject, body) };
@@ -154,7 +185,10 @@ export function tplRequestedAdmin(b: Booking) {
 // ═══════════════════════════════════════════════════════════════
 export function tplAcceptedGuest(b: Booking) {
   const subject = `Ihre Buchung ist bestätigt — Andreashof Breechen`;
-  const deposit = b.total_price_cents != null ? formatPrice(Math.round(b.total_price_cents * 0.5)) : "50% des Gesamtpreises";
+  const deposit =
+    b.total_price_cents != null
+      ? formatPrice(Math.round(b.total_price_cents * 0.5))
+      : "50% des Gesamtpreises";
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Ihre Buchung ist bestätigt.</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
@@ -170,7 +204,7 @@ export function tplAcceptedGuest(b: Booking) {
       <tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Verwendungszweck</td><td style="padding:4px 0;font-size:14px;">Anzahlung ${b.id.slice(0, 8)} · ${formatDate(b.arrival)}</td></tr>
     </table>
     <h2 style="margin:28px 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Stornierungsbedingungen</h2>
-    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${COLORS.muted};">Kostenfreie Stornierung bis <strong>30 Tage vor Anreise</strong>. Danach werden 50% des Gesamtpreises in Rechnung gestellt.</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${COLORS.muted};">Kostenfreie Stornierung bis <strong>60 Tage vor Anreise</strong>. Danach werden 50% des Gesamtpreises berechnet; ab 14 Tagen vor Anreise wird der volle Betrag fällig.</p>
     <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return { subject, html: shell(subject, body) };
@@ -181,7 +215,10 @@ export function tplAcceptedGuest(b: Booking) {
 // ═══════════════════════════════════════════════════════════════
 export function tplDepositPaidGuest(b: Booking) {
   const subject = `Anzahlung erhalten — wir freuen uns auf Sie`;
-  const balance = b.total_price_cents != null ? formatPrice(Math.round(b.total_price_cents * 0.5)) : "die Restzahlung";
+  const balance =
+    b.total_price_cents != null
+      ? formatPrice(Math.round(b.total_price_cents * 0.5))
+      : "die Restzahlung";
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Anzahlung erhalten.</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
@@ -221,7 +258,10 @@ export function tplFullyPaidGuest(b: Booking) {
 // ═══════════════════════════════════════════════════════════════
 export function tplBalanceReminderGuest(b: Booking) {
   const subject = `Erinnerung: Restzahlung für Ihren Aufenthalt`;
-  const balance = b.total_price_cents != null ? formatPrice(Math.round(b.total_price_cents * 0.5)) : "die Restzahlung";
+  const balance =
+    b.total_price_cents != null
+      ? formatPrice(Math.round(b.total_price_cents * 0.5))
+      : "die Restzahlung";
   const body = `
     <h1 style="margin:0 0 18px;font-size:22px;font-weight:300;">Freundliche Erinnerung</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
@@ -249,7 +289,7 @@ export function tplArrivalInstructionsGuest(b: Booking) {
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Adresse</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Andreashof Breechen<br>Peenestraße 16<br>17506 Gützkow</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Anreise</h2>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-in ab <strong>14:00 Uhr</strong>. Bitte geben Sie uns kurz Bescheid, wann Sie voraussichtlich eintreffen — per E-Mail an <a href="mailto:willkommen@andreashof-breechen.de" style="color:${COLORS.sageDeep};">willkommen@andreashof-breechen.de</a> oder per WhatsApp an <a href="tel:+491723813606" style="color:${COLORS.sageDeep};">+49 172 3813606</a>.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-in ab <strong>14:00 Uhr</strong>. Bitte geben Sie uns kurz Bescheid, wann Sie voraussichtlich eintreffen — per E-Mail an <a href="mailto:andrea.lietz@web.de" style="color:${COLORS.sageDeep};">andrea.lietz@web.de</a> oder per WhatsApp an <a href="tel:+491723813606" style="color:${COLORS.sageDeep};">+49 172 3813606</a>.</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Vor Ort</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Sie werden persönlich begrüßt, die Schlüsselübergabe und eine kurze Hausführung sind selbstverständlich inklusive. Ein Parkplatz für Ihr Fahrzeug steht direkt am Hof bereit.</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Abreise</h2>

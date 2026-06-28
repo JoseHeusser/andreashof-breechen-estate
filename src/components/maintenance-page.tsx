@@ -7,16 +7,22 @@ const BYPASS_KEY = "andreashof.preview";
 // Impossible to trigger by accident. Mobile uses the ?key=1782 URL
 // since touchscreens don't have arrow keys.
 const UNLOCK_SEQUENCE = [
-  "ArrowUp", "ArrowUp",
-  "ArrowDown", "ArrowDown",
-  "ArrowLeft", "ArrowLeft",
-  "ArrowRight", "ArrowRight",
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowRight",
 ];
 
 function unlock() {
   try {
     localStorage.setItem(BYPASS_KEY, "1");
-  } catch {}
+  } catch {
+    // Ignore unavailable storage; reload still lets the normal gate decide.
+  }
   window.location.reload();
 }
 
@@ -79,22 +85,26 @@ export function MaintenancePage() {
           className="mt-6 max-w-3xl font-display text-4xl font-light leading-[1.1] text-white md:text-6xl"
           style={{ textShadow: "0 2px 20px rgba(0,0,0,0.55)" }}
         >
-          Bald wieder geöffnet.<br />
+          Bald wieder geöffnet.
+          <br />
           <em className="italic text-white/90">Coming soon.</em>
         </h1>
         <p
           className="mt-8 max-w-md text-sm leading-relaxed text-white/85 md:text-base"
           style={{ textShadow: "0 1px 14px rgba(0,0,0,0.45)" }}
         >
-          Wir arbeiten an unserer neuen Webseite. Für Anfragen schreiben Sie uns gerne direkt.<br />
-          <span className="text-white/65">We're updating our site. Inquiries by email anytime.</span>
+          Wir arbeiten an unserer neuen Webseite. Für Anfragen schreiben Sie uns gerne direkt.
+          <br />
+          <span className="text-white/65">
+            We're updating our site. Inquiries by email anytime.
+          </span>
         </p>
 
         <a
-          href="mailto:willkommen@andreashof-breechen.de"
+          href="mailto:andrea.lietz@web.de"
           className="mt-12 border border-white/80 px-6 py-3 text-[11px] uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-foreground"
         >
-          willkommen@andreashof-breechen.de
+          andrea.lietz@web.de
         </a>
       </div>
     </div>

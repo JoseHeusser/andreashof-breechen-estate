@@ -1,5 +1,2 @@
 User-agent: *
 Allow: /
-Disallow: /impressum
-Disallow: /datenschutz
-Disallow: /agb

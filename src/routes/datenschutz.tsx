@@ -22,111 +22,160 @@ function DatenschutzPage() {
           <Link to="/" className="flex items-center gap-3">
             <img src={logo} alt="Andreashof" className="h-10 w-auto md:h-12" />
           </Link>
-          <Link to="/" className="min-h-11 py-2 text-[11px] uppercase tracking-[0.18em] hover:text-sage-deep md:tracking-[0.28em]">← Zurück</Link>
+          <Link
+            to="/"
+            className="min-h-11 py-2 text-[11px] uppercase tracking-[0.18em] hover:text-sage-deep md:tracking-[0.28em]"
+          >
+            ← Zurück
+          </Link>
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-5 py-16 md:px-10 md:py-32">
         <span className="eyebrow">Rechtliches</span>
-        <h1 className="mt-4 break-words font-display text-[2.4rem] font-light leading-[1.1] md:text-5xl">Datenschutz­erklärung</h1>
+        <h1 className="mt-4 break-words font-display text-[2.4rem] font-light leading-[1.1] md:text-5xl">
+          Datenschutz­erklärung
+        </h1>
         <div className="mt-12 space-y-8 text-[0.95rem] leading-relaxed text-foreground/85">
           <section>
             <h2 className="font-display text-2xl">1. Verantwortlicher</h2>
+            <p className="mt-3">Verantwortlich für die Datenverarbeitung auf dieser Website ist:</p>
             <p className="mt-3">
-              Verantwortlich für die Datenverarbeitung auf dieser Website ist:
-            </p>
-            <p className="mt-3">
-              Andreashof Breechen<br />
-              Andrea Lietz-Kreher und Andreas Kreher GbR<br />
-              Peenestraße 16<br />
-              17506 Gützkow<br />
-              Deutschland<br />
+              Andreashof Breechen
+              <br />
+              Andrea Lietz-Kreher und Andreas Kreher GbR
+              <br />
+              Peenestraße 16
+              <br />
+              17506 Gützkow
+              <br />
+              Deutschland
+              <br />
               E-Mail:{" "}
-              <a href="mailto:willkommen@andreashof-breechen.de" className="underline decoration-border underline-offset-4 hover:text-sage-deep">
-                willkommen@andreashof-breechen.de
+              <a
+                href="mailto:andrea.lietz@web.de"
+                className="underline decoration-border underline-offset-4 hover:text-sage-deep"
+              >
+                andrea.lietz@web.de
               </a>
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">2. Erhebung personenbezogener Daten</h2>
+            <h2 className="font-display text-2xl">2. Zugriffsdaten und Hosting</h2>
             <p className="mt-3">
-              Beim Besuch unserer Website werden technische Daten (IP-Adresse,
-              Browsertyp, Uhrzeit der Anfrage) automatisch erhoben. Diese
-              Daten dienen ausschließlich der Sicherstellung des Betriebs.
+              Beim Besuch dieser Website werden technisch erforderliche Daten verarbeitet,
+              insbesondere IP-Adresse, Datum und Uhrzeit der Anfrage, aufgerufene Seite, Referrer,
+              Browser- und Betriebssysteminformationen. Diese Daten sind erforderlich, um die
+              Website auszuliefern, die Systemsicherheit zu gewährleisten und Fehler zu analysieren.
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.
+            </p>
+            <p className="mt-3">
+              Die Website wird über technische Hosting-Dienstleister betrieben, insbesondere Vercel
+              Inc. Dabei können Server-Logdaten und technische Nutzungsdaten verarbeitet werden.
+              Soweit Dienstleister personenbezogene Daten in unserem Auftrag verarbeiten, schließen
+              wir entsprechende Vereinbarungen zur Auftragsverarbeitung.
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">3. Reservierungsanfragen und Kontakt</h2>
             <p className="mt-3">
-              Wenn Sie über die Website eine Reservierungsanfrage senden oder
-              per E-Mail Kontakt aufnehmen, verarbeiten wir die von Ihnen
-              angegebenen Daten, insbesondere Name, E-Mail-Adresse, Reisedaten,
-              Gästezahl, Sonderwünsche und Nachrichtentext. Die Verarbeitung
-              erfolgt zur Bearbeitung Ihrer Anfrage, zur Vorbereitung oder
-              Durchführung eines Vertrags sowie für Anschlussfragen.
+              Wenn Sie über die Website eine Reservierungsanfrage senden oder per E-Mail Kontakt
+              aufnehmen, verarbeiten wir die von Ihnen angegebenen Daten, insbesondere Name,
+              E-Mail-Adresse, Telefonnummer, Reisedaten, Gästezahl, Angaben zu Kindern, Haustieren,
+              Barrierefreiheit, Anlass, Sonderwünsche und Nachrichtentext. Die Verarbeitung erfolgt
+              zur Bearbeitung Ihrer Anfrage, zur Vorbereitung oder Durchführung eines Vertrags sowie
+              für Anschlussfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO; soweit wir ein
+              berechtigtes Interesse an der geordneten Bearbeitung und Dokumentation von Anfragen
+              haben, zusätzlich Art. 6 Abs. 1 lit. f DSGVO.
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">4. Buchungsverwaltung und E-Mail-Versand</h2>
             <p className="mt-3">
-              Reservierungsdaten werden in einer geschützten Datenbank
-              verarbeitet. Für den Versand von Bestätigungen, Zahlungs- und
-              Anreiseinformationen nutzen wir einen E-Mail-Dienstleister. Die
-              Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO
-              für vorvertragliche Maßnahmen und Vertragsdurchführung sowie,
-              soweit erforderlich, Art. 6 Abs. 1 lit. f DSGVO.
+              Reservierungsdaten werden in einer geschützten Datenbank verarbeitet. Hierfür nutzen
+              wir Supabase als technischen Datenbank- und Authentifizierungsdienst. Für den Versand
+              von Bestätigungen, Zahlungsinformationen, Erinnerungen und Anreiseinformationen nutzen
+              wir Resend als E-Mail-Dienstleister. Dabei werden insbesondere Empfängeradresse,
+              Betreff, Nachrichteninhalt und technische Versanddaten verarbeitet.
+            </p>
+            <p className="mt-3">
+              Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO für
+              vorvertragliche Maßnahmen und Vertragsdurchführung sowie, soweit erforderlich, Art. 6
+              Abs. 1 lit. f DSGVO. Bei steuer- und handelsrechtlichen Aufbewahrungspflichten ist
+              Art. 6 Abs. 1 lit. c DSGVO einschlägig.
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">5. Reichweitenmessung</h2>
             <p className="mt-3">
-              Wir erfassen einfache, eigene Besuchsstatistiken, um zu verstehen,
-              welche Seiten aufgerufen werden und zu welchen Zeiten die Website
-              genutzt wird. Dabei werden Seitenpfad, Zeitpunkt, Referrer,
-              Sprache, User-Agent und eine zufällig erzeugte Sitzungskennung im
-              lokalen Speicher Ihres Browsers verarbeitet. Diese Statistik dient
-              ausschließlich dem Betrieb und der Verbesserung der Website. Sie
-              können die Speicherung der Sitzungskennung durch Löschen des
-              lokalen Speichers in Ihrem Browser entfernen; bei aktivem
-              „Do Not Track“ wird kein Besuch erfasst.
+              Wir erfassen einfache, eigene Besuchsstatistiken, um zu verstehen, welche Seiten
+              aufgerufen werden und zu welchen Zeiten die Website genutzt wird. Dabei werden
+              Seitenpfad, Zeitpunkt, Referrer, Sprache, User-Agent und eine zufällig erzeugte
+              Sitzungskennung im lokalen Speicher Ihres Browsers verarbeitet. Diese Statistik dient
+              ausschließlich dem Betrieb und der Verbesserung der Website. Sie können die
+              Speicherung der Sitzungskennung durch Löschen des lokalen Speichers in Ihrem Browser
+              entfernen; bei aktivem „Do Not Track“ wird kein Besuch erfasst. Rechtsgrundlage ist
+              Art. 6 Abs. 1 lit. f DSGVO.
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">6. Karten</h2>
             <p className="mt-3">
-              Diese Website verwendet OpenStreetMap-Karten zur Darstellung der
-              Lage. Beim Aufruf der Karte können technische Daten wie Ihre
-              IP-Adresse an Server der OpenStreetMap Foundation oder deren
-              technische Dienstleister übertragen werden.
+              Diese Website verwendet OpenStreetMap-Karten zur Darstellung der Lage. Beim Aufruf der
+              Karte können technische Daten wie Ihre IP-Adresse an Server der OpenStreetMap
+              Foundation oder deren technische Dienstleister übertragen werden. Die Karte wird
+              geladen, damit wir Ihnen die Lage des Andreashofs und die Umgebung anschaulich
+              darstellen können. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">7. Hosting und technische Dienstleister</h2>
+            <h2 className="font-display text-2xl">
+              7. Cookies, lokaler Speicher und Spracheinstellung
+            </h2>
             <p className="mt-3">
-              Die Website wird über technische Dienstleister betrieben. Dabei
-              können Server-Logdaten und technische Nutzungsdaten verarbeitet
-              werden, um die Website auszuliefern, abzusichern und Fehler zu
-              analysieren. Mit Dienstleistern, die personenbezogene Daten in
-              unserem Auftrag verarbeiten, werden entsprechende Vereinbarungen
-              zur Auftragsverarbeitung geschlossen.
+              Diese Website verwendet keine Marketing-Cookies. Zur Funktionalität können jedoch
+              technische Speichermechanismen Ihres Browsers genutzt werden, etwa für die
+              Spracheinstellung, die einfache Besuchsstatistik oder technisch notwendige
+              Administrationsfunktionen. Sie können gespeicherte Daten jederzeit über die
+              Einstellungen Ihres Browsers löschen.
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">8. Speicherdauer</h2>
+            <h2 className="font-display text-2xl">8. Empfänger und Drittlandübermittlungen</h2>
             <p className="mt-3">
-              Wir speichern personenbezogene Daten nur so lange, wie dies für
-              die jeweiligen Zwecke erforderlich ist oder gesetzliche
-              Aufbewahrungspflichten bestehen. Reservierungs- und
-              Geschäftsunterlagen können aufgrund handels- und steuerrechtlicher
-              Pflichten länger aufbewahrt werden.
+              Empfänger personenbezogener Daten können technische Dienstleister sein, die wir für
+              Hosting, Datenbankbetrieb, E-Mail-Versand, Kartenanzeige, Administration und
+              Fehleranalyse einsetzen. Dazu zählen insbesondere Vercel, Supabase, Resend und
+              OpenStreetMap-Dienste.
+            </p>
+            <p className="mt-3">
+              Einige Dienstleister können Daten außerhalb der Europäischen Union oder des
+              Europäischen Wirtschaftsraums verarbeiten, insbesondere in den USA. Soweit dies
+              geschieht, achten wir auf geeignete Garantien, etwa Angemessenheitsbeschlüsse,
+              Standardvertragsklauseln oder vergleichbare Schutzmechanismen.
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">9. Ihre Rechte</h2>
+            <h2 className="font-display text-2xl">9. Speicherdauer</h2>
             <p className="mt-3">
-              Sie haben jederzeit das Recht auf Auskunft, Berichtigung,
-              Löschung, Einschränkung der Verarbeitung sowie das Recht auf
-              Datenübertragbarkeit und Widerspruch. Außerdem haben Sie das
-              Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren.
+              Wir speichern personenbezogene Daten nur so lange, wie dies für die jeweiligen Zwecke
+              erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen. Reservierungs- und
+              Geschäftsunterlagen können aufgrund handels- und steuerrechtlicher Pflichten länger
+              aufbewahrt werden. Besuchsstatistiken werden nur in dem Umfang gespeichert, der für
+              Betrieb, Fehleranalyse und Auswertung der Website erforderlich ist.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">10. Ihre Rechte</h2>
+            <p className="mt-3">
+              Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der
+              Verarbeitung sowie das Recht auf Datenübertragbarkeit und Widerspruch. Soweit eine
+              Verarbeitung auf Ihrer Einwilligung beruht, können Sie diese Einwilligung jederzeit
+              mit Wirkung für die Zukunft widerrufen.
+            </p>
+            <p className="mt-3">
+              Außerdem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu
+              beschweren. Für Mecklenburg- Vorpommern ist dies der Landesbeauftragte für Datenschutz
+              und Informationsfreiheit Mecklenburg-Vorpommern.
             </p>
           </section>
         </div>

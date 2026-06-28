@@ -21,7 +21,7 @@ export interface SendArgs {
 }
 
 export async function sendEmail(args: SendArgs): Promise<{ id: string } | null> {
-  const from = process.env.EMAIL_FROM ?? "Andreashof Breechen <andrea@andreashof-breechen.de>";
+  const from = process.env.EMAIL_FROM ?? "Andreashof Breechen <andrea.lietz@web.de>";
   try {
     const res = await getClient().emails.send({
       from,
@@ -44,5 +44,4 @@ export async function sendEmail(args: SendArgs): Promise<{ id: string } | null> 
 }
 
 export const ADMIN_EMAIL = process.env.EMAIL_TO_ADMIN ?? "andrea.lietz@web.de";
-export const SITE_URL =
-  process.env.SITE_URL ?? "https://andreashof-breechen.de";
+export const SITE_URL = process.env.SITE_URL ?? "https://andreashof-breechen.de";
