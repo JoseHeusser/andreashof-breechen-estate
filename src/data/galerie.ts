@@ -89,6 +89,14 @@ export const GALLERY_PHOTOS: GalleryPhoto[] = [
   { src: "/galerie/user-mapping/atmos-08-pferde-sonnenuntergang.jpg", alt: "Pferde am Strand bei Sonnenuntergang",         category: "atmos", aspect: "wide" },
   { src: "/galerie/user-mapping/atmos-09-pferd-sonnenuntergang.jpg", alt: "Reiterin im Sonnenuntergang am Meer",           category: "atmos", aspect: "tall" },
   { src: "/galerie/user-mapping/atmos-10-pferde-strand-nahe.jpg",   alt: "Pferde am Strand mit Blick aufs Meer",           category: "atmos", aspect: "wide" },
+  { src: "/galerie/user-mapping/atmos-11.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-12.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-13.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-14.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-15.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-16.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-17.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-18.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
 
   // === Photos from the host (WhatsApp set, May 2026) ===
   // Categorised by timestamp cluster based on a sampled review — re-bucket

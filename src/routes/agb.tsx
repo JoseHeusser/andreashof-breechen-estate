@@ -40,7 +40,7 @@ function AGBPage() {
             <h2 className="font-display text-2xl">1. Geltungsbereich</h2>
             <p className="mt-3">
               Diese AGB gelten für alle Buchungen und Mietverträge zwischen Gästen und dem
-              Andreashof Breechen, Andrea Lietz-Kreher und Andreas Kreher GbR.
+              Andreashof Breechen GbR.
             </p>
           </section>
           <section>

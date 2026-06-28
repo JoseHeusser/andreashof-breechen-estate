@@ -6,7 +6,10 @@ export const Route = createFileRoute("/impressum")({
   head: () => ({
     meta: [
       { title: "Impressum — Andreashof Breechen" },
-      { name: "description", content: "Impressum und Anbieterkennzeichnung des Andreashof Breechen." },
+      {
+        name: "description",
+        content: "Impressum und Anbieterkennzeichnung des Andreashof Breechen.",
+      },
       { name: "robots", content: "noindex" },
     ],
     links: [{ rel: "canonical", href: "/impressum" }],
@@ -20,15 +23,19 @@ function ImpressumPage() {
       <LegalHeader />
       <main className="mx-auto max-w-3xl px-5 py-16 md:px-10 md:py-32">
         <span className="eyebrow">Rechtliches</span>
-        <h1 className="mt-4 break-words font-display text-[2.4rem] font-light leading-[1.1] md:text-5xl">Impressum</h1>
+        <h1 className="mt-4 break-words font-display text-[2.4rem] font-light leading-[1.1] md:text-5xl">
+          Impressum
+        </h1>
         <div className="mt-12 space-y-8 text-[0.95rem] leading-relaxed text-foreground/85">
           <section>
             <h2 className="font-display text-2xl">Angaben gemäß § 5 DDG</h2>
             <p className="mt-3">
-              Andreashof Breechen<br />
-              Andrea Lietz-Kreher und Andreas Kreher GbR<br />
-              Peenestraße 16<br />
-              17506 Gützkow<br />
+              Andreashof Breechen GbR
+              <br />
+              Mönchsheimer Weg 10
+              <br />
+              15366 Hoppegarten
+              <br />
               Deutschland
             </p>
           </section>
@@ -40,7 +47,10 @@ function ImpressumPage() {
             <h2 className="font-display text-2xl">Kontakt</h2>
             <p className="mt-3">
               E-Mail:{" "}
-              <a href="mailto:andrea.lietz@web.de" className="underline decoration-border underline-offset-4 hover:text-sage-deep">
+              <a
+                href="mailto:andrea.lietz@web.de"
+                className="underline decoration-border underline-offset-4 hover:text-sage-deep"
+              >
                 andrea.lietz@web.de
               </a>
               <br />
@@ -48,26 +58,33 @@ function ImpressumPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+            <h2 className="font-display text-2xl">Umsatzsteuer-ID</h2>
+            <p className="mt-3">USt-IdNr.: DE338671451</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">
+              Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
+            </h2>
             <p className="mt-3">
-              Andrea Lietz-Kreher und Andreas Kreher<br />
-              Peenestraße 16<br />
-              17506 Gützkow
+              Andrea Lietz-Kreher und Andreas Kreher
+              <br />
+              Mönchsheimer Weg 10
+              <br />
+              15366 Hoppegarten
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">Haftungsausschluss</h2>
             <p className="mt-3">
-              Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt.
-              Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte
-              kann jedoch keine Gewähr übernommen werden.
+              Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit,
+              Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden.
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">Verbraucherstreitbeilegung</h2>
             <p className="mt-3">
-              Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren
-              vor einer Verbraucherschlichtungsstelle teilzunehmen.
+              Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+              Verbraucherschlichtungsstelle teilzunehmen.
             </p>
           </section>
         </div>
@@ -84,7 +101,10 @@ function LegalHeader() {
         <Link to="/" className="flex items-center gap-3">
           <img src={logo} alt="Andreashof" className="h-10 w-auto md:h-12" />
         </Link>
-        <Link to="/" className="min-h-11 py-2 text-[11px] uppercase tracking-[0.18em] hover:text-sage-deep md:tracking-[0.28em]">
+        <Link
+          to="/"
+          className="min-h-11 py-2 text-[11px] uppercase tracking-[0.18em] hover:text-sage-deep md:tracking-[0.28em]"
+        >
           ← Zurück
         </Link>
       </div>

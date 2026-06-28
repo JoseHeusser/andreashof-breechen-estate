@@ -40,13 +40,13 @@ function DatenschutzPage() {
             <h2 className="font-display text-2xl">1. Verantwortlicher</h2>
             <p className="mt-3">Verantwortlich für die Datenverarbeitung auf dieser Website ist:</p>
             <p className="mt-3">
-              Andreashof Breechen
+              Andreashof Breechen GbR
               <br />
-              Andrea Lietz-Kreher und Andreas Kreher GbR
+              Vertreten durch Andrea Lietz-Kreher und Andreas Kreher
               <br />
-              Peenestraße 16
+              Mönchsheimer Weg 10
               <br />
-              17506 Gützkow
+              15366 Hoppegarten
               <br />
               Deutschland
               <br />
