@@ -31,11 +31,13 @@ export function useRevealPage() {
     els.forEach((el) => io.observe(el));
 
     // Safety net: anything not yet visible after a moment gets revealed.
+    // Kept short so a flaky observer can't strand sections off-screen
+    // (an inline script in __root.tsx also guarantees visibility at ~900ms).
     const fallback = window.setTimeout(() => {
       document
         .querySelectorAll(".reveal:not(.is-visible)")
         .forEach((el) => el.classList.add("is-visible"));
-    }, 1600);
+    }, 600);
 
     return () => {
       io.disconnect();

@@ -106,11 +106,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+// Bulletproof reveal fallback — runs before React hydrates so that
+// .reveal sections always become visible, even if the React-side
+// IntersectionObserver fails (slow hydration on Safari, JS error, etc.).
+const REVEAL_FALLBACK_SCRIPT = `(function(){
+  function show(){
+    var els=document.querySelectorAll('.reveal:not(.is-visible)');
+    for(var i=0;i<els.length;i++)els[i].classList.add('is-visible');
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(show,900);});
+  } else {
+    setTimeout(show,900);
+  }
+})();`;
+
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        <noscript>
+          {/* If JS is disabled or broken, never hide content. */}
+          <style>{`.reveal{opacity:1!important;transform:none!important;}`}</style>
+        </noscript>
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_FALLBACK_SCRIPT }} />
       </head>
       <body>
         {children}
