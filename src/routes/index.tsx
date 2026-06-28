@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import heroImg from "@/assets/hero-facade.jpeg";
 import { NEARBY_COORDS, type NearbyPlaceId } from "@/data/nearby-places";
-import { LOGO_ALT, LOGO_WHITE } from "@/lib/logos";
 import type { NearbyPlaceMarker } from "@/components/location-map";
 
 // Lazy — leaflet touches `window` on import, so it cannot live in the SSR bundle.
@@ -93,14 +92,8 @@ function Home() {
           >
             {t("hero.eyebrow")}
           </span>
-          <img
-            src={LOGO_WHITE}
-            alt={LOGO_ALT}
-            className="animate-fade-up mb-2 mt-4 h-16 w-auto md:mb-2.5 md:mt-5 md:h-24 lg:h-28"
-            style={{ animationDelay: "280ms" }}
-          />
           <h1
-            className="mt-0 animate-fade-up font-display text-[2.5rem] font-light leading-[1.05] text-white sm:text-5xl md:text-7xl lg:text-[5.5rem]"
+            className="mt-5 animate-fade-up font-display text-[2.5rem] font-light leading-[1.05] text-white sm:text-5xl md:mt-6 md:text-7xl lg:text-[5.5rem]"
             style={{ animationDelay: "400ms", textShadow: "0 2px 28px rgba(0,0,0,0.5)" }}
           >
             {t("hero.titleLine1")}<br />
