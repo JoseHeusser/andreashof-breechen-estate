@@ -130,7 +130,14 @@ const PREVIEW_STORAGE = "andreashof.preview";
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const searchStr = useRouterState({ select: (s) => s.location.searchStr });
   const bypass = pathname.startsWith("/admin") || pathname.startsWith("/api");
+
+  // Server-side check: if the URL already carries ?key=PREVIEW_KEY, treat
+  // the visit as authorised before any JS hydrates. Safari ITP can
+  // randomly drop localStorage; this guarantees a working bypass.
+  const hasPreviewKey =
+    typeof searchStr === "string" && searchStr.includes(`key=${PREVIEW_KEY}`);
 
   // SSR sees no localStorage — render the maintenance page first to match
   // the server, then flip after mount if the visitor is whitelisted.
@@ -152,7 +159,8 @@ function RootComponent() {
     }
   }, []);
 
-  const showMaintenance = MAINTENANCE_MODE && !bypass && !previewUnlocked;
+  const showMaintenance =
+    MAINTENANCE_MODE && !bypass && !previewUnlocked && !hasPreviewKey;
 
   return (
     <QueryClientProvider client={queryClient}>

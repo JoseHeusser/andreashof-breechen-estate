@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import heroImg from "@/assets/hero-facade.jpeg";
-import { LOGO_ALT, LOGO_WHITE } from "@/lib/logos";
 import { NEARBY_COORDS, type NearbyPlaceId } from "@/data/nearby-places";
 import type { NearbyPlaceMarker } from "@/components/location-map";
 
@@ -87,15 +86,9 @@ function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.22)_100%)]" />
 
         <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-5 pb-16 text-center md:px-10 md:pb-28">
-          <img
-            src={LOGO_WHITE}
-            alt={LOGO_ALT}
-            className="animate-fade-up h-20 w-auto md:h-28 lg:h-32"
-            style={{ animationDelay: "150ms" }}
-          />
           <span
-            className="eyebrow mt-8 animate-fade-up text-white/85 md:mt-10"
-            style={{ animationDelay: "200ms", color: "rgba(255,255,255,0.85)" }}
+            className="eyebrow animate-fade-up text-white/85"
+            style={{ animationDelay: "150ms", color: "rgba(255,255,255,0.85)" }}
           >
             {t("hero.eyebrow")}
           </span>
