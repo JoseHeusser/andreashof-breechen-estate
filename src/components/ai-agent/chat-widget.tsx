@@ -181,7 +181,7 @@ export function ChatWidget() {
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Chat öffnen"
-          className="flex h-14 w-14 items-center justify-center rounded-full border border-foreground bg-foreground text-background shadow-lg transition-colors hover:bg-sage-deep hover:border-sage-deep md:h-16 md:w-16"
+          className="flex h-14 w-14 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-lg transition-colors hover:border-sage-deep hover:text-sage-deep md:h-16 md:w-16"
         >
           <ChatIcon />
         </button>
