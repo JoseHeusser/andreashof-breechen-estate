@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const historyHero = "/galerie/history/img_3432.jpg";
 const historicMap = "/galerie/history/breechen-historisch.jpg";
@@ -15,8 +22,20 @@ type ImpressionItem = {
   alt: string;
 };
 
-// Photos NOT used as sticky anchors above — shown in the closing ribbon.
+// Photos NOT used as sticky anchors above — shown in the closing carousel.
 const RIBBON_PHOTOS: ImpressionItem[] = [
+  // New batch (June 2026) — Andreas's drop into ./History
+  { src: "/galerie/history/img_2352.jpg", alt: "Geschichte des Andreashof Breechen" },
+  { src: "/galerie/history/img_2798.jpg", alt: "Geschichte des Andreashof Breechen" },
+  { src: "/galerie/history/img_2800.jpg", alt: "Geschichte des Andreashof Breechen" },
+  { src: "/galerie/history/img_2808.jpg", alt: "Geschichte des Andreashof Breechen" },
+  { src: "/galerie/history/img_2922.jpg", alt: "Geschichte des Andreashof Breechen" },
+  { src: "/galerie/history/img_2923.jpg", alt: "Geschichte des Andreashof Breechen" },
+  { src: "/galerie/history/img_3312.jpg", alt: "Geschichte des Andreashof Breechen" },
+  { src: "/galerie/history/img_3980.jpg", alt: "Geschichte des Andreashof Breechen" },
+  { src: "/galerie/history/img_8576.jpg", alt: "Geschichte des Andreashof Breechen" },
+  { src: "/galerie/history/img_8582.jpg", alt: "Geschichte des Andreashof Breechen" },
+  // Renovation photos
   { src: "/galerie/history/img_3776.jpg", alt: "Fachwerk und Rundfenster im Andreashof Breechen waehrend der Bauphase" },
   { src: "/galerie/history/img_3137.jpg", alt: "Freigelegte historische Wand im Andreashof Breechen waehrend der Sanierung" },
   { src: "/galerie/history/img_3136.jpg", alt: "Entkernter Raum im Andreashof Breechen mit freigelegten Boeden" },
@@ -195,24 +214,35 @@ function RueckblickePage() {
           tone="linen"
         />
 
-        {/* CODA — photo ribbon of remaining renovation impressions */}
+        {/* CODA — carousel of impressions */}
         <section className="border-t border-border/60 px-5 py-16 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl">
             <span className="eyebrow">{t("history.impressionsEyebrow")}</span>
-            <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
-              {RIBBON_PHOTOS.map((photo) => (
-                <figure
-                  key={photo.src}
-                  className="img-hover overflow-hidden border border-border bg-card"
-                >
-                  <img
-                    src={photo.src}
-                    alt={photo.alt}
-                    loading="lazy"
-                    className="aspect-square w-full object-cover"
-                  />
-                </figure>
-              ))}
+            <div className="mt-8">
+              <Carousel
+                opts={{ loop: true, align: "start" }}
+                className="relative"
+              >
+                <CarouselContent className="-ml-3 md:-ml-4">
+                  {RIBBON_PHOTOS.map((photo) => (
+                    <CarouselItem
+                      key={photo.src}
+                      className="basis-3/4 pl-3 sm:basis-1/2 md:basis-1/3 md:pl-4 lg:basis-1/4"
+                    >
+                      <figure className="img-hover overflow-hidden border border-border bg-card">
+                        <img
+                          src={photo.src}
+                          alt={photo.alt}
+                          loading="lazy"
+                          className="aspect-[4/5] w-full object-cover"
+                        />
+                      </figure>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="-left-3 hidden md:flex" />
+                <CarouselNext className="-right-3 hidden md:flex" />
+              </Carousel>
             </div>
           </div>
         </section>

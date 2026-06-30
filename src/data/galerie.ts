@@ -93,6 +93,9 @@ export const GALLERY_PHOTOS: GalleryPhoto[] = [
   { src: "/galerie/user-mapping/atmos-15.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
   { src: "/galerie/user-mapping/atmos-17.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
   { src: "/galerie/user-mapping/atmos-18.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-19.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-20.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
+  { src: "/galerie/user-mapping/atmos-21.jpg", alt: "Stimmung am Andreashof Breechen", category: "atmos" },
 
   // === Photos from the host (WhatsApp set, May 2026) ===
   // Categorised by timestamp cluster based on a sampled review — re-bucket
