@@ -16,12 +16,16 @@ import { useRevealPage } from "@/hooks/use-reveal-page";
 import { useRouterState } from "@tanstack/react-router";
 import { FloatingLangSwitcher } from "@/components/floating-lang-switcher";
 import { MaintenancePage } from "@/components/maintenance-page";
+import { ChatWidget } from "@/components/ai-agent/chat-widget";
 import { APPLE_TOUCH_ICON, FAVICON_ICO, FAVICON_SVG } from "@/lib/logos";
 
 // Public site is hidden behind a "coming soon" page when this env var is true.
 // /admin/* and /api/* always bypass so Andrea can keep working and the iCal
 // feed for Airbnb stays live. Flip to "false" (or remove) in Vercel to release.
 const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === "true";
+// AI concierge — hidden until we flip it on. /admin/* + /api/* + the
+// maintenance page never show it.
+const AI_AGENT_ENABLED = import.meta.env.VITE_AI_AGENT === "true";
 
 function NotFoundComponent() {
   return (
@@ -217,6 +221,9 @@ function RootComponent() {
             <GlobalScrollEffects />
             <FloatingLangSwitcher />
             <Outlet />
+            {AI_AGENT_ENABLED && !pathname.startsWith("/admin") && !pathname.startsWith("/api") ? (
+              <ChatWidget />
+            ) : null}
           </>
         )}
       </LangProvider>

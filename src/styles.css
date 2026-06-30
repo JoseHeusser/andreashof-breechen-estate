@@ -87,6 +87,18 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  @media (max-width: 767px) {
+    html,
+    body {
+      overflow-x: clip;
+    }
+
+    .eyebrow {
+      letter-spacing: 0.22em;
+      font-size: 0.68rem;
+    }
+  }
+
   h1, h2, h3, h4, h5 {
     font-family: var(--font-display);
     font-weight: 400;
@@ -280,11 +292,25 @@
   }
 }
 @media (max-width: 767px) {
+  .andreashof-calendar .rdp-root {
+    --rdp-day-height: 40px;
+    --rdp-day-width: 40px;
+    --rdp-day_button-height: 40px;
+    --rdp-day_button-width: 40px;
+    --rdp-nav_button-height: 36px;
+    --rdp-nav_button-width: 36px;
+  }
+
   .andreashof-calendar .rdp-months {
     flex-wrap: wrap;
     justify-content: center;
-    max-width: fit-content;
+    max-width: 100%;
     margin-inline: auto;
+  }
+
+  .andreashof-calendar .rdp-month {
+    width: 100%;
+    max-width: 20rem;
   }
 }
 .andreashof-calendar .rdp-month_caption {

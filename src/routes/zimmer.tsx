@@ -234,8 +234,7 @@ function ZimmerPage() {
                 />
               </div>
               {photos.length > 1 && (
-                <div
-                  className="mt-4 grid gap-2.5 md:gap-3"
+                <div className="mt-4 flex gap-2.5 overflow-x-auto pb-1 max-md:snap-x max-md:snap-mandatory md:grid md:gap-3 md:overflow-visible md:pb-0"
                   style={{
                     gridTemplateColumns: `repeat(${photos.length}, minmax(0, 1fr))`,
                   }}
@@ -248,7 +247,7 @@ function ZimmerPage() {
                         type="button"
                         onClick={() => setImgIdx(i)}
                         aria-current={isActive ? "true" : undefined}
-                        className={`overflow-hidden transition-all duration-300 ${
+                        className={`shrink-0 overflow-hidden transition-all duration-300 max-md:w-20 max-md:snap-start md:w-auto ${
                           isActive
                             ? "opacity-100 ring-1 ring-sage-deep ring-offset-2 ring-offset-background"
                             : "opacity-60 hover:opacity-100"

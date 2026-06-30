@@ -82,7 +82,7 @@ function Home() {
       <SiteHeader tone="light" />
 
       {/* HERO */}
-      <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-foreground">
+      <section className="relative h-[100svh] min-h-0 w-full overflow-hidden bg-foreground max-md:min-h-[520px] md:min-h-[640px]">
         <img
           src={heroImg}
           alt="Fassade des Andreashof Breechen mit Fachwerkgiebel"
@@ -91,7 +91,7 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/80" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.22)_100%)]" />
 
-        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-5 pb-16 text-center md:px-10 md:pb-28">
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-end px-5 pb-12 text-center max-md:pt-24 md:px-10 md:pb-28">
           <span
             className="eyebrow animate-fade-up text-white/85"
             style={{ animationDelay: "150ms", color: "rgba(255,255,255,0.85)" }}
@@ -301,7 +301,7 @@ function Home() {
           <div className="grid gap-10 md:grid-cols-12">
             <div ref={mapAnchorRef} className="md:col-span-7">
               {mounted ? (
-                <Suspense fallback={<div className="h-[420px] w-full bg-linen md:h-[520px]" />}>
+                <Suspense fallback={<div className="h-[280px] w-full bg-linen md:h-[520px]" />}>
                   <LocationMap
                     places={mapPlaces}
                     activePlaceId={activePlaceId}
@@ -309,7 +309,7 @@ function Home() {
                   />
                 </Suspense>
               ) : (
-                <div className="h-[420px] w-full bg-linen md:h-[520px]" />
+                <div className="h-[280px] w-full bg-linen md:h-[520px]" />
               )}
             </div>
             <div className="md:col-span-5 md:flex md:flex-col md:max-h-[520px]">
@@ -328,8 +328,8 @@ function Home() {
                           isActive ? "text-sage-deep" : ""
                         }`}
                       >
-                        <span className="font-display text-lg md:text-xl">{p.place}</span>
-                        <span className="text-sm text-muted-foreground">{p.time}</span>
+                        <span className="min-w-0 flex-1 font-display text-lg leading-snug md:text-xl">{p.place}</span>
+                        <span className="shrink-0 text-sm text-muted-foreground">{p.time}</span>
                       </button>
                     </li>
                   );
@@ -369,7 +369,7 @@ function Home() {
 
       {/* BOOKING TEASER → /reservations */}
       <section id="anfrage" className="px-5 py-20 md:px-10 md:py-40">
-        <div className="mx-auto max-w-5xl border border-border bg-card px-6 py-12 text-center md:px-16 md:py-24">
+        <div className="mx-auto max-w-5xl border border-border bg-card px-5 py-10 text-center max-md:px-5 md:px-16 md:py-24">
           <span className="eyebrow">{t("bookingTeaser.eyebrow")}</span>
           <h2 className="mt-6 font-display text-[2rem] font-light leading-[1.1] md:text-6xl">
             {t("bookingTeaser.titleA")}
@@ -415,9 +415,9 @@ function Home() {
                     </button>
                     <div
                       className="overflow-hidden transition-all duration-300"
-                      style={{ maxHeight: isOpen ? 240 : 0 }}
+                      style={{ maxHeight: isOpen ? 480 : 0 }}
                     >
-                      <p className="pb-6 pr-4 text-[0.95rem] leading-relaxed text-muted-foreground md:pr-12">
+                      <p className="pb-6 pr-2 text-[0.95rem] leading-relaxed text-muted-foreground md:pr-12">
                         {f.a}
                       </p>
                     </div>

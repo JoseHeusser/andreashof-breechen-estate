@@ -51,7 +51,7 @@ export function FloatingLangSwitcher() {
   };
 
   return (
-    <div className="fixed right-4 bottom-4 z-50 flex items-center gap-2 border border-border bg-background/90 px-3 py-2 text-[11px] uppercase tracking-[0.28em] shadow-sm backdrop-blur-sm md:right-6 md:bottom-6">
+    <div className="fixed right-4 bottom-4 z-50 flex items-center gap-2 border border-border bg-background/90 px-3 py-2 text-[11px] uppercase tracking-[0.22em] shadow-sm backdrop-blur-sm max-md:tracking-[0.18em] md:right-6 md:bottom-6 md:tracking-[0.28em]">
       {SUPPORTED_LANGS.map((lng, i) => (
         <span key={lng} className="flex items-center gap-2">
           {i > 0 && <span className="text-muted-foreground/40">·</span>}
@@ -60,7 +60,7 @@ export function FloatingLangSwitcher() {
             onClick={() => change(lng)}
             aria-current={current === lng ? "true" : undefined}
             aria-label={`Sprache wechseln zu ${LANG_LABELS[lng]}`}
-            className={`transition-colors ${
+            className={`min-h-9 min-w-9 transition-colors max-md:flex max-md:items-center max-md:justify-center ${
               current === lng
                 ? "text-foreground"
                 : "text-muted-foreground hover:text-foreground"

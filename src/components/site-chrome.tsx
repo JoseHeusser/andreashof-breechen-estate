@@ -1,11 +1,20 @@
 import { LOGO_ALT, LOGO_BLACK, LOGO_WHITE } from "@/lib/logos";
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [mobileOpen]);
 
   const nav = [
     { href: "/", label: t("nav.home"), to: "/" as const },
@@ -35,8 +44,8 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
       style={{ animationDelay: "100ms" }}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 md:gap-6 md:px-10 md:py-6">
-        <Link to="/" className="flex items-center gap-3">
-          <img src={logoSrc} alt={LOGO_ALT} className="h-10 w-auto md:h-14" />
+        <Link to="/" className="flex shrink-0 items-center gap-3">
+          <img src={logoSrc} alt={LOGO_ALT} className="h-9 w-auto max-md:max-w-[9rem] md:h-14" />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {nav.map((n) =>
@@ -70,44 +79,54 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
           onClick={() => setMobileOpen((prev) => !prev)}
-          className={`inline-flex min-h-11 items-center border px-3 py-2 text-[11px] uppercase tracking-[0.2em] transition-colors md:hidden ${borderColor}`}
+          className={`inline-flex min-h-11 min-w-[4.5rem] shrink-0 items-center justify-center border px-3 py-2 text-[11px] uppercase tracking-[0.2em] transition-colors md:hidden ${borderColor}`}
         >
           {mobileOpen ? "Schließen" : "Menü"}
         </button>
       </div>
       {mobileOpen && (
-        <div className={`mx-5 border px-4 py-4 md:hidden ${mobilePanelBg}`}>
-          <nav className="grid gap-1">
-            {nav.map((n) =>
-              n.to ? (
-                <Link
-                  key={n.href}
-                  to={n.to}
-                  onClick={() => setMobileOpen(false)}
-                  className={`min-h-11 px-2 py-2 text-[11px] uppercase tracking-[0.2em] ${textColor} transition-colors ${hoverColor}`}
-                >
-                  {n.label}
-                </Link>
-              ) : (
-                <a
-                  key={n.href}
-                  href={n.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`min-h-11 px-2 py-2 text-[11px] uppercase tracking-[0.2em] ${textColor} transition-colors ${hoverColor}`}
-                >
-                  {n.label}
-                </a>
-              ),
-            )}
-            <Link
-              to="/reservations"
-              onClick={() => setMobileOpen(false)}
-              className={`mt-2 inline-flex min-h-11 items-center justify-center border px-4 py-2 text-[11px] uppercase tracking-[0.2em] transition-colors ${borderColor}`}
-            >
-              {t("nav.reserve")}
-            </Link>
-          </nav>
-        </div>
+        <>
+          <button
+            type="button"
+            aria-label="Menü schließen"
+            className="fixed inset-0 z-30 bg-black/40 md:hidden"
+            onClick={() => setMobileOpen(false)}
+          />
+          <div
+            className={`fixed inset-x-0 top-[88px] z-40 max-h-[calc(100dvh-88px)] overflow-y-auto border-b px-4 py-4 md:hidden ${mobilePanelBg}`}
+          >
+            <nav className="grid gap-0.5">
+              {nav.map((n) =>
+                n.to ? (
+                  <Link
+                    key={n.href}
+                    to={n.to}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex min-h-11 items-center px-3 py-2.5 text-[11px] uppercase tracking-[0.2em] ${textColor} transition-colors ${hoverColor}`}
+                  >
+                    {n.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={n.href}
+                    href={n.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex min-h-11 items-center px-3 py-2.5 text-[11px] uppercase tracking-[0.2em] ${textColor} transition-colors ${hoverColor}`}
+                  >
+                    {n.label}
+                  </a>
+                ),
+              )}
+              <Link
+                to="/reservations"
+                onClick={() => setMobileOpen(false)}
+                className={`mt-3 inline-flex min-h-11 items-center justify-center border px-4 py-2.5 text-[11px] uppercase tracking-[0.2em] transition-colors ${borderColor}`}
+              >
+                {t("nav.reserve")}
+              </Link>
+            </nav>
+          </div>
+        </>
       )}
     </header>
   );
@@ -117,7 +136,7 @@ export function SiteFooter() {
   const { t } = useTranslation();
   return (
     <footer className="border-t border-border/60 bg-linen">
-      <div className="mx-auto max-w-7xl px-6 py-20 md:px-10">
+      <div className="mx-auto max-w-7xl px-5 py-16 md:px-10 md:py-20">
         <div className="grid gap-12 md:grid-cols-3">
           <div>
             <img src={LOGO_BLACK} alt={LOGO_ALT} className="h-16 w-auto" />

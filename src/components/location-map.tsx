@@ -110,7 +110,7 @@ export function LocationMap({ places, activePlaceId, onPlaceSelect }: LocationMa
   return (
     <div
       ref={wrapperRef}
-      className="map-container h-[420px] w-full overflow-hidden border border-border md:h-[520px]"
+      className="map-container h-[280px] w-full overflow-hidden border border-border md:h-[520px]"
     >
       <MapContainer
         ref={mapRef}

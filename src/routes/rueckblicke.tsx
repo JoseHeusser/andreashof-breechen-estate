@@ -127,11 +127,11 @@ function StickySection({
 
           {/* TEXT column */}
           <div className={imageRight ? "md:order-1" : "md:order-2"}>
-            <div className="flex items-baseline gap-5 border-b border-border/60 pb-5">
+            <div className="flex flex-col items-baseline gap-3 border-b border-border/60 pb-5 max-md:gap-2 md:flex-row md:gap-5">
               <span className="font-display text-4xl font-light italic text-sage-deep md:text-5xl">
                 {number}
               </span>
-              <h2 className="font-display text-2xl font-light leading-tight md:text-3xl lg:text-4xl">
+              <h2 className="font-display text-xl font-light leading-tight max-md:leading-snug md:text-3xl lg:text-4xl">
                 {title}
               </h2>
             </div>

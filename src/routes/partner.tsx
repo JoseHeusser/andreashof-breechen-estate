@@ -44,7 +44,7 @@ function PartnerPage() {
         <section className="px-5 pt-12 pb-12 md:px-10 md:pt-16 md:pb-16">
           <div className="mx-auto max-w-6xl">
             <span className="eyebrow">{t("partners.eyebrow")}</span>
-            <h1 className="mt-4 max-w-4xl font-display text-[2.35rem] font-light leading-[1.05] md:text-6xl">
+            <h1 className="mt-4 max-w-4xl break-words font-display text-[2rem] font-light leading-[1.05] max-md:text-[1.85rem] md:text-6xl">
               {t("partners.title")}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">

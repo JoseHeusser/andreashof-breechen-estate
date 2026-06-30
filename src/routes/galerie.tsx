@@ -77,8 +77,8 @@ function GaleriePage() {
 
       {/* FILTERS */}
       <section className="px-5 pb-10 md:px-10">
-        <div className="mx-auto max-w-6xl overflow-x-auto">
-          <ul className="flex min-w-max gap-4 border-b border-border pb-3 md:gap-10">
+        <div className="mx-auto max-w-6xl overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]">
+          <ul className="flex min-w-max gap-3 border-b border-border pb-3 max-md:gap-4 md:gap-10">
             {CATEGORIES.map((c) => {
               const isActive = c === active;
               const label = labels[c];
@@ -142,7 +142,7 @@ function GaleriePage() {
             }}
             disabled={lightbox === 0}
             aria-label="Zurück"
-            className="absolute left-2 top-1/2 -translate-y-1/2 border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 disabled:opacity-30 md:left-8 md:px-4 md:py-3"
+            className="absolute left-2 top-1/2 flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 disabled:opacity-30 md:left-8 md:min-h-0 md:min-w-0 md:px-4 md:py-3"
           >
             ←
           </button>
@@ -156,7 +156,7 @@ function GaleriePage() {
             }}
             disabled={lightbox === photos.length - 1}
             aria-label="Weiter"
-            className="absolute right-2 top-1/2 -translate-y-1/2 border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 disabled:opacity-30 md:right-8 md:px-4 md:py-3"
+            className="absolute right-2 top-1/2 flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 disabled:opacity-30 md:right-8 md:min-h-0 md:min-w-0 md:px-4 md:py-3"
           >
             →
           </button>
@@ -167,7 +167,7 @@ function GaleriePage() {
               setLightbox(null);
             }}
             aria-label="Schließen"
-            className="absolute right-2 top-3 border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 md:right-8 md:top-8"
+            className="absolute right-2 top-3 flex min-h-11 min-w-11 items-center justify-center border border-white/40 px-3 py-2 text-white/80 transition-colors hover:bg-white/10 md:right-8 md:top-8 md:min-h-0 md:min-w-0"
           >
             ✕
           </button>

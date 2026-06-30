@@ -234,9 +234,9 @@ function ReservationsPage() {
 
       {/* BOOKING WIDGET — main content, never gated behind a scroll reveal */}
       <section className="px-5 pb-24 md:px-10 md:pb-32">
-        <div className="mx-auto max-w-6xl border border-border bg-card">
+        <div className="mx-auto max-w-6xl overflow-hidden border border-border bg-card">
           {submitted ? (
-            <div className="px-8 py-20 text-center md:px-16 md:py-28">
+            <div className="px-5 py-16 text-center md:px-16 md:py-28">
               <p className="font-display text-2xl font-light italic text-sage-deep md:text-3xl">
                 {t("reservations.thanks")}
               </p>
@@ -244,7 +244,7 @@ function ReservationsPage() {
           ) : (
             <div className="grid gap-0 md:grid-cols-12">
               {/* CALENDAR */}
-              <div className="border-b border-border px-5 py-8 md:col-span-7 md:border-b-0 md:border-r md:px-10 md:py-12">
+              <div className="border-b border-border px-5 py-8 max-md:min-w-0 md:col-span-7 md:border-b-0 md:border-r md:px-10 md:py-12">
                 <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                   <div>
                     <span className="eyebrow text-sage-deep">
@@ -254,7 +254,7 @@ function ReservationsPage() {
                       {t("reservations.calendarTitle")}
                     </h2>
                   </div>
-                  <p className="max-w-xs text-xs leading-relaxed text-muted-foreground">
+                  <p className="max-w-xs text-xs leading-relaxed text-muted-foreground max-md:max-w-none">
                     {t("reservations.calendarHint")}
                   </p>
                 </div>
@@ -306,7 +306,7 @@ function ReservationsPage() {
               </div>
 
               {/* SUMMARY & FORM */}
-              <div className="px-5 py-8 md:col-span-5 md:px-10 md:py-12">
+              <div className="px-5 py-8 max-md:min-w-0 md:col-span-5 md:px-10 md:py-12">
                 <span className="eyebrow">{t("reservations.summaryTitle")}</span>
 
                 <div
@@ -316,7 +316,7 @@ function ReservationsPage() {
                 >
                   {range?.from ? (
                     <div className="space-y-4">
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                             {t("reservations.summaryArrival")}
@@ -394,7 +394,7 @@ function ReservationsPage() {
                         : "max-h-[28rem] translate-y-0 opacity-100"
                     }`}
                   >
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                       <div>
                         <label htmlFor="adults" className="eyebrow">
                           {t("reservations.adults")}
@@ -486,7 +486,7 @@ function ReservationsPage() {
                         {/* Pets — number input rather than yes/no, so Andrea
                             knows how many are coming. Price per animal stays
                             hidden from the public. */}
-                        <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center justify-between gap-3 max-md:flex-col max-md:items-stretch max-md:gap-2">
                           <label htmlFor="pets" className="flex-1">
                             <span className="block text-[13px] text-foreground/90">
                               {t("reservations.petsQuestion")}
@@ -499,7 +499,7 @@ function ReservationsPage() {
                             max={5}
                             value={pets}
                             onChange={(e) => setPets(Math.max(0, Number(e.target.value)))}
-                            className="w-16 border-0 border-b border-border bg-transparent py-1 text-center text-sm focus:border-sage-deep focus:outline-none"
+                            className="min-h-11 w-full max-w-[5.5rem] border-0 border-b border-border bg-transparent py-2 text-center text-base focus:border-sage-deep focus:outline-none max-md:self-start md:w-16 md:py-1 md:text-sm"
                           />
                         </div>
                         <Toggle
@@ -522,16 +522,16 @@ function ReservationsPage() {
                   <div
                     className={`transition-all duration-500 ease-out ${
                       showQuote
-                        ? "max-h-32 translate-y-0 opacity-100"
+                        ? "max-h-56 translate-y-0 opacity-100 md:max-h-32"
                         : "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden"
                     }`}
                   >
-                    <div className="flex items-baseline justify-between gap-3 border-b border-border pb-3">
+                    <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-border pb-3 max-md:flex-col max-md:items-stretch">
                       <div className="min-w-0">
                         <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                           {t("reservations.fields.guests")} · {t("reservations.fields.occasion")}
                         </p>
-                        <p className="mt-1 font-display text-lg leading-tight text-foreground">
+                        <p className="mt-1 break-words font-display text-lg leading-tight text-foreground">
                           {totalGuests}
                           {regularChildren > 0 ? ` (${adults}+${regularChildren})` : ""}
                           {smallChildren > 0 ? ` + ${smallChildren} 👶` : ""}
@@ -557,7 +557,7 @@ function ReservationsPage() {
                           setQuoteCents(null);
                           setQuoteStale(false);
                         }}
-                        className="shrink-0 text-[11px] uppercase tracking-[0.22em] text-muted-foreground underline decoration-muted-foreground/30 underline-offset-[6px] transition-all duration-200 hover:text-sage-deep hover:decoration-sage-deep hover:underline-offset-4"
+                        className="shrink-0 min-h-11 self-start text-[11px] uppercase tracking-[0.22em] text-muted-foreground underline decoration-muted-foreground/30 underline-offset-[6px] transition-all duration-200 hover:text-sage-deep hover:decoration-sage-deep hover:underline-offset-4"
                       >
                         {t("reservations.change")}
                       </button>
@@ -615,11 +615,11 @@ function ReservationsPage() {
                   <div
                     className={`space-y-6 transition-all duration-500 ease-out ${
                       showQuote
-                        ? "max-h-[40rem] translate-y-0 opacity-100"
+                        ? "max-h-[48rem] translate-y-0 opacity-100 md:max-h-[40rem]"
                         : "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden"
                     }`}
                   >
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <SmallField label={t("reservations.fields.name")} name="name" required />
                       <SmallField
                         label={t("reservations.fields.email")}
@@ -754,9 +754,9 @@ function Toggle({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <label className="flex cursor-pointer items-start justify-between gap-3">
-      <span className="flex-1">
-        <span className="block text-[13px] text-foreground/90">{label}</span>
+    <label className="flex cursor-pointer items-start justify-between gap-3 max-md:gap-4">
+      <span className="min-w-0 flex-1">
+        <span className="block text-[13px] leading-snug text-foreground/90">{label}</span>
         {note && (
           <span className="mt-0.5 block text-[11px] leading-relaxed text-muted-foreground">
             {note}
@@ -767,13 +767,13 @@ function Toggle({
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
-        className={`relative mt-1 inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border transition-colors ${
+        className={`relative mt-0.5 inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border transition-colors max-md:h-7 max-md:w-12 ${
           checked ? "border-sage-deep bg-sage-deep" : "border-border bg-background"
         }`}
       >
         <span
-          className={`absolute h-3 w-3 rounded-full transition-transform ${
-            checked ? "translate-x-5 bg-white" : "translate-x-1 bg-muted-foreground"
+          className={`absolute h-3.5 w-3.5 rounded-full transition-transform max-md:h-4 max-md:w-4 ${
+            checked ? "translate-x-5 bg-white max-md:translate-x-6" : "translate-x-1 bg-muted-foreground"
           }`}
         />
       </span>
