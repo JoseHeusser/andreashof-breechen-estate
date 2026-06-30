@@ -174,14 +174,14 @@ export function ChatWidget() {
   }, [tool]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-[80] md:bottom-6 md:right-6">
+    <div className="fixed bottom-4 left-4 z-[80] md:bottom-6 md:left-6">
       {/* Trigger button */}
       {!open ? (
         <button
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Chat öffnen"
-          className="flex h-14 w-14 items-center justify-center border border-foreground bg-foreground text-background shadow-lg transition-colors hover:bg-sage-deep hover:border-sage-deep md:h-16 md:w-16"
+          className="flex h-14 w-14 items-center justify-center rounded-full border border-foreground bg-foreground text-background shadow-lg transition-colors hover:bg-sage-deep hover:border-sage-deep md:h-16 md:w-16"
         >
           <ChatIcon />
         </button>
@@ -189,7 +189,7 @@ export function ChatWidget() {
 
       {/* Panel */}
       {open ? (
-        <div className="flex h-[80vh] max-h-[640px] w-[92vw] max-w-[420px] flex-col border border-border bg-card shadow-2xl">
+        <div className="flex h-[80vh] max-h-[640px] w-[92vw] max-w-[420px] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
           {/* Header */}
           <header className="flex items-center justify-between border-b border-border bg-foreground px-4 py-3 text-background">
             <div>
@@ -248,14 +248,14 @@ export function ChatWidget() {
                 onKeyDown={onKeyDown}
                 placeholder="Frag mich etwas — Daten, Preise, Zimmer…"
                 rows={1}
-                className="max-h-24 min-h-9 flex-1 resize-none border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-sage-deep"
+                className="max-h-24 min-h-9 flex-1 resize-none rounded-full border border-border bg-background px-4 py-2 text-sm outline-none transition-colors focus:border-sage-deep"
                 disabled={busy}
               />
               <button
                 type="button"
                 onClick={send}
                 disabled={busy || !input.trim()}
-                className="flex h-9 w-9 items-center justify-center border border-foreground bg-foreground text-background transition-colors hover:bg-sage-deep hover:border-sage-deep disabled:opacity-40 disabled:hover:bg-foreground disabled:hover:border-foreground"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground bg-foreground text-background transition-colors hover:bg-sage-deep hover:border-sage-deep disabled:opacity-40 disabled:hover:bg-foreground disabled:hover:border-foreground"
                 aria-label="Senden"
               >
                 ↑
@@ -275,7 +275,7 @@ function MessageBubble({ role, content }: Message) {
   if (role === "user") {
     return (
       <div className="flex justify-end">
-        <p className="max-w-[85%] border border-foreground bg-foreground px-3 py-2 text-sm text-background">
+        <p className="max-w-[85%] rounded-2xl rounded-br-md border border-foreground bg-foreground px-4 py-2 text-sm text-background">
           {content}
         </p>
       </div>
@@ -283,7 +283,7 @@ function MessageBubble({ role, content }: Message) {
   }
   return (
     <div className="flex">
-      <p className="max-w-[88%] whitespace-pre-wrap border border-border bg-card px-3 py-2 text-sm leading-relaxed text-foreground">
+      <p className="max-w-[88%] whitespace-pre-wrap rounded-2xl rounded-bl-md border border-border bg-card px-4 py-2 text-sm leading-relaxed text-foreground">
         {content || <span className="text-muted-foreground">…</span>}
       </p>
     </div>

@@ -391,7 +391,7 @@ function ReservationsPage() {
                     className={`space-y-6 transition-all duration-500 ease-out ${
                       showQuote
                         ? "max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden"
-                        : "max-h-[28rem] translate-y-0 opacity-100"
+                        : "max-h-[50rem] translate-y-0 overflow-hidden opacity-100 md:max-h-[28rem] md:overflow-visible"
                     }`}
                   >
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -482,7 +482,7 @@ function ReservationsPage() {
                     {/* Extras: pets, wheelchair, dachboden. */}
                     <div className="border-t border-border pt-5">
                       <p className="eyebrow mb-3">{t("reservations.extrasTitle")}</p>
-                      <div className="space-y-3 text-sm">
+                      <div className="space-y-3 text-sm max-md:space-y-4">
                         {/* Pets — number input rather than yes/no, so Andrea
                             knows how many are coming. Price per animal stays
                             hidden from the public. */}
@@ -754,11 +754,13 @@ function Toggle({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <label className="flex cursor-pointer items-start justify-between gap-3 max-md:gap-4">
+    <label className="flex cursor-pointer items-start justify-between gap-3 max-md:flex-col max-md:items-stretch max-md:gap-2">
       <span className="min-w-0 flex-1">
-        <span className="block text-[13px] leading-snug text-foreground/90">{label}</span>
+        <span className="block text-[13px] leading-snug text-foreground/90 max-md:leading-normal">
+          {label}
+        </span>
         {note && (
-          <span className="mt-0.5 block text-[11px] leading-relaxed text-muted-foreground">
+          <span className="mt-1 block text-[11px] leading-relaxed text-muted-foreground max-md:mt-1.5">
             {note}
           </span>
         )}
@@ -767,7 +769,7 @@ function Toggle({
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
-        className={`relative mt-0.5 inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border transition-colors max-md:h-7 max-md:w-12 ${
+        className={`relative mt-0.5 inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border transition-colors max-md:mt-0 max-md:h-7 max-md:w-12 max-md:self-start ${
           checked ? "border-sage-deep bg-sage-deep" : "border-border bg-background"
         }`}
       >
