@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { useCallback, useEffect, useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import {
   Carousel,
@@ -155,11 +156,108 @@ function StickySection({
   );
 }
 
+function Lightbox({
+  photos,
+  index,
+  onClose,
+  onPrev,
+  onNext,
+}: {
+  photos: ImpressionItem[];
+  index: number;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  // Keyboard: Esc closes, arrows navigate. Lock body scroll while open.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowLeft") onPrev();
+      else if (e.key === "ArrowRight") onNext();
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose, onPrev, onNext]);
+
+  const photo = photos[index];
+  return (
+    <div
+      onClick={onClose}
+      className="animate-fade-in fixed inset-0 z-[100] flex items-center justify-center bg-black/90 px-4 py-12 md:px-12"
+      role="dialog"
+      aria-modal="true"
+    >
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        aria-label="Schließen"
+        className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center border border-white/40 text-white transition-colors hover:bg-white/10 md:right-8 md:top-8"
+      >
+        ×
+      </button>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onPrev();
+        }}
+        aria-label="Vorheriges Bild"
+        className="absolute left-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center border border-white/40 text-white transition-colors hover:bg-white/10 md:left-6 md:h-14 md:w-14"
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onNext();
+        }}
+        aria-label="Nächstes Bild"
+        className="absolute right-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center border border-white/40 text-white transition-colors hover:bg-white/10 md:right-6 md:h-14 md:w-14"
+      >
+        ›
+      </button>
+      <img
+        src={photo.src}
+        alt={photo.alt}
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-full max-w-full object-contain"
+      />
+      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-[0.22em] text-white/60">
+        {index + 1} / {photos.length}
+      </p>
+    </div>
+  );
+}
+
 function RueckblickePage() {
   const { t } = useTranslation();
   const section1 = t("history.section1", { returnObjects: true }) as string[];
   const section2 = t("history.section2", { returnObjects: true }) as string[];
   const section3 = t("history.section3", { returnObjects: true }) as string[];
+
+  // Lightbox state — null when closed, otherwise the index in RIBBON_PHOTOS.
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const nextLightbox = useCallback(
+    () => setLightboxIndex((i) => (i === null ? null : (i + 1) % RIBBON_PHOTOS.length)),
+    [],
+  );
+  const prevLightbox = useCallback(
+    () => setLightboxIndex((i) =>
+      i === null ? null : (i - 1 + RIBBON_PHOTOS.length) % RIBBON_PHOTOS.length,
+    ),
+    [],
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -224,19 +322,24 @@ function RueckblickePage() {
                 className="relative"
               >
                 <CarouselContent className="-ml-3 md:-ml-4">
-                  {RIBBON_PHOTOS.map((photo) => (
+                  {RIBBON_PHOTOS.map((photo, i) => (
                     <CarouselItem
                       key={photo.src}
                       className="basis-3/4 pl-3 sm:basis-1/2 md:basis-1/3 md:pl-4 lg:basis-1/4"
                     >
-                      <figure className="img-hover overflow-hidden border border-border bg-card">
+                      <button
+                        type="button"
+                        onClick={() => setLightboxIndex(i)}
+                        aria-label={`${photo.alt} — vergrößern`}
+                        className="img-hover group block w-full overflow-hidden border border-border bg-card outline-none focus-visible:ring-2 focus-visible:ring-sage-deep"
+                      >
                         <img
                           src={photo.src}
                           alt={photo.alt}
                           loading="lazy"
-                          className="aspect-[4/5] w-full object-cover"
+                          className="aspect-[4/5] w-full cursor-zoom-in object-cover"
                         />
-                      </figure>
+                      </button>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
@@ -249,6 +352,16 @@ function RueckblickePage() {
       </main>
 
       <SiteFooter />
+
+      {lightboxIndex !== null ? (
+        <Lightbox
+          photos={RIBBON_PHOTOS}
+          index={lightboxIndex}
+          onClose={closeLightbox}
+          onPrev={prevLightbox}
+          onNext={nextLightbox}
+        />
+      ) : null}
     </div>
   );
 }
