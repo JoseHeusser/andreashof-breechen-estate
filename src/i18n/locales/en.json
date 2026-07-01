@@ -126,7 +126,8 @@
     "titleLine1": "A manor house,",
     "titleLine2": "A village, Vorpommern",
     "subtitleBeforeBreak": "Historic 18th-century Gustavian manor house",
-    "subtitleAfterBreak": "in the heart of the village of Breechen. Available exclusively as a whole — for up to 21 guests.",
+    "subtitleMiddle": "in the heart of the village of Breechen.",
+    "subtitleAfterBreak": "Available exclusively as a whole — for up to 21 guests.",
     "ctaPrimary": "Send inquiry",
     "ctaSecondary": "Discover the house"
   },
@@ -230,7 +231,7 @@
       "In 1939 the estate was dissolved by its owner Ernst von Heyden. Ernst Fründ became the new owner and ran a flourishing inn with a beer garden, an ice-cream shop, a tennis court and dance evenings.",
       "After Germany's capitulation in 1945 and the subsequent expropriation, Breechen became home to many refugees and displaced people from the East.",
       "At the end of 1945 the conversion of the manor house and side wing began so that a shoe factory could move in. At the same time around fifty people lived in the house and production ramped up. From this period — added to strengthen the load-bearing capacity of the ceiling — come the additional pillars and beams in the ground-floor hall. The heavy sewing machines stood in the hall on the first floor, and the ground-floor kitchen was converted into a canteen kitchen with a food-service window.",
-      "In the early 1970s the shoe factory closed and the manor house became a Konsum outlet, alongside its hospitality and event use.",
+      "In the early 1970s the shoe factory ceased operations and the manor house became an inn again, with room for dance evenings and family celebrations.",
       "By the late 1990s the house stood empty. The new owner began clean-up and securing work around 2016, successfully preserving the manor along with its outbuildings and grounds."
     ],
     "section3Title": "Our restoration from 2021",
@@ -361,6 +362,7 @@
         "time": "≈ 20 min"
       },
       { "id": "jarmen-centre", "place": "Jarmen town centre", "time": "≈ 5 min" },
+      { "id": "peenefeeling", "place": "Peenefeeling boat rental on Hafeninsel Jarmen", "time": "≈ 5 min" },
       {
         "id": "shopping",
         "place": "Shopping in Jarmen, Gützkow and Greifswald",
@@ -372,8 +374,12 @@
   "reviewsSec": {
     "eyebrow": "Guests",
     "title": "What our guests leave behind.",
-    "badge": "★ 5.0 · 21 reviews on Airbnb",
+    "badge": "★ 5.0 · 22 reviews on Airbnb",
     "items": [
+      {
+        "q": "We had a wonderful stay at the manor house in Gützkow and can wholeheartedly recommend it. Communication with the hosts was perfect from the start — very friendly, straightforward and reliable. We were especially impressed by the incredibly lovingly furnished rooms. You immediately notice how much heart and taste went into every detail. The entire house radiates a special calm and is the ideal place to unwind with a larger group and feel at home. We also loved the beautiful garden — a perfect place to relax. Nearby there is also a very beautiful swimming lake that we visited. The proximity to the Baltic Sea is also a big plus and makes the location especially attractive. We felt completely at ease and would love to come back!",
+        "a": "Airbnb guest · group stay"
+      },
       {
         "q": "We spent a weekend in the house with the whole family. It was simply fantastic — even more beautiful than in the photos. The hostess is very friendly and helpful.",
         "a": "Anne · family weekend"

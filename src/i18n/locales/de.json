@@ -126,7 +126,8 @@
     "titleLine1": "Ein Gutshaus,",
     "titleLine2": "Ein Dorf, Vorpommern",
     "subtitleBeforeBreak": "Historisches gustavianisches Gutshaus aus dem 18. Jahrhundert",
-    "subtitleAfterBreak": "im Herzen von Breechen. Komplett mietbar für bis zu 21 Gäste.",
+    "subtitleMiddle": "im Herzen von Breechen.",
+    "subtitleAfterBreak": "Komplett mietbar für bis zu 21 Gäste.",
     "ctaPrimary": "Anfrage senden",
     "ctaSecondary": "Das Haus entdecken"
   },
@@ -135,7 +136,7 @@
     "titleA": "Ein Haus, das Gäste empfängt.",
     "titleEm": "",
     "titleB": "",
-    "p1": "Der Andreashof wurde 1782 als Gutshaus für den pommerschen Landadel errichtet — mitten am Gutshofvorplatz, eingerahmt von alten Linden und Friesenwall, öffnet es seine originalgetreu nachgebauten blauen Flügeltüren für die Gutshausgäste. Die symmetrische Fassade, der hohe Fachwerkgiebel und die schlichten Proportionen erzählen vom gustavianischen Geschmack jener Zeit, einer skandinavischen Eleganz, die bis heute trägt.",
+    "p1": "Der Andreashof wurde 1782 als Gutshaus für den pommerschen Landadel errichtet — mitten am Gutshofvorplatz, eingerahmt von alten Linden und einem Friesenwall, öffnet es seine originalgetreu nachgebauten blauen Flügeltüren für die Gutshausgäste. Die symmetrische Fassade, der hohe Fachwerkgiebel und die schlichten Proportionen erzählen vom gustavianischen Geschmack jener Zeit, einer skandinavischen Eleganz, die bis heute trägt.",
     "p2": "Hinter den hohen Fenstern: helle Räume, weiß lasierte Dielen, Leinen und Stein. Platz für 21 Gäste, und doch ein Haus mit Anschluss — Nachbarschaft im Dorf, Badesee und Felder vor der Tür, Greifswald und die Ostsee nicht weit."
   },
   "uses": {
@@ -230,7 +231,7 @@
       "1939 wurde seitens des Eigentümers Ernst von Heyden das Gut aufgelöst. Ernst Fründ wird neuer Eigentümer und betreibt eine florierende Gastwirtschaft mit Gartenlokal, Eisverkauf, Tennisplatz und Tanzveranstaltungen.",
       "Nach der Kapitulation Deutschlands 1945 und der folgenden Enteignung wurde Breechen zur Heimstatt zahlreicher Ostflüchtlinge und Vertriebener.",
       "Am Ende des Jahres 1945 begann der Umbau im Gutshaus und im Seitentrakt, um die Schuhfabrik in Betrieb zu nehmen. Gleichzeitig wohnten etwa 50 Menschen im Haus und die Produktion lief an. Aus dieser Zeit stammen — um die Tragfähigkeit der Decke zu erhöhen — die zusätzlichen Säulen und Träger in der Diele im Erdgeschoss. Die schweren Nähmaschinen standen im Saal im 1. Obergeschoss. Die Küche im Erdgeschoss wurde als Betriebsküche mit Speiseausgabe-Fenster umfunktioniert.",
-      "Anfang der 70er Jahre stellte die Schuhfabrik ihre Tätigkeit ein und das Gutshaus wurde zur Verkaufsstelle des Konsums, parallel mit Gastronomie und Veranstaltungen.",
+      "Anfang der 70er Jahre stellte die Schuhfabrik ihre Tätigkeit ein und das Gutshaus wurde wieder zur Gaststätte mit Raum für Tanzveranstaltungen und Familienfeiern.",
       "Ende der 90er Jahre stand das Haus leer. Die neue Eigentümerin war ab etwa 2016 mit Aufräum- und Sicherungsarbeiten aktiv und erhielt damit erfolgreich das Gutshaus inklusive Nebengebäude und Grundstück."
     ],
     "section3Title": "Unser Umbau seit 2021",
@@ -361,6 +362,7 @@
         "time": "≈ 20 Min"
       },
       { "id": "jarmen-centre", "place": "Jarmener Stadtzentrum", "time": "≈ 5 Min" },
+      { "id": "peenefeeling", "place": "Peenefeeling Bootsverleih auf der Hafeninsel Jarmen", "time": "≈ 5 Min" },
       {
         "id": "shopping",
         "place": "Einkaufen in Jarmen, Gützkow und Greifswald",
@@ -372,8 +374,12 @@
   "reviewsSec": {
     "eyebrow": "Stimmen",
     "title": "Was unsere Gäste zurücklassen.",
-    "badge": "★ 5,0 · 21 Bewertungen auf Airbnb",
+    "badge": "★ 5,0 · 22 Bewertungen auf Airbnb",
     "items": [
+      {
+        "q": "Wir hatten einen wunderbaren Aufenthalt im Gutshaus in Gützkow und können es uneingeschränkt weiterempfehlen. Die Kommunikation mit den Gastgebern war von Anfang an perfekt – sehr freundlich, unkompliziert und zuverlässig. Besonders beeindruckt haben uns die unglaublich liebevoll eingerichteten Räume. Man merkt sofort, wie viel Herz und Geschmack in jedem Detail steckt. Das gesamte Haus strahlt eine besondere Ruhe aus und ist der ideale Ort, um auch mit einer größeren Gruppe abzuschalten und sich wohlzufühlen. Auch der schöne Garten hat uns sehr gefallen – ein perfekter Platz zum Entspannen. In der Nähe gibt es außerdem einen sehr schönen Badesee, den wir besucht haben. Auch die Nähe zur Ostsee ist ein großer Pluspunkt und macht die Lage besonders attraktiv. Wir haben uns rundum wohlgefühlt und kommen sehr gerne wieder!",
+        "a": "Airbnb-Gast · Gruppe im Gutshaus"
+      },
       {
         "q": "Wir waren mit der ganzen Familie ein Wochenende im Haus. Es war einfach fantastisch — noch schöner als auf den Fotos. Die Gastgeberin ist sehr freundlich und hilfsbereit.",
         "a": "Anne · Familie am Wochenende"

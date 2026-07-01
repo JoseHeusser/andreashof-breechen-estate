@@ -8,6 +8,7 @@ export type NearbyPlaceId =
   | "greifswald-harbour"
   | "cdf-centre"
   | "jarmen-centre"
+  | "peenefeeling"
   | "shopping"
   | "usedom";
 
@@ -23,6 +24,8 @@ export const NEARBY_COORDS: Record<NearbyPlaceId, [number, number]> = {
   "greifswald-harbour": [54.0961, 13.3765],
   "cdf-centre": [54.0958, 13.3811],
   "jarmen-centre": [53.9175, 13.3467],
+  // Hafeninsel Jarmen — Peenefeeling boat rental, on the Peene next to the B96 bridge.
+  peenefeeling: [53.9192, 13.3434],
   shopping: [53.988, 13.762],
   usedom: [53.976, 14.05],
 };
