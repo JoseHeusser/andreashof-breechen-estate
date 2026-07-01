@@ -5,6 +5,11 @@ import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import heroImg from "@/assets/hero-facade.jpeg";
 import { NEARBY_COORDS, type NearbyPlaceId } from "@/data/nearby-places";
 import type { NearbyPlaceMarker } from "@/components/location-map";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 // Lazy — leaflet touches `window` on import, so it cannot live in the SSR bundle.
 const LocationMap = lazy(() =>
@@ -354,7 +359,31 @@ function Home() {
               {t("reviewsSec.badge")}
             </p>
           </div>
-          <div className="mt-16 grid items-start gap-10 sm:gap-12 md:grid-cols-2">
+          {/* Mobile: swipeable carousel — one review per slide. */}
+          <div className="mt-12 md:hidden">
+            <Carousel opts={{ loop: true, align: "start" }} className="relative">
+              <CarouselContent className="-ml-4">
+                {reviews.map((r, i) => (
+                  <CarouselItem key={i} className="basis-[88%] pl-4">
+                    <figure className="flex h-full flex-col border-t border-sage pt-6">
+                      <blockquote className="break-words font-display text-lg font-light italic leading-snug text-foreground sm:text-xl">
+                        „{r.q}"
+                      </blockquote>
+                      <figcaption className="mt-5 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+                        — {r.a}
+                      </figcaption>
+                    </figure>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+            <p className="mt-5 text-center text-[10px] uppercase tracking-[0.28em] text-muted-foreground/70">
+              ← wischen →
+            </p>
+          </div>
+
+          {/* Desktop: grid of all reviews side by side. */}
+          <div className="mt-16 hidden items-start gap-10 sm:gap-12 md:grid md:grid-cols-2">
             {reviews.map((r, i) => (
               <figure key={i} className="flex flex-col border-t border-sage pt-6 sm:pt-8">
                 <blockquote className="break-words font-display text-lg font-light italic leading-snug text-foreground sm:text-xl md:text-2xl">
