@@ -5,7 +5,6 @@ import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import heroImg from "@/assets/hero-facade.jpeg";
 import { NEARBY_COORDS, type NearbyPlaceId } from "@/data/nearby-places";
 import type { NearbyPlaceMarker } from "@/components/location-map";
-import { cn } from "@/lib/utils";
 
 // Lazy — leaflet touches `window` on import, so it cannot live in the SSR bundle.
 const LocationMap = lazy(() =>
@@ -356,26 +355,16 @@ function Home() {
             </p>
           </div>
           <div className="mt-16 grid items-start gap-10 sm:gap-12 md:grid-cols-2">
-            {reviews.map((r, i) => {
-              const isLong = r.q.length > 220;
-              return (
-                <figure key={i} className="flex flex-col border-t border-sage pt-6 sm:pt-8">
-                  <blockquote
-                    className={cn(
-                      "break-words font-display font-light italic text-foreground",
-                      isLong
-                        ? "text-[0.95rem] leading-relaxed sm:text-base md:text-lg md:leading-relaxed"
-                        : "text-lg leading-snug sm:text-xl md:text-2xl",
-                    )}
-                  >
-                    „{r.q}"
-                  </blockquote>
-                  <figcaption className="mt-5 text-[11px] uppercase tracking-[0.28em] text-muted-foreground sm:mt-6">
-                    — {r.a}
-                  </figcaption>
-                </figure>
-              );
-            })}
+            {reviews.map((r, i) => (
+              <figure key={i} className="flex flex-col border-t border-sage pt-6 sm:pt-8">
+                <blockquote className="break-words font-display text-lg font-light italic leading-snug text-foreground sm:text-xl md:text-2xl">
+                  „{r.q}"
+                </blockquote>
+                <figcaption className="mt-5 text-[11px] uppercase tracking-[0.28em] text-muted-foreground sm:mt-6">
+                  — {r.a}
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>
