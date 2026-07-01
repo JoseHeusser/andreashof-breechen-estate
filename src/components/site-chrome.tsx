@@ -2,6 +2,9 @@ import { LOGO_ALT, LOGO_BLACK, LOGO_WHITE } from "@/lib/logos";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import i18n, { SUPPORTED_LANGS, DEFAULT_LANG, LANG_LABELS, type Lang } from "@/i18n";
+
+const LANG_STORAGE_KEY = "andreashof.lang";
 
 export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
   const { t } = useTranslation();
@@ -74,15 +77,19 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
         >
           {t("nav.reserve")}
         </Link>
-        <button
-          type="button"
-          aria-expanded={mobileOpen}
-          aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
-          onClick={() => setMobileOpen((prev) => !prev)}
-          className={`inline-flex min-h-11 min-w-[4.5rem] shrink-0 items-center justify-center border px-3 py-2 text-[11px] uppercase tracking-[0.2em] transition-colors md:hidden ${borderColor}`}
-        >
-          {mobileOpen ? "Schließen" : "Menü"}
-        </button>
+        {/* Mobile: language pill + burger, packed to the right */}
+        <div className="flex shrink-0 items-center gap-2 md:hidden">
+          <MobileLangSwitcher tone={tone} />
+          <button
+            type="button"
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
+            onClick={() => setMobileOpen((prev) => !prev)}
+            className={`inline-flex min-h-11 min-w-[4.5rem] items-center justify-center border px-3 py-2 text-[11px] uppercase tracking-[0.2em] transition-colors ${borderColor}`}
+          >
+            {mobileOpen ? "Schließen" : "Menü"}
+          </button>
+        </div>
       </div>
       {mobileOpen && (
         <>
@@ -224,5 +231,62 @@ export function SiteFooter() {
         </div>
       </div>
     </footer>
+  );
+}
+
+/**
+ * Compact inline language switcher for the mobile header. On desktop the
+ * FloatingLangSwitcher at bottom-right still handles it. Persistence to
+ * localStorage is driven by FloatingLangSwitcher's mount effect — this
+ * component only fires the change.
+ */
+function MobileLangSwitcher({ tone }: { tone: "light" | "dark" }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  useTranslation();
+  const current = ((i18n.language?.slice(0, 2) || DEFAULT_LANG) as Lang);
+
+  if (!mounted) return null;
+
+  const change = (lng: Lang) => {
+    try {
+      window.localStorage.setItem(LANG_STORAGE_KEY, lng);
+    } catch {
+      /* ignore */
+    }
+    i18n.changeLanguage(lng);
+  };
+
+  const activeClass = tone === "light" ? "text-white" : "text-foreground";
+  const idleClass =
+    tone === "light"
+      ? "text-white/60 hover:text-white"
+      : "text-muted-foreground hover:text-foreground";
+
+  return (
+    <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.18em]">
+      {SUPPORTED_LANGS.map((lng, i) => (
+        <span key={lng} className="flex items-center gap-1.5">
+          {i > 0 && (
+            <span className={tone === "light" ? "text-white/30" : "text-muted-foreground/40"}>
+              ·
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={() => change(lng)}
+            aria-current={current === lng ? "true" : undefined}
+            aria-label={`Sprache wechseln zu ${LANG_LABELS[lng]}`}
+            className={`min-h-8 px-0.5 transition-colors ${
+              current === lng ? activeClass : idleClass
+            }`}
+          >
+            {LANG_LABELS[lng]}
+          </button>
+        </span>
+      ))}
+    </div>
   );
 }

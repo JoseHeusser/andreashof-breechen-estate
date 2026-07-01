@@ -51,7 +51,7 @@ export function FloatingLangSwitcher() {
   };
 
   return (
-    <div className="fixed right-4 bottom-4 z-50 flex items-center gap-2 border border-border bg-background/90 px-3 py-2 text-[11px] uppercase tracking-[0.22em] shadow-sm backdrop-blur-sm max-md:tracking-[0.18em] md:right-6 md:bottom-6 md:tracking-[0.28em]">
+    <div className="fixed right-4 bottom-4 z-50 hidden items-center gap-2 border border-border bg-background/90 px-3 py-2 text-[11px] uppercase tracking-[0.22em] shadow-sm backdrop-blur-sm md:right-6 md:bottom-6 md:flex md:tracking-[0.28em]">
       {SUPPORTED_LANGS.map((lng, i) => (
         <span key={lng} className="flex items-center gap-2">
           {i > 0 && <span className="text-muted-foreground/40">·</span>}
