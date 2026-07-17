@@ -100,6 +100,16 @@
         "phone": "0172 3123419",
         "websiteUrl": "https://gran-gusto.de/",
         "websiteLabel": "gran-gusto.de"
+      },
+      {
+        "id": "steffi-wolf",
+        "category": "Ayuno y retiros",
+        "title": "Steffi Wolf — Semana de ayuno en el Andreashof",
+        "description": "Stephanie Wolf guía semanas de ayuno en el Andreashof que combinan descanso con formación en salud: caminatas diarias por la región del Peene, sesiones de relajación, charlas sobre nutrición y ayuno, y movimiento suave adaptado a cada nivel. Se realiza en la propia casa.",
+        "area": "Andreashof, Gützkow",
+        "phone": "0174 1514558",
+        "websiteUrl": "https://www.steffi-wolf.de/fasten/fastenwoche-guetzkow",
+        "websiteLabel": "steffi-wolf.de"
       }
     ]
   },
