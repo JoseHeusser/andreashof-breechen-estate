@@ -211,6 +211,16 @@
         "phone": "0172 3123419",
         "websiteUrl": "https://gran-gusto.de/",
         "websiteLabel": "gran-gusto.de"
+      },
+      {
+        "id": "steffi-wolf",
+        "category": "Fasting & retreats",
+        "title": "Steffi Wolf — Fasting week at Andreashof",
+        "description": "Stephanie Wolf hosts fasting weeks at the Andreashof that combine recovery with health education: daily hikes through the Peene region, relaxation sessions, talks on nutrition and fasting, plus fasting-supportive movement for every fitness level. Held on site.",
+        "area": "Andreashof, Gützkow",
+        "phone": "0174 1514558",
+        "websiteUrl": "https://www.steffi-wolf.de/fasten/fastenwoche-guetzkow",
+        "websiteLabel": "steffi-wolf.de"
       }
     ]
   },
