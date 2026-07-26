@@ -1,0 +1,33 @@
+name: cron-booking-reminders
+
+# Daily run of the booking-reminders edge function — sends the balance
+# reminder (3 days before arrival) and arrival instructions (2 days
+# before arrival) emails to guests.
+on:
+  schedule:
+    - cron: "15 7 * * *" # 07:15 UTC daily (~09:15 Berlin summer / 08:15 winter)
+  workflow_dispatch: {}
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Trigger booking-reminders edge function
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -e
+          RESPONSE=$(curl -sS -w "\nHTTP:%{http_code}" \
+            -X POST "$SUPABASE_URL/functions/v1/booking-reminders" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Content-Type: application/json" \
+            --max-time 120 \
+            -d '{"reason":"github-actions"}')
+          echo "$RESPONSE"
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1 | cut -d: -f2)
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "::error::booking-reminders returned $HTTP_CODE"
+            exit 1
+          fi
