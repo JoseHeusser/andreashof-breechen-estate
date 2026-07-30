@@ -1,11 +1,10 @@
 name: cron-booking-reminders
 
-# Daily run of the booking-reminders edge function — sends the balance
-# reminder (3 days before arrival) and arrival instructions (2 days
-# before arrival) emails to guests.
+# Daily reminder emails (Restzahlung + Anreise-Instruktionen).
+# Runs the Node script directly — no Supabase edge function involved.
 on:
   schedule:
-    - cron: "15 7 * * *" # 07:15 UTC daily (~09:15 Berlin summer / 08:15 winter)
+    - cron: "15 7 * * *" # 07:15 UTC (~09:15 Berlin summer / 08:15 winter)
   workflow_dispatch: {}
 
 jobs:
@@ -13,21 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Trigger booking-reminders edge function
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run booking-reminders
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: |
-          set -e
-          RESPONSE=$(curl -sS -w "\nHTTP:%{http_code}" \
-            -X POST "$SUPABASE_URL/functions/v1/booking-reminders" \
-            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
-            -H "Content-Type: application/json" \
-            --max-time 120 \
-            -d '{"reason":"github-actions"}')
-          echo "$RESPONSE"
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1 | cut -d: -f2)
-          if [ "$HTTP_CODE" -ge 400 ]; then
-            echo "::error::booking-reminders returned $HTTP_CODE"
-            exit 1
-          fi
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO_ADMIN: ${{ secrets.EMAIL_TO_ADMIN }}
+          KEYBOX_CODE: ${{ secrets.KEYBOX_CODE }}
+        run: node scripts/cron/booking-reminders.mjs

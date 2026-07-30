@@ -1,32 +1,24 @@
 name: cron-airbnb-sync
 
-# Hourly pull of the Airbnb iCal into our bookings table.
-# Replaces the pg_cron + pg_net job that was silently timing out.
+# Hourly Airbnb iCal → Supabase bookings reconcile.
+# Runs the Node script in scripts/cron/airbnb-sync.mjs directly — no
+# Supabase edge function involved. Same logic, one place to debug.
 on:
   schedule:
     - cron: "5 * * * *" # 5 min past the hour, hourly
-  workflow_dispatch: {} # allow manual trigger from the Actions UI
+  workflow_dispatch: {}
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Trigger airbnb-sync edge function
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run airbnb-sync
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: |
-          set -e
-          RESPONSE=$(curl -sS -w "\nHTTP:%{http_code}" \
-            -X POST "$SUPABASE_URL/functions/v1/airbnb-sync" \
-            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
-            -H "Content-Type: application/json" \
-            --max-time 60 \
-            -d '{"reason":"github-actions"}')
-          echo "$RESPONSE"
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1 | cut -d: -f2)
-          if [ "$HTTP_CODE" -ge 400 ]; then
-            echo "::error::airbnb-sync returned $HTTP_CODE"
-            exit 1
-          fi
+        run: node scripts/cron/airbnb-sync.mjs
