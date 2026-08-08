@@ -1,5 +1,9 @@
 /** Stable ids — must match `partners.items[].id` in locale files. */
-export type PartnerId = "peenefeeling" | "gran-gusto" | "steffi-wolf";
+export type PartnerId =
+  | "peenefeeling"
+  | "gran-gusto"
+  | "steffi-wolf"
+  | "blumenecke-merklein";
 
 export interface PartnerPhoto {
   src: string;
@@ -22,6 +26,7 @@ export const PARTNER_PHOTOS: Record<PartnerId, PartnerPhoto[]> = {
     },
   ],
   "steffi-wolf": [],
+  "blumenecke-merklein": [],
   "gran-gusto": [
     {
       src: "/galerie/partner/catering-01.jpg",
