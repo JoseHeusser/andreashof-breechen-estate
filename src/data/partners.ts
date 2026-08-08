@@ -25,7 +25,20 @@ export const PARTNER_PHOTOS: Record<PartnerId, PartnerPhoto[]> = {
       alt: "Motorboot am Steg — Peenefeeling Bootsverleih Jarmen",
     },
   ],
-  "steffi-wolf": [],
+  "steffi-wolf": [
+    {
+      src: "/galerie/partner/fastenwoche-01.jpg",
+      alt: "Stephanie Wolf — Fastenleiterin der Fastenwoche im Andreashof",
+    },
+    {
+      src: "/galerie/partner/fastenwoche-02.jpg",
+      alt: "Gedeckte Tafel im Esszimmer des Andreashof während einer Fastenwoche",
+    },
+    {
+      src: "/galerie/partner/fastenwoche-03.jpg",
+      alt: "Gruppenausflug an die Ostsee während der Fastenwoche",
+    },
+  ],
   "blumenecke-merklein": [],
   "gran-gusto": [
     {
