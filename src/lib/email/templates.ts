@@ -157,7 +157,7 @@ export function tplRequestedGuest(b: Booking) {
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Wir haben Ihre Anfrage erhalten.</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">vielen Dank für Ihre Reservierungsanfrage für den Andreashof Breechen. Wir prüfen Ihre Anfrage und melden uns <strong>innerhalb von 12 Stunden</strong> persönlich bei Ihnen.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">vielen Dank für Ihre Reservierungsanfrage für den Andreashof Breechen. Wir prüfen Ihre Anfrage und melden uns <strong>in Kürze</strong> persönlich bei Ihnen.</p>
     ${bookingSummary(b)}
     <p style="margin:18px 0 6px;font-size:13px;color:${COLORS.muted};">Bei Fragen erreichen Sie uns jederzeit unter <a href="mailto:andrea.lietz@web.de" style="color:${COLORS.sageDeep};">andrea.lietz@web.de</a>.</p>
     <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
