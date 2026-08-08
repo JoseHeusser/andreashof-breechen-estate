@@ -214,22 +214,13 @@ async function main() {
     }
   }
 
-  for (const b of arrivalCandidates) {
-    if (b.reminder_arrival_sent_at) continue;
-    if (b.contact_email.endsWith("@andreashof-breechen.de")) continue;
-    const ok = await sendResend(
-      b.contact_email,
-      "Anreise zum Andreashof — alle Informationen",
-      arrivalInstructionsHtml(b),
-    );
-    if (ok) {
-      await pg(`bookings?id=eq.${b.id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ reminder_arrival_sent_at: new Date().toISOString() }),
-      });
-      sentArrival++;
-    }
-  }
+  // Arrival instructions are sent MANUALLY by Andrea (Schlüsselbox code
+  // handoff needs a human touch). This loop is intentionally disabled.
+  // The template + helper stay in the file so we can re-enable later.
+  //
+  // for (const b of arrivalCandidates) { … } — see git history if needed.
+  void arrivalCandidates;
+  void arrivalInstructionsHtml;
 
   console.log(
     JSON.stringify({
