@@ -22,6 +22,7 @@ import { Route as AgbRouteImport } from './routes/agb'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as RezensionTokenRouteImport } from './routes/rezension.$token'
 import { Route as ApiTrackVisitRouteImport } from './routes/api/track-visit'
 import { Route as ApiResendInboundRouteImport } from './routes/api/resend-inbound'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -93,6 +94,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const RezensionTokenRoute = RezensionTokenRouteImport.update({
+  id: '/rezension/$token',
+  path: '/rezension/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTrackVisitRoute = ApiTrackVisitRouteImport.update({
   id: '/api/track-visit',
   path: '/api/track-visit',
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/api/resend-inbound': typeof ApiResendInboundRoute
   '/api/track-visit': typeof ApiTrackVisitRoute
+  '/rezension/$token': typeof RezensionTokenRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/api/chat': typeof ApiChatRoute
   '/api/resend-inbound': typeof ApiResendInboundRoute
   '/api/track-visit': typeof ApiTrackVisitRoute
+  '/rezension/$token': typeof RezensionTokenRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/api/resend-inbound': typeof ApiResendInboundRoute
   '/api/track-visit': typeof ApiTrackVisitRoute
+  '/rezension/$token': typeof RezensionTokenRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -199,6 +208,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/resend-inbound'
     | '/api/track-visit'
+    | '/rezension/$token'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -218,6 +228,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/resend-inbound'
     | '/api/track-visit'
+    | '/rezension/$token'
     | '/admin'
   id:
     | '__root__'
@@ -238,6 +249,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/resend-inbound'
     | '/api/track-visit'
+    | '/rezension/$token'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -258,6 +270,7 @@ export interface RootRouteChildren {
   ApiChatRoute: typeof ApiChatRoute
   ApiResendInboundRoute: typeof ApiResendInboundRoute
   ApiTrackVisitRoute: typeof ApiTrackVisitRoute
+  RezensionTokenRoute: typeof RezensionTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -353,6 +366,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/rezension/$token': {
+      id: '/rezension/$token'
+      path: '/rezension/$token'
+      fullPath: '/rezension/$token'
+      preLoaderRoute: typeof RezensionTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/track-visit': {
       id: '/api/track-visit'
       path: '/api/track-visit'
@@ -420,6 +440,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiChatRoute: ApiChatRoute,
   ApiResendInboundRoute: ApiResendInboundRoute,
   ApiTrackVisitRoute: ApiTrackVisitRoute,
+  RezensionTokenRoute: RezensionTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

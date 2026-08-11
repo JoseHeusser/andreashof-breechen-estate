@@ -73,13 +73,33 @@ Garten & Ausstattung
 
 Ausstattung im Haus
 - Zwei voll ausgestattete Landküchen.
-- Esstisch für 21 Personen.
+- Auf beiden Etagen große Esstische, an denen alle 21 Gäste Platz finden.
 - Blauer Salon mit Kamin.
 - Bibliothek mit Leseplätzen.
 - Kostenfreies WLAN im ganzen Haus.
-- Bettwäsche & Handtücher inklusive.
+- Frisch bezogene Betten. Bettwäsche und Handtücher für alle Gäste inklusive.
 - Zwei Kinderhochstühle.
-- Das gesamte Erdgeschoss ist barrierefrei (inkl. Seniorenzimmer).
+- 4 Reisebetten für Kleinkinder — kostenlos. Bettwäsche fürs Reisebett 10 € pro Bett.
+- Wäschetrockner, Waschmaschine und Bügelbrett in einem separaten Raum.
+- Großer mobiler 75-Zoll-Smart-TV für Präsentationen (nicht in jedem Zimmer, sondern flexibel).
+- Küche mit separatem Wirtschaftseingang für Lieferungen, inkl. Raum für Getränkelagerung.
+- Das gesamte Erdgeschoss ist barrierefrei — inklusive barrierefreies Bad.
+
+Zimmer und Flächen im Detail
+- Erdgeschoss: 5 Zimmer mit je 2 Betten, 3 Bäder + Gäste-WC. 320 m².
+- 1. Obergeschoss: 4 Doppelzimmer + 2 Einzelzimmer, weitere Bäder. 320 m².
+- Dachgeschoss: 150 m² Gemeinschaftsraum (Yoga / Seminare) + Reservewohnungen mit 4 Betten und separatem Bad — nutzbar, wenn mehr als 21 Personen kommen.
+- Insgesamt 7 Bäder + 1 Gäste-WC im Haus.
+- Heizung: Fußbodenheizung und Deckenheizung auf Wärmepumpen-Niveau, kombiniert mit Brennwerttherme. Jedes Zimmer ist separat regulierbar.
+
+Feiern, Musik, Privatsphäre
+- Das Haus wird immer nur als Ganzes vermietet — keine anderen Gruppen gleichzeitig, Sie sind alleine im Haus.
+- Laute Musik ist im Haus und im Garten erlaubt.
+
+Pferde
+- 4 Pferdeboxen stehen für Gäste bereit.
+- Heu und Stroh sind vorhanden.
+- Direkt am Haus gibt es Freiflächen für die Pferde.
 
 Haustiere
 - Gut erzogene Hunde sind willkommen — bitte bei der Anfrage angeben (Anzahl).

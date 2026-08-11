@@ -29,20 +29,39 @@ const AI_AGENT_ENABLED = import.meta.env.VITE_AI_AGENT === "true";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
+    <div className="flex min-h-screen flex-col bg-linen">
+      <div className="flex flex-1 items-center justify-center px-5 py-24 md:px-10">
+        <div className="mx-auto max-w-xl text-center">
+          <p className="eyebrow">1782 · Vorpommern</p>
+          <h1 className="mt-6 font-display text-[3.5rem] font-light leading-[0.95] text-foreground md:text-[6rem]">
+            <span className="italic text-sage-deep">Verlaufen</span>
+            <br />
+            im Gutshaus.
+          </h1>
+          <p className="mx-auto mt-8 max-w-md text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
+            Diese Seite kennen wir nicht. Vielleicht wurde sie verschoben,
+            umbenannt — oder es war ein Tippfehler. Kein Grund zur Sorge.
+          </p>
+          <p className="mx-auto mt-2 max-w-md text-sm italic leading-relaxed text-muted-foreground/80">
+            This page doesn't exist. · Esta página no existe.
+          </p>
+
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              to="/"
+              className="min-h-11 border border-foreground bg-foreground px-6 py-3 text-[11px] uppercase tracking-[0.22em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep md:px-8 md:py-3.5 md:tracking-[0.28em]"
+            >
+              Zurück zur Startseite
+            </Link>
+            <Link
+              to="/reservations"
+              className="min-h-11 border border-foreground/60 px-6 py-3 text-[11px] uppercase tracking-[0.22em] text-foreground transition-colors hover:bg-foreground/5 md:px-8 md:py-3.5 md:tracking-[0.28em]"
+            >
+              Reservieren
+            </Link>
+          </div>
+
+          <p className="mt-16 font-display text-4xl italic text-sage-deep opacity-40">404</p>
         </div>
       </div>
     </div>

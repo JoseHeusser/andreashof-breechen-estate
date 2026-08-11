@@ -2,7 +2,15 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeaders } from "@tanstack/react-start/server";
 import { createClient } from "@supabase/supabase-js";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
-import type { AnalyticsStats, Booking, BookingStatus, PricingRow } from "@/lib/supabase/types";
+import type {
+  AnalyticsStats,
+  Booking,
+  BookingStatus,
+  PricingRow,
+  Review,
+  ReviewLanguage,
+  ReviewStatus,
+} from "@/lib/supabase/types";
 import { sendEmail, ADMIN_EMAIL } from "@/lib/email/client";
 import {
   tplRequestedGuest,
@@ -569,3 +577,121 @@ export const triggerAirbnbSync = createServerFn({ method: "POST" }).handler(asyn
   if (!res.ok) throw new Error(`sync failed (${res.status}): ${JSON.stringify(payload)}`);
   return payload;
 });
+
+/* -----------------------------------------------------------------
+ * REVIEWS — guest reviews table (0011_reviews.sql).
+ *
+ * The submission URL is /rezension/<REVIEW_URL_TOKEN>. The token
+ * lives in the server env (never shipped to the browser). Everyone
+ * who has the URL can submit — validation is submission-side. All
+ * new reviews land as status='pending' and only appear on the home
+ * page once an admin flips them to 'published'.
+ * -------------------------------------------------------------- */
+const REVIEW_URL_TOKEN = () => process.env.REVIEW_URL_TOKEN || "danke-andreashof-1782";
+
+// PUBLIC — check whether a submission token matches. Used by the
+// route's beforeLoad to decide 404 vs render form.
+export const checkReviewToken = createServerFn({ method: "POST" })
+  .inputValidator((data: { token: string }) => data)
+  .handler(async ({ data }) => {
+    return { valid: data.token === REVIEW_URL_TOKEN() };
+  });
+
+// PUBLIC — submit a new review. Requires token match.
+export const createReview = createServerFn({ method: "POST" })
+  .inputValidator(
+    (data: {
+      token: string;
+      guestName: string;
+      quote: string;
+      rating?: number;
+      language?: ReviewLanguage;
+    }) => data,
+  )
+  .handler(async ({ data }) => {
+    if (data.token !== REVIEW_URL_TOKEN()) throw new Error("UNAUTHORIZED");
+    const name = data.guestName?.trim();
+    const quote = data.quote?.trim();
+    if (!name || !quote) throw new Error("name and quote required");
+    if (name.length > 120) throw new Error("name too long");
+    if (quote.length < 20 || quote.length > 1200) throw new Error("quote must be 20–1200 chars");
+    const rating = data.rating && data.rating >= 1 && data.rating <= 5 ? data.rating : null;
+    const language: ReviewLanguage = data.language ?? "de";
+
+    const admin = getSupabaseAdmin();
+    const { data: row, error } = await admin
+      .from("reviews")
+      .insert({
+        guest_name: name,
+        quote,
+        language,
+        rating,
+        status: "pending",
+      })
+      .select("id")
+      .single();
+    if (error) throw error;
+    return { id: row.id };
+  });
+
+// PUBLIC — published reviews for the home page.
+export const getPublishedReviews = createServerFn({ method: "GET" }).handler(async () => {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin
+    .from("reviews")
+    .select("id,guest_name,quote,language,rating,created_at")
+    .eq("status", "published")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as Pick<
+    Review,
+    "id" | "guest_name" | "quote" | "language" | "rating" | "created_at"
+  >[];
+});
+
+// ADMIN — list all (any status).
+export const getAllReviews = createServerFn({ method: "GET" }).handler(async () => {
+  await requireAdmin();
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin
+    .from("reviews")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as Review[];
+});
+
+// ADMIN — edit / moderate.
+export const updateReview = createServerFn({ method: "POST" })
+  .inputValidator(
+    (data: {
+      id: string;
+      status?: ReviewStatus;
+      guestName?: string;
+      quote?: string;
+      rating?: number | null;
+      adminNotes?: string | null;
+    }) => data,
+  )
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const admin = getSupabaseAdmin();
+    const patch: Record<string, unknown> = {};
+    if (data.status !== undefined) patch.status = data.status;
+    if (data.guestName !== undefined) patch.guest_name = data.guestName.trim();
+    if (data.quote !== undefined) patch.quote = data.quote.trim();
+    if (data.rating !== undefined) patch.rating = data.rating;
+    if (data.adminNotes !== undefined) patch.admin_notes = data.adminNotes;
+    const { error } = await admin.from("reviews").update(patch).eq("id", data.id);
+    if (error) throw error;
+  });
+
+// ADMIN — hard delete.
+export const deleteReview = createServerFn({ method: "POST" })
+  .inputValidator((data: { id: string }) => data)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const admin = getSupabaseAdmin();
+    const { error } = await admin.from("reviews").delete().eq("id", data.id);
+    if (error) throw error;
+  });

@@ -9,6 +9,21 @@ export type BookingStatus =
 
 export type BookingSource = "web" | "airbnb" | "manual";
 
+export type ReviewStatus = "pending" | "published" | "rejected";
+export type ReviewLanguage = "de" | "en" | "es";
+
+export interface Review {
+  id: string;
+  guest_name: string;
+  quote: string;
+  language: ReviewLanguage;
+  rating: number | null;
+  status: ReviewStatus;
+  admin_notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Booking {
   id: string;
   source: BookingSource;

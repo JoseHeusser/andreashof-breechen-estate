@@ -12,8 +12,30 @@
       "bookings": "Bookings",
       "pricing": "Pricing",
       "calendar": "Calendar",
+      "reviews": "Reviews",
       "analytics": "Visits",
       "settings": "Settings"
+    },
+    "reviews": {
+      "title": "Guest reviews",
+      "submissionUrlHint": "New reviews arrive from /rezension/<token> as 'pending'. They appear on the home page only after you publish them.",
+      "empty": "No reviews in this view.",
+      "confirmDelete": "Really delete this review?",
+      "publish": "Publish",
+      "unpublish": "Hide",
+      "reject": "Reject",
+      "delete": "Delete",
+      "filter": {
+        "all": "All",
+        "pending": "Pending",
+        "published": "Published",
+        "rejected": "Rejected"
+      },
+      "status": {
+        "pending": "pending",
+        "published": "published",
+        "rejected": "rejected"
+      }
     },
     "login": {
       "title": "Admin",

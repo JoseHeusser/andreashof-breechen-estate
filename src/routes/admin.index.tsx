@@ -16,6 +16,9 @@ import {
   updateAirbnbIcalUrl,
   triggerAirbnbSync,
   updateFees,
+  getAllReviews,
+  updateReview,
+  deleteReview,
 } from "@/lib/admin/server-fns";
 import {
   type AnalyticsStats,
@@ -23,6 +26,8 @@ import {
   type Booking,
   type BookingStatus,
   type PricingRow,
+  type Review,
+  type ReviewStatus,
 } from "@/lib/supabase/types";
 
 // Helper: returns date-fns locale based on current i18n language.
@@ -46,7 +51,7 @@ export const Route = createFileRoute("/admin/")({
   component: AdminPage,
 });
 
-type Tab = "bookings" | "pricing" | "calendar" | "analytics" | "settings";
+type Tab = "bookings" | "pricing" | "calendar" | "reviews" | "analytics" | "settings";
 
 const EMPTY_ANALYTICS: AnalyticsStats = {
   totalVisits: 0,
@@ -174,7 +179,7 @@ function AdminPage() {
           </div>
         ) : null}
         <nav className="mx-auto flex max-w-6xl gap-8 px-6 text-[11px] uppercase tracking-[0.28em]">
-          {(["bookings", "pricing", "calendar", "analytics", "settings"] as const).map((k) => (
+          {(["bookings", "pricing", "calendar", "reviews", "analytics", "settings"] as const).map((k) => (
             <button
               key={k}
               onClick={() => setTab(k)}
@@ -198,6 +203,8 @@ function AdminPage() {
           <PricingTab pricing={pricing} settings={settings} onReload={reload} />
         ) : tab === "calendar" ? (
           <CalendarTab bookings={bookings} />
+        ) : tab === "reviews" ? (
+          <ReviewsTab />
         ) : tab === "analytics" ? (
           <AnalyticsTab analytics={analytics} />
         ) : (
@@ -1089,6 +1096,159 @@ function SettingsTab({
           </button>
         </div>
       </section>
+    </div>
+  );
+}
+
+/* ============================================================
+ *  REVIEWS TAB
+ * ========================================================== */
+function ReviewsTab() {
+  const { t } = useTranslation();
+  const [reviews, setReviews] = useState<Review[] | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<"all" | ReviewStatus>("all");
+
+  const reload = async () => {
+    try {
+      const rows = await getAllReviews();
+      setReviews(rows);
+      setError(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  };
+  useEffect(() => {
+    void reload();
+  }, []);
+
+  const setStatus = async (id: string, status: ReviewStatus) => {
+    setBusy(id);
+    try {
+      await updateReview({ data: { id, status } });
+      await reload();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const remove = async (id: string) => {
+    if (!confirm(t("admin.reviews.confirmDelete"))) return;
+    setBusy(id);
+    try {
+      await deleteReview({ data: { id } });
+      await reload();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  if (reviews === null) return <p className="text-muted-foreground">{t("admin.loading")}</p>;
+
+  const filtered = filter === "all" ? reviews : reviews.filter((r) => r.status === filter);
+  const count = (s: ReviewStatus) => reviews.filter((r) => r.status === s).length;
+
+  return (
+    <div>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="font-display text-2xl font-light">{t("admin.reviews.title")}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t("admin.reviews.submissionUrlHint")}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.22em]">
+          {(["all", "pending", "published", "rejected"] as const).map((k) => {
+            const label = t(`admin.reviews.filter.${k}`);
+            const n = k === "all" ? reviews.length : count(k);
+            return (
+              <button
+                key={k}
+                onClick={() => setFilter(k)}
+                className={`border px-3 py-2 transition-colors ${
+                  filter === k
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-border text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {label} ({n})
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {error ? (
+        <p className="mb-4 border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+          {error}
+        </p>
+      ) : null}
+
+      {filtered.length === 0 ? (
+        <p className="mt-8 text-muted-foreground">{t("admin.reviews.empty")}</p>
+      ) : (
+        <ul className="space-y-4">
+          {filtered.map((r) => (
+            <li key={r.id} className="border border-border bg-card p-5">
+              <div className="flex flex-wrap items-baseline justify-between gap-3">
+                <div>
+                  <p className="font-display text-lg font-light">
+                    {r.guest_name}
+                    {r.rating ? <span className="ml-3 text-sage-deep">{"★".repeat(r.rating)}</span> : null}
+                  </p>
+                  <p className="mt-0.5 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                    {r.language.toUpperCase()} · {new Date(r.created_at).toLocaleString("de-DE")} ·{" "}
+                    {t(`admin.reviews.status.${r.status}`)}
+                  </p>
+                </div>
+                <div className="flex gap-2 text-[11px] uppercase tracking-[0.2em]">
+                  {r.status !== "published" ? (
+                    <button
+                      disabled={busy === r.id}
+                      onClick={() => setStatus(r.id, "published")}
+                      className="border border-sage-deep bg-sage-deep px-3 py-2 text-background transition-colors hover:bg-foreground hover:border-foreground disabled:opacity-40"
+                    >
+                      {t("admin.reviews.publish")}
+                    </button>
+                  ) : (
+                    <button
+                      disabled={busy === r.id}
+                      onClick={() => setStatus(r.id, "pending")}
+                      className="border border-border px-3 py-2 text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
+                    >
+                      {t("admin.reviews.unpublish")}
+                    </button>
+                  )}
+                  {r.status !== "rejected" ? (
+                    <button
+                      disabled={busy === r.id}
+                      onClick={() => setStatus(r.id, "rejected")}
+                      className="border border-border px-3 py-2 text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
+                    >
+                      {t("admin.reviews.reject")}
+                    </button>
+                  ) : null}
+                  <button
+                    disabled={busy === r.id}
+                    onClick={() => remove(r.id)}
+                    className="border border-border px-3 py-2 text-destructive transition-colors hover:bg-destructive/5 disabled:opacity-40"
+                  >
+                    {t("admin.reviews.delete")}
+                  </button>
+                </div>
+              </div>
+              <blockquote className="mt-4 whitespace-pre-wrap font-display text-base font-light italic leading-relaxed text-foreground">
+                „{r.quote}"
+              </blockquote>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

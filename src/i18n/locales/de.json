@@ -12,8 +12,30 @@
       "bookings": "Buchungen",
       "pricing": "Preise",
       "calendar": "Kalender",
+      "reviews": "Bewertungen",
       "analytics": "Besuche",
       "settings": "Einstellungen"
+    },
+    "reviews": {
+      "title": "Gäste-Bewertungen",
+      "submissionUrlHint": "Neue Bewertungen kommen von /rezension/<token> und landen als „ausstehend“. Erst nach Freigabe erscheinen sie auf der Startseite.",
+      "empty": "Keine Bewertungen in dieser Ansicht.",
+      "confirmDelete": "Diese Bewertung wirklich löschen?",
+      "publish": "Freigeben",
+      "unpublish": "Verstecken",
+      "reject": "Ablehnen",
+      "delete": "Löschen",
+      "filter": {
+        "all": "Alle",
+        "pending": "Ausstehend",
+        "published": "Freigegeben",
+        "rejected": "Abgelehnt"
+      },
+      "status": {
+        "pending": "ausstehend",
+        "published": "freigegeben",
+        "rejected": "abgelehnt"
+      }
     },
     "login": {
       "title": "Admin",

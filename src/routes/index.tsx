@@ -5,6 +5,7 @@ import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import heroImg from "@/assets/hero-facade.jpeg";
 import { NEARBY_COORDS, type NearbyPlaceId } from "@/data/nearby-places";
 import type { NearbyPlaceMarker } from "@/components/location-map";
+import { getPublishedReviews } from "@/lib/admin/server-fns";
 import {
   Carousel,
   CarouselContent,
@@ -57,7 +58,24 @@ function Home() {
     place: string;
     time: string;
   }[];
-  const reviews = t("reviewsSec.items", { returnObjects: true }) as { q: string; a: string }[];
+  const staticReviews = t("reviewsSec.items", { returnObjects: true }) as { q: string; a: string }[];
+  const [dbReviews, setDbReviews] = useState<{ q: string; a: string }[] | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    getPublishedReviews()
+      .then((rows) => {
+        if (cancelled) return;
+        const mapped = rows.map((r) => ({ q: r.quote, a: r.guest_name }));
+        setDbReviews(mapped);
+      })
+      .catch(() => setDbReviews([]));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  // DB reviews take priority once loaded; fall back to the i18n hard-coded set
+  // for the initial paint and if the fetch fails or returns none.
+  const reviews = dbReviews && dbReviews.length > 0 ? dbReviews : staticReviews;
   const faqs = t("faq.items", { returnObjects: true }) as { q: string; a: string }[];
 
   const [open, setOpen] = useState<number | null>(0);
