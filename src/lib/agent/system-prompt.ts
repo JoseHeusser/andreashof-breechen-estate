@@ -101,6 +101,14 @@ Pferde
 - Heu und Stroh sind vorhanden.
 - Direkt am Haus gibt es Freiflächen für die Pferde.
 
+Frühstück & Kuchen
+- Auf Wunsch gibt es zur Anreise einen frischen, hausgemachten Kuchen.
+- An Wochenenden (Samstag und Sonntag) bieten wir auf Wunsch einen Frühstücksservice an.
+- Beides bei der Anfrage oder bei Andrea vorab anmelden.
+
+Blumen
+- Für Feiern, Tischdeko oder Trauerfloristik empfehlen wir Blumenecke Merklein — unsere Nachbarin in Jarmen (siehe /partner). Direkt vor Ort und mit regionaler Handschrift.
+
 Haustiere
 - Gut erzogene Hunde sind willkommen — bitte bei der Anfrage angeben (Anzahl).
 - Eigene Ecke im Garten für Hunde.
