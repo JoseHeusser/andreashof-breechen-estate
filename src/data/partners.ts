@@ -39,7 +39,20 @@ export const PARTNER_PHOTOS: Record<PartnerId, PartnerPhoto[]> = {
       alt: "Gruppenausflug an die Ostsee während der Fastenwoche",
     },
   ],
-  "blumenecke-merklein": [],
+  "blumenecke-merklein": [
+    {
+      src: "/galerie/partner/blumenecke-01.jpg",
+      alt: "Brautstrauß in Rosé und Pink — Blumenecke Merklein, Jarmen",
+    },
+    {
+      src: "/galerie/partner/blumenecke-02.jpg",
+      alt: "Hoher dramatischer Blumenstrauß in Rot mit Pampasgras — Blumenecke Merklein",
+    },
+    {
+      src: "/galerie/partner/blumenecke-03.jpg",
+      alt: "Weißer Rosenstrauß mit Mohnkapsel — Blumenecke Merklein, Jarmen",
+    },
+  ],
   "gran-gusto": [
     {
       src: "/galerie/partner/catering-01.jpg",
