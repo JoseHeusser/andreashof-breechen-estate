@@ -15,6 +15,7 @@ import { useSmoothAnchorScroll } from "@/hooks/use-smooth-anchor-scroll";
 import { useRevealPage } from "@/hooks/use-reveal-page";
 import { useRouterState } from "@tanstack/react-router";
 import { FloatingLangSwitcher } from "@/components/floating-lang-switcher";
+import { FestivalPopup } from "@/components/festival-popup";
 import { MaintenancePage } from "@/components/maintenance-page";
 import { ChatWidget } from "@/components/ai-agent/chat-widget";
 import { APPLE_TOUCH_ICON, FAVICON_ICO, FAVICON_SVG } from "@/lib/logos";
@@ -39,8 +40,8 @@ function NotFoundComponent() {
             im Gutshaus.
           </h1>
           <p className="mx-auto mt-8 max-w-md text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
-            Diese Seite kennen wir nicht. Vielleicht wurde sie verschoben,
-            umbenannt — oder es war ein Tippfehler. Kein Grund zur Sorge.
+            Diese Seite kennen wir nicht. Vielleicht wurde sie verschoben, umbenannt — oder es war
+            ein Tippfehler. Kein Grund zur Sorge.
           </p>
           <p className="mx-auto mt-2 max-w-md text-sm italic leading-relaxed text-muted-foreground/80">
             This page doesn't exist. · Esta página no existe.
@@ -203,8 +204,7 @@ function RootComponent() {
   // Server-side check: if the URL already carries ?key=PREVIEW_KEY, treat
   // the visit as authorised before any JS hydrates. Safari ITP can
   // randomly drop localStorage; this guarantees a working bypass.
-  const hasPreviewKey =
-    typeof searchStr === "string" && searchStr.includes(`key=${PREVIEW_KEY}`);
+  const hasPreviewKey = typeof searchStr === "string" && searchStr.includes(`key=${PREVIEW_KEY}`);
 
   // SSR sees no localStorage — render the maintenance page first to match
   // the server, then flip after mount if the visitor is whitelisted.
@@ -226,8 +226,7 @@ function RootComponent() {
     }
   }, []);
 
-  const showMaintenance =
-    MAINTENANCE_MODE && !bypass && !previewUnlocked && !hasPreviewKey;
+  const showMaintenance = MAINTENANCE_MODE && !bypass && !previewUnlocked && !hasPreviewKey;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -239,6 +238,7 @@ function RootComponent() {
           <>
             <GlobalScrollEffects />
             <FloatingLangSwitcher />
+            {!bypass ? <FestivalPopup /> : null}
             <Outlet />
             {AI_AGENT_ENABLED && !pathname.startsWith("/admin") && !pathname.startsWith("/api") ? (
               <ChatWidget />
