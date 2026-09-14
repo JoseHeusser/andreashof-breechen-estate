@@ -2,6 +2,7 @@ import { LOGO_ALT, LOGO_BLACK, LOGO_WHITE } from "@/lib/logos";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ChevronDown } from "lucide-react";
 import i18n, { SUPPORTED_LANGS, DEFAULT_LANG, LANG_LABELS, type Lang } from "@/i18n";
 
 const LANG_STORAGE_KEY = "andreashof.lang";
@@ -26,14 +27,12 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
     { href: "/galerie", label: t("nav.gallery"), to: "/galerie" as const },
     { href: "/rueckblicke", label: t("nav.history"), to: "/rueckblicke" as const },
     { href: "/#lage", label: t("nav.location") },
-    { href: "/pferdeboxen", label: t("nav.pferdeboxen"), to: "/pferdeboxen" as const },
-    {
-      href: "/fruehstueckservice",
-      label: t("nav.fruehstueck"),
-      to: "/fruehstueckservice" as const,
-    },
-    { href: "/partner", label: t("nav.partners"), to: "/partner" as const },
-    { href: "/reservations", label: t("nav.inquiry"), to: "/reservations" as const },
+  ];
+  // Add-on offers live under one dropdown so the top bar stays calm.
+  const services = [
+    { label: t("nav.pferdeboxen"), to: "/pferdeboxen" as const },
+    { label: t("nav.fruehstueck"), to: "/fruehstueckservice" as const },
+    { label: t("nav.partners"), to: "/partner" as const },
   ];
 
   const isLight = tone === "light";
@@ -76,6 +75,30 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
               </a>
             ),
           )}
+          {/* Opens on hover and on focus (tap on touch screens). */}
+          <div className="group relative">
+            <button
+              type="button"
+              aria-haspopup="true"
+              className={`flex items-center gap-1.5 text-[11px] uppercase tracking-[0.28em] ${textColor} transition-colors ${hoverColor}`}
+            >
+              {t("nav.services")}
+              <ChevronDown className="h-3 w-3 transition-transform group-focus-within:rotate-180 group-hover:rotate-180" />
+            </button>
+            <div className="invisible absolute left-1/2 top-full z-30 -translate-x-1/2 pt-4 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+              <div className={`min-w-56 border py-2 ${mobilePanelBg}`}>
+                {services.map((s) => (
+                  <Link
+                    key={s.to}
+                    to={s.to}
+                    className={`block whitespace-nowrap px-5 py-2.5 text-[11px] uppercase tracking-[0.22em] ${textColor} transition-colors ${hoverColor}`}
+                  >
+                    {s.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         </nav>
         <Link
           to="/reservations"
@@ -130,6 +153,21 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
                   </a>
                 ),
               )}
+              <p
+                className={`mt-2 px-3 pt-2 text-[10px] uppercase tracking-[0.2em] opacity-60 ${textColor}`}
+              >
+                {t("nav.services")}
+              </p>
+              {services.map((s) => (
+                <Link
+                  key={s.to}
+                  to={s.to}
+                  onClick={() => setMobileOpen(false)}
+                  className={`flex min-h-11 items-center py-2.5 pl-6 pr-3 text-[11px] uppercase tracking-[0.2em] ${textColor} transition-colors ${hoverColor}`}
+                >
+                  {s.label}
+                </Link>
+              ))}
               <Link
                 to="/reservations"
                 onClick={() => setMobileOpen(false)}

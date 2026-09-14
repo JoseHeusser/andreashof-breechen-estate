@@ -73,7 +73,10 @@ export function FestivalPopup() {
   );
 
   useEffect(() => {
-    if (excluded || Date.now() >= FESTIVAL_END.getTime() || recentlyDismissed()) return;
+    if (excluded || Date.now() >= FESTIVAL_END.getTime()) return;
+    // ?festival in the URL always shows it (to preview after a dismissal).
+    const forced = new URLSearchParams(window.location.search).has("festival");
+    if (!forced && recentlyDismissed()) return;
     const id = window.setTimeout(() => setOpen(true), SHOW_DELAY_MS);
     return () => window.clearTimeout(id);
   }, [excluded]);

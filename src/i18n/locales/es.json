@@ -10,7 +10,8 @@
     "inquiry": "Reservas",
     "reserve": "Reservar",
     "pferdeboxen": "Vacaciones con caballo",
-    "fruehstueck": "Servicio de desayuno"
+    "fruehstueck": "Servicio de desayuno",
+    "services": "Servicios"
   },
   "hero": {
     "eyebrow": "Breechen · Pomerania Occidental · Est. 1782",
@@ -483,7 +484,8 @@
       "3 boxes para ponis o caballos grandes – con paja y heno",
       "Espacio para aparcar vuestro camión o remolque de caballos",
       "Limpiamos los boxes cada día",
-      "Un paddock con algo de hierba justo al lado del establo"
+      "Un paddock con algo de hierba justo al lado del establo",
+      "El pienso para tu caballo lo traes tú"
     ],
     "ridesTitle": "Paseos a caballo",
     "ridesItems": [
@@ -494,6 +496,7 @@
     "priceLabel": "Precio",
     "price": "45 €",
     "priceUnit": "por caballo y día",
+    "priceNote": "Incluye box, paja, heno y limpieza diaria.",
     "ctaWhatsapp": "Consultar por WhatsApp",
     "ctaEmail": "Consultar por email",
     "message": "Hola Andrea, me interesan unas vacaciones con mi caballo en el Andreashof."

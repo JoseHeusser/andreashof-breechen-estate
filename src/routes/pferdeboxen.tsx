@@ -80,6 +80,7 @@ function PferdeboxenPage() {
               label={t("pferdeboxen.priceLabel")}
               price={t("pferdeboxen.price")}
               unit={t("pferdeboxen.priceUnit")}
+              note={t("pferdeboxen.priceNote")}
             />
             <ServiceContact
               subject="Urlaub mit dem Pferd"

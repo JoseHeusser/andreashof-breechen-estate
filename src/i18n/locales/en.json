@@ -143,7 +143,8 @@
     "inquiry": "Reservations",
     "reserve": "Reserve",
     "pferdeboxen": "Horse Holidays",
-    "fruehstueck": "Breakfast Service"
+    "fruehstueck": "Breakfast Service",
+    "services": "Services"
   },
   "hero": {
     "eyebrow": "Breechen · Vorpommern · Est. 1782",
@@ -616,7 +617,8 @@
       "3 boxes for ponies or large horses – with straw and hay",
       "Parking for your horse box or trailer",
       "We muck out every day",
-      "A paddock with some green grass right next to the stable"
+      "A paddock with some green grass right next to the stable",
+      "Please bring your own feed for your horse"
     ],
     "ridesTitle": "Riding out",
     "ridesItems": [
@@ -627,6 +629,7 @@
     "priceLabel": "Price",
     "price": "€45",
     "priceUnit": "per horse per day",
+    "priceNote": "Includes box, straw, hay and daily mucking out.",
     "ctaWhatsapp": "Ask via WhatsApp",
     "ctaEmail": "Ask via email",
     "message": "Hi Andrea, I'm interested in a holiday with my horse at Andreashof."

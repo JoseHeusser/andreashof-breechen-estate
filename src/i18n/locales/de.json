@@ -143,7 +143,8 @@
     "inquiry": "Reservierung",
     "reserve": "Reservieren",
     "pferdeboxen": "Urlaub mit Pferd",
-    "fruehstueck": "Frühstücksservice"
+    "fruehstueck": "Frühstücksservice",
+    "services": "Angebote"
   },
   "hero": {
     "eyebrow": "Breechen · Vorpommern · Est. 1782",
@@ -609,14 +610,15 @@
   },
   "pferdeboxen": {
     "eyebrow": "Urlaub mit dem Pferd",
-    "title": "Urlaub mit Deinem Pferd",
-    "intro": "Bring Dein Pferd einfach mit: Direkt am Gutshaus warten gemütliche Boxen, ein Paddock und Ausreitwege durch Vorpommern bis an den Greifswalder Bodden.",
+    "title": "Urlaub mit Ihrem Pferd",
+    "intro": "Bringen Sie Ihr Pferd einfach mit: Direkt am Gutshaus warten gemütliche Boxen, ein Paddock und Ausreitwege durch Vorpommern bis an den Greifswalder Bodden.",
     "stableTitle": "Stall & Versorgung",
     "stableItems": [
       "3 Boxen für Ponys oder Großpferde – mit Stroh und Heu",
-      "Abstellmöglichkeit für euren Pferdetransporter oder Anhänger",
+      "Abstellmöglichkeit für Ihren Pferdetransporter oder Anhänger",
       "Es wird täglich von uns gemistet",
-      "Ein Paddock mit etwas grünem Bewuchs direkt am Stall"
+      "Ein Paddock mit etwas grünem Bewuchs direkt am Stall",
+      "Das Futter für Ihr Pferd bringen Sie bitte selbst mit"
     ],
     "ridesTitle": "Ausreiten",
     "ridesItems": [
@@ -627,23 +629,24 @@
     "priceLabel": "Kosten",
     "price": "45 €",
     "priceUnit": "pro Pferd und Tag",
+    "priceNote": "Inklusive Box, Stroh, Heu und täglichem Misten.",
     "ctaWhatsapp": "Per WhatsApp anfragen",
     "ctaEmail": "Per E-Mail anfragen",
     "message": "Hallo Andrea, ich interessiere mich für einen Urlaub mit meinem Pferd im Andreashof."
   },
   "fruehstueck": {
-    "eyebrow": "Für euren Aufenthalt",
+    "eyebrow": "Für Ihren Aufenthalt",
     "title": "Frühstücksservice & Frühstücksbuffet",
-    "intro": "Wir bieten einen Frühstücksservice an – ganz nach eurer Wunschvorstellung.",
+    "intro": "Wir bieten einen Frühstücksservice an – ganz nach Ihren Wünschen.",
     "items": [
       "Aufbau und Abbau eines schönen Frühstücksbuffets",
-      "Nach euren Wünschen gestaltet",
-      "Ihr braucht euch nur noch an den Tisch zu setzen und zu genießen!"
+      "Nach Ihren Vorstellungen gestaltet",
+      "Sie brauchen sich nur noch an den Tisch zu setzen und zu genießen!"
     ],
     "priceLabel": "Basispreis",
     "price": "15 €",
     "priceUnit": "pro Person",
-    "priceNote": "Der Endpreis richtet sich nach euren Wünschen.",
+    "priceNote": "Der Endpreis richtet sich nach Ihren Wünschen.",
     "ctaWhatsapp": "Per WhatsApp anfragen",
     "ctaEmail": "Per E-Mail anfragen",
     "message": "Hallo Andrea, wir interessieren uns für den Frühstücksservice im Andreashof."
