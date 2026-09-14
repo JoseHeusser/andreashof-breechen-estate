@@ -10,12 +10,13 @@ export const Route = createFileRoute("/api/calendar.ics")({
     handlers: {
       GET: async () => {
         const admin = getSupabaseAdmin();
-        // Only confirmed-or-paid bookings count as "the house is taken".
-        // requested = still under review, doesn't block.
+        // Confirmed-or-paid bookings block the house outright; "requested"
+        // (provisional/not yet confirmed) still needs to show up on Airbnb
+        // so Andrea doesn't get a double-booking while it's pending.
         const { data, error } = await admin
           .from("bookings")
-          .select("id,arrival,departure,source,status")
-          .in("status", ["accepted", "deposit_paid", "fully_paid"]);
+          .select("id,arrival,departure,source,status,is_cleaning")
+          .in("status", ["requested", "accepted", "deposit_paid", "fully_paid"]);
         if (error) {
           return new Response(`error: ${error.message}`, { status: 500 });
         }
@@ -35,13 +36,28 @@ export const Route = createFileRoute("/api/calendar.ics")({
           // Skip Airbnb-sourced rows — Airbnb already knows about those;
           // re-publishing them would create a loop.
           if (b.source === "airbnb") continue;
+
+          // Same ±2-day prep/cleaning buffer used by the availability
+          // checker and the admin calendar (src/lib/agent/tools.ts,
+          // src/routes/admin.index.tsx) — cleaning-only rows never get one.
+          const arr = isoToDate(b.arrival);
+          const dep = isoToDate(b.departure);
+          const [eventStart, eventEnd] = b.is_cleaning
+            ? [arr, dep]
+            : [addDays(arr, -2), addDays(dep, 2)];
+
+          const summary =
+            b.status === "requested"
+              ? `Reserviert für Andreashof (Anfrage, ${b.source})`
+              : `Reserved (${b.source})`;
+
           lines.push(
             "BEGIN:VEVENT",
             `UID:${b.id}@andreashof-breechen.de`,
             `DTSTAMP:${stamp}`,
-            `DTSTART;VALUE=DATE:${b.arrival.replaceAll("-", "")}`,
-            `DTEND;VALUE=DATE:${b.departure.replaceAll("-", "")}`,
-            `SUMMARY:Reserved (${b.source})`,
+            `DTSTART;VALUE=DATE:${dateToIcsDate(eventStart)}`,
+            `DTEND;VALUE=DATE:${dateToIcsDate(eventEnd)}`,
+            `SUMMARY:${summary}`,
             "TRANSP:OPAQUE",
             "END:VEVENT",
           );
@@ -72,4 +88,17 @@ function toIcsDateTime(d: Date) {
     pad(d.getUTCSeconds()) +
     "Z"
   );
+}
+
+function isoToDate(s: string): Date {
+  return new Date(s + "T00:00:00Z");
+}
+function addDays(d: Date, n: number): Date {
+  const next = new Date(d);
+  next.setUTCDate(next.getUTCDate() + n);
+  return next;
+}
+function dateToIcsDate(d: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}`;
 }
