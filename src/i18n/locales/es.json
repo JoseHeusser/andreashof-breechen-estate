@@ -8,7 +8,9 @@
     "location": "Ubicación",
     "partners": "Aliados",
     "inquiry": "Reservas",
-    "reserve": "Reservar"
+    "reserve": "Reservar",
+    "pferdeboxen": "Vacaciones con caballo",
+    "fruehstueck": "Servicio de desayuno"
   },
   "hero": {
     "eyebrow": "Breechen · Pomerania Occidental · Est. 1782",
@@ -261,24 +263,56 @@
         "place": "Lago Kosenow de Gützkow con restaurante italiano",
         "time": "≈ 7 min"
       },
-      { "id": "stralsund", "place": "Stralsund con el Ozeaneum", "time": "≈ 45 min" },
-      { "id": "zarrentiner-see", "place": "Lago Zarrentiner, Jarmen", "time": "≈ 5 min" },
-      { "id": "greifswalder-bodden", "place": "Bodden de Greifswald", "time": "≈ 20 min" },
+      {
+        "id": "stralsund",
+        "place": "Stralsund con el Ozeaneum",
+        "time": "≈ 45 min"
+      },
+      {
+        "id": "zarrentiner-see",
+        "place": "Lago Zarrentiner, Jarmen",
+        "time": "≈ 5 min"
+      },
+      {
+        "id": "greifswalder-bodden",
+        "place": "Bodden de Greifswald",
+        "time": "≈ 20 min"
+      },
       {
         "id": "eldena-ruins",
         "place": "Ruinas del monasterio Eldena en Greifswald",
         "time": "≈ 20 min"
       },
-      { "id": "greifswald-harbour", "place": "Puerto viejo de Greifswald", "time": "≈ 20 min" },
+      {
+        "id": "greifswald-harbour",
+        "place": "Puerto viejo de Greifswald",
+        "time": "≈ 20 min"
+      },
       {
         "id": "cdf-centre",
         "place": "Centro Caspar David Friedrich en Greifswald",
         "time": "≈ 20 min"
       },
-      { "id": "jarmen-centre", "place": "Centro de Jarmen", "time": "≈ 5 min" },
-      { "id": "peenefeeling", "place": "Peenefeeling — arriendo de botes en la Hafeninsel", "time": "≈ 5 min" },
-      { "id": "shopping", "place": "Compras en Jarmen, Gützkow y Greifswald", "time": "≈ 5 min" },
-      { "id": "usedom", "place": "Isla de Usedom", "time": "≈ 45 min" }
+      {
+        "id": "jarmen-centre",
+        "place": "Centro de Jarmen",
+        "time": "≈ 5 min"
+      },
+      {
+        "id": "peenefeeling",
+        "place": "Peenefeeling — arriendo de botes en la Hafeninsel",
+        "time": "≈ 5 min"
+      },
+      {
+        "id": "shopping",
+        "place": "Compras en Jarmen, Gützkow y Greifswald",
+        "time": "≈ 5 min"
+      },
+      {
+        "id": "usedom",
+        "place": "Isla de Usedom",
+        "time": "≈ 45 min"
+      }
     ]
   },
   "reviewsSec": {
@@ -439,5 +473,46 @@
     "imprint": "Aviso legal",
     "privacy": "Privacidad",
     "terms": "Términos"
+  },
+  "pferdeboxen": {
+    "eyebrow": "Vacaciones con caballo",
+    "title": "Vacaciones con tu caballo",
+    "intro": "Trae a tu caballo: junto a la casa te esperan boxes cómodos, un paddock y rutas a caballo por Pomerania Occidental hasta el Greifswalder Bodden.",
+    "stableTitle": "Establo y cuidados",
+    "stableItems": [
+      "3 boxes para ponis o caballos grandes – con paja y heno",
+      "Espacio para aparcar vuestro camión o remolque de caballos",
+      "Limpiamos los boxes cada día",
+      "Un paddock con algo de hierba justo al lado del establo"
+    ],
+    "ridesTitle": "Paseos a caballo",
+    "ridesItems": [
+      "Rutas a caballo por los alrededores de Breechen y Gützkow",
+      "Paseos a caballo junto al Greifswalder Bodden",
+      "Del 1 de noviembre al 31 de marzo de cada año: paseos a caballo en la isla de Usedom"
+    ],
+    "priceLabel": "Precio",
+    "price": "45 €",
+    "priceUnit": "por caballo y día",
+    "ctaWhatsapp": "Consultar por WhatsApp",
+    "ctaEmail": "Consultar por email",
+    "message": "Hola Andrea, me interesan unas vacaciones con mi caballo en el Andreashof."
+  },
+  "fruehstueck": {
+    "eyebrow": "Para vuestra estancia",
+    "title": "Servicio de desayuno y bufé",
+    "intro": "Ofrecemos un servicio de desayuno – totalmente a vuestro gusto.",
+    "items": [
+      "Montamos y recogemos un bonito bufé de desayuno",
+      "Preparado según vuestros deseos",
+      "¡Solo tenéis que sentaros a la mesa y disfrutar!"
+    ],
+    "priceLabel": "Precio base",
+    "price": "15 €",
+    "priceUnit": "por persona",
+    "priceNote": "El precio final depende de lo que deseéis.",
+    "ctaWhatsapp": "Consultar por WhatsApp",
+    "ctaEmail": "Consultar por email",
+    "message": "Hola Andrea, nos interesa el servicio de desayuno en el Andreashof."
   }
 }

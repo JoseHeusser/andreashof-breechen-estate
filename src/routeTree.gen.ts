@@ -14,9 +14,11 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RueckblickeRouteImport } from './routes/rueckblicke'
 import { Route as ReservationsRouteImport } from './routes/reservations'
 import { Route as PlansDemoRouteImport } from './routes/plans-demo'
+import { Route as PferdeboxenRouteImport } from './routes/pferdeboxen'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as ImpressumRouteImport } from './routes/impressum'
 import { Route as GalerieRouteImport } from './routes/galerie'
+import { Route as FruehstueckserviceRouteImport } from './routes/fruehstueckservice'
 import { Route as DatenschutzRouteImport } from './routes/datenschutz'
 import { Route as AgbRouteImport } from './routes/agb'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -54,6 +56,11 @@ const PlansDemoRoute = PlansDemoRouteImport.update({
   path: '/plans-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PferdeboxenRoute = PferdeboxenRouteImport.update({
+  id: '/pferdeboxen',
+  path: '/pferdeboxen',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PartnerRoute = PartnerRouteImport.update({
   id: '/partner',
   path: '/partner',
@@ -67,6 +74,11 @@ const ImpressumRoute = ImpressumRouteImport.update({
 const GalerieRoute = GalerieRouteImport.update({
   id: '/galerie',
   path: '/galerie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FruehstueckserviceRoute = FruehstueckserviceRouteImport.update({
+  id: '/fruehstueckservice',
+  path: '/fruehstueckservice',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DatenschutzRoute = DatenschutzRouteImport.update({
@@ -130,9 +142,11 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/agb': typeof AgbRoute
   '/datenschutz': typeof DatenschutzRoute
+  '/fruehstueckservice': typeof FruehstueckserviceRoute
   '/galerie': typeof GalerieRoute
   '/impressum': typeof ImpressumRoute
   '/partner': typeof PartnerRoute
+  '/pferdeboxen': typeof PferdeboxenRoute
   '/plans-demo': typeof PlansDemoRoute
   '/reservations': typeof ReservationsRoute
   '/rueckblicke': typeof RueckblickeRoute
@@ -150,9 +164,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agb': typeof AgbRoute
   '/datenschutz': typeof DatenschutzRoute
+  '/fruehstueckservice': typeof FruehstueckserviceRoute
   '/galerie': typeof GalerieRoute
   '/impressum': typeof ImpressumRoute
   '/partner': typeof PartnerRoute
+  '/pferdeboxen': typeof PferdeboxenRoute
   '/plans-demo': typeof PlansDemoRoute
   '/reservations': typeof ReservationsRoute
   '/rueckblicke': typeof RueckblickeRoute
@@ -172,9 +188,11 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/agb': typeof AgbRoute
   '/datenschutz': typeof DatenschutzRoute
+  '/fruehstueckservice': typeof FruehstueckserviceRoute
   '/galerie': typeof GalerieRoute
   '/impressum': typeof ImpressumRoute
   '/partner': typeof PartnerRoute
+  '/pferdeboxen': typeof PferdeboxenRoute
   '/plans-demo': typeof PlansDemoRoute
   '/reservations': typeof ReservationsRoute
   '/rueckblicke': typeof RueckblickeRoute
@@ -195,9 +213,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/agb'
     | '/datenschutz'
+    | '/fruehstueckservice'
     | '/galerie'
     | '/impressum'
     | '/partner'
+    | '/pferdeboxen'
     | '/plans-demo'
     | '/reservations'
     | '/rueckblicke'
@@ -215,9 +235,11 @@ export interface FileRouteTypes {
     | '/'
     | '/agb'
     | '/datenschutz'
+    | '/fruehstueckservice'
     | '/galerie'
     | '/impressum'
     | '/partner'
+    | '/pferdeboxen'
     | '/plans-demo'
     | '/reservations'
     | '/rueckblicke'
@@ -236,9 +258,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/agb'
     | '/datenschutz'
+    | '/fruehstueckservice'
     | '/galerie'
     | '/impressum'
     | '/partner'
+    | '/pferdeboxen'
     | '/plans-demo'
     | '/reservations'
     | '/rueckblicke'
@@ -258,9 +282,11 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AgbRoute: typeof AgbRoute
   DatenschutzRoute: typeof DatenschutzRoute
+  FruehstueckserviceRoute: typeof FruehstueckserviceRoute
   GalerieRoute: typeof GalerieRoute
   ImpressumRoute: typeof ImpressumRoute
   PartnerRoute: typeof PartnerRoute
+  PferdeboxenRoute: typeof PferdeboxenRoute
   PlansDemoRoute: typeof PlansDemoRoute
   ReservationsRoute: typeof ReservationsRoute
   RueckblickeRoute: typeof RueckblickeRoute
@@ -310,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlansDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pferdeboxen': {
+      id: '/pferdeboxen'
+      path: '/pferdeboxen'
+      fullPath: '/pferdeboxen'
+      preLoaderRoute: typeof PferdeboxenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/partner': {
       id: '/partner'
       path: '/partner'
@@ -329,6 +362,13 @@ declare module '@tanstack/react-router' {
       path: '/galerie'
       fullPath: '/galerie'
       preLoaderRoute: typeof GalerieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fruehstueckservice': {
+      id: '/fruehstueckservice'
+      path: '/fruehstueckservice'
+      fullPath: '/fruehstueckservice'
+      preLoaderRoute: typeof FruehstueckserviceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/datenschutz': {
@@ -428,9 +468,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AgbRoute: AgbRoute,
   DatenschutzRoute: DatenschutzRoute,
+  FruehstueckserviceRoute: FruehstueckserviceRoute,
   GalerieRoute: GalerieRoute,
   ImpressumRoute: ImpressumRoute,
   PartnerRoute: PartnerRoute,
+  PferdeboxenRoute: PferdeboxenRoute,
   PlansDemoRoute: PlansDemoRoute,
   ReservationsRoute: ReservationsRoute,
   RueckblickeRoute: RueckblickeRoute,

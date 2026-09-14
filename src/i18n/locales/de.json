@@ -141,7 +141,9 @@
     "location": "Lage",
     "partners": "Partner",
     "inquiry": "Reservierung",
-    "reserve": "Reservieren"
+    "reserve": "Reservieren",
+    "pferdeboxen": "Urlaub mit Pferd",
+    "fruehstueck": "Frühstücksservice"
   },
   "hero": {
     "eyebrow": "Breechen · Vorpommern · Est. 1782",
@@ -394,24 +396,56 @@
         "place": "Gützkower Kosenow-See mit italienischem Restaurant",
         "time": "≈ 7 Min"
       },
-      { "id": "stralsund", "place": "Stralsund mit Ozeaneum", "time": "≈ 45 Min" },
-      { "id": "zarrentiner-see", "place": "Zarrentiner See, Jarmen", "time": "≈ 5 Min" },
-      { "id": "greifswalder-bodden", "place": "Greifswalder Bodden", "time": "≈ 20 Min" },
-      { "id": "eldena-ruins", "place": "Klosterruine Eldena in Greifswald", "time": "≈ 20 Min" },
-      { "id": "greifswald-harbour", "place": "Alter Hafen Greifswald", "time": "≈ 20 Min" },
+      {
+        "id": "stralsund",
+        "place": "Stralsund mit Ozeaneum",
+        "time": "≈ 45 Min"
+      },
+      {
+        "id": "zarrentiner-see",
+        "place": "Zarrentiner See, Jarmen",
+        "time": "≈ 5 Min"
+      },
+      {
+        "id": "greifswalder-bodden",
+        "place": "Greifswalder Bodden",
+        "time": "≈ 20 Min"
+      },
+      {
+        "id": "eldena-ruins",
+        "place": "Klosterruine Eldena in Greifswald",
+        "time": "≈ 20 Min"
+      },
+      {
+        "id": "greifswald-harbour",
+        "place": "Alter Hafen Greifswald",
+        "time": "≈ 20 Min"
+      },
       {
         "id": "cdf-centre",
         "place": "Caspar-David-Friedrich-Zentrum in Greifswald",
         "time": "≈ 20 Min"
       },
-      { "id": "jarmen-centre", "place": "Jarmener Stadtzentrum", "time": "≈ 5 Min" },
-      { "id": "peenefeeling", "place": "Peenefeeling Bootsverleih auf der Hafeninsel Jarmen", "time": "≈ 5 Min" },
+      {
+        "id": "jarmen-centre",
+        "place": "Jarmener Stadtzentrum",
+        "time": "≈ 5 Min"
+      },
+      {
+        "id": "peenefeeling",
+        "place": "Peenefeeling Bootsverleih auf der Hafeninsel Jarmen",
+        "time": "≈ 5 Min"
+      },
       {
         "id": "shopping",
         "place": "Einkaufen in Jarmen, Gützkow und Greifswald",
         "time": "≈ 5 Min"
       },
-      { "id": "usedom", "place": "Insel Usedom", "time": "≈ 45 Min" }
+      {
+        "id": "usedom",
+        "place": "Insel Usedom",
+        "time": "≈ 45 Min"
+      }
     ]
   },
   "reviewsSec": {
@@ -572,5 +606,46 @@
     "imprint": "Impressum",
     "privacy": "Datenschutz",
     "terms": "AGB"
+  },
+  "pferdeboxen": {
+    "eyebrow": "Urlaub mit dem Pferd",
+    "title": "Urlaub mit Deinem Pferd",
+    "intro": "Bring Dein Pferd einfach mit: Direkt am Gutshaus warten gemütliche Boxen, ein Paddock und Ausreitwege durch Vorpommern bis an den Greifswalder Bodden.",
+    "stableTitle": "Stall & Versorgung",
+    "stableItems": [
+      "3 Boxen für Ponys oder Großpferde – mit Stroh und Heu",
+      "Abstellmöglichkeit für euren Pferdetransporter oder Anhänger",
+      "Es wird täglich von uns gemistet",
+      "Ein Paddock mit etwas grünem Bewuchs direkt am Stall"
+    ],
+    "ridesTitle": "Ausreiten",
+    "ridesItems": [
+      "Ausreitmöglichkeiten direkt in der Umgebung von Breechen und Gützkow",
+      "Ausreitmöglichkeit am Greifswalder Bodden",
+      "Vom 01.11. bis 31.03. jeden Jahres: Ausreiten auf der Insel Usedom"
+    ],
+    "priceLabel": "Kosten",
+    "price": "45 €",
+    "priceUnit": "pro Pferd und Tag",
+    "ctaWhatsapp": "Per WhatsApp anfragen",
+    "ctaEmail": "Per E-Mail anfragen",
+    "message": "Hallo Andrea, ich interessiere mich für einen Urlaub mit meinem Pferd im Andreashof."
+  },
+  "fruehstueck": {
+    "eyebrow": "Für euren Aufenthalt",
+    "title": "Frühstücksservice & Frühstücksbuffet",
+    "intro": "Wir bieten einen Frühstücksservice an – ganz nach eurer Wunschvorstellung.",
+    "items": [
+      "Aufbau und Abbau eines schönen Frühstücksbuffets",
+      "Nach euren Wünschen gestaltet",
+      "Ihr braucht euch nur noch an den Tisch zu setzen und zu genießen!"
+    ],
+    "priceLabel": "Basispreis",
+    "price": "15 €",
+    "priceUnit": "pro Person",
+    "priceNote": "Der Endpreis richtet sich nach euren Wünschen.",
+    "ctaWhatsapp": "Per WhatsApp anfragen",
+    "ctaEmail": "Per E-Mail anfragen",
+    "message": "Hallo Andrea, wir interessieren uns für den Frühstücksservice im Andreashof."
   }
 }

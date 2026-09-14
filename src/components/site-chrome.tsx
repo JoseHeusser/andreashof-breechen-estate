@@ -26,6 +26,12 @@ export function SiteHeader({ tone = "light" }: { tone?: "light" | "dark" }) {
     { href: "/galerie", label: t("nav.gallery"), to: "/galerie" as const },
     { href: "/rueckblicke", label: t("nav.history"), to: "/rueckblicke" as const },
     { href: "/#lage", label: t("nav.location") },
+    { href: "/pferdeboxen", label: t("nav.pferdeboxen"), to: "/pferdeboxen" as const },
+    {
+      href: "/fruehstueckservice",
+      label: t("nav.fruehstueck"),
+      to: "/fruehstueckservice" as const,
+    },
     { href: "/partner", label: t("nav.partners"), to: "/partner" as const },
     { href: "/reservations", label: t("nav.inquiry"), to: "/reservations" as const },
   ];
@@ -185,6 +191,16 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
+                <Link to="/pferdeboxen" className="hover:text-sage-deep">
+                  {t("nav.pferdeboxen")}
+                </Link>
+              </li>
+              <li>
+                <Link to="/fruehstueckservice" className="hover:text-sage-deep">
+                  {t("nav.fruehstueck")}
+                </Link>
+              </li>
+              <li>
                 <Link to="/partner" className="hover:text-sage-deep">
                   {t("nav.partners")}
                 </Link>
@@ -246,7 +262,7 @@ function MobileLangSwitcher({ tone }: { tone: "light" | "dark" }) {
     setMounted(true);
   }, []);
   useTranslation();
-  const current = ((i18n.language?.slice(0, 2) || DEFAULT_LANG) as Lang);
+  const current = (i18n.language?.slice(0, 2) || DEFAULT_LANG) as Lang;
 
   if (!mounted) return null;
 
