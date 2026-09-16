@@ -18,7 +18,10 @@ import {
   tplAcceptedGuest,
   tplDepositPaidGuest,
   tplFullyPaidGuest,
+  tplBalanceReminderGuest,
+  tplArrivalInstructionsGuest,
 } from "@/lib/email/templates";
+import { SAMPLE_BOOKING } from "@/lib/email/sample-booking";
 
 type PricingQuoteInput = {
   arrival: string;
@@ -659,6 +662,25 @@ export const getAllReviews = createServerFn({ method: "GET" }).handler(async () 
     .order("created_at", { ascending: false });
   if (error) throw error;
   return (data ?? []) as Review[];
+});
+
+// ADMIN — render every email template with a sample booking, for the
+// read-only "E-Mail-Vorlagen" tab.
+export const getEmailPreviews = createServerFn({ method: "GET" }).handler(async () => {
+  await requireAdmin();
+  const b = SAMPLE_BOOKING;
+  return [
+    { key: "requestedGuest", ...tplRequestedGuest(b) },
+    { key: "requestedAdmin", ...tplRequestedAdmin(b) },
+    { key: "acceptedGuest", ...tplAcceptedGuest({ ...b, status: "accepted" }) },
+    { key: "depositPaidGuest", ...tplDepositPaidGuest({ ...b, status: "deposit_paid" }) },
+    { key: "fullyPaidGuest", ...tplFullyPaidGuest({ ...b, status: "fully_paid" }) },
+    { key: "balanceReminder", ...tplBalanceReminderGuest({ ...b, status: "deposit_paid" }) },
+    {
+      key: "arrivalInstructions",
+      ...tplArrivalInstructionsGuest({ ...b, status: "fully_paid" }),
+    },
+  ] as const;
 });
 
 // ADMIN — edit / moderate.

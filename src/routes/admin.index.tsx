@@ -19,6 +19,7 @@ import {
   getAllReviews,
   updateReview,
   deleteReview,
+  getEmailPreviews,
 } from "@/lib/admin/server-fns";
 import {
   type AnalyticsStats,
@@ -51,7 +52,7 @@ export const Route = createFileRoute("/admin/")({
   component: AdminPage,
 });
 
-type Tab = "bookings" | "pricing" | "calendar" | "reviews" | "analytics" | "settings";
+type Tab = "bookings" | "pricing" | "calendar" | "reviews" | "emails" | "analytics" | "settings";
 
 const EMPTY_ANALYTICS: AnalyticsStats = {
   totalVisits: 0,
@@ -178,12 +179,12 @@ function AdminPage() {
             </button>
           </div>
         ) : null}
-        <nav className="mx-auto flex max-w-6xl gap-8 px-6 text-[11px] uppercase tracking-[0.28em]">
-          {(["bookings", "pricing", "calendar", "reviews", "analytics", "settings"] as const).map((k) => (
+        <nav className="mx-auto flex max-w-6xl gap-8 overflow-x-auto px-6 text-[11px] uppercase tracking-[0.28em]">
+          {(["bookings", "pricing", "calendar", "reviews", "emails", "analytics", "settings"] as const).map((k) => (
             <button
               key={k}
               onClick={() => setTab(k)}
-              className={`py-4 transition-colors ${
+              className={`shrink-0 whitespace-nowrap py-4 transition-colors ${
                 tab === k ? "text-foreground border-b-2 border-sage-deep -mb-px" : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -205,6 +206,8 @@ function AdminPage() {
           <CalendarTab bookings={bookings} />
         ) : tab === "reviews" ? (
           <ReviewsTab />
+        ) : tab === "emails" ? (
+          <EmailsTab />
         ) : tab === "analytics" ? (
           <AnalyticsTab analytics={analytics} />
         ) : (
@@ -1096,6 +1099,89 @@ function SettingsTab({
           </button>
         </div>
       </section>
+    </div>
+  );
+}
+
+/* ============================================================
+ *  EMAILS TAB — read-only preview of every automatic email,
+ *  rendered server-side with a sample booking.
+ * ========================================================== */
+type EmailPreview = Awaited<ReturnType<typeof getEmailPreviews>>[number];
+
+const EMAIL_RECIPIENT: Record<EmailPreview["key"], "guest" | "admin"> = {
+  requestedGuest: "guest",
+  requestedAdmin: "admin",
+  acceptedGuest: "guest",
+  depositPaidGuest: "guest",
+  fullyPaidGuest: "guest",
+  balanceReminder: "guest",
+  arrivalInstructions: "guest",
+};
+const MANUAL_EMAILS: ReadonlySet<EmailPreview["key"]> = new Set(["arrivalInstructions"]);
+
+function EmailsTab() {
+  const { t } = useTranslation();
+  const [previews, setPreviews] = useState<EmailPreview[] | null>(null);
+  const [selected, setSelected] = useState<EmailPreview["key"]>("requestedGuest");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getEmailPreviews()
+      .then((rows) => setPreviews([...rows]))
+      .catch((e) => setError(e instanceof Error ? e.message : String(e)));
+  }, []);
+
+  const current = previews?.find((p) => p.key === selected);
+
+  return (
+    <div>
+      <h2 className="font-display text-3xl font-light">{t("admin.emails.title")}</h2>
+      <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{t("admin.emails.intro")}</p>
+      {error && <p className="mt-6 text-sm text-red-700">{error}</p>}
+
+      <div className="mt-8 grid gap-6 md:grid-cols-[260px_1fr]">
+        <ul className="flex flex-col border border-border">
+          {(previews ?? []).map((p) => (
+            <li key={p.key} className="border-b border-border last:border-b-0">
+              <button
+                onClick={() => setSelected(p.key)}
+                className={`w-full px-4 py-3 text-left transition-colors ${
+                  selected === p.key ? "bg-sage/15" : "hover:bg-foreground/5"
+                }`}
+              >
+                <span className="block text-sm">{t(`admin.emails.items.${p.key}.name`)}</span>
+                <span className="mt-1 block text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                  {t(`admin.emails.${EMAIL_RECIPIENT[p.key]}`)}
+                  {MANUAL_EMAILS.has(p.key) ? ` · ${t("admin.emails.manual")}` : ""}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        {current ? (
+          <div className="min-w-0">
+            <dl className="grid grid-cols-[110px_1fr] gap-x-4 gap-y-2 border border-border bg-background px-5 py-4 text-sm">
+              <dt className="text-muted-foreground">{t("admin.emails.to")}</dt>
+              <dd>{t(`admin.emails.${EMAIL_RECIPIENT[current.key]}`)}</dd>
+              <dt className="text-muted-foreground">{t("admin.emails.trigger")}</dt>
+              <dd>{t(`admin.emails.items.${current.key}.trigger`)}</dd>
+              <dt className="text-muted-foreground">{t("admin.emails.subject")}</dt>
+              <dd className="font-medium">{current.subject}</dd>
+            </dl>
+            {/* sandbox="" — the email is shown, never executed or clickable. */}
+            <iframe
+              title={current.subject}
+              srcDoc={current.html}
+              sandbox=""
+              className="mt-4 h-[900px] w-full border border-border bg-white"
+            />
+          </div>
+        ) : (
+          !error && <p className="text-sm text-muted-foreground">{t("admin.emails.loading")}</p>
+        )}
+      </div>
     </div>
   );
 }

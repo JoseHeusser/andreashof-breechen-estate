@@ -14,7 +14,49 @@
       "calendar": "Calendar",
       "reviews": "Reviews",
       "analytics": "Visits",
-      "settings": "Settings"
+      "settings": "Settings",
+      "emails": "Email templates"
+    },
+    "emails": {
+      "title": "Email templates",
+      "intro": "This is how the automatically sent emails look. View only — the details are sample data (Max Mustermann).",
+      "to": "Recipient",
+      "trigger": "When",
+      "subject": "Subject",
+      "manual": "Not automatic",
+      "loading": "Loading preview…",
+      "guest": "Guest",
+      "admin": "Andrea (admin)",
+      "items": {
+        "requestedGuest": {
+          "name": "Request received",
+          "trigger": "Immediately when a guest sends a request via the website or the chat."
+        },
+        "requestedAdmin": {
+          "name": "New request (to Andrea)",
+          "trigger": "Immediately when a guest sends a request via the website or the chat."
+        },
+        "acceptedGuest": {
+          "name": "Booking confirmed",
+          "trigger": "When a booking is moved from “Requested” to “Accepted” in the admin."
+        },
+        "depositPaidGuest": {
+          "name": "Deposit received",
+          "trigger": "When a booking is set to “Deposit paid” in the admin."
+        },
+        "fullyPaidGuest": {
+          "name": "Balance received",
+          "trigger": "When a booking is set to “Fully paid” in the admin."
+        },
+        "balanceReminder": {
+          "name": "Balance reminder",
+          "trigger": "Automatically every morning: 3 days before arrival, if only the deposit has been paid."
+        },
+        "arrivalInstructions": {
+          "name": "Arrival information",
+          "trigger": "Currently not sent automatically — Andrea sends arrival details personally. The template is kept for reference."
+        }
+      }
     },
     "reviews": {
       "title": "Guest reviews",

@@ -14,7 +14,49 @@
       "calendar": "Kalender",
       "reviews": "Bewertungen",
       "analytics": "Besuche",
-      "settings": "Einstellungen"
+      "settings": "Einstellungen",
+      "emails": "E-Mail-Vorlagen"
+    },
+    "emails": {
+      "title": "E-Mail-Vorlagen",
+      "intro": "So sehen die E-Mails aus, die automatisch verschickt werden. Nur zur Ansicht — die Daten sind Beispieldaten (Max Mustermann).",
+      "to": "Empfänger",
+      "trigger": "Wann",
+      "subject": "Betreff",
+      "manual": "Nicht automatisch",
+      "loading": "Vorschau wird geladen…",
+      "guest": "Gast",
+      "admin": "Andrea (Admin)",
+      "items": {
+        "requestedGuest": {
+          "name": "Anfrage erhalten",
+          "trigger": "Sofort, wenn ein Gast eine Anfrage über die Website oder den Chat schickt."
+        },
+        "requestedAdmin": {
+          "name": "Neue Anfrage (an Andrea)",
+          "trigger": "Sofort, wenn ein Gast eine Anfrage über die Website oder den Chat schickt."
+        },
+        "acceptedGuest": {
+          "name": "Buchung bestätigt",
+          "trigger": "Wenn eine Buchung im Admin von „Angefragt“ auf „Angenommen“ gesetzt wird."
+        },
+        "depositPaidGuest": {
+          "name": "Anzahlung erhalten",
+          "trigger": "Wenn eine Buchung im Admin auf „Anzahlung bezahlt“ gesetzt wird."
+        },
+        "fullyPaidGuest": {
+          "name": "Restzahlung erhalten",
+          "trigger": "Wenn eine Buchung im Admin auf „Vollständig bezahlt“ gesetzt wird."
+        },
+        "balanceReminder": {
+          "name": "Erinnerung Restzahlung",
+          "trigger": "Automatisch jeden Morgen: 3 Tage vor Anreise, wenn erst die Anzahlung bezahlt ist."
+        },
+        "arrivalInstructions": {
+          "name": "Anreise-Informationen",
+          "trigger": "Wird derzeit nicht automatisch verschickt — Andrea schickt die Anreise-Infos persönlich. Die Vorlage dient als Referenz."
+        }
+      }
     },
     "reviews": {
       "title": "Gäste-Bewertungen",

@@ -13,7 +13,7 @@ import {
   tplBalanceReminderGuest,
   tplArrivalInstructionsGuest,
 } from "../src/lib/email/templates";
-import type { Booking } from "../src/lib/supabase/types";
+import { SAMPLE_BOOKING } from "../src/lib/email/sample-booking";
 
 const TO = process.argv[2] || "andrea.lietz@web.de";
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -23,34 +23,7 @@ if (!RESEND_API_KEY) {
   process.exit(1);
 }
 
-// Fake booking used to fill in placeholder values across every template.
-const FAKE: Booking = {
-  id: "preview01-1234-5678-abcd-000000000000",
-  source: "web",
-  status: "requested",
-  arrival: "2026-08-15",
-  departure: "2026-08-22",
-  guests: 12,
-  children: 2,
-  needs_crib: true,
-  pets: 1,
-  needs_wheelchair: false,
-  rents_dachboden: false,
-  is_cleaning: false,
-  reminder_balance_sent_at: null,
-  reminder_arrival_sent_at: null,
-  occasion: "Familienfeier",
-  contact_name: "Andrea Lietz",
-  contact_email: "andrea.lietz@web.de",
-  contact_phone: "+49 172 3813606",
-  message: "Bitte prüfen — Test-Anfrage aus dem Vorschau-Skript.",
-  total_price_cents: 260000,
-  deposit_amount_cents: 130000,
-  internal_notes: null,
-  airbnb_uid: null,
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-};
+const FAKE = SAMPLE_BOOKING;
 
 const templates = [
   { key: "1_requested_guest", tpl: tplRequestedGuest(FAKE) },
