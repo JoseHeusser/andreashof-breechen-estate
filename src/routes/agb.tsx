@@ -47,18 +47,25 @@ function AGBPage() {
             <h2 className="font-display text-2xl">2. Buchung und Vertragsschluss</h2>
             <p className="mt-3">
               Eine Anfrage über die Website, per E-Mail oder telefonisch ist zunächst unverbindlich.
-              Ein Vertrag kommt erst zustande, wenn wir die Buchung schriftlich oder per E-Mail
-              bestätigen und die vereinbarte Anzahlung fristgerecht eingeht, sofern keine andere
-              Vereinbarung getroffen wurde.
+              Nach unserer Bestätigung erhalten Sie den Mietvertrag. Der Vertrag ist verbindlich
+              geschlossen, sobald der von Ihnen unterschriebene Mietvertrag bei uns eingegangen ist.
+              Die Unterkunft darf nur mit der im Mietvertrag angegebenen Personenzahl und
+              ausschließlich zu Urlaubszwecken genutzt werden.
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">3. Zahlungsbedingungen</h2>
             <p className="mt-3">
-              Zur verbindlichen Sicherung der Buchung ist eine Anzahlung in Höhe von 50 % des
-              Gesamtbetrags gemäß Buchungsbestätigung bzw. Zahlungsaufforderung zu leisten. Der
-              Restbetrag ist spätestens 2 Tage vor Anreise zu entrichten, sofern nichts anderes
-              vereinbart wurde. Maßgeblich ist der Zahlungseingang auf dem angegebenen Konto.
+              Eine Anzahlung in Höhe von 50 % des Gesamtbetrags ist sofort nach Vertragsschluss
+              fällig. Der Restbetrag ist spätestens 2 Tage vor Anreise zu entrichten, sofern nichts
+              anderes vereinbart wurde. Maßgeblich ist der Zahlungseingang auf dem angegebenen
+              Konto.
+            </p>
+            <p className="mt-3">
+              Zusätzlich ist mit der Zahlung eine Kaution in Höhe von 500 € zu entrichten. Sie wird
+              nach der Mietzeit abzüglich etwaiger Verbrauchskosten innerhalb von 10 Tagen per
+              Überweisung erstattet und nicht verzinst. Wohnen mehr Personen im Haus als im
+              Mietvertrag vereinbart, berechnen wir 45 € pro zusätzlicher Person und Nacht.
             </p>
           </section>
           <section>
@@ -77,10 +84,9 @@ function AGBPage() {
             <h2 className="font-display text-2xl">5. Stornierungsbedingungen</h2>
             <p className="mt-3">
               Kostenfreie Stornierung bis zum 60. Tag vor Anreise. Bei späterer Stornierung werden
-              50 % des Gesamtbetrags fällig.
-              Maßgeblich ist der Zugang der Stornierungserklärung bei uns. Wir bemühen uns um eine
-              anderweitige Vermietung; soweit dadurch Einnahmen erzielt werden, werden diese auf die
-              Stornierungskosten angerechnet.
+              50 % des Gesamtbetrags fällig. Maßgeblich ist der Zugang der Stornierungserklärung bei
+              uns. Wir bemühen uns um eine anderweitige Vermietung; soweit dadurch Einnahmen erzielt
+              werden, werden diese auf die Stornierungskosten angerechnet.
             </p>
           </section>
           <section>
@@ -88,16 +94,26 @@ function AGBPage() {
             <p className="mt-3">
               Check-in: ab 11:00 Uhr · Check-out: bis 16:00 Uhr. Der Check-in erfolgt in der Regel
               über die Schlüsselbox. Den aktuellen Code erhalten Gäste einen Tag vor Anreise per
-              E-Mail. Hausvater Gunter ist am ersten Abend vor Ort und beantwortet bei Bedarf
-              auftretende Fragen.
+              E-Mail. Erfolgt die Anreise nach 20:00 Uhr, geben Sie uns bitte vorher Bescheid.
+              Hausvater Gunter ist am ersten Abend vor Ort und beantwortet bei Bedarf auftretende
+              Fragen.
+            </p>
+            <p className="mt-3">
+              Bitte prüfen Sie nach der Ankunft die Inventarliste im Haus und melden Sie etwaige
+              Fehlbestände spätestens am Folgetag. Am Abreisetag übergeben Sie das Haus bis 16:00
+              Uhr besenrein. Dazu gehören: Bettwäsche abziehen, Geschirr spülen sowie Papierkörbe
+              und Mülleimer leeren. Die Schlüssel legen Sie bitte zurück in die Schlüsselbox.
             </p>
           </section>
           <section>
             <h2 className="font-display text-2xl">7. Hausordnung</h2>
             <p className="mt-3">
-              Wir bitten um Rücksicht auf die Nachbarschaft. Nachtruhe ab 22:00 Uhr. Veranstaltungen
-              sind nach Absprache möglich. Gäste haften für Schäden, die durch sie, Mitreisende oder
-              Besucher verursacht werden, soweit sie diese zu vertreten haben.
+              Das Gutshaus ist ein Nichtraucherhaus. Wir bitten um Rücksicht auf die Dorfbewohner:
+              Musizieren und andere laute Geräusche sind zwischen 00:00 und 07:00 Uhr zu
+              unterlassen, Radio, Fernseher und Musikanlagen bitte nur in Zimmerlautstärke.
+              Veranstaltungen sind nach Absprache möglich. Ein Hund ist nach vorheriger Absprache
+              erlaubt. Gäste haften für Schäden, die durch sie, Mitreisende, Besucher oder
+              mitgebrachte Tiere verursacht werden, soweit sie diese zu vertreten haben.
             </p>
           </section>
           <section>

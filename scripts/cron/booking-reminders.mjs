@@ -164,7 +164,7 @@ function arrivalInstructionsHtml(b) {
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Vor Ort</h2>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Der Schlüssel liegt in der Schlüsselbox bereit. Vor und neben dem Gutshaus gibt es genügend Parkplätze für Ihre Fahrzeuge. Hausvater Gunter ist am ersten Abend vor Ort, um bei Bedarf auftretende Fragen zu beantworten.</p>
     <h2 style="margin:24px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:${COLORS.sageDeep};">Abreise</h2>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-out bis <strong>16:00 Uhr</strong> am ${formatDate(b.departure)}. Bitte bringen Sie die Schlüssel auf den Esstisch, alles Weitere übernehmen wir.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Check-out bis <strong>16:00 Uhr</strong> am ${formatDate(b.departure)}. Bitte ziehen Sie vor der Abreise die Bettwäsche ab, spülen Sie das Geschirr, leeren Sie Papierkörbe und Mülleimer und legen Sie die Schlüssel zurück in die Schlüsselbox. Alles Weitere übernehmen wir.</p>
     <p style="margin:24px 0 0;font-size:15px;line-height:1.6;">Sollten Sie irgendwelche Fragen haben — vor, während oder nach Ihrem Aufenthalt — sind wir jederzeit für Sie da.</p>
     <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;

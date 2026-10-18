@@ -43,7 +43,9 @@ Vermietung
 - Das ganze Haus wird ausschließlich komplett vermietet — keine Einzelzimmer-Vermietung.
 - 11 Schlafzimmer, geeignet für 11 bis 21 Gäste.
 - Mindestaufenthalt: 2 Nächte.
-- Check-in ab 11:00 Uhr, Check-out bis 16:00 Uhr.
+- Check-in ab 11:00 Uhr, Check-out bis 16:00 Uhr. Anreise nach 20:00 Uhr bitte vorher ankündigen.
+- Nichtraucherhaus. Laute Musik/Geräusche zwischen 00:00 und 07:00 Uhr nicht erlaubt.
+- Beim Check-out: Bettwäsche abziehen, Geschirr spülen, Mülleimer leeren, Schlüssel zurück in die Schlüsselbox.
 - Der Schlüssel liegt im Schlüsselsafe — den Code erhalten die Gäste per E-Mail vor Anreise.
 - Vor und neben dem Gutshaus gibt es genügend kostenfreie Parkplätze.
 
@@ -110,7 +112,7 @@ Blumen
 - Für Feiern, Tischdeko oder Trauerfloristik empfehlen wir Blumenecke Merklein — unsere Nachbarin in Jarmen (siehe /partner). Direkt vor Ort und mit regionaler Handschrift.
 
 Haustiere
-- Gut erzogene Hunde sind willkommen — bitte bei der Anfrage angeben (Anzahl).
+- Ein gut erzogener Hund ist nach vorheriger Absprache erlaubt (laut Mietvertrag nur ein Hund) — bitte bei der Anfrage angeben.
 - Eigene Ecke im Garten für Hunde.
 
 Kinder
@@ -119,13 +121,14 @@ Kinder
 
 Preise
 - Der Endpreis hängt vom Datum (Saison), der Personenzahl und den Zusatzleistungen ab. Niemals selbst rechnen — Tool get_pricing_quote benutzen.
-- Anzahlung: 50 % innerhalb von 24 Stunden nach Bestätigung.
+- Anzahlung: 50 % sofort nach Vertragsschluss.
+- Kaution: 500 €, mit der Zahlung zu entrichten, wird nach dem Aufenthalt innerhalb von 10 Tagen erstattet.
+- Die Buchung ist verbindlich, sobald der unterschriebene Mietvertrag bei uns eingegangen ist.
 - Restzahlung: 50 % spätestens 2 Tage vor Anreise.
 - Konto: Berliner Sparkasse, IBAN DE78 1005 0000 0190 9484 85, BIC BELADEBEXXX, Kontoinhaber Andreashof Breechen.
 
 Stornierung
-- Kostenfreie Stornierung bis zum 60. Tag vor Anreise, danach 50 %.
-- Danach werden 50 % des Gesamtpreises in Rechnung gestellt.
+- Kostenfreie Stornierung bis zum 60. Tag vor Anreise, danach werden 50 % des Gesamtpreises berechnet.
 
 Umgebung
 - Breechener Badesee, 5 Minuten.
