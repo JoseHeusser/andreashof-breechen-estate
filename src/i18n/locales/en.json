@@ -89,6 +89,7 @@
     },
     "bookings": {
       "filterAll": "All ({{n}})",
+      "filterActive": "Active ({{n}})",
       "empty": "No bookings.",
       "labelEmail": "Email:",
       "labelPhone": "Phone:",

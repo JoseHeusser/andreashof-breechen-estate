@@ -223,11 +223,22 @@ function AdminPage() {
  * ========================================================== */
 function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: () => void }) {
   const { t } = useTranslation();
-  const [filter, setFilter] = useState<BookingStatus | "all">("all");
+  // "active" is the default view: everything except cancelled bookings,
+  // which would otherwise pile up in the list. "all" still shows them.
+  const [filter, setFilter] = useState<BookingStatus | "all" | "active">("active");
   // Hide auto-generated Airbnb cleaning entries from the main list — they
   // show up in the Kalender tab instead (no contact data, no editing).
   const guestBookings = useMemo(() => bookings.filter((b) => !b.is_cleaning), [bookings]);
-  const filtered = filter === "all" ? guestBookings : guestBookings.filter((b) => b.status === filter);
+  const activeBookings = useMemo(
+    () => guestBookings.filter((b) => b.status !== "cancelled"),
+    [guestBookings],
+  );
+  const filtered =
+    filter === "active"
+      ? activeBookings
+      : filter === "all"
+        ? guestBookings
+        : guestBookings.filter((b) => b.status === filter);
   const counts = useMemo(() => {
     const c: Record<string, number> = {};
     for (const b of guestBookings) c[b.status] = (c[b.status] ?? 0) + 1;
@@ -237,6 +248,7 @@ function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: ()
   return (
     <div>
       <div className="mb-6 flex flex-wrap gap-2 text-xs">
+        <FilterChip active={filter === "active"} onClick={() => setFilter("active")} label={t("admin.bookings.filterActive", { n: activeBookings.length })} />
         <FilterChip active={filter === "all"} onClick={() => setFilter("all")} label={t("admin.bookings.filterAll", { n: guestBookings.length })} />
         {(["requested", "accepted", "deposit_paid", "fully_paid", "cancelled", "completed"] as BookingStatus[]).map((s) => (
           <FilterChip
