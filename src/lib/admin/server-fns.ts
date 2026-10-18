@@ -263,7 +263,7 @@ function formatDateKey(date: Date): string {
  * PRICING — base price update + create / delete special date ranges
  * -------------------------------------------------------------- */
 export const updateBasePrice = createServerFn({ method: "POST" })
-  .inputValidator((data: { pricePerNightCents: number }) => data)
+  .validator((data: { pricePerNightCents: number }) => data)
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
@@ -275,7 +275,7 @@ export const updateBasePrice = createServerFn({ method: "POST" })
   });
 
 export const upsertSpecialPrice = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       id?: string;
       label: string;
@@ -306,7 +306,7 @@ export const upsertSpecialPrice = createServerFn({ method: "POST" })
   });
 
 export const deleteSpecialPrice = createServerFn({ method: "POST" })
-  .inputValidator((data: { id: string }) => data)
+  .validator((data: { id: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
@@ -379,7 +379,7 @@ async function calculatePricingQuote(
  * BOOKINGS — status change + notes + price
  * -------------------------------------------------------------- */
 export const updateBooking = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       id: string;
       status?: BookingStatus;
@@ -441,7 +441,7 @@ export const updateBooking = createServerFn({ method: "POST" })
  * No auth required; status defaults to 'requested'.
  * -------------------------------------------------------------- */
 export const createBookingRequest = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       arrival: string;
       departure: string;
@@ -520,7 +520,7 @@ export const createBookingRequest = createServerFn({ method: "POST" })
  * range, in which case the highest-priority special wins.
  * -------------------------------------------------------------- */
 export const getPricingQuote = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       arrival: string;
       departure: string;
@@ -569,7 +569,7 @@ export const getBlockedRanges = createServerFn({ method: "GET" }).handler(async 
  * SETTINGS + manual Airbnb sync
  * -------------------------------------------------------------- */
 export const updateAirbnbIcalUrl = createServerFn({ method: "POST" })
-  .inputValidator((data: { url: string }) => data)
+  .validator((data: { url: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
@@ -584,7 +584,7 @@ export const updateAirbnbIcalUrl = createServerFn({ method: "POST" })
  * Stored as integers (cents / persons) in `settings`.
  * -------------------------------------------------------------- */
 export const updateFees = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       cleaningFeeCents?: number;
       baseOccupancy?: number;
@@ -644,14 +644,14 @@ const REVIEW_URL_TOKEN = () => process.env.REVIEW_URL_TOKEN || "danke-andreashof
 // PUBLIC — check whether a submission token matches. Used by the
 // route's beforeLoad to decide 404 vs render form.
 export const checkReviewToken = createServerFn({ method: "POST" })
-  .inputValidator((data: { token: string }) => data)
+  .validator((data: { token: string }) => data)
   .handler(async ({ data }) => {
     return { valid: data.token === REVIEW_URL_TOKEN() };
   });
 
 // PUBLIC — submit a new review. Requires token match.
 export const createReview = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       token: string;
       guestName: string;
@@ -771,7 +771,7 @@ export const getEmailThreads = createServerFn({ method: "GET" }).handler(async (
 });
 
 export const getEmailThread = createServerFn({ method: "POST" })
-  .inputValidator((data: { counterpart: string }) => data)
+  .validator((data: { counterpart: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
@@ -796,7 +796,7 @@ export const getEmailThread = createServerFn({ method: "POST" })
 // ADMIN — the rental contract for one booking, pre-filled and ready to
 // print to PDF from /admin/vertrag/$id.
 export const getBookingContract = createServerFn({ method: "POST" })
-  .inputValidator((data: { id: string }) => data)
+  .validator((data: { id: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();
@@ -819,7 +819,7 @@ export const getBookingContract = createServerFn({ method: "POST" })
 const MAX_ATTACHMENT_BYTES = 3 * 1024 * 1024;
 
 export const sendGuestEmail = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       // Either a booking (recipient is looked up) or a plain address,
       // so replies in the Postfach work even without a booking.
@@ -895,7 +895,7 @@ export const getEmailPreviews = createServerFn({ method: "GET" }).handler(async 
 
 // ADMIN — edit / moderate.
 export const updateReview = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       id: string;
       status?: ReviewStatus;
@@ -920,7 +920,7 @@ export const updateReview = createServerFn({ method: "POST" })
 
 // ADMIN — hard delete.
 export const deleteReview = createServerFn({ method: "POST" })
-  .inputValidator((data: { id: string }) => data)
+  .validator((data: { id: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin();
     const admin = getSupabaseAdmin();

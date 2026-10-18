@@ -9,87 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ZimmerRouteImport } from './routes/zimmer'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as RueckblickeRouteImport } from './routes/rueckblicke'
-import { Route as ReservationsRouteImport } from './routes/reservations'
-import { Route as PlansDemoRouteImport } from './routes/plans-demo'
-import { Route as PferdeboxenRouteImport } from './routes/pferdeboxen'
-import { Route as PartnerRouteImport } from './routes/partner'
-import { Route as ImpressumRouteImport } from './routes/impressum'
-import { Route as GalerieRouteImport } from './routes/galerie'
-import { Route as FruehstueckserviceRouteImport } from './routes/fruehstueckservice'
-import { Route as DatenschutzRouteImport } from './routes/datenschutz'
-import { Route as AgbRouteImport } from './routes/agb'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AgbRouteImport } from './routes/agb'
+import { Route as DatenschutzRouteImport } from './routes/datenschutz'
+import { Route as FruehstueckserviceRouteImport } from './routes/fruehstueckservice'
+import { Route as GalerieRouteImport } from './routes/galerie'
+import { Route as ImpressumRouteImport } from './routes/impressum'
+import { Route as PartnerRouteImport } from './routes/partner'
+import { Route as PferdeboxenRouteImport } from './routes/pferdeboxen'
+import { Route as PlansDemoRouteImport } from './routes/plans-demo'
+import { Route as ReservationsRouteImport } from './routes/reservations'
+import { Route as RueckblickeRouteImport } from './routes/rueckblicke'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ZimmerRouteImport } from './routes/zimmer'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as RezensionTokenRouteImport } from './routes/rezension.$token'
-import { Route as ApiTrackVisitRouteImport } from './routes/api/track-visit'
-import { Route as ApiResendInboundRouteImport } from './routes/api/resend-inbound'
-import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as ApiCalendarDoticsRouteImport } from './routes/api/calendar[.]ics'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as ApiCalendarDoticsRouteImport } from './routes/api/calendar[.]ics'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiResendInboundRouteImport } from './routes/api/resend-inbound'
+import { Route as ApiTrackVisitRouteImport } from './routes/api/track-visit'
+import { Route as RezensionTokenRouteImport } from './routes/rezension.$token'
 import { Route as AdminVertragIdRouteImport } from './routes/admin.vertrag.$id'
 
-const ZimmerRoute = ZimmerRouteImport.update({
-  id: '/zimmer',
-  path: '/zimmer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RueckblickeRoute = RueckblickeRouteImport.update({
-  id: '/rueckblicke',
-  path: '/rueckblicke',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReservationsRoute = ReservationsRouteImport.update({
-  id: '/reservations',
-  path: '/reservations',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlansDemoRoute = PlansDemoRouteImport.update({
-  id: '/plans-demo',
-  path: '/plans-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PferdeboxenRoute = PferdeboxenRouteImport.update({
-  id: '/pferdeboxen',
-  path: '/pferdeboxen',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PartnerRoute = PartnerRouteImport.update({
-  id: '/partner',
-  path: '/partner',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ImpressumRoute = ImpressumRouteImport.update({
-  id: '/impressum',
-  path: '/impressum',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GalerieRoute = GalerieRouteImport.update({
-  id: '/galerie',
-  path: '/galerie',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FruehstueckserviceRoute = FruehstueckserviceRouteImport.update({
-  id: '/fruehstueckservice',
-  path: '/fruehstueckservice',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DatenschutzRoute = DatenschutzRouteImport.update({
-  id: '/datenschutz',
-  path: '/datenschutz',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgbRoute = AgbRouteImport.update({
-  id: '/agb',
-  path: '/agb',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -97,9 +42,64 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AgbRoute = AgbRouteImport.update({
+  id: '/agb',
+  path: '/agb',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DatenschutzRoute = DatenschutzRouteImport.update({
+  id: '/datenschutz',
+  path: '/datenschutz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FruehstueckserviceRoute = FruehstueckserviceRouteImport.update({
+  id: '/fruehstueckservice',
+  path: '/fruehstueckservice',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalerieRoute = GalerieRouteImport.update({
+  id: '/galerie',
+  path: '/galerie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImpressumRoute = ImpressumRouteImport.update({
+  id: '/impressum',
+  path: '/impressum',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnerRoute = PartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PferdeboxenRoute = PferdeboxenRouteImport.update({
+  id: '/pferdeboxen',
+  path: '/pferdeboxen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlansDemoRoute = PlansDemoRouteImport.update({
+  id: '/plans-demo',
+  path: '/plans-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReservationsRoute = ReservationsRouteImport.update({
+  id: '/reservations',
+  path: '/reservations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RueckblickeRoute = RueckblickeRouteImport.update({
+  id: '/rueckblicke',
+  path: '/rueckblicke',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZimmerRoute = ZimmerRouteImport.update({
+  id: '/zimmer',
+  path: '/zimmer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -107,19 +107,14 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const RezensionTokenRoute = RezensionTokenRouteImport.update({
-  id: '/rezension/$token',
-  path: '/rezension/$token',
-  getParentRoute: () => rootRouteImport,
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
 } as any)
-const ApiTrackVisitRoute = ApiTrackVisitRouteImport.update({
-  id: '/api/track-visit',
-  path: '/api/track-visit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiResendInboundRoute = ApiResendInboundRouteImport.update({
-  id: '/api/resend-inbound',
-  path: '/api/resend-inbound',
+const ApiCalendarDoticsRoute = ApiCalendarDoticsRouteImport.update({
+  id: '/api/calendar.ics',
+  path: '/api/calendar.ics',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiChatRoute = ApiChatRouteImport.update({
@@ -127,15 +122,20 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiCalendarDoticsRoute = ApiCalendarDoticsRouteImport.update({
-  id: '/api/calendar.ics',
-  path: '/api/calendar.ics',
+const ApiResendInboundRoute = ApiResendInboundRouteImport.update({
+  id: '/api/resend-inbound',
+  path: '/api/resend-inbound',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AdminRoute,
+const ApiTrackVisitRoute = ApiTrackVisitRouteImport.update({
+  id: '/api/track-visit',
+  path: '/api/track-visit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RezensionTokenRoute = RezensionTokenRouteImport.update({
+  id: '/rezension/$token',
+  path: '/rezension/$token',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminVertragIdRoute = AdminVertragIdRouteImport.update({
   id: '/vertrag/$id',
@@ -313,88 +313,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/zimmer': {
-      id: '/zimmer'
-      path: '/zimmer'
-      fullPath: '/zimmer'
-      preLoaderRoute: typeof ZimmerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rueckblicke': {
-      id: '/rueckblicke'
-      path: '/rueckblicke'
-      fullPath: '/rueckblicke'
-      preLoaderRoute: typeof RueckblickeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reservations': {
-      id: '/reservations'
-      path: '/reservations'
-      fullPath: '/reservations'
-      preLoaderRoute: typeof ReservationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/plans-demo': {
-      id: '/plans-demo'
-      path: '/plans-demo'
-      fullPath: '/plans-demo'
-      preLoaderRoute: typeof PlansDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pferdeboxen': {
-      id: '/pferdeboxen'
-      path: '/pferdeboxen'
-      fullPath: '/pferdeboxen'
-      preLoaderRoute: typeof PferdeboxenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/partner': {
-      id: '/partner'
-      path: '/partner'
-      fullPath: '/partner'
-      preLoaderRoute: typeof PartnerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/impressum': {
-      id: '/impressum'
-      path: '/impressum'
-      fullPath: '/impressum'
-      preLoaderRoute: typeof ImpressumRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/galerie': {
-      id: '/galerie'
-      path: '/galerie'
-      fullPath: '/galerie'
-      preLoaderRoute: typeof GalerieRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fruehstueckservice': {
-      id: '/fruehstueckservice'
-      path: '/fruehstueckservice'
-      fullPath: '/fruehstueckservice'
-      preLoaderRoute: typeof FruehstueckserviceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/datenschutz': {
-      id: '/datenschutz'
-      path: '/datenschutz'
-      fullPath: '/datenschutz'
-      preLoaderRoute: typeof DatenschutzRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agb': {
-      id: '/agb'
-      path: '/agb'
-      fullPath: '/agb'
-      preLoaderRoute: typeof AgbRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -404,11 +327,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/agb': {
+      id: '/agb'
+      path: '/agb'
+      fullPath: '/agb'
+      preLoaderRoute: typeof AgbRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/datenschutz': {
+      id: '/datenschutz'
+      path: '/datenschutz'
+      fullPath: '/datenschutz'
+      preLoaderRoute: typeof DatenschutzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fruehstueckservice': {
+      id: '/fruehstueckservice'
+      path: '/fruehstueckservice'
+      fullPath: '/fruehstueckservice'
+      preLoaderRoute: typeof FruehstueckserviceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/galerie': {
+      id: '/galerie'
+      path: '/galerie'
+      fullPath: '/galerie'
+      preLoaderRoute: typeof GalerieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/impressum': {
+      id: '/impressum'
+      path: '/impressum'
+      fullPath: '/impressum'
+      preLoaderRoute: typeof ImpressumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partner': {
+      id: '/partner'
+      path: '/partner'
+      fullPath: '/partner'
+      preLoaderRoute: typeof PartnerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pferdeboxen': {
+      id: '/pferdeboxen'
+      path: '/pferdeboxen'
+      fullPath: '/pferdeboxen'
+      preLoaderRoute: typeof PferdeboxenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plans-demo': {
+      id: '/plans-demo'
+      path: '/plans-demo'
+      fullPath: '/plans-demo'
+      preLoaderRoute: typeof PlansDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reservations': {
+      id: '/reservations'
+      path: '/reservations'
+      fullPath: '/reservations'
+      preLoaderRoute: typeof ReservationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rueckblicke': {
+      id: '/rueckblicke'
+      path: '/rueckblicke'
+      fullPath: '/rueckblicke'
+      preLoaderRoute: typeof RueckblickeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zimmer': {
+      id: '/zimmer'
+      path: '/zimmer'
+      fullPath: '/zimmer'
+      preLoaderRoute: typeof ZimmerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -418,25 +418,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/rezension/$token': {
-      id: '/rezension/$token'
-      path: '/rezension/$token'
-      fullPath: '/rezension/$token'
-      preLoaderRoute: typeof RezensionTokenRouteImport
-      parentRoute: typeof rootRouteImport
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/api/track-visit': {
-      id: '/api/track-visit'
-      path: '/api/track-visit'
-      fullPath: '/api/track-visit'
-      preLoaderRoute: typeof ApiTrackVisitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/resend-inbound': {
-      id: '/api/resend-inbound'
-      path: '/api/resend-inbound'
-      fullPath: '/api/resend-inbound'
-      preLoaderRoute: typeof ApiResendInboundRouteImport
+    '/api/calendar.ics': {
+      id: '/api/calendar.ics'
+      path: '/api/calendar.ics'
+      fullPath: '/api/calendar.ics'
+      preLoaderRoute: typeof ApiCalendarDoticsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/chat': {
@@ -446,19 +439,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/calendar.ics': {
-      id: '/api/calendar.ics'
-      path: '/api/calendar.ics'
-      fullPath: '/api/calendar.ics'
-      preLoaderRoute: typeof ApiCalendarDoticsRouteImport
+    '/api/resend-inbound': {
+      id: '/api/resend-inbound'
+      path: '/api/resend-inbound'
+      fullPath: '/api/resend-inbound'
+      preLoaderRoute: typeof ApiResendInboundRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof AdminRoute
+    '/api/track-visit': {
+      id: '/api/track-visit'
+      path: '/api/track-visit'
+      fullPath: '/api/track-visit'
+      preLoaderRoute: typeof ApiTrackVisitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rezension/$token': {
+      id: '/rezension/$token'
+      path: '/rezension/$token'
+      fullPath: '/rezension/$token'
+      preLoaderRoute: typeof RezensionTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/vertrag/$id': {
       id: '/admin/vertrag/$id'

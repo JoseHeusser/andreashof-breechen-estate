@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import { useEffect, useState } from "react";
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import { LangProvider } from "@/i18n/lang-provider";
 import { useSmoothAnchorScroll } from "@/hooks/use-smooth-anchor-scroll";
@@ -70,7 +71,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
 
