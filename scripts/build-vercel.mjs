@@ -147,7 +147,7 @@ await writeFile(
   join(outFn, ".vc-config.json"),
   JSON.stringify(
     {
-      runtime: "nodejs20.x",
+      runtime: "nodejs22.x",
       handler: "index.mjs",
       launcherType: "Nodejs",
       shouldAddHelpers: false,
@@ -187,4 +187,4 @@ await writeFile(join(outDir, "config.json"), JSON.stringify(config, null, 2));
 
 console.log("[build-vercel] wrote .vercel/output/");
 console.log(`  static files: ${staticEntries.length} top-level entries`);
-console.log(`  function: index.func (nodejs20.x, bundle ~${bundleSizeKb.toFixed(0)} KB)`);
+console.log(`  function: index.func (nodejs22.x, bundle ~${bundleSizeKb.toFixed(0)} KB)`);
