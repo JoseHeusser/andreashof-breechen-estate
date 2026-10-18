@@ -76,8 +76,8 @@ function AGBPage() {
           <section>
             <h2 className="font-display text-2xl">5. Stornierungsbedingungen</h2>
             <p className="mt-3">
-              Kostenfreie Stornierung bis 30 Tage vor Anreise. Bei späterer Stornierung werden 50 %
-              des Gesamtbetrags fällig. Ab 14 Tagen vor Anreise wird der volle Betrag berechnet.
+              Kostenfreie Stornierung bis zum 60. Tag vor Anreise. Bei späterer Stornierung werden
+              50 % des Gesamtbetrags fällig.
               Maßgeblich ist der Zugang der Stornierungserklärung bei uns. Wir bemühen uns um eine
               anderweitige Vermietung; soweit dadurch Einnahmen erzielt werden, werden diese auf die
               Stornierungskosten angerechnet.
@@ -86,7 +86,7 @@ function AGBPage() {
           <section>
             <h2 className="font-display text-2xl">6. An- und Abreise</h2>
             <p className="mt-3">
-              Check-in: ab 14:00 Uhr · Check-out: bis 11:00 Uhr. Der Check-in erfolgt in der Regel
+              Check-in: ab 11:00 Uhr · Check-out: bis 16:00 Uhr. Der Check-in erfolgt in der Regel
               über die Schlüsselbox. Den aktuellen Code erhalten Gäste einen Tag vor Anreise per
               E-Mail. Hausvater Gunter ist am ersten Abend vor Ort und beantwortet bei Bedarf
               auftretende Fragen.

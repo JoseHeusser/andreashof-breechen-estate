@@ -43,7 +43,7 @@ Vermietung
 - Das ganze Haus wird ausschließlich komplett vermietet — keine Einzelzimmer-Vermietung.
 - 11 Schlafzimmer, geeignet für 11 bis 21 Gäste.
 - Mindestaufenthalt: 2 Nächte.
-- Check-in ab 14:00 Uhr, Check-out bis 11:00 Uhr.
+- Check-in ab 11:00 Uhr, Check-out bis 16:00 Uhr.
 - Der Schlüssel liegt im Schlüsselsafe — den Code erhalten die Gäste per E-Mail vor Anreise.
 - Vor und neben dem Gutshaus gibt es genügend kostenfreie Parkplätze.
 
@@ -124,7 +124,7 @@ Preise
 - Konto: Berliner Sparkasse, IBAN DE78 1005 0000 0190 9484 85, BIC BELADEBEXXX, Kontoinhaber Andreashof Breechen.
 
 Stornierung
-- Kostenfreie Stornierung bis 30 Tage vor Anreise.
+- Kostenfreie Stornierung bis zum 60. Tag vor Anreise, danach 50 %.
 - Danach werden 50 % des Gesamtpreises in Rechnung gestellt.
 
 Umgebung
