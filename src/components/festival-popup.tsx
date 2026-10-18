@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouterState } from "@tanstack/react-router";
 import { X } from "lucide-react";
+import { OFFER_END } from "@/components/offer-popup";
 
 // "Wasted in Jarmen" 2027 — 3./4. September. Andrea rents out free rooms for
 // festival guests (walking distance). The popup switches itself off after the
@@ -74,6 +75,8 @@ export function FestivalPopup() {
 
   useEffect(() => {
     if (excluded || Date.now() >= FESTIVAL_END.getTime()) return;
+    // The short-notice November offer is more urgent — never two popups.
+    if (Date.now() < OFFER_END.getTime()) return;
     // ?festival in the URL always shows it (to preview after a dismissal).
     const forced = new URLSearchParams(window.location.search).has("festival");
     if (!forced && recentlyDismissed()) return;

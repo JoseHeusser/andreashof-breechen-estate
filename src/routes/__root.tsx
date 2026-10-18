@@ -16,6 +16,7 @@ import { useRevealPage } from "@/hooks/use-reveal-page";
 import { useRouterState } from "@tanstack/react-router";
 import { FloatingLangSwitcher } from "@/components/floating-lang-switcher";
 import { FestivalPopup } from "@/components/festival-popup";
+import { OfferPopup } from "@/components/offer-popup";
 import { MaintenancePage } from "@/components/maintenance-page";
 import { ChatWidget } from "@/components/ai-agent/chat-widget";
 import { APPLE_TOUCH_ICON, FAVICON_ICO, FAVICON_SVG } from "@/lib/logos";
@@ -238,6 +239,7 @@ function RootComponent() {
           <>
             <GlobalScrollEffects />
             <FloatingLangSwitcher />
+            {!bypass ? <OfferPopup /> : null}
             {!bypass ? <FestivalPopup /> : null}
             <Outlet />
             {AI_AGENT_ENABLED && !pathname.startsWith("/admin") && !pathname.startsWith("/api") ? (
