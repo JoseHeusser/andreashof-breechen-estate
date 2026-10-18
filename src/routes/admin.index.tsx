@@ -20,6 +20,7 @@ import {
   updateReview,
   deleteReview,
   getEmailPreviews,
+  sendGuestEmail,
 } from "@/lib/admin/server-fns";
 import {
   type AnalyticsStats,
@@ -322,6 +323,7 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
       </button>
 
       {open && (
+        <>
         <div className="border-t border-border px-5 py-5 grid gap-5 md:grid-cols-2">
           <div className="text-sm space-y-1">
             <p><strong>{t("admin.bookings.labelEmail")}</strong> <a href={`mailto:${booking.contact_email}`} className="underline">{booking.contact_email}</a></p>
@@ -415,8 +417,137 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
             </button>
           </div>
         </div>
+        <GuestEmailComposer booking={booking} />
+        </>
       )}
     </li>
+  );
+}
+
+/* ------------------------------------------------------------
+ *  Free-text email to the guest, sent from the site domain.
+ *  Used above all to send the contract as a PDF attachment.
+ * ---------------------------------------------------------- */
+const MAX_ATTACHMENT_MB = 3;
+
+function GuestEmailComposer({ booking }: { booking: Booking }) {
+  const { t } = useTranslation();
+  const locale = useLocale();
+  const [open, setOpen] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
+
+  // Prefill with the guest's name and stay dates — Andrea edits from there.
+  const start = () => {
+    const arrival = format(parseISO(booking.arrival), "d. MMMM yyyy", { locale });
+    const departure = format(parseISO(booking.departure), "d. MMMM yyyy", { locale });
+    setSubject(t("admin.compose.defaultSubject"));
+    setBody(
+      t("admin.compose.defaultBody", {
+        name: booking.contact_name,
+        arrival,
+        departure,
+        guests: booking.guests,
+      }),
+    );
+    setResult(null);
+    setOpen(true);
+  };
+
+  const send = async () => {
+    setBusy(true);
+    setResult(null);
+    try {
+      let attachments: { filename: string; contentBase64: string; contentType?: string }[] = [];
+      if (file) {
+        const buf = await file.arrayBuffer();
+        let binary = "";
+        const bytes = new Uint8Array(buf);
+        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+        attachments = [
+          { filename: file.name, contentBase64: btoa(binary), contentType: file.type || undefined },
+        ];
+      }
+      await sendGuestEmail({ data: { bookingId: booking.id, subject, body, attachments } });
+      setResult({ ok: true, text: t("admin.compose.sent", { email: booking.contact_email }) });
+      setFile(null);
+    } catch (e) {
+      setResult({ ok: false, text: e instanceof Error ? e.message : String(e) });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const tooBig = !!file && file.size > MAX_ATTACHMENT_MB * 1024 * 1024;
+  const canSend = !busy && !tooBig && subject.trim() !== "" && body.trim() !== "";
+
+  if (!open) {
+    return (
+      <div className="border-t border-border px-5 py-4">
+        <button onClick={start} className="border border-border px-4 py-2 text-[11px] uppercase tracking-[0.22em] hover:border-foreground">
+          {t("admin.compose.open")}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="border-t border-border px-5 py-5 space-y-3 text-sm">
+      <div className="flex items-baseline justify-between gap-4">
+        <span className="eyebrow">{t("admin.compose.title", { email: booking.contact_email })}</span>
+        <button onClick={() => setOpen(false)} className="text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground">
+          {t("admin.compose.close")}
+        </button>
+      </div>
+
+      <label className="block">
+        <span className="eyebrow block mb-1">{t("admin.compose.subject")}</span>
+        <input
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          className="w-full border border-border bg-background px-2 py-1.5"
+        />
+      </label>
+
+      <label className="block">
+        <span className="eyebrow block mb-1">{t("admin.compose.body")}</span>
+        <textarea
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          rows={10}
+          className="w-full border border-border bg-background px-2 py-1.5"
+        />
+      </label>
+
+      <label className="block">
+        <span className="eyebrow block mb-1">{t("admin.compose.attachment", { mb: MAX_ATTACHMENT_MB })}</span>
+        <input
+          type="file"
+          accept="application/pdf,image/*"
+          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+          className="w-full text-xs"
+        />
+      </label>
+      {tooBig && <p className="text-sm text-red-700">{t("admin.compose.tooBig", { mb: MAX_ATTACHMENT_MB })}</p>}
+
+      <div className="flex items-center gap-3">
+        <button
+          disabled={!canSend}
+          onClick={send}
+          className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
+        >
+          {busy ? t("admin.compose.sending") : t("admin.compose.send")}
+        </button>
+        <span className="text-xs text-muted-foreground">{t("admin.compose.replyHint")}</span>
+      </div>
+
+      {result && (
+        <p className={`text-sm ${result.ok ? "text-sage-deep" : "text-red-700"}`}>{result.text}</p>
+      )}
+    </div>
   );
 }
 

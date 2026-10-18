@@ -12,12 +12,20 @@ function getClient(): Resend {
   return cached;
 }
 
+export interface SendAttachment {
+  filename: string;
+  /** base64-encoded file content (no data: prefix) */
+  content: string;
+  contentType?: string;
+}
+
 export interface SendArgs {
   to: string | string[];
   subject: string;
   html: string;
   text?: string;
   replyTo?: string;
+  attachments?: SendAttachment[];
 }
 
 export async function sendEmail(args: SendArgs): Promise<{ id: string } | null> {
@@ -30,6 +38,13 @@ export async function sendEmail(args: SendArgs): Promise<{ id: string } | null> 
       html: args.html,
       text: args.text,
       replyTo: args.replyTo,
+      attachments: args.attachments?.map((a) => ({
+        filename: a.filename,
+        content: a.content,
+        // Resend's API field is snake_case; without it the type is
+        // inferred from the filename extension.
+        content_type: a.contentType,
+      })),
     });
     if (res.error) {
       console.error("[email] resend error", res.error);

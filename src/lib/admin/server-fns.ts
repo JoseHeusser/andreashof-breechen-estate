@@ -20,6 +20,7 @@ import {
   tplFullyPaidGuest,
   tplBalanceReminderGuest,
   tplArrivalInstructionsGuest,
+  tplCustomMessage,
 } from "@/lib/email/templates";
 import { SAMPLE_BOOKING } from "@/lib/email/sample-booking";
 
@@ -663,6 +664,52 @@ export const getAllReviews = createServerFn({ method: "GET" }).handler(async () 
   if (error) throw error;
   return (data ?? []) as Review[];
 });
+
+/* -----------------------------------------------------------------
+ * ADMIN — free-text email to a guest, sent from the site domain so
+ * replies are recognisable (and land in Andrea's inbox via reply-to).
+ * Attachments arrive base64-encoded; Vercel caps the request body at
+ * ~4.5 MB, so the UI limits a file to 3 MB.
+ * -------------------------------------------------------------- */
+const MAX_ATTACHMENT_BYTES = 3 * 1024 * 1024;
+
+export const sendGuestEmail = createServerFn({ method: "POST" })
+  .inputValidator(
+    (data: {
+      bookingId: string;
+      subject: string;
+      body: string;
+      attachments?: { filename: string; contentBase64: string; contentType?: string }[];
+    }) => data,
+  )
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const subject = data.subject.trim();
+    const body = data.body.trim();
+    if (!subject || !body) throw new Error("SUBJECT_AND_BODY_REQUIRED");
+
+    const admin = getSupabaseAdmin();
+    const { data: booking, error } = await admin
+      .from("bookings")
+      .select("contact_email,contact_name")
+      .eq("id", data.bookingId)
+      .single();
+    if (error) throw error;
+    const to = (booking as { contact_email: string }).contact_email;
+    if (!to) throw new Error("NO_RECIPIENT");
+
+    const attachments = (data.attachments ?? []).map((a) => {
+      // base64 inflates by 4/3; check the decoded size.
+      const bytes = Math.floor((a.contentBase64.length * 3) / 4);
+      if (bytes > MAX_ATTACHMENT_BYTES) throw new Error("ATTACHMENT_TOO_LARGE");
+      return { filename: a.filename, content: a.contentBase64, contentType: a.contentType };
+    });
+
+    const tpl = tplCustomMessage(subject, body);
+    const sent = await sendEmail({ to, ...tpl, replyTo: ADMIN_EMAIL, attachments });
+    if (!sent) throw new Error("SEND_FAILED");
+    return { ok: true as const, to };
+  });
 
 // ADMIN — render every email template with a sample booking, for the
 // read-only "E-Mail-Vorlagen" tab.

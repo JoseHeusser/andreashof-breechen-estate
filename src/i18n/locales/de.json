@@ -17,6 +17,21 @@
       "settings": "Einstellungen",
       "emails": "E-Mail-Vorlagen"
     },
+    "compose": {
+      "open": "E-Mail an Gast schreiben",
+      "title": "Nachricht an {{email}}",
+      "close": "Schließen",
+      "subject": "Betreff",
+      "body": "Nachricht",
+      "attachment": "Anhang (PDF, max. {{mb}} MB)",
+      "tooBig": "Die Datei ist größer als {{mb}} MB. Bitte kleiner speichern.",
+      "send": "Senden",
+      "sending": "Wird gesendet…",
+      "sent": "Gesendet an {{email}}.",
+      "replyHint": "Wird vom Website-Absender verschickt; Antworten gehen an Ihr Postfach.",
+      "defaultSubject": "Ihr Mietvertrag — Andreashof Breechen",
+      "defaultBody": "Liebe/r {{name}},\n\nanbei erhalten Sie den Mietvertrag für Ihren Aufenthalt vom {{arrival}} bis {{departure}} ({{guests}} Personen).\n\nBitte ergänzen Sie Ihre Anschrift, unterschreiben Sie den Vertrag und senden Sie ihn uns unterschrieben zurück.\n\nBei Fragen melden Sie sich jederzeit gern."
+    },
     "emails": {
       "title": "E-Mail-Vorlagen",
       "intro": "So sehen die E-Mails aus, die automatisch verschickt werden. Nur zur Ansicht — die Daten sind Beispieldaten (Max Mustermann).",

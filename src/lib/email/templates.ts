@@ -311,3 +311,25 @@ export function tplArrivalInstructionsGuest(b: Booking) {
   `;
   return { subject, html: shell(subject, body) };
 }
+
+// ═══════════════════════════════════════════════════════════════
+//  8) Free-text message written by Andrea in the admin
+// ═══════════════════════════════════════════════════════════════
+export function tplCustomMessage(subject: string, text: string) {
+  // Plain text in, branded email out: blank lines separate paragraphs,
+  // single newlines become line breaks.
+  const paragraphs = text
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map(
+      (p) =>
+        `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${escapeHtml(p).replaceAll("\n", "<br>")}</p>`,
+    )
+    .join("");
+  const body = `
+    ${paragraphs}
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Gr\u00fc\u00dfe<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
+  `;
+  return { subject, html: shell(subject, body) };
+}

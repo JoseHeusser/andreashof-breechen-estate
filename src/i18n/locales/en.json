@@ -17,6 +17,21 @@
       "settings": "Settings",
       "emails": "Email templates"
     },
+    "compose": {
+      "open": "Write email to guest",
+      "title": "Message to {{email}}",
+      "close": "Close",
+      "subject": "Subject",
+      "body": "Message",
+      "attachment": "Attachment (PDF, max {{mb}} MB)",
+      "tooBig": "The file is larger than {{mb}} MB. Please save a smaller one.",
+      "send": "Send",
+      "sending": "Sending…",
+      "sent": "Sent to {{email}}.",
+      "replyHint": "Sent from the website address; replies go to your inbox.",
+      "defaultSubject": "Your rental contract — Andreashof Breechen",
+      "defaultBody": "Dear {{name}},\n\nplease find attached the rental contract for your stay from {{arrival}} to {{departure}} ({{guests}} guests).\n\nPlease add your address, sign the contract and send it back to us signed.\n\nIf you have any questions, just get in touch."
+    },
     "emails": {
       "title": "Email templates",
       "intro": "This is how the automatically sent emails look. View only — the details are sample data (Max Mustermann).",
