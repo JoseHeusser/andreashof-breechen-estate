@@ -62,7 +62,19 @@ function AGBPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">4. Stornierungsbedingungen</h2>
+            <h2 className="font-display text-2xl">4. Änderungen der Buchung</h2>
+            <p className="mt-3">
+              Änderungen der Buchungsdaten — insbesondere die Anzahl der Personen, Hunde oder Pferde
+              — sind bis 4 Wochen vor Anreise möglich. Danach gilt die Buchung als verbindlich
+              festgelegt, da wir das Haus ab diesem Zeitpunkt entsprechend vorbereiten (Betten,
+              Tische, Stühle und Verpflegung). Spätere Änderungswünsche können wir nur nach
+              Absprache und im Rahmen unserer Möglichkeiten berücksichtigen. Eine Verringerung der
+              Personenzahl innerhalb der letzten 4 Wochen vor Anreise führt nicht zu einer Minderung
+              des vereinbarten Gesamtpreises.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl">5. Stornierungsbedingungen</h2>
             <p className="mt-3">
               Kostenfreie Stornierung bis 30 Tage vor Anreise. Bei späterer Stornierung werden 50 %
               des Gesamtbetrags fällig. Ab 14 Tagen vor Anreise wird der volle Betrag berechnet.
@@ -72,7 +84,7 @@ function AGBPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">5. An- und Abreise</h2>
+            <h2 className="font-display text-2xl">6. An- und Abreise</h2>
             <p className="mt-3">
               Check-in: ab 14:00 Uhr · Check-out: bis 11:00 Uhr. Der Check-in erfolgt in der Regel
               über die Schlüsselbox. Den aktuellen Code erhalten Gäste einen Tag vor Anreise per
@@ -81,7 +93,7 @@ function AGBPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">6. Hausordnung</h2>
+            <h2 className="font-display text-2xl">7. Hausordnung</h2>
             <p className="mt-3">
               Wir bitten um Rücksicht auf die Nachbarschaft. Nachtruhe ab 22:00 Uhr. Veranstaltungen
               sind nach Absprache möglich. Gäste haften für Schäden, die durch sie, Mitreisende oder
@@ -89,7 +101,7 @@ function AGBPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">7. Haftung</h2>
+            <h2 className="font-display text-2xl">8. Haftung</h2>
             <p className="mt-3">
               Wir haften unbeschränkt bei Vorsatz und grober Fahrlässigkeit, bei Verletzung von
               Leben, Körper oder Gesundheit sowie nach zwingenden gesetzlichen Vorschriften. Bei
@@ -99,7 +111,7 @@ function AGBPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">8. Widerrufsrecht</h2>
+            <h2 className="font-display text-2xl">9. Widerrufsrecht</h2>
             <p className="mt-3">
               Für Verträge zur Erbringung von Dienstleistungen im Bereich Beherbergung zu einem
               spezifischen Termin oder Zeitraum besteht kein gesetzliches Widerrufsrecht, soweit die
@@ -107,7 +119,7 @@ function AGBPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">9. Schlussbestimmungen</h2>
+            <h2 className="font-display text-2xl">10. Schlussbestimmungen</h2>
             <p className="mt-3">
               Es gilt deutsches Recht. Sollten einzelne Bestimmungen dieser AGB unwirksam sein oder
               werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.
