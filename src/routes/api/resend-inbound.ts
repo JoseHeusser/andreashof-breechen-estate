@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { ADMIN_EMAIL, sendEmail } from "@/lib/email/client";
+import { getSupabaseAdmin } from "@/lib/supabase/server";
 
 type InboundAddress = string | { email?: string; name?: string };
 
@@ -70,6 +71,17 @@ export const Route = createFileRoute("/api/resend-inbound")({
           attachments: inbound.attachments ?? [],
         });
 
+        // Store the reply so it shows up in the admin Postfach next to
+        // what we sent. Never let a storage failure block the forward.
+        await storeInbound({
+          fromEmail: firstAddress(inbound.from) ?? "",
+          toEmail: recipients[0] ?? "",
+          subject: originalSubject,
+          html: inbound.html,
+          text: inbound.text,
+          attachments: inbound.attachments ?? [],
+        });
+
         const sent = await sendEmail({
           to: ADMIN_EMAIL,
           subject,
@@ -94,6 +106,45 @@ export const Route = createFileRoute("/api/resend-inbound")({
     },
   },
 });
+
+async function storeInbound(args: {
+  fromEmail: string;
+  toEmail: string;
+  subject: string;
+  html?: string;
+  text?: string;
+  attachments: InboundAttachment[];
+}) {
+  if (!args.fromEmail) return;
+  try {
+    const admin = getSupabaseAdmin();
+    // Attach the reply to the guest's most recent booking, when we know one.
+    const { data: booking } = await admin
+      .from("bookings")
+      .select("id")
+      .ilike("contact_email", args.fromEmail)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    await admin.from("emails").insert({
+      booking_id: (booking as { id: string } | null)?.id ?? null,
+      direction: "inbound",
+      kind: "reply",
+      from_email: args.fromEmail,
+      to_email: args.toEmail,
+      subject: args.subject,
+      body_html: args.html ?? null,
+      body_text: args.text ?? null,
+      attachments: args.attachments.map((a) => ({
+        filename: a.filename ?? "Anhang",
+        contentType: a.content_type ?? a.contentType,
+      })),
+    });
+  } catch (e) {
+    console.error("[inbound] store failed", e);
+  }
+}
 
 function isAuthorized(request: Request): boolean {
   const secret = process.env.RESEND_INBOUND_SECRET;

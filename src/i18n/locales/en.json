@@ -15,7 +15,40 @@
       "reviews": "Reviews",
       "analytics": "Visits",
       "settings": "Settings",
+      "mail": "Mailbox",
       "emails": "Email templates"
+    },
+    "mail": {
+      "title": "Mailbox",
+      "intro": "Everything we sent a guest — and everything they replied. Replies still arrive in your normal inbox too.",
+      "empty": "No emails yet.",
+      "selectHint": "Pick a conversation on the left.",
+      "loading": "Loading…",
+      "fromGuest": "From guest",
+      "toGuest": "To guest",
+      "replyTitle": "Reply to {{email}}",
+      "presets": {
+        "reminder1": {
+          "label": "1st reminder",
+          "subject": "Reminder: your payment for Andreashof",
+          "body": "Dear guests,\n\na friendly reminder that the agreed payment for your stay is still outstanding.\n\nPlease transfer the amount in the next few days so we can keep your booking firmly in the calendar.\n\nIf you have already paid, please ignore this message."
+        },
+        "reminder2": {
+          "label": "2nd reminder",
+          "subject": "2nd reminder: your payment for Andreashof",
+          "body": "Dear guests,\n\nour last reminder is still unanswered and the agreed payment for your stay is still outstanding.\n\nPlease transfer the amount within the next 3 days, or let us know briefly if there is a problem.\n\nWe are holding the dates for you until then."
+        },
+        "reminder3": {
+          "label": "Final reminder",
+          "subject": "Final reminder: your booking at Andreashof",
+          "body": "Dear guests,\n\nunfortunately we have received neither your payment nor a reply.\n\nIf we do not hear from you within 3 days, we will release the dates and the booking will lapse.\n\nPlease get in touch — also if your plans have changed."
+        },
+        "contractBack": {
+          "label": "Return contract",
+          "subject": "Please return the signed rental contract",
+          "body": "Dear guests,\n\nthank you for your booking. We have sent you the rental contract.\n\nPlease add your address, sign the contract and send it back to us signed — a photo or scan by email is enough.\n\nAfter that everything is firmly agreed."
+        }
+      }
     },
     "compose": {
       "open": "Write email to guest",

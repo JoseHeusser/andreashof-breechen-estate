@@ -15,7 +15,40 @@
       "reviews": "Bewertungen",
       "analytics": "Besuche",
       "settings": "Einstellungen",
+      "mail": "Postfach",
       "emails": "E-Mail-Vorlagen"
+    },
+    "mail": {
+      "title": "Postfach",
+      "intro": "Alles, was wir einem Gast geschickt haben — und alles, was er geantwortet hat. Antworten landen weiterhin auch in Ihrem normalen Postfach.",
+      "empty": "Noch keine E-Mails.",
+      "selectHint": "Links eine Unterhaltung auswählen.",
+      "loading": "Wird geladen…",
+      "fromGuest": "Vom Gast",
+      "toGuest": "An den Gast",
+      "replyTitle": "Antwort an {{email}}",
+      "presets": {
+        "reminder1": {
+          "label": "1. Erinnerung",
+          "subject": "Erinnerung: Ihre Zahlung für den Andreashof",
+          "body": "Liebe Gäste,\n\nwir möchten Sie freundlich daran erinnern, dass die vereinbarte Zahlung für Ihren Aufenthalt noch offen ist.\n\nBitte überweisen Sie den Betrag in den nächsten Tagen, damit wir Ihre Buchung fest einplanen können.\n\nSollten Sie bereits überwiesen haben, betrachten Sie diese Nachricht bitte als gegenstandslos."
+        },
+        "reminder2": {
+          "label": "2. Erinnerung",
+          "subject": "2. Erinnerung: Ihre Zahlung für den Andreashof",
+          "body": "Liebe Gäste,\n\nunsere letzte Erinnerung ist noch unbeantwortet geblieben. Die vereinbarte Zahlung für Ihren Aufenthalt ist weiterhin offen.\n\nBitte überweisen Sie den Betrag innerhalb der nächsten 3 Tage oder geben Sie uns kurz Bescheid, falls es ein Problem gibt.\n\nWir halten die Termine bis dahin für Sie frei."
+        },
+        "reminder3": {
+          "label": "Letzte Erinnerung",
+          "subject": "Letzte Erinnerung: Ihre Buchung im Andreashof",
+          "body": "Liebe Gäste,\n\nleider haben wir bisher weder Ihre Zahlung noch eine Rückmeldung erhalten.\n\nWenn wir bis in 3 Tagen nichts von Ihnen hören, geben wir die Termine wieder frei und die Buchung verfällt.\n\nBitte melden Sie sich kurz — auch wenn sich Ihre Pläne geändert haben."
+        },
+        "contractBack": {
+          "label": "Vertrag zurücksenden",
+          "subject": "Bitte um Rücksendung des Mietvertrags",
+          "body": "Liebe Gäste,\n\nvielen Dank für Ihre Buchung. Wir haben Ihnen den Mietvertrag zugeschickt.\n\nBitte ergänzen Sie Ihre Anschrift, unterschreiben Sie den Vertrag und senden Sie ihn uns unterschrieben zurück — ein Foto oder Scan per E-Mail genügt.\n\nDanach ist alles verbindlich geregelt."
+        }
+      }
     },
     "compose": {
       "open": "E-Mail an Gast schreiben",

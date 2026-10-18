@@ -98,3 +98,31 @@ export const STATUS_COLOR: Record<BookingStatus, string> = {
   cancelled: "bg-stone-100 text-stone-700 border-stone-300 line-through",
   completed: "bg-stone-50 text-stone-600 border-stone-200",
 };
+
+export interface EmailRow {
+  id: string;
+  booking_id: string | null;
+  direction: "outbound" | "inbound";
+  kind: string;
+  from_email: string;
+  to_email: string;
+  subject: string;
+  body_html: string | null;
+  body_text: string | null;
+  attachments: { filename: string; contentType?: string }[];
+  provider_id: string | null;
+  read_at: string | null;
+  created_at: string;
+}
+
+/** One guest's conversation, as shown in the admin Postfach list. */
+export interface EmailThread {
+  counterpart: string;
+  guestName: string | null;
+  bookingId: string | null;
+  lastAt: string;
+  lastSubject: string;
+  lastDirection: "outbound" | "inbound";
+  unread: number;
+  messages: number;
+}

@@ -20,10 +20,14 @@ import {
   updateReview,
   deleteReview,
   getEmailPreviews,
+  getEmailThreads,
+  getEmailThread,
   sendGuestEmail,
 } from "@/lib/admin/server-fns";
 import {
   type AnalyticsStats,
+  type EmailRow,
+  type EmailThread,
   STATUS_COLOR,
   type Booking,
   type BookingStatus,
@@ -53,7 +57,7 @@ export const Route = createFileRoute("/admin/")({
   component: AdminPage,
 });
 
-type Tab = "bookings" | "pricing" | "calendar" | "reviews" | "emails" | "analytics" | "settings";
+type Tab = "bookings" | "mail" | "pricing" | "calendar" | "reviews" | "emails" | "analytics" | "settings";
 
 const EMPTY_ANALYTICS: AnalyticsStats = {
   totalVisits: 0,
@@ -181,7 +185,7 @@ function AdminPage() {
           </div>
         ) : null}
         <nav className="mx-auto flex max-w-6xl gap-8 overflow-x-auto px-6 text-[11px] uppercase tracking-[0.28em]">
-          {(["bookings", "pricing", "calendar", "reviews", "emails", "analytics", "settings"] as const).map((k) => (
+          {(["bookings", "mail", "pricing", "calendar", "reviews", "emails", "analytics", "settings"] as const).map((k) => (
             <button
               key={k}
               onClick={() => setTab(k)}
@@ -201,6 +205,8 @@ function AdminPage() {
           <p className="text-muted-foreground">{t("admin.loading")}</p>
         ) : tab === "bookings" ? (
           <BookingsTab bookings={bookings} onReload={reload} />
+        ) : tab === "mail" ? (
+          <MailTab />
         ) : tab === "pricing" ? (
           <PricingTab pricing={pricing} settings={settings} onReload={reload} />
         ) : tab === "calendar" ? (
@@ -1250,6 +1256,275 @@ function SettingsTab({
           </button>
         </div>
       </section>
+    </div>
+  );
+}
+
+/* ============================================================
+ *  POSTFACH TAB — what we sent each guest and what they replied,
+ *  plus a reply box with reminder presets.
+ * ========================================================== */
+function MailTab() {
+  const { t } = useTranslation();
+  const locale = useLocale();
+  const [threads, setThreads] = useState<EmailThread[] | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [messages, setMessages] = useState<EmailRow[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadThreads = async () => {
+    try {
+      const rows = await getEmailThreads();
+      setThreads([...rows]);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  };
+  useEffect(() => {
+    void loadThreads();
+  }, []);
+
+  const openThread = async (counterpart: string) => {
+    setSelected(counterpart);
+    setMessages(null);
+    try {
+      const rows = await getEmailThread({ data: { counterpart } });
+      setMessages([...rows]);
+      void loadThreads(); // unread counts change once opened
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  };
+
+  const thread = threads?.find((x) => x.counterpart === selected) ?? null;
+
+  return (
+    <div>
+      <h2 className="font-display text-3xl font-light">{t("admin.mail.title")}</h2>
+      <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{t("admin.mail.intro")}</p>
+      {error && <p className="mt-6 text-sm text-red-700">{error}</p>}
+
+      <div className="mt-8 grid gap-6 md:grid-cols-[300px_1fr]">
+        <ul className="flex max-h-[720px] flex-col overflow-y-auto border border-border">
+          {threads?.length === 0 && (
+            <li className="px-4 py-3 text-sm text-muted-foreground">{t("admin.mail.empty")}</li>
+          )}
+          {(threads ?? []).map((th) => (
+            <li key={th.counterpart} className="border-b border-border last:border-b-0">
+              <button
+                onClick={() => openThread(th.counterpart)}
+                className={`w-full px-4 py-3 text-left transition-colors ${
+                  selected === th.counterpart ? "bg-sage/15" : "hover:bg-foreground/5"
+                }`}
+              >
+                <span className="flex items-baseline justify-between gap-2">
+                  <span className="truncate text-sm">{th.guestName ?? th.counterpart}</span>
+                  {th.unread > 0 && (
+                    <span className="shrink-0 border border-sage-deep px-1.5 py-0.5 text-[10px] text-sage-deep">
+                      {th.unread}
+                    </span>
+                  )}
+                </span>
+                <span className="mt-1 block truncate text-xs text-muted-foreground">
+                  {th.lastSubject}
+                </span>
+                <span className="mt-1 block text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  {format(parseISO(th.lastAt), "d MMM yyyy, HH:mm", { locale })} · {th.messages}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <div className="min-w-0">
+          {!selected ? (
+            <p className="text-sm text-muted-foreground">{t("admin.mail.selectHint")}</p>
+          ) : (
+            <>
+              {!messages ? (
+                <p className="text-sm text-muted-foreground">{t("admin.mail.loading")}</p>
+              ) : (
+                <ul className="space-y-4">
+                  {messages.map((m) => (
+                    <MailMessage key={m.id} message={m} />
+                  ))}
+                </ul>
+              )}
+              <MailReply
+                to={selected}
+                bookingId={thread?.bookingId ?? null}
+                lastSubject={thread?.lastSubject ?? ""}
+                onSent={() => openThread(selected)}
+              />
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MailMessage({ message }: { message: EmailRow }) {
+  const { t } = useTranslation();
+  const locale = useLocale();
+  const [open, setOpen] = useState(false);
+  const inbound = message.direction === "inbound";
+
+  return (
+    <li className={`border border-border ${inbound ? "bg-sage/10" : "bg-card"}`}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full flex-wrap items-baseline justify-between gap-2 px-4 py-3 text-left"
+      >
+        <span>
+          <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            {inbound ? t("admin.mail.fromGuest") : t("admin.mail.toGuest")}
+          </span>
+          <span className="ml-3 text-sm">{message.subject}</span>
+        </span>
+        <span className="text-xs text-muted-foreground">
+          {format(parseISO(message.created_at), "d MMM yyyy, HH:mm", { locale })}
+        </span>
+      </button>
+      {open && (
+        <div className="border-t border-border px-4 py-3">
+          {message.attachments.length > 0 && (
+            <p className="mb-2 text-xs text-muted-foreground">
+              📎 {message.attachments.map((a) => a.filename).join(", ")}
+            </p>
+          )}
+          {message.body_html ? (
+            <iframe
+              title={message.subject}
+              srcDoc={message.body_html}
+              sandbox=""
+              className="h-[520px] w-full border border-border bg-white"
+            />
+          ) : (
+            <pre className="whitespace-pre-wrap font-sans text-sm">{message.body_text}</pre>
+          )}
+        </div>
+      )}
+    </li>
+  );
+}
+
+function MailReply({
+  to,
+  bookingId,
+  lastSubject,
+  onSent,
+}: {
+  to: string;
+  bookingId: string | null;
+  lastSubject: string;
+  onSent: () => void;
+}) {
+  const { t } = useTranslation();
+  const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
+
+  useEffect(() => {
+    setSubject(lastSubject.startsWith("Re:") ? lastSubject : `Re: ${lastSubject}`);
+    setBody("");
+    setFile(null);
+    setResult(null);
+  }, [to, lastSubject]);
+
+  // Ready-made texts for the cases Andrea writes again and again.
+  const presets = ["reminder1", "reminder2", "reminder3", "contractBack"] as const;
+  const applyPreset = (key: (typeof presets)[number]) => {
+    setSubject(t(`admin.mail.presets.${key}.subject`));
+    setBody(t(`admin.mail.presets.${key}.body`));
+  };
+
+  const send = async () => {
+    setBusy(true);
+    setResult(null);
+    try {
+      let attachments: { filename: string; contentBase64: string; contentType?: string }[] = [];
+      if (file) {
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        let binary = "";
+        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+        attachments = [
+          { filename: file.name, contentBase64: btoa(binary), contentType: file.type || undefined },
+        ];
+      }
+      await sendGuestEmail({ data: { to, bookingId, subject, body, attachments } });
+      setResult({ ok: true, text: t("admin.compose.sent", { email: to }) });
+      setFile(null);
+      setBody("");
+      onSent();
+    } catch (e) {
+      setResult({ ok: false, text: e instanceof Error ? e.message : String(e) });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const tooBig = !!file && file.size > MAX_ATTACHMENT_MB * 1024 * 1024;
+
+  return (
+    <div className="mt-6 space-y-3 border border-border p-4 text-sm">
+      <span className="eyebrow">{t("admin.mail.replyTitle", { email: to })}</span>
+
+      <div className="flex flex-wrap gap-2">
+        {presets.map((key) => (
+          <button
+            key={key}
+            onClick={() => applyPreset(key)}
+            className="border border-border px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] hover:border-foreground"
+          >
+            {t(`admin.mail.presets.${key}.label`)}
+          </button>
+        ))}
+        {bookingId && (
+          <a
+            href={`/admin/vertrag/${bookingId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border border-border px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] hover:border-foreground"
+          >
+            {t("admin.compose.contract")}
+          </a>
+        )}
+      </div>
+
+      <input
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
+        placeholder={t("admin.compose.subject")}
+        className="w-full border border-border bg-background px-2 py-1.5"
+      />
+      <textarea
+        value={body}
+        onChange={(e) => setBody(e.target.value)}
+        rows={8}
+        placeholder={t("admin.compose.body")}
+        className="w-full border border-border bg-background px-2 py-1.5"
+      />
+      <input
+        type="file"
+        accept="application/pdf,image/*"
+        onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+        className="w-full text-xs"
+      />
+      {tooBig && <p className="text-sm text-red-700">{t("admin.compose.tooBig", { mb: MAX_ATTACHMENT_MB })}</p>}
+
+      <button
+        disabled={busy || tooBig || !subject.trim() || !body.trim()}
+        onClick={send}
+        className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
+      >
+        {busy ? t("admin.compose.sending") : t("admin.compose.send")}
+      </button>
+      {result && (
+        <p className={`text-sm ${result.ok ? "text-sage-deep" : "text-red-700"}`}>{result.text}</p>
+      )}
     </div>
   );
 }

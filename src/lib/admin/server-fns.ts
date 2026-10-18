@@ -7,6 +7,8 @@ import type {
   Booking,
   BookingStatus,
   PricingRow,
+  EmailRow,
+  EmailThread,
   Review,
   ReviewLanguage,
   ReviewStatus,
@@ -52,6 +54,51 @@ async function requireAdmin(): Promise<{ userId: string; email: string }> {
   const { data, error } = await admin.auth.getUser(token);
   if (error || !data.user) throw new Error("UNAUTHORIZED");
   return { userId: data.user.id, email: data.user.email ?? "" };
+}
+
+
+/* -----------------------------------------------------------------
+ * MAIL LOG — every outbound email is written to `emails` so the
+ * Postfach tab can show what the guest actually received. Logging
+ * never breaks sending: a failed insert is swallowed.
+ * -------------------------------------------------------------- */
+async function sendAndLog(args: {
+  to: string;
+  subject: string;
+  html: string;
+  replyTo?: string;
+  attachments?: { filename: string; content: string; contentType?: string }[];
+  bookingId: string | null;
+  kind: string;
+}) {
+  const sent = await sendEmail({
+    to: args.to,
+    subject: args.subject,
+    html: args.html,
+    replyTo: args.replyTo,
+    attachments: args.attachments,
+  });
+  try {
+    await getSupabaseAdmin()
+      .from("emails")
+      .insert({
+        booking_id: args.bookingId,
+        direction: "outbound",
+        kind: args.kind,
+        from_email: process.env.EMAIL_FROM ?? "andreashof-breechen.de",
+        to_email: args.to,
+        subject: args.subject,
+        body_html: args.html,
+        attachments: (args.attachments ?? []).map((a) => ({
+          filename: a.filename,
+          contentType: a.contentType,
+        })),
+        provider_id: sent?.id ?? null,
+      });
+  } catch (e) {
+    console.error("[email] log failed", e);
+  }
+  return sent;
 }
 
 /* -----------------------------------------------------------------
@@ -377,13 +424,13 @@ export const updateBooking = createServerFn({ method: "POST" })
       if (!isFakeAirbnbEmail) {
         if (prevStatus === "requested" && newStatus === "accepted") {
           const tpl = tplAcceptedGuest(booking);
-          await sendEmail({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL });
+          await sendAndLog({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL, bookingId: booking.id, kind: "acceptedGuest" });
         } else if (newStatus === "deposit_paid") {
           const tpl = tplDepositPaidGuest(booking);
-          await sendEmail({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL });
+          await sendAndLog({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL, bookingId: booking.id, kind: "depositPaidGuest" });
         } else if (newStatus === "fully_paid") {
           const tpl = tplFullyPaidGuest(booking);
-          await sendEmail({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL });
+          await sendAndLog({ to: booking.contact_email, ...tpl, replyTo: ADMIN_EMAIL, bookingId: booking.id, kind: "fullyPaidGuest" });
         }
       }
     }
@@ -458,8 +505,8 @@ export const createBookingRequest = createServerFn({ method: "POST" })
     const guestTpl = tplRequestedGuest(booking);
     const adminTpl = tplRequestedAdmin(booking);
     await Promise.all([
-      sendEmail({ to: booking.contact_email, ...guestTpl, replyTo: ADMIN_EMAIL }),
-      sendEmail({ to: ADMIN_EMAIL, ...adminTpl, replyTo: booking.contact_email }),
+      sendAndLog({ to: booking.contact_email, ...guestTpl, replyTo: ADMIN_EMAIL, bookingId: booking.id, kind: "requestedGuest" }),
+      sendAndLog({ to: ADMIN_EMAIL, ...adminTpl, replyTo: booking.contact_email, bookingId: booking.id, kind: "requestedAdmin" }),
     ]);
 
     return { id: booking.id };
@@ -666,6 +713,86 @@ export const getAllReviews = createServerFn({ method: "GET" }).handler(async () 
   return (data ?? []) as Review[];
 });
 
+
+/* -----------------------------------------------------------------
+ * POSTFACH — conversations with guests. Grouped by the guest's
+ * address: everything we sent them plus everything they replied.
+ * -------------------------------------------------------------- */
+function counterpartOf(e: EmailRow): string {
+  return (e.direction === "inbound" ? e.from_email : e.to_email).toLowerCase();
+}
+
+export const getEmailThreads = createServerFn({ method: "GET" }).handler(async () => {
+  await requireAdmin();
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin
+    .from("emails")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(500);
+  if (error) throw error;
+  const rows = (data ?? []) as EmailRow[];
+
+  const bookingIds = [...new Set(rows.map((r) => r.booking_id).filter(Boolean))] as string[];
+  const names = new Map<string, string>();
+  if (bookingIds.length > 0) {
+    const { data: bookings } = await admin
+      .from("bookings")
+      .select("id,contact_name,contact_email")
+      .in("id", bookingIds);
+    for (const b of (bookings ?? []) as { contact_email: string; contact_name: string }[]) {
+      names.set(b.contact_email.toLowerCase(), b.contact_name);
+    }
+  }
+
+  const threads = new Map<string, EmailThread>();
+  for (const row of rows) {
+    const key = counterpartOf(row);
+    const existing = threads.get(key);
+    if (!existing) {
+      threads.set(key, {
+        counterpart: key,
+        guestName: names.get(key) ?? null,
+        bookingId: row.booking_id,
+        lastAt: row.created_at,
+        lastSubject: row.subject,
+        lastDirection: row.direction,
+        unread: row.direction === "inbound" && !row.read_at ? 1 : 0,
+        messages: 1,
+      });
+      continue;
+    }
+    existing.messages += 1;
+    if (row.direction === "inbound" && !row.read_at) existing.unread += 1;
+    if (!existing.bookingId) existing.bookingId = row.booking_id;
+    if (!existing.guestName) existing.guestName = names.get(key) ?? null;
+  }
+  return [...threads.values()];
+});
+
+export const getEmailThread = createServerFn({ method: "POST" })
+  .inputValidator((data: { counterpart: string }) => data)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const admin = getSupabaseAdmin();
+    const address = data.counterpart.toLowerCase();
+    const { data: rows, error } = await admin
+      .from("emails")
+      .select("*")
+      .or(`to_email.ilike.${address},from_email.ilike.${address}`)
+      .order("created_at", { ascending: true })
+      .limit(200);
+    if (error) throw error;
+    // Mark the guest's replies as read now that Andrea is looking at them.
+    await admin
+      .from("emails")
+      .update({ read_at: new Date().toISOString() })
+      .eq("direction", "inbound")
+      .is("read_at", null)
+      .ilike("from_email", address);
+    return (rows ?? []) as EmailRow[];
+  });
+
 // ADMIN — the rental contract for one booking, pre-filled and ready to
 // print to PDF from /admin/vertrag/$id.
 export const getBookingContract = createServerFn({ method: "POST" })
@@ -694,9 +821,13 @@ const MAX_ATTACHMENT_BYTES = 3 * 1024 * 1024;
 export const sendGuestEmail = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
-      bookingId: string;
+      // Either a booking (recipient is looked up) or a plain address,
+      // so replies in the Postfach work even without a booking.
+      bookingId?: string | null;
+      to?: string;
       subject: string;
       body: string;
+      kind?: string;
       attachments?: { filename: string; contentBase64: string; contentType?: string }[];
     }) => data,
   )
@@ -706,14 +837,17 @@ export const sendGuestEmail = createServerFn({ method: "POST" })
     const body = data.body.trim();
     if (!subject || !body) throw new Error("SUBJECT_AND_BODY_REQUIRED");
 
-    const admin = getSupabaseAdmin();
-    const { data: booking, error } = await admin
-      .from("bookings")
-      .select("contact_email,contact_name")
-      .eq("id", data.bookingId)
-      .single();
-    if (error) throw error;
-    const to = (booking as { contact_email: string }).contact_email;
+    let to = data.to?.trim() ?? "";
+    if (!to && data.bookingId) {
+      const admin = getSupabaseAdmin();
+      const { data: booking, error } = await admin
+        .from("bookings")
+        .select("contact_email")
+        .eq("id", data.bookingId)
+        .single();
+      if (error) throw error;
+      to = (booking as { contact_email: string }).contact_email;
+    }
     if (!to) throw new Error("NO_RECIPIENT");
 
     const attachments = (data.attachments ?? []).map((a) => {
@@ -724,7 +858,18 @@ export const sendGuestEmail = createServerFn({ method: "POST" })
     });
 
     const tpl = tplCustomMessage(subject, body);
-    const sent = await sendEmail({ to, ...tpl, replyTo: ADMIN_EMAIL, attachments });
+    const sent = await sendAndLog({
+      to,
+      ...tpl,
+      replyTo: ADMIN_EMAIL,
+      attachments: attachments.map((a) => ({
+        filename: a.filename,
+        content: a.content,
+        contentType: a.contentType,
+      })),
+      bookingId: data.bookingId ?? null,
+      kind: data.kind ?? "custom",
+    });
     if (!sent) throw new Error("SEND_FAILED");
     return { ok: true as const, to };
   });
