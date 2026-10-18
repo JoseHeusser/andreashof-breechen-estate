@@ -29,6 +29,7 @@
       "sending": "Wird gesendet…",
       "sent": "Gesendet an {{email}}.",
       "replyHint": "Wird vom Website-Absender verschickt; Antworten gehen an Ihr Postfach.",
+      "contract": "Vertrag öffnen",
       "defaultSubject": "Ihr Mietvertrag — Andreashof Breechen",
       "defaultBody": "Liebe/r {{name}},\n\nanbei erhalten Sie den Mietvertrag für Ihren Aufenthalt vom {{arrival}} bis {{departure}} ({{guests}} Personen).\n\nBitte ergänzen Sie Ihre Anschrift, unterschreiben Sie den Vertrag und senden Sie ihn uns unterschrieben zurück.\n\nBei Fragen melden Sie sich jederzeit gern."
     },

@@ -486,10 +486,18 @@ function GuestEmailComposer({ booking }: { booking: Booking }) {
 
   if (!open) {
     return (
-      <div className="border-t border-border px-5 py-4">
+      <div className="border-t border-border flex flex-wrap gap-2 px-5 py-4">
         <button onClick={start} className="border border-border px-4 py-2 text-[11px] uppercase tracking-[0.22em] hover:border-foreground">
           {t("admin.compose.open")}
         </button>
+        <a
+          href={`/admin/vertrag/${booking.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border border-border px-4 py-2 text-[11px] uppercase tracking-[0.22em] hover:border-foreground"
+        >
+          {t("admin.compose.contract")}
+        </a>
       </div>
     );
   }

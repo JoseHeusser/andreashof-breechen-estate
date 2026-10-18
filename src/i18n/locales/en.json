@@ -29,6 +29,7 @@
       "sending": "Sending…",
       "sent": "Sent to {{email}}.",
       "replyHint": "Sent from the website address; replies go to your inbox.",
+      "contract": "Open contract",
       "defaultSubject": "Your rental contract — Andreashof Breechen",
       "defaultBody": "Dear {{name}},\n\nplease find attached the rental contract for your stay from {{arrival}} to {{departure}} ({{guests}} guests).\n\nPlease add your address, sign the contract and send it back to us signed.\n\nIf you have any questions, just get in touch."
     },

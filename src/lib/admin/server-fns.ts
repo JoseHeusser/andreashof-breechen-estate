@@ -23,6 +23,7 @@ import {
   tplCustomMessage,
 } from "@/lib/email/templates";
 import { SAMPLE_BOOKING } from "@/lib/email/sample-booking";
+import { renderContractHtml, contractFilename } from "@/lib/contract/template";
 
 type PricingQuoteInput = {
   arrival: string;
@@ -664,6 +665,23 @@ export const getAllReviews = createServerFn({ method: "GET" }).handler(async () 
   if (error) throw error;
   return (data ?? []) as Review[];
 });
+
+// ADMIN — the rental contract for one booking, pre-filled and ready to
+// print to PDF from /admin/vertrag/$id.
+export const getBookingContract = createServerFn({ method: "POST" })
+  .inputValidator((data: { id: string }) => data)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const admin = getSupabaseAdmin();
+    const { data: row, error } = await admin
+      .from("bookings")
+      .select("*")
+      .eq("id", data.id)
+      .single();
+    if (error) throw error;
+    const booking = row as Booking;
+    return { html: renderContractHtml(booking), filename: contractFilename(booking) };
+  });
 
 /* -----------------------------------------------------------------
  * ADMIN — free-text email to a guest, sent from the site domain so

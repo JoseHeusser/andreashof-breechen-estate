@@ -30,6 +30,7 @@ import { Route as ApiResendInboundRouteImport } from './routes/api/resend-inboun
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiCalendarDoticsRouteImport } from './routes/api/calendar[.]ics'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminVertragIdRouteImport } from './routes/admin.vertrag.$id'
 
 const ZimmerRoute = ZimmerRouteImport.update({
   id: '/zimmer',
@@ -136,6 +137,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminVertragIdRoute = AdminVertragIdRouteImport.update({
+  id: '/vertrag/$id',
+  path: '/vertrag/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/api/track-visit': typeof ApiTrackVisitRoute
   '/rezension/$token': typeof RezensionTokenRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/vertrag/$id': typeof AdminVertragIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByTo {
   '/api/track-visit': typeof ApiTrackVisitRoute
   '/rezension/$token': typeof RezensionTokenRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/vertrag/$id': typeof AdminVertragIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -205,6 +213,7 @@ export interface FileRoutesById {
   '/api/track-visit': typeof ApiTrackVisitRoute
   '/rezension/$token': typeof RezensionTokenRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/vertrag/$id': typeof AdminVertragIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -230,6 +239,7 @@ export interface FileRouteTypes {
     | '/api/track-visit'
     | '/rezension/$token'
     | '/admin/'
+    | '/admin/vertrag/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/api/track-visit'
     | '/rezension/$token'
     | '/admin'
+    | '/admin/vertrag/$id'
   id:
     | '__root__'
     | '/'
@@ -275,6 +286,7 @@ export interface FileRouteTypes {
     | '/api/track-visit'
     | '/rezension/$token'
     | '/admin/'
+    | '/admin/vertrag/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -448,17 +460,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/vertrag/$id': {
+      id: '/admin/vertrag/$id'
+      path: '/vertrag/$id'
+      fullPath: '/admin/vertrag/$id'
+      preLoaderRoute: typeof AdminVertragIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminVertragIdRoute: typeof AdminVertragIdRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminVertragIdRoute: AdminVertragIdRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
