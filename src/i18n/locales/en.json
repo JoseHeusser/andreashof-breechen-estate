@@ -138,6 +138,7 @@
     },
     "bookings": {
       "filterAll": "All ({{n}})",
+      "filterWeb": "Website ({{n}})",
       "filterActive": "Active ({{n}})",
       "empty": "No bookings.",
       "labelEmail": "Email:",
