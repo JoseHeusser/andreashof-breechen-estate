@@ -364,6 +364,7 @@
     "summaryNights": "{{count}} noche",
     "summaryNights_other": "{{count}} noches",
     "summaryGuests": "Huéspedes",
+    "offerApplied": "Incluye la oferta «{{label}}»: {{percent}} % de descuento en las noches.",
     "summaryTotal": "Total",
     "summaryTotalNote": "Todo incluido — limpieza y cargos por persona.",
     "checkAvailability": "Verificar disponibilidad",

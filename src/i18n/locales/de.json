@@ -18,6 +18,18 @@
       "mail": "Postfach",
       "emails": "E-Mail-Vorlagen"
     },
+    "offers": {
+      "title": "Angebote",
+      "intro": "Rabatt für längere Aufenthalte, nur in einem bestimmten Zeitraum. Gilt, wenn die Anreise im Zeitraum liegt und der Aufenthalt mindestens die angegebene Anzahl Nächte hat. Der Rabatt gilt für die Übernachtungen, nicht für Reinigung und Zusatzleistungen. Treffen mehrere Angebote zu, gilt das beste.",
+      "label": "Name",
+      "from": "Anreise ab",
+      "to": "Anreise bis",
+      "minNights": "Ab Nächten",
+      "percent": "Rabatt %",
+      "add": "Angebot hinzufügen",
+      "defaultLabel": "Langer Aufenthalt (ab {{n}} Nächten)",
+      "summary": "{{percent}} % ab {{nights}} Nächten · Anreise {{from}} – {{to}}"
+    },
     "mail": {
       "title": "Postfach",
       "intro": "Alles, was wir einem Gast geschickt haben — und alles, was er geantwortet hat. Antworten landen weiterhin auch in Ihrem normalen Postfach.",
@@ -590,6 +602,7 @@
     "summaryNights": "{{count}} Nacht",
     "summaryNights_other": "{{count}} Nächte",
     "summaryGuests": "Gäste",
+    "offerApplied": "Inklusive Angebot „{{label}}“: {{percent}} % Rabatt auf die Übernachtungen.",
     "summaryTotal": "Gesamtpreis",
     "summaryTotalNote": "Alles inklusive — Reinigung und alle Aufschläge.",
     "checkAvailability": "Verfügbarkeit prüfen",

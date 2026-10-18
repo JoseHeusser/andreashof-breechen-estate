@@ -136,6 +136,8 @@ function ReservationsPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [quoteCents, setQuoteCents] = useState<number | null>(null);
+  // Long-stay offer applied to the quote, if any (configured in the admin).
+  const [quoteOffer, setQuoteOffer] = useState<{ label: string; percent: number } | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   // The quote is invalidated as soon as the user changes any input after
   // a quote was already fetched. Forces them to click 'Check availability'
@@ -193,6 +195,11 @@ function ReservationsPage() {
         },
       });
       setQuoteCents(res.totalCents);
+      setQuoteOffer(
+        res.discountCents > 0 && res.offerLabel && res.offerPercent
+          ? { label: res.offerLabel, percent: res.offerPercent }
+          : null,
+      );
       setQuoteStale(false);
     } catch {
       setQuoteCents(null);
@@ -579,6 +586,14 @@ function ReservationsPage() {
                       <p className="mt-1 font-display text-3xl leading-tight text-foreground">
                         {totalFormatted ?? "…"}
                       </p>
+                      {quoteOffer && (
+                        <p className="mt-1 text-xs text-sage-deep">
+                          {t("reservations.offerApplied", {
+                            label: quoteOffer.label,
+                            percent: quoteOffer.percent,
+                          })}
+                        </p>
+                      )}
                     </div>
                   </div>
 

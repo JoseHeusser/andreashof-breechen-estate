@@ -23,11 +23,13 @@ import {
   getEmailThreads,
   getEmailThread,
   sendGuestEmail,
+  updateOffers,
 } from "@/lib/admin/server-fns";
 import {
   type AnalyticsStats,
   type EmailRow,
   type EmailThread,
+  type PricingOffer,
   STATUS_COLOR,
   type Booking,
   type BookingStatus,
@@ -653,6 +655,8 @@ function PricingTab({
         </div>
       </section>
 
+      <OffersSection settings={settings} onReload={onReload} />
+
       {/* Global fees */}
       <section>
         <h2 className="eyebrow">{t("admin.pricing.feesTitle")}</h2>
@@ -1264,6 +1268,134 @@ function SettingsTab({
         </div>
       </section>
     </div>
+  );
+}
+
+
+/* ------------------------------------------------------------
+ *  ANGEBOTE — long-stay discounts per date range.
+ *  "Ab N Nächten X % Rabatt, wenn die Anreise zwischen A und B liegt."
+ * ---------------------------------------------------------- */
+function OffersSection({
+  settings,
+  onReload,
+}: {
+  settings: { key: string; value: unknown }[];
+  onReload: () => void;
+}) {
+  const { t } = useTranslation();
+  const stored = settings.find((s) => s.key === "offers")?.value;
+  const offers = Array.isArray(stored) ? (stored as PricingOffer[]) : [];
+  const [label, setLabel] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [minNights, setMinNights] = useState("4");
+  const [percent, setPercent] = useState("10");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const save = async (next: PricingOffer[]) => {
+    setBusy(true);
+    setError(null);
+    try {
+      await updateOffers({ data: { offers: next } });
+      await onReload();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const canAdd =
+    !busy && startDate !== "" && endDate !== "" && startDate <= endDate &&
+    Number(minNights) >= 1 && Number(percent) > 0 && Number(percent) <= 90;
+
+  const add = async () => {
+    const offer: PricingOffer = {
+      id: globalThis.crypto?.randomUUID?.() ?? String(Date.now()),
+      label: label.trim() || t("admin.offers.defaultLabel", { n: minNights }),
+      startDate,
+      endDate,
+      minNights: Number(minNights),
+      discountPercent: Number(percent),
+    };
+    await save([...offers, offer]);
+    setLabel("");
+    setStartDate("");
+    setEndDate("");
+  };
+
+  const fmt = (iso: string) => iso.split("-").reverse().join(".");
+
+  return (
+    <section>
+      <h2 className="eyebrow">{t("admin.offers.title")}</h2>
+      <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{t("admin.offers.intro")}</p>
+
+      {offers.length > 0 && (
+        <ul className="mt-4 divide-y divide-border border border-border">
+          {offers.map((o) => (
+            <li key={o.id} className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm">
+              <span>
+                <span className="font-medium">{o.label}</span>
+                <span className="ml-3 text-muted-foreground">
+                  {t("admin.offers.summary", {
+                    percent: o.discountPercent,
+                    nights: o.minNights,
+                    from: fmt(o.startDate),
+                    to: fmt(o.endDate),
+                  })}
+                </span>
+              </span>
+              <button
+                disabled={busy}
+                onClick={() => save(offers.filter((x) => x.id !== o.id))}
+                className="text-xs uppercase tracking-[0.18em] text-red-700 hover:underline disabled:opacity-50"
+              >
+                {t("admin.delete")}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <label className="block lg:col-span-1">
+          <span className="eyebrow mb-1 block">{t("admin.offers.label")}</span>
+          <input
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            placeholder={t("admin.offers.defaultLabel", { n: minNights || "4" })}
+            className="w-full border border-border bg-background px-2 py-1.5 text-sm"
+          />
+        </label>
+        <label className="block">
+          <span className="eyebrow mb-1 block">{t("admin.offers.from")}</span>
+          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="w-full border border-border bg-background px-2 py-1.5 text-sm" />
+        </label>
+        <label className="block">
+          <span className="eyebrow mb-1 block">{t("admin.offers.to")}</span>
+          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="w-full border border-border bg-background px-2 py-1.5 text-sm" />
+        </label>
+        <label className="block">
+          <span className="eyebrow mb-1 block">{t("admin.offers.minNights")}</span>
+          <input type="number" min="1" value={minNights} onChange={(e) => setMinNights(e.target.value)} className="w-full border border-border bg-background px-2 py-1.5 text-sm" />
+        </label>
+        <label className="block">
+          <span className="eyebrow mb-1 block">{t("admin.offers.percent")}</span>
+          <input type="number" min="1" max="90" value={percent} onChange={(e) => setPercent(e.target.value)} className="w-full border border-border bg-background px-2 py-1.5 text-sm" />
+        </label>
+      </div>
+      <button
+        disabled={!canAdd}
+        onClick={add}
+        className="mt-3 border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
+      >
+        {busy ? t("admin.saving") : t("admin.offers.add")}
+      </button>
+      {error && <p className="mt-2 text-sm text-red-700">{error}</p>}
+    </section>
   );
 }
 

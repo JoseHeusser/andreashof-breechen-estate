@@ -9,6 +9,7 @@ import type {
   PricingRow,
   EmailRow,
   EmailThread,
+  PricingOffer,
   Review,
   ReviewLanguage,
   ReviewStatus,
@@ -330,14 +331,15 @@ async function calculatePricingQuote(
         "child_crib_fee_cents",
         "pet_fee_cents",
         "dachboden_fee_cents",
+        "offers",
       ]),
   ]);
   if (pricingRes.error) throw pricingRes.error;
   if (settingsRes.error) throw settingsRes.error;
 
   const settings = Object.fromEntries(
-    (settingsRes.data ?? []).map((s) => [s.key, s.value as number]),
-  );
+    (settingsRes.data ?? []).map((s) => [s.key, s.value as unknown]),
+  ) as Record<string, unknown>;
   const cleaningCents = (settings.cleaning_fee_cents as number) ?? 0;
   const baseOccupancy = (settings.base_occupancy as number) ?? 10;
   const extraPerNight = (settings.extra_person_fee_per_night_cents as number) ?? 0;
@@ -369,10 +371,43 @@ async function calculatePricingQuote(
   const cribTotal = data.children ? data.children * cribCents : 0;
   const petTotal = data.pets && data.pets > 0 ? data.pets * petCents : 0;
   const dachbodenTotal = data.rentsDachboden ? dachbodenCents : 0;
-  const totalCents =
-    nightlySum + cleaningCents + extraTotal + cribTotal + petTotal + dachbodenTotal;
 
-  return { totalCents, nights };
+  // Long-stay offer: the best matching one discounts the overnight part
+  // (nights + extra guests), never cleaning or one-off fees.
+  const offer = bestOffer(settings.offers, data.arrival, nights);
+  const discountCents = offer
+    ? Math.round(((nightlySum + extraTotal) * offer.discountPercent) / 100)
+    : 0;
+
+  const totalCents =
+    nightlySum +
+    cleaningCents +
+    extraTotal +
+    cribTotal +
+    petTotal +
+    dachbodenTotal -
+    discountCents;
+
+  return {
+    totalCents,
+    nights,
+    discountCents,
+    offerLabel: offer?.label ?? null,
+    offerPercent: offer?.discountPercent ?? null,
+  };
+}
+
+function bestOffer(raw: unknown, arrival: string, nights: number): PricingOffer | null {
+  const offers = Array.isArray(raw) ? (raw as PricingOffer[]) : [];
+  const matching = offers.filter(
+    (o) =>
+      arrival >= o.startDate &&
+      arrival <= o.endDate &&
+      nights >= o.minNights &&
+      o.discountPercent > 0,
+  );
+  if (matching.length === 0) return null;
+  return matching.reduce((a, b) => (b.discountPercent > a.discountPercent ? b : a));
 }
 
 /* -----------------------------------------------------------------
@@ -609,6 +644,28 @@ export const updateFees = createServerFn({ method: "POST" })
     push("dachboden_fee_cents", data.dachbodenFeeCents);
     if (rows.length === 0) return;
     const { error } = await admin.from("settings").upsert(rows);
+    if (error) throw error;
+  });
+
+/* -----------------------------------------------------------------
+ * OFFERS — long-stay discounts per date range. The whole list is
+ * saved at once under `settings.offers`.
+ * -------------------------------------------------------------- */
+export const updateOffers = createServerFn({ method: "POST" })
+  .validator((data: { offers: PricingOffer[] }) => data)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const iso = /^\d{4}-\d{2}-\d{2}$/;
+    const offers = data.offers.map((o) => {
+      if (!iso.test(o.startDate) || !iso.test(o.endDate) || o.startDate > o.endDate) {
+        throw new Error("INVALID_DATES");
+      }
+      const minNights = Math.max(1, Math.round(o.minNights));
+      const discountPercent = Math.min(90, Math.max(0, Math.round(o.discountPercent)));
+      return { ...o, label: o.label.trim(), minNights, discountPercent };
+    });
+    const admin = getSupabaseAdmin();
+    const { error } = await admin.from("settings").upsert({ key: "offers", value: offers });
     if (error) throw error;
   });
 

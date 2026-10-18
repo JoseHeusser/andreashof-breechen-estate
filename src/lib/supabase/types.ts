@@ -126,3 +126,18 @@ export interface EmailThread {
   unread: number;
   messages: number;
 }
+
+/**
+ * Long-stay offer, configured in the admin "Preise" tab and stored as a
+ * JSON array under the `offers` key in `settings`.
+ * Applies when the arrival falls inside [startDate, endDate] and the stay
+ * has at least `minNights` nights.
+ */
+export interface PricingOffer {
+  id: string;
+  label: string;
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD, inclusive
+  minNights: number;
+  discountPercent: number;
+}

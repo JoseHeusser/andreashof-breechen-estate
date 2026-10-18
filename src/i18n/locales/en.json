@@ -18,6 +18,18 @@
       "mail": "Mailbox",
       "emails": "Email templates"
     },
+    "offers": {
+      "title": "Offers",
+      "intro": "Discount for longer stays, only within a set period. Applies when the arrival falls in the period and the stay has at least the given number of nights. The discount covers the nights, not cleaning or extras. If several offers match, the best one wins.",
+      "label": "Name",
+      "from": "Arrival from",
+      "to": "Arrival until",
+      "minNights": "Min. nights",
+      "percent": "Discount %",
+      "add": "Add offer",
+      "defaultLabel": "Long stay ({{n}}+ nights)",
+      "summary": "{{percent}} % from {{nights}} nights · arrival {{from}} – {{to}}"
+    },
     "mail": {
       "title": "Mailbox",
       "intro": "Everything we sent a guest — and everything they replied. Replies still arrive in your normal inbox too.",
@@ -590,6 +602,7 @@
     "summaryNights": "{{count}} night",
     "summaryNights_other": "{{count}} nights",
     "summaryGuests": "Guests",
+    "offerApplied": "Includes offer “{{label}}”: {{percent}} % off the nights.",
     "summaryTotal": "Total",
     "summaryTotalNote": "All inclusive — cleaning and any per-person surcharges.",
     "checkAvailability": "Check availability",
