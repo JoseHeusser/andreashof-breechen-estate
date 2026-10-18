@@ -24,8 +24,9 @@ create table if not exists public.emails (
 create index if not exists emails_created_at_idx on public.emails (created_at desc);
 create index if not exists emails_booking_idx on public.emails (booking_id, created_at desc);
 -- Conversations are grouped by the guest's address.
+-- An expression index needs its own parentheses around the expression.
 create index if not exists emails_counterpart_idx on public.emails (
-  case when direction = 'inbound' then from_email else to_email end
+  (case when direction = 'inbound' then from_email else to_email end)
 );
 
 alter table public.emails enable row level security;
