@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { installAdminFetch } from "@/lib/admin/auth-fetch";
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { getBookingContract } from "@/lib/admin/server-fns";
@@ -11,12 +11,12 @@ export const Route = createFileRoute("/admin/vertrag/$id")({
 
 function ContractPage() {
   const { id } = Route.useParams();
-  const [html, setHtml] = useState<string | null>(null);
+  const [pdf, setPdf] = useState<{ url: string; filename: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const frame = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     let cancelled = false;
+    let objectUrl: string | null = null;
     (async () => {
       const { data } = await supabaseBrowser.auth.getSession();
       if (!data.session) {
@@ -26,26 +26,24 @@ function ContractPage() {
       installAdminFetch();
       try {
         const res = await getBookingContract({ data: { id } });
-        if (!cancelled) setHtml(res.html);
+        if (cancelled) return;
+        // The server sends the filled PDF as base64; a blob URL lets the
+        // browser's own PDF viewer show it and the download keep its name.
+        const bytes = Uint8Array.from(atob(res.pdfBase64), (c) => c.charCodeAt(0));
+        objectUrl = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+        setPdf({ url: objectUrl, filename: res.filename });
       } catch (e) {
         if (!cancelled) setError(e instanceof Error ? e.message : String(e));
       }
     })();
     return () => {
       cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [id]);
 
-  // Printing the iframe (not the page) keeps the admin chrome out of the PDF.
-  const print = () => {
-    const win = frame.current?.contentWindow;
-    if (!win) return;
-    win.focus();
-    win.print();
-  };
-
   return (
-    <div className="min-h-screen bg-linen">
+    <div className="flex min-h-screen flex-col bg-linen">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-background px-6 py-4">
         <Link
           to="/admin"
@@ -53,29 +51,30 @@ function ContractPage() {
         >
           ← Admin
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <span className="text-xs text-muted-foreground">
-            Drucken → „Als PDF sichern“, dann per E-Mail an den Gast senden.
+            PDF herunterladen und im Admin per E-Mail an den Gast senden.
           </span>
-          <button
-            onClick={print}
-            disabled={!html}
-            className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
-          >
-            Drucken / PDF
-          </button>
+          {pdf && (
+            <a
+              href={pdf.url}
+              download={pdf.filename}
+              className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background"
+            >
+              PDF herunterladen
+            </a>
+          )}
         </div>
       </header>
 
-      <main className="px-4 py-6">
+      <main className="flex flex-1 flex-col px-4 py-6">
         {error && <p className="text-sm text-red-700">{error}</p>}
-        {!html && !error && <p className="text-sm text-muted-foreground">Vertrag wird geladen…</p>}
-        {html && (
+        {!pdf && !error && <p className="text-sm text-muted-foreground">Vertrag wird erstellt…</p>}
+        {pdf && (
           <iframe
-            ref={frame}
             title="Mietvertrag"
-            srcDoc={html}
-            className="mx-auto h-[1500px] w-full max-w-4xl border border-border bg-white"
+            src={pdf.url}
+            className="mx-auto min-h-[85vh] w-full max-w-5xl flex-1 border border-border bg-white"
           />
         )}
       </main>

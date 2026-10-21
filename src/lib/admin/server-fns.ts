@@ -26,7 +26,7 @@ import {
   tplCustomMessage,
 } from "@/lib/email/templates";
 import { SAMPLE_BOOKING } from "@/lib/email/sample-booking";
-import { renderContractHtml, contractFilename } from "@/lib/contract/template";
+import { renderContractPdf, contractFilename } from "@/lib/contract/pdf";
 
 type PricingQuoteInput = {
   arrival: string;
@@ -850,8 +850,8 @@ export const getEmailThread = createServerFn({ method: "POST" })
     return (rows ?? []) as EmailRow[];
   });
 
-// ADMIN — the rental contract for one booking, pre-filled and ready to
-// print to PDF from /admin/vertrag/$id.
+// ADMIN — the rental contract for one booking as a filled PDF, shown and
+// downloaded from /admin/vertrag/$id.
 export const getBookingContract = createServerFn({ method: "POST" })
   .validator((data: { id: string }) => data)
   .handler(async ({ data }) => {
@@ -864,7 +864,8 @@ export const getBookingContract = createServerFn({ method: "POST" })
       .single();
     if (error) throw error;
     const booking = row as Booking;
-    return { html: renderContractHtml(booking), filename: contractFilename(booking) };
+    const bytes = await renderContractPdf(booking);
+    return { pdfBase64: Buffer.from(bytes).toString("base64"), filename: contractFilename(booking) };
   });
 
 /* -----------------------------------------------------------------
