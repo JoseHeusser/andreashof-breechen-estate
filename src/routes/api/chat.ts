@@ -95,7 +95,19 @@ export const Route = createFileRoute("/api/chat")({
                     content: result,
                   });
                 }
-                apiMessages.push({ role: "user", content: toolResults });
+                // After tool calls the German prompt tends to win over the
+                // guest's language — remind the model which language to use.
+                const lastUser = [...messages].reverse().find((m) => m.role === "user");
+                apiMessages.push({
+                  role: "user",
+                  content: [
+                    ...toolResults,
+                    {
+                      type: "text",
+                      text: `(System note: reply in the language of the guest's last message: "${lastUser?.content.slice(0, 200) ?? ""}")`,
+                    },
+                  ],
+                });
               }
 
               send("done", "{}");
