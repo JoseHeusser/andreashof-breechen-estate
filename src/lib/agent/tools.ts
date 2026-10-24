@@ -17,6 +17,19 @@ export const TOOL_DEFINITIONS: Anthropic.Tool[] = [
     },
   },
   {
+    name: "list_available_dates",
+    description:
+      "List the free windows inside a period (e.g. a whole month) when the guest has no fixed dates yet. Same live data and cleaning buffer as check_availability. Returns each free window as earliest arrival + latest departure and its length in nights; only windows of at least the 2-night minimum stay are listed. Max period 186 days.",
+    input_schema: {
+      type: "object",
+      properties: {
+        from: { type: "string", description: "First day of the period, YYYY-MM-DD (e.g. 2027-03-01)" },
+        to: { type: "string", description: "Day after the period ends, YYYY-MM-DD, exclusive (e.g. 2027-04-01 for all of March)" },
+      },
+      required: ["from", "to"],
+    },
+  },
+  {
     name: "get_pricing_quote",
     description:
       "Calculate the total price for a stay using the live pricing rules (base + special date ranges + cleaning + extra-person surcharge + small-child crib + pets + Dachboden). Always use this — never compute prices yourself.",
@@ -71,6 +84,8 @@ export async function runTool(name: string, input: Record<string, unknown>): Pro
     switch (name) {
       case "check_availability":
         return await checkAvailability(input as { arrival: string; departure: string });
+      case "list_available_dates":
+        return await listAvailableDates(input as { from: string; to: string });
       case "get_pricing_quote":
         return await getPricingQuote(
           input as {
@@ -102,12 +117,83 @@ async function checkAvailability(input: { arrival: string; departure: string }):
   if (input.arrival >= input.departure) {
     return JSON.stringify({ error: "departure must be after arrival" });
   }
+  const blocked = await loadBlockedDates();
+  if (!blocked) return JSON.stringify({ error: "could not query bookings" });
+
+  // Check requested range
+  const reqArr = isoToDate(input.arrival);
+  const reqDep = isoToDate(input.departure);
+  const reqNights = Math.max(1, Math.round((reqDep.getTime() - reqArr.getTime()) / 86400000));
+  const overlaps: string[] = [];
+  for (let i = 0; i < reqNights; i++) {
+    const iso = dateToIso(addDays(reqArr, i));
+    if (blocked.has(iso)) overlaps.push(iso);
+  }
+  return JSON.stringify({
+    available: overlaps.length === 0,
+    arrival: input.arrival,
+    departure: input.departure,
+    nights: reqNights,
+    overlapping_blocked_days: overlaps,
+  });
+}
+
+// ─── list_available_dates ───────────────────────────────────────────────────
+const MIN_NIGHTS = 2;
+const MAX_LIST_DAYS = 186;
+
+async function listAvailableDates(input: { from: string; to: string }): Promise<string> {
+  if (!isValidDate(input.from) || !isValidDate(input.to)) {
+    return JSON.stringify({ error: "invalid date format — use YYYY-MM-DD" });
+  }
+  if (input.from >= input.to) {
+    return JSON.stringify({ error: "'to' must be after 'from'" });
+  }
+  // Never offer nights in the past.
+  const today = dateToIso(new Date());
+  const start = isoToDate(input.from > today ? input.from : today);
+  const end = isoToDate(input.to);
+  const days = Math.round((end.getTime() - start.getTime()) / 86400000);
+  if (days <= 0) return JSON.stringify({ from: input.from, to: input.to, free_windows: [] });
+  if (days > MAX_LIST_DAYS) {
+    return JSON.stringify({ error: `period too long — max ${MAX_LIST_DAYS} days` });
+  }
+  const blocked = await loadBlockedDates();
+  if (!blocked) return JSON.stringify({ error: "could not query bookings" });
+
+  // Walk the nights and collect runs of consecutive free nights.
+  const windows: { arrival: string; departure: string; nights: number }[] = [];
+  let runStart: Date | null = null;
+  for (let i = 0; i <= days; i++) {
+    const d = addDays(start, i);
+    const free = i < days && !blocked.has(dateToIso(d));
+    if (free && !runStart) runStart = d;
+    if (!free && runStart) {
+      const nights = Math.round((d.getTime() - runStart.getTime()) / 86400000);
+      if (nights >= MIN_NIGHTS) {
+        windows.push({ arrival: dateToIso(runStart), departure: dateToIso(d), nights });
+      }
+      runStart = null;
+    }
+  }
+  return JSON.stringify({
+    from: input.from,
+    to: input.to,
+    min_nights: MIN_NIGHTS,
+    free_windows: windows,
+    note: "Each window: any stay of at least min_nights between earliest arrival and latest departure is free. A window touching 'to' may continue past the period.",
+  });
+}
+
+// Every date that can't be a booked night: confirmed stays plus the
+// ±2-day cleaning buffer. Null when the query fails.
+async function loadBlockedDates(): Promise<Set<string> | null> {
   const admin = getSupabaseAdmin();
   const { data, error } = await admin
     .from("bookings")
     .select("arrival,departure,is_cleaning,status")
     .in("status", ["accepted", "deposit_paid", "fully_paid"]);
-  if (error) return JSON.stringify({ error: "could not query bookings" });
+  if (error) return null;
 
   // Build set of blocked dates (including ±2 buffer around each stay).
   const blocked = new Set<string>();
@@ -128,23 +214,7 @@ async function checkAvailability(input: { arrival: string; departure: string }):
     blocked.add(dateToIso(addDays(dep, 1)));
     blocked.add(dateToIso(addDays(dep, 2)));
   }
-
-  // Check requested range
-  const reqArr = isoToDate(input.arrival);
-  const reqDep = isoToDate(input.departure);
-  const reqNights = Math.max(1, Math.round((reqDep.getTime() - reqArr.getTime()) / 86400000));
-  const overlaps: string[] = [];
-  for (let i = 0; i < reqNights; i++) {
-    const iso = dateToIso(addDays(reqArr, i));
-    if (blocked.has(iso)) overlaps.push(iso);
-  }
-  return JSON.stringify({
-    available: overlaps.length === 0,
-    arrival: input.arrival,
-    departure: input.departure,
-    nights: reqNights,
-    overlapping_blocked_days: overlaps,
-  });
+  return blocked;
 }
 
 // ─── get_pricing_quote ──────────────────────────────────────────────────────
