@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { useRouterState } from "@tanstack/react-router";
 import { X } from "lucide-react";
 
-// Short-notice gap Andrea wants to fill: 5–8 November 2026.
+// Short-notice gap Andrea wants to fill: the weekend of 6–8 November 2026.
 // Switches itself off once the dates have passed. While this popup is
 // live it takes precedence over the festival one (see festival-popup).
-export const OFFER_END = new Date("2026-11-09T00:00:00");
+export const OFFER_END = new Date("2026-11-07T00:00:00");
 const SHOW_DELAY_MS = 3500;
 const DISMISS_STORAGE = "andreashof.offerNov2026";
 const DISMISS_DAYS = 3;
@@ -21,40 +21,40 @@ const PHOTO_FALLBACK = "/galerie/salon-02.jpg";
 
 const COPY = {
   de: {
-    eyebrow: "Kurzfristig frei",
-    titleA: "5.–8. November",
+    eyebrow: "Am Wochenende frei",
+    titleA: "6.–8. November",
     titleEm: " im Gutshaus.",
-    body: "Diese Tage sind bei uns gerade frei geworden. Kaminzimmer, stille Räume und Vorpommern im Novemberlicht — fragen Sie uns einfach nach Preis und Platz.",
+    body: "Dieses Wochenende ist bei uns gerade frei geworden. Kaminzimmer, stille Räume und Vorpommern im Novemberlicht — fragen Sie uns einfach nach Preis und Platz.",
     whatsapp: "Per WhatsApp anfragen",
     email: "Per E-Mail anfragen",
     close: "Schließen",
     alt: "Kaminzimmer im Andreashof Breechen",
     message:
-      "Hallo Andrea, wir interessieren uns für die freien Tage vom 5. bis 8. November 2026 im Andreashof.",
+      "Hallo Andrea, wir interessieren uns für das freie Wochenende vom 6. bis 8. November 2026 im Andreashof.",
   },
   en: {
-    eyebrow: "Just became free",
-    titleA: "5–8 November",
+    eyebrow: "Free this weekend",
+    titleA: "6–8 November",
     titleEm: " at the manor.",
-    body: "These days have just opened up. A fireplace room, quiet spaces and Western Pomerania in November light — ask us about price and availability.",
+    body: "This weekend has just opened up. A fireplace room, quiet spaces and Western Pomerania in November light — ask us about price and availability.",
     whatsapp: "Ask via WhatsApp",
     email: "Ask via email",
     close: "Close",
     alt: "Fireplace room at Andreashof Breechen",
     message:
-      "Hi Andrea, we're interested in the free dates from 5 to 8 November 2026 at Andreashof.",
+      "Hi Andrea, we're interested in the free weekend from 6 to 8 November 2026 at Andreashof.",
   },
   es: {
-    eyebrow: "Libre de última hora",
-    titleA: "5–8 de noviembre",
+    eyebrow: "Fin de semana libre",
+    titleA: "6–8 de noviembre",
     titleEm: " en la casa señorial.",
-    body: "Estos días acaban de quedar libres. La sala de la chimenea, espacios en calma y Pomerania con luz de noviembre — pregúntanos precio y disponibilidad.",
+    body: "Este fin de semana acaba de quedar libre. La sala de la chimenea, espacios en calma y Pomerania con luz de noviembre — pregúntanos precio y disponibilidad.",
     whatsapp: "Consultar por WhatsApp",
     email: "Consultar por email",
     close: "Cerrar",
     alt: "Sala de la chimenea en el Andreashof Breechen",
     message:
-      "Hola Andrea, nos interesan los días libres del 5 al 8 de noviembre de 2026 en el Andreashof.",
+      "Hola Andrea, nos interesan el fin de semana libre del 6 al 8 de noviembre de 2026 en el Andreashof.",
   },
 } as const;
 
@@ -107,7 +107,7 @@ export function OfferPopup() {
   const lang = (i18n.language?.slice(0, 2) ?? "de") as keyof typeof COPY;
   const c = COPY[lang] ?? COPY.de;
   const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(c.message)}`;
-  const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent("5.–8. November 2026")}&body=${encodeURIComponent(c.message)}`;
+  const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent("Wochenende 6.–8. November 2026")}&body=${encodeURIComponent(c.message)}`;
 
   return (
     <div
