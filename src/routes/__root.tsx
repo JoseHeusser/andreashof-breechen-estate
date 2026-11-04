@@ -28,6 +28,8 @@ const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === "true";
 // AI concierge — hidden until we flip it on. /admin/* + /api/* + the
 // maintenance page never show it.
 const AI_AGENT_ENABLED = import.meta.env.VITE_AI_AGENT === "true";
+// "Aktuelle Angebote" button + drawer — off until Jose flips it on in Vercel.
+const PROMOTIONS_ENABLED = import.meta.env.VITE_PROMOTIONS === "true";
 
 function NotFoundComponent() {
   return (
@@ -239,7 +241,7 @@ function RootComponent() {
           <>
             <GlobalScrollEffects />
             <FloatingLangSwitcher />
-            {!bypass ? <PromotionsDrawer /> : null}
+            {PROMOTIONS_ENABLED && !bypass ? <PromotionsDrawer /> : null}
             <Outlet />
             {AI_AGENT_ENABLED && !pathname.startsWith("/admin") && !pathname.startsWith("/api") ? (
               <ChatWidget />

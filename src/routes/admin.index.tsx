@@ -60,6 +60,13 @@ export const Route = createFileRoute("/admin/")({
   component: AdminPage,
 });
 
+// The "Aktuelle Angebote" tab ships hidden, together with the website
+// button (see PROMOTIONS_ENABLED in __root.tsx).
+const PROMOTIONS_ENABLED = import.meta.env.VITE_PROMOTIONS === "true";
+const TABS = (
+  ["bookings", "mail", "pricing", "promotions", "calendar", "reviews", "emails", "analytics", "settings"] as const
+).filter((k) => k !== "promotions" || PROMOTIONS_ENABLED);
+
 type Tab =
   | "bookings"
   | "mail"
@@ -197,7 +204,7 @@ function AdminPage() {
           </div>
         ) : null}
         <nav className="mx-auto flex max-w-6xl gap-8 overflow-x-auto px-6 text-[11px] uppercase tracking-[0.28em]">
-          {(["bookings", "mail", "pricing", "promotions", "calendar", "reviews", "emails", "analytics", "settings"] as const).map((k) => (
+          {TABS.map((k) => (
             <button
               key={k}
               onClick={() => setTab(k)}
