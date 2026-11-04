@@ -15,11 +15,12 @@
       "reviews": "Bewertungen",
       "analytics": "Besuche",
       "settings": "Einstellungen",
+      "promotions": "Aktuelle Angebote",
       "mail": "Postfach",
       "emails": "E-Mail-Vorlagen"
     },
     "offers": {
-      "title": "Angebote",
+      "title": "Rabatte für lange Aufenthalte",
       "intro": "Rabatt für längere Aufenthalte, nur in einem bestimmten Zeitraum. Gilt, wenn die Anreise im Zeitraum liegt und der Aufenthalt mindestens die angegebene Anzahl Nächte hat. Der Rabatt gilt für die Übernachtungen, nicht für Reinigung und Zusatzleistungen. Treffen mehrere Angebote zu, gilt das beste.",
       "label": "Name",
       "from": "Anreise ab",

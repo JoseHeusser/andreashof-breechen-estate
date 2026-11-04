@@ -16,8 +16,7 @@ import { useSmoothAnchorScroll } from "@/hooks/use-smooth-anchor-scroll";
 import { useRevealPage } from "@/hooks/use-reveal-page";
 import { useRouterState } from "@tanstack/react-router";
 import { FloatingLangSwitcher } from "@/components/floating-lang-switcher";
-import { FestivalPopup } from "@/components/festival-popup";
-import { OfferPopup } from "@/components/offer-popup";
+import { PromotionsDrawer } from "@/components/promotions-drawer";
 import { MaintenancePage } from "@/components/maintenance-page";
 import { ChatWidget } from "@/components/ai-agent/chat-widget";
 import { APPLE_TOUCH_ICON, FAVICON_ICO, FAVICON_SVG } from "@/lib/logos";
@@ -240,8 +239,7 @@ function RootComponent() {
           <>
             <GlobalScrollEffects />
             <FloatingLangSwitcher />
-            {!bypass ? <OfferPopup /> : null}
-            {!bypass ? <FestivalPopup /> : null}
+            {!bypass ? <PromotionsDrawer /> : null}
             <Outlet />
             {AI_AGENT_ENABLED && !pathname.startsWith("/admin") && !pathname.startsWith("/api") ? (
               <ChatWidget />

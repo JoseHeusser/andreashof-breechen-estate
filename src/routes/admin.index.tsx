@@ -7,6 +7,7 @@ import { addDays, differenceInCalendarDays, format, parseISO } from "date-fns";
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { installAdminFetch } from "@/lib/admin/auth-fetch";
 import { AdminLangSwitcher } from "@/components/admin/admin-lang-switcher";
+import { PromotionsTab } from "@/components/admin/promotions-tab";
 import {
   getDashboardData,
   updateBasePrice,
@@ -59,7 +60,16 @@ export const Route = createFileRoute("/admin/")({
   component: AdminPage,
 });
 
-type Tab = "bookings" | "mail" | "pricing" | "calendar" | "reviews" | "emails" | "analytics" | "settings";
+type Tab =
+  | "bookings"
+  | "mail"
+  | "pricing"
+  | "promotions"
+  | "calendar"
+  | "reviews"
+  | "emails"
+  | "analytics"
+  | "settings";
 
 const EMPTY_ANALYTICS: AnalyticsStats = {
   totalVisits: 0,
@@ -187,7 +197,7 @@ function AdminPage() {
           </div>
         ) : null}
         <nav className="mx-auto flex max-w-6xl gap-8 overflow-x-auto px-6 text-[11px] uppercase tracking-[0.28em]">
-          {(["bookings", "mail", "pricing", "calendar", "reviews", "emails", "analytics", "settings"] as const).map((k) => (
+          {(["bookings", "mail", "pricing", "promotions", "calendar", "reviews", "emails", "analytics", "settings"] as const).map((k) => (
             <button
               key={k}
               onClick={() => setTab(k)}
@@ -211,6 +221,8 @@ function AdminPage() {
           <MailTab />
         ) : tab === "pricing" ? (
           <PricingTab pricing={pricing} settings={settings} onReload={reload} />
+        ) : tab === "promotions" ? (
+          <PromotionsTab />
         ) : tab === "calendar" ? (
           <CalendarTab bookings={bookings} />
         ) : tab === "reviews" ? (

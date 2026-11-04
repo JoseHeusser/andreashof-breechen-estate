@@ -15,11 +15,12 @@
       "reviews": "Reviews",
       "analytics": "Visits",
       "settings": "Settings",
+      "promotions": "Current offers",
       "mail": "Mailbox",
       "emails": "Email templates"
     },
     "offers": {
-      "title": "Offers",
+      "title": "Long-stay discounts",
       "intro": "Discount for longer stays, only within a set period. Applies when the arrival falls in the period and the stay has at least the given number of nights. The discount covers the nights, not cleaning or extras. If several offers match, the best one wins.",
       "label": "Name",
       "from": "Arrival from",
