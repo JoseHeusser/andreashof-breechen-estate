@@ -162,7 +162,27 @@
       "fieldTotalPrice": "Total price (€)",
       "fieldNotes": "Internal notes",
       "nightsShort": "N",
-      "personsShort": "P."
+      "personsShort": "P.",
+      "new": {
+        "button": "New booking",
+        "title": "Create a booking",
+        "arrival": "Arrival",
+        "departure": "Departure",
+        "guests": "Guests",
+        "children": "Toddlers",
+        "pets": "Pets",
+        "dachboden": "Include the Dachboden",
+        "wheelchair": "Wheelchair / ground floor needed",
+        "name": "Name",
+        "message": "Guest's message",
+        "quote": "From the pricing rules: {{total}} for {{nights}} nights — leave empty to use this price",
+        "quoteHint": "Enter dates and guests to calculate the price",
+        "sendMail": "Send the \"request received\" email to the guest",
+        "overlap": "Careful, overlaps with: {{list}}",
+        "submit": "Create booking",
+        "cancel": "Cancel",
+        "created": "✓ Booking for {{name}} created (status: Requested)."
+      }
     },
     "status": {
       "requested": "Requested — pending review",
