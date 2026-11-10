@@ -25,6 +25,8 @@ import {
   getEmailThread,
   sendGuestEmail,
   updateOffers,
+  createAdminBooking,
+  getPricingQuote,
 } from "@/lib/admin/server-fns";
 import {
   type AnalyticsStats,
@@ -60,9 +62,10 @@ export const Route = createFileRoute("/admin/")({
   component: AdminPage,
 });
 
-// The "Aktuelle Angebote" tab ships hidden, together with the website
-// button (see PROMOTIONS_ENABLED in __root.tsx).
-const PROMOTIONS_ENABLED = import.meta.env.VITE_PROMOTIONS === "true";
+// The "Aktuelle Angebote" tab, together with the website button (see
+// PROMOTIONS_ENABLED in __root.tsx). On by default; VITE_PROMOTIONS=false
+// in Vercel hides both again.
+const PROMOTIONS_ENABLED = import.meta.env.VITE_PROMOTIONS !== "false";
 const TABS = (
   ["bookings", "mail", "pricing", "promotions", "calendar", "reviews", "emails", "analytics", "settings"] as const
 ).filter((k) => k !== "promotions" || PROMOTIONS_ENABLED);
@@ -279,8 +282,37 @@ function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: ()
     return c;
   }, [guestBookings]);
 
+  const [creating, setCreating] = useState(false);
+  const [created, setCreated] = useState<string | null>(null);
+
   return (
     <div>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        {created ? <p className="text-sm text-sage-deep">{created}</p> : <span />}
+        {!creating && (
+          <button
+            onClick={() => {
+              setCreating(true);
+              setCreated(null);
+            }}
+            className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background"
+          >
+            + {t("admin.bookings.new.button")}
+          </button>
+        )}
+      </div>
+      {creating && (
+        <NewBookingForm
+          bookings={activeBookings}
+          onCancel={() => setCreating(false)}
+          onCreated={async (name) => {
+            setCreating(false);
+            setFilter("web");
+            setCreated(t("admin.bookings.new.created", { name }));
+            await onReload();
+          }}
+        />
+      )}
       <div className="mb-6 flex flex-wrap gap-2 text-xs">
         <FilterChip active={filter === "web"} onClick={() => setFilter("web")} label={t("admin.bookings.filterWeb", { n: webBookings.length })} />
         <FilterChip active={filter === "active"} onClick={() => setFilter("active")} label={t("admin.bookings.filterActive", { n: activeBookings.length })} />
@@ -304,6 +336,226 @@ function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: ()
           ))}
         </ul>
       )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------
+ *  "Neue Buchung" — Andrea enters a booking taken by phone/email.
+ *  It is stored exactly like a website request (source 'web',
+ *  status 'requested', price from the pricing rules unless she
+ *  overrides it) and then follows the normal flow.
+ * ---------------------------------------------------------- */
+const OCCASION_KEYS = ["wedding", "family", "retreat", "other"] as const;
+
+function NewBookingForm({
+  bookings,
+  onCancel,
+  onCreated,
+}: {
+  bookings: Booking[];
+  onCancel: () => void;
+  onCreated: (name: string) => void | Promise<void>;
+}) {
+  const { t, i18n } = useTranslation();
+  const occasionLabels = t("reservations.fields.occasionOptions", { returnObjects: true }) as Record<string, string>;
+  const [arrival, setArrival] = useState("");
+  const [departure, setDeparture] = useState("");
+  const [guests, setGuests] = useState("2");
+  const [children, setChildren] = useState("0");
+  const [pets, setPets] = useState("0");
+  const [wheelchair, setWheelchair] = useState(false);
+  const [dachboden, setDachboden] = useState(false);
+  const [occasion, setOccasion] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [notes, setNotes] = useState("");
+  const [priceOverride, setPriceOverride] = useState("");
+  const [sendMail, setSendMail] = useState(true);
+  const [quote, setQuote] = useState<{ totalCents: number; nights: number; offerLabel: string | null } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const guestsN = parseInt(guests, 10) || 0;
+  const childrenN = parseInt(children, 10) || 0;
+  const petsN = parseInt(pets, 10) || 0;
+  const datesOk = !!arrival && !!departure && arrival < departure;
+
+  // Live quote from the same pricing rules as the website.
+  useEffect(() => {
+    setQuote(null);
+    if (!datesOk || guestsN < 1) return;
+    const h = setTimeout(() => {
+      getPricingQuote({
+        data: { arrival, departure, guests: guestsN, children: childrenN, pets: petsN, rentsDachboden: dachboden },
+      })
+        .then((q) => setQuote(q))
+        .catch(() => setQuote(null));
+    }, 300);
+    return () => clearTimeout(h);
+  }, [arrival, departure, guestsN, childrenN, petsN, dachboden, datesOk]);
+
+  const overlaps = useMemo(
+    () => (datesOk ? bookings.filter((b) => b.arrival < departure && b.departure > arrival) : []),
+    [bookings, arrival, departure, datesOk],
+  );
+
+  const canSave = datesOk && guestsN >= 1 && guestsN <= 30 && name.trim() !== "" && /\S+@\S+\.\S+/.test(email.trim());
+
+  const input = "w-full border border-border bg-background px-2 py-1.5";
+  const label = "eyebrow block mb-1";
+
+  return (
+    <div className="mb-8 border border-border bg-card p-5 text-sm">
+      <h2 className="font-display text-xl mb-4">{t("admin.bookings.new.title")}</h2>
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <label className="block">
+              <span className={label}>{t("admin.bookings.new.arrival")}</span>
+              <input type="date" value={arrival} onChange={(e) => setArrival(e.target.value)} className={input} />
+            </label>
+            <label className="block">
+              <span className={label}>{t("admin.bookings.new.departure")}</span>
+              <input type="date" value={departure} min={arrival || undefined} onChange={(e) => setDeparture(e.target.value)} className={input} />
+            </label>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            <label className="block">
+              <span className={label}>{t("admin.bookings.new.guests")}</span>
+              <input type="number" min={1} max={30} value={guests} onChange={(e) => setGuests(e.target.value)} className={input} />
+            </label>
+            <label className="block">
+              <span className={label}>{t("admin.bookings.new.children")}</span>
+              <input type="number" min={0} max={10} value={children} onChange={(e) => setChildren(e.target.value)} className={input} />
+            </label>
+            <label className="block">
+              <span className={label}>{t("admin.bookings.new.pets")}</span>
+              <input type="number" min={0} max={5} value={pets} onChange={(e) => setPets(e.target.value)} className={input} />
+            </label>
+          </div>
+          <label className="block">
+            <span className={label}>{t("admin.bookings.labelOccasion").replace(":", "")}</span>
+            <select value={occasion} onChange={(e) => setOccasion(e.target.value)} className={input}>
+              <option value="">—</option>
+              {OCCASION_KEYS.map((k) => (
+                <option key={k} value={k}>{occasionLabels?.[k] ?? k}</option>
+              ))}
+            </select>
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={dachboden} onChange={(e) => setDachboden(e.target.checked)} />
+            {t("admin.bookings.new.dachboden")}
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={wheelchair} onChange={(e) => setWheelchair(e.target.checked)} />
+            {t("admin.bookings.new.wheelchair")}
+          </label>
+          {overlaps.length > 0 && (
+            <p className="border border-amber-300 bg-amber-50 px-3 py-2 text-amber-900">
+              {t("admin.bookings.new.overlap", {
+                list: overlaps
+                  .map((b) => `${b.contact_name} (${b.arrival} → ${b.departure}, ${t(`admin.statusShort.${b.status}`)})`)
+                  .join("; "),
+              })}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <label className="block">
+            <span className={label}>{t("admin.bookings.new.name")}</span>
+            <input value={name} onChange={(e) => setName(e.target.value)} className={input} />
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <label className="block">
+              <span className={label}>{t("admin.bookings.labelEmail").replace(":", "")}</span>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={input} />
+            </label>
+            <label className="block">
+              <span className={label}>{t("admin.bookings.labelPhone").replace(":", "")}</span>
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} className={input} />
+            </label>
+          </div>
+          <label className="block">
+            <span className={label}>{t("admin.bookings.new.message")}</span>
+            <textarea rows={2} value={message} onChange={(e) => setMessage(e.target.value)} className={input} />
+          </label>
+          <label className="block">
+            <span className={label}>{t("admin.bookings.fieldNotes")}</span>
+            <textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)} className={input} />
+          </label>
+          <label className="block">
+            <span className={label}>{t("admin.bookings.fieldTotalPrice")}</span>
+            <input
+              type="number"
+              step="0.01"
+              value={priceOverride}
+              placeholder={quote ? String(quote.totalCents / 100) : ""}
+              onChange={(e) => setPriceOverride(e.target.value)}
+              className={input}
+            />
+            <span className="mt-1 block text-xs text-muted-foreground">
+              {quote
+                ? t("admin.bookings.new.quote", {
+                    total: formatCents(quote.totalCents, i18n.language),
+                    nights: quote.nights,
+                  }) + (quote.offerLabel ? ` · ${quote.offerLabel}` : "")
+                : t("admin.bookings.new.quoteHint")}
+            </span>
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={sendMail} onChange={(e) => setSendMail(e.target.checked)} />
+            {t("admin.bookings.new.sendMail")}
+          </label>
+        </div>
+      </div>
+
+      {error && <p className="mt-4 text-red-700">{error}</p>}
+
+      <div className="mt-5 flex gap-3">
+        <button
+          disabled={!canSave || busy}
+          onClick={async () => {
+            setBusy(true);
+            setError(null);
+            try {
+              await createAdminBooking({
+                data: {
+                  arrival,
+                  departure,
+                  guests: guestsN,
+                  children: childrenN,
+                  pets: petsN,
+                  needsWheelchair: wheelchair,
+                  rentsDachboden: dachboden,
+                  occasion: occasion || undefined,
+                  name,
+                  email,
+                  phone: phone || undefined,
+                  message: message || undefined,
+                  internalNotes: notes || null,
+                  totalPriceCents: priceOverride ? Math.round(parseFloat(priceOverride) * 100) : null,
+                  sendGuestEmail: sendMail,
+                },
+              });
+              await onCreated(name.trim());
+            } catch (e) {
+              setError(e instanceof Error ? e.message : String(e));
+            } finally {
+              setBusy(false);
+            }
+          }}
+          className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
+        >
+          {busy ? t("admin.saving") : t("admin.bookings.new.submit")}
+        </button>
+        <button onClick={onCancel} className="border border-border px-4 py-2 text-[11px] uppercase tracking-[0.22em] hover:border-foreground">
+          {t("admin.bookings.new.cancel")}
+        </button>
+      </div>
     </div>
   );
 }

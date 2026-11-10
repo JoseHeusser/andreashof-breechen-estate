@@ -471,72 +471,86 @@ export const updateBooking = createServerFn({ method: "POST" })
     }
   });
 
+type BookingRequestInput = {
+  arrival: string;
+  departure: string;
+  guests: number;
+  children?: number;
+  needsCrib?: boolean;
+  pets?: number;
+  needsWheelchair?: boolean;
+  rentsDachboden?: boolean;
+  occasion?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  message?: string;
+};
+
+/**
+ * Shared by the public form and the admin "Neue Buchung" form, so both
+ * produce exactly the same row: source 'web', status 'requested', price
+ * and 50 % deposit from the live pricing rules.
+ */
+async function insertBookingRequest(
+  data: BookingRequestInput,
+  extra: { totalPriceCents?: number | null; internalNotes?: string | null } = {},
+): Promise<Booking> {
+  if (!data.arrival || !data.departure || !data.name || !data.email || !data.guests) {
+    throw new Error("Missing required fields");
+  }
+  if (data.arrival >= data.departure) throw new Error("Arrival must be before departure");
+  if (data.guests < 1 || data.guests > 30) throw new Error("Invalid guest count");
+
+  const admin = getSupabaseAdmin();
+  const quote = await calculatePricingQuote(admin, {
+    arrival: data.arrival,
+    departure: data.departure,
+    guests: data.guests,
+    children: data.children,
+    pets: data.pets,
+    rentsDachboden: data.rentsDachboden,
+  });
+  const totalCents = extra.totalPriceCents ?? quote.totalCents;
+  const { data: row, error } = await admin
+    .from("bookings")
+    .insert({
+      source: "web",
+      status: "requested",
+      arrival: data.arrival,
+      departure: data.departure,
+      guests: data.guests,
+      children: data.children ?? 0,
+      needs_crib: (data.children ?? 0) > 0 || !!data.needsCrib,
+      pets: Math.max(0, data.pets ?? 0),
+      needs_wheelchair: !!data.needsWheelchair,
+      rents_dachboden: !!data.rentsDachboden,
+      occasion: data.occasion || null,
+      contact_name: data.name.trim(),
+      contact_email: data.email.trim(),
+      contact_phone: data.phone?.trim() || null,
+      message: data.message?.trim() || null,
+      total_price_cents: totalCents,
+      deposit_amount_cents: Math.round(totalCents * 0.5),
+      internal_notes: extra.internalNotes?.trim() || null,
+    })
+    .select("*")
+    .single();
+  if (error) throw error;
+  return row as Booking;
+}
+
 /* -----------------------------------------------------------------
  * PUBLIC — create a new booking request from the /reservations form.
  * No auth required; status defaults to 'requested'.
  * -------------------------------------------------------------- */
 export const createBookingRequest = createServerFn({ method: "POST" })
-  .validator(
-    (data: {
-      arrival: string;
-      departure: string;
-      guests: number;
-      children?: number;
-      needsCrib?: boolean;
-      pets?: number;
-      needsWheelchair?: boolean;
-      rentsDachboden?: boolean;
-      occasion?: string;
-      name: string;
-      email: string;
-      phone?: string;
-      message?: string;
-    }) => data,
-  )
+  .validator((data: BookingRequestInput) => data)
   .handler(async ({ data }) => {
-    if (!data.arrival || !data.departure || !data.name || !data.email || !data.guests) {
-      throw new Error("Missing required fields");
-    }
-    if (data.arrival >= data.departure) throw new Error("Arrival must be before departure");
-    if (data.guests < 1 || data.guests > 30) throw new Error("Invalid guest count");
-
-    const admin = getSupabaseAdmin();
-    const quote = await calculatePricingQuote(admin, {
-      arrival: data.arrival,
-      departure: data.departure,
-      guests: data.guests,
-      children: data.children,
-      pets: data.pets,
-      rentsDachboden: data.rentsDachboden,
-    });
-    const { data: row, error } = await admin
-      .from("bookings")
-      .insert({
-        source: "web",
-        status: "requested",
-        arrival: data.arrival,
-        departure: data.departure,
-        guests: data.guests,
-        children: data.children ?? 0,
-        needs_crib: (data.children ?? 0) > 0 || !!data.needsCrib,
-        pets: Math.max(0, data.pets ?? 0),
-        needs_wheelchair: !!data.needsWheelchair,
-        rents_dachboden: !!data.rentsDachboden,
-        occasion: data.occasion ?? null,
-        contact_name: data.name,
-        contact_email: data.email,
-        contact_phone: data.phone ?? null,
-        message: data.message ?? null,
-        total_price_cents: quote.totalCents,
-        deposit_amount_cents: Math.round(quote.totalCents * 0.5),
-      })
-      .select("*")
-      .single();
-    if (error) throw error;
+    const booking = await insertBookingRequest(data);
 
     // Best-effort: confirmation to guest + new-request alert to Andrea.
     // Guest "Reply" goes to Andrea's personal inbox.
-    const booking = row as Booking;
     const guestTpl = tplRequestedGuest(booking);
     const adminTpl = tplRequestedAdmin(booking);
     await Promise.all([
@@ -544,6 +558,36 @@ export const createBookingRequest = createServerFn({ method: "POST" })
       sendAndLog({ to: ADMIN_EMAIL, ...adminTpl, replyTo: booking.contact_email, bookingId: booking.id, kind: "requestedAdmin" }),
     ]);
 
+    return { id: booking.id };
+  });
+
+/* -----------------------------------------------------------------
+ * ADMIN — create a booking by hand (phone / email / in person).
+ * Same row as a website request, so it then follows the normal flow
+ * (accept → deposit → fully paid, with the usual emails). The guest
+ * gets the usual "Anfrage erhalten" mail unless sendGuestEmail=false;
+ * Andrea gets no alert since she created it herself.
+ * -------------------------------------------------------------- */
+export const createAdminBooking = createServerFn({ method: "POST" })
+  .validator(
+    (
+      data: BookingRequestInput & {
+        totalPriceCents?: number | null;
+        internalNotes?: string | null;
+        sendGuestEmail?: boolean;
+      },
+    ) => data,
+  )
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const booking = await insertBookingRequest(data, {
+      totalPriceCents: data.totalPriceCents,
+      internalNotes: data.internalNotes,
+    });
+    if (data.sendGuestEmail !== false) {
+      const guestTpl = tplRequestedGuest(booking);
+      await sendAndLog({ to: booking.contact_email, ...guestTpl, replyTo: ADMIN_EMAIL, bookingId: booking.id, kind: "requestedGuest" });
+    }
     return { id: booking.id };
   });
 

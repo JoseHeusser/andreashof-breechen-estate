@@ -162,7 +162,27 @@
       "fieldTotalPrice": "Gesamtpreis (€)",
       "fieldNotes": "Interne Notizen",
       "nightsShort": "N",
-      "personsShort": "P."
+      "personsShort": "P.",
+      "new": {
+        "button": "Neue Buchung",
+        "title": "Neue Buchung anlegen",
+        "arrival": "Anreise",
+        "departure": "Abreise",
+        "guests": "Personen",
+        "children": "Kleinkinder",
+        "pets": "Haustiere",
+        "dachboden": "Dachboden dazu",
+        "wheelchair": "Rollstuhl / EG nötig",
+        "name": "Name",
+        "message": "Nachricht des Gastes",
+        "quote": "Laut Preisregeln: {{total}} für {{nights}} Nächte — leer lassen, um diesen Preis zu übernehmen",
+        "quoteHint": "Daten und Personen eingeben, um den Preis zu berechnen",
+        "sendMail": "Bestätigung „Anfrage erhalten“ an den Gast senden",
+        "overlap": "Achtung, überschneidet sich mit: {{list}}",
+        "submit": "Buchung anlegen",
+        "cancel": "Abbrechen",
+        "created": "✓ Buchung für {{name}} angelegt (Status: Angefragt)."
+      }
     },
     "status": {
       "requested": "Angefragt — noch nicht geprüft",
