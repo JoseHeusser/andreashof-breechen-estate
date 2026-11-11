@@ -76,6 +76,7 @@
       "sent": "Gesendet an {{email}}.",
       "replyHint": "Wird vom Website-Absender verschickt; Antworten gehen an Ihr Postfach.",
       "contract": "Vertrag öffnen",
+      "attachContract": "Mietvertrag als PDF anhängen (automatisch ausgefüllt)",
       "defaultSubject": "Ihr Mietvertrag — Andreashof Breechen",
       "defaultBody": "Liebe/r {{name}},\n\nanbei erhalten Sie den Mietvertrag für Ihren Aufenthalt vom {{arrival}} bis {{departure}} ({{guests}} Personen).\n\nBitte ergänzen Sie Ihre Anschrift, unterschreiben Sie den Vertrag und senden Sie ihn uns unterschrieben zurück.\n\nBei Fragen melden Sie sich jederzeit gern."
     },
@@ -163,6 +164,16 @@
       "fieldNotes": "Interne Notizen",
       "nightsShort": "N",
       "personsShort": "P."
+    },
+    "placeholder": {
+      "title": "Airbnb-Buchung > 12 Monate blockieren",
+      "help": "Airbnb überträgt nur die nächsten 12 Monate. Trag hier Buchungen ein, die bei Airbnb schon bestehen, aber weiter in der Zukunft liegen. Die Tage sind dann auf der Website gesperrt. Es gehen keine E-Mails raus. Sobald Airbnb die Buchung überträgt, wird der Platzhalter automatisch durch die Airbnb-Buchung ersetzt.",
+      "arrival": "Anreise",
+      "departure": "Abreise",
+      "note": "Notiz (optional, z. B. Gastname)",
+      "save": "Blockieren",
+      "saved": "Blockiert ✓",
+      "tooEarly": "Dieses Datum liegt innerhalb der 12 Monate. Airbnb überträgt diese Buchung bereits automatisch."
     },
     "status": {
       "requested": "Angefragt — noch nicht geprüft",

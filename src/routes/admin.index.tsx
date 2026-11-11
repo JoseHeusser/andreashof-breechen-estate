@@ -25,6 +25,7 @@ import {
   getEmailThread,
   sendGuestEmail,
   updateOffers,
+  createAirbnbPlaceholder,
 } from "@/lib/admin/server-fns";
 import {
   type AnalyticsStats,
@@ -281,6 +282,7 @@ function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: ()
 
   return (
     <div>
+      <AirbnbPlaceholderForm onReload={onReload} />
       <div className="mb-6 flex flex-wrap gap-2 text-xs">
         <FilterChip active={filter === "web"} onClick={() => setFilter("web")} label={t("admin.bookings.filterWeb", { n: webBookings.length })} />
         <FilterChip active={filter === "active"} onClick={() => setFilter("active")} label={t("admin.bookings.filterActive", { n: activeBookings.length })} />
@@ -303,6 +305,79 @@ function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: ()
             <BookingCard key={b.id} booking={b} onReload={onReload} />
           ))}
         </ul>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------
+ *  Airbnb placeholder — blocks dates already sold on Airbnb but
+ *  beyond its 12-month iCal export. The sync cancels it once the
+ *  real Airbnb booking arrives.
+ * ---------------------------------------------------------- */
+function AirbnbPlaceholderForm({ onReload }: { onReload: () => void }) {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [arrival, setArrival] = useState("");
+  const [departure, setDeparture] = useState("");
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
+  const earliest = format(addDays(new Date(), 365), "yyyy-MM-dd");
+  const canSave = !busy && arrival >= earliest && departure > arrival;
+
+  return (
+    <div className="mb-6 border border-border bg-card">
+      <button onClick={() => setOpen(!open)} className="flex w-full items-baseline justify-between gap-4 px-5 py-3 text-left text-sm">
+        <span>🔒 {t("admin.placeholder.title")}</span>
+        <span className="text-xs text-muted-foreground">{open ? "−" : "+"}</span>
+      </button>
+      {open && (
+        <div className="border-t border-border px-5 py-4 space-y-3 text-sm">
+          <p className="text-muted-foreground">{t("admin.placeholder.help")}</p>
+          <div className="flex flex-wrap items-end gap-3">
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.placeholder.arrival")}</span>
+              <input type="date" min={earliest} value={arrival} onChange={(e) => setArrival(e.target.value)} className="border border-border bg-background px-2 py-1.5" />
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.placeholder.departure")}</span>
+              <input type="date" min={arrival || earliest} value={departure} onChange={(e) => setDeparture(e.target.value)} className="border border-border bg-background px-2 py-1.5" />
+            </label>
+            <label className="block flex-1 min-w-[12rem]">
+              <span className="eyebrow block mb-1">{t("admin.placeholder.note")}</span>
+              <input type="text" value={note} onChange={(e) => setNote(e.target.value)} className="w-full border border-border bg-background px-2 py-1.5" />
+            </label>
+            <button
+              disabled={!canSave}
+              onClick={async () => {
+                setBusy(true);
+                setResult(null);
+                try {
+                  await createAirbnbPlaceholder({ data: { arrival, departure, note } });
+                  setResult({ ok: true, text: t("admin.placeholder.saved") });
+                  setArrival("");
+                  setDeparture("");
+                  setNote("");
+                  await onReload();
+                } catch (e) {
+                  const msg = e instanceof Error ? e.message : "";
+                  setResult({
+                    ok: false,
+                    text: msg.includes("INSIDE_AIRBNB_WINDOW") ? t("admin.placeholder.tooEarly") : msg || "Fehler",
+                  });
+                } finally {
+                  setBusy(false);
+                }
+              }}
+              className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
+            >
+              {busy ? t("admin.saving") : t("admin.placeholder.save")}
+            </button>
+          </div>
+          {arrival && arrival < earliest && <p className="text-red-700">{t("admin.placeholder.tooEarly")}</p>}
+          {result && <p className={result.ok ? "text-sage-deep" : "text-red-700"}>{result.text}</p>}
+        </div>
       )}
     </div>
   );
@@ -471,6 +546,8 @@ function GuestEmailComposer({ booking }: { booking: Booking }) {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  // The prefilled text announces the contract, so it's attached by default.
+  const [attachContract, setAttachContract] = useState(true);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -505,7 +582,7 @@ function GuestEmailComposer({ booking }: { booking: Booking }) {
           { filename: file.name, contentBase64: btoa(binary), contentType: file.type || undefined },
         ];
       }
-      await sendGuestEmail({ data: { bookingId: booking.id, subject, body, attachments } });
+      await sendGuestEmail({ data: { bookingId: booking.id, subject, body, attachments, attachContract } });
       setResult({ ok: true, text: t("admin.compose.sent", { email: booking.contact_email }) });
       setFile(null);
     } catch (e) {
@@ -574,6 +651,11 @@ function GuestEmailComposer({ booking }: { booking: Booking }) {
         />
       </label>
       {tooBig && <p className="text-sm text-red-700">{t("admin.compose.tooBig", { mb: MAX_ATTACHMENT_MB })}</p>}
+
+      <label className="flex items-center gap-2 text-sm">
+        <input type="checkbox" checked={attachContract} onChange={(e) => setAttachContract(e.target.checked)} />
+        {t("admin.compose.attachContract")}
+      </label>
 
       <div className="flex items-center gap-3">
         <button
@@ -975,7 +1057,8 @@ function CalendarTab({ bookings }: { bookings: Booking[] }) {
         continue;
       }
 
-      const isAirbnb = b.source === "airbnb";
+      // 'manual' = placeholder for an Airbnb stay beyond the iCal window.
+      const isAirbnb = b.source === "airbnb" || b.source === "manual";
       const stayBucket = isAirbnb ? airbnbStay : webStay;
       const arrivalBucket = isAirbnb ? airbnbArrival : webArrival;
       const departureBucket = isAirbnb ? airbnbDeparture : webDeparture;
@@ -1582,6 +1665,7 @@ function MailReply({
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [attachContract, setAttachContract] = useState(false);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -1589,6 +1673,7 @@ function MailReply({
     setSubject(lastSubject.startsWith("Re:") ? lastSubject : `Re: ${lastSubject}`);
     setBody("");
     setFile(null);
+    setAttachContract(false);
     setResult(null);
   }, [to, lastSubject]);
 
@@ -1612,9 +1697,12 @@ function MailReply({
           { filename: file.name, contentBase64: btoa(binary), contentType: file.type || undefined },
         ];
       }
-      await sendGuestEmail({ data: { to, bookingId, subject, body, attachments } });
+      await sendGuestEmail({
+        data: { to, bookingId, subject, body, attachments, attachContract: !!bookingId && attachContract },
+      });
       setResult({ ok: true, text: t("admin.compose.sent", { email: to }) });
       setFile(null);
+      setAttachContract(false);
       setBody("");
       onSent();
     } catch (e) {
@@ -1672,6 +1760,12 @@ function MailReply({
         className="w-full text-xs"
       />
       {tooBig && <p className="text-sm text-red-700">{t("admin.compose.tooBig", { mb: MAX_ATTACHMENT_MB })}</p>}
+      {bookingId && (
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={attachContract} onChange={(e) => setAttachContract(e.target.checked)} />
+          {t("admin.compose.attachContract")}
+        </label>
+      )}
 
       <button
         disabled={busy || tooBig || !subject.trim() || !body.trim()}

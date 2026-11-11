@@ -141,6 +141,11 @@ async function main() {
     }
   }
 
+  // Placeholders: Andrea blocks stays already sold on Airbnb but beyond
+  // its 12-month export as source='manual'. Once the real Airbnb
+  // reservation overlaps one, the placeholder has done its job.
+  const replaced = await replacePlaceholders(events);
+
   // 4. Stamp last_synced_at (upsert)
   const stamp = new Date().toISOString();
   const patchRes = await pg("settings?key=eq.airbnb_last_synced_at", {
@@ -162,9 +167,32 @@ async function main() {
       inserted,
       updated,
       removed,
+      replaced,
       total_events: events.length,
     }),
   );
+}
+
+async function replacePlaceholders(events) {
+  const reservations = events.filter((ev) => !/not available/i.test(ev.summary));
+  const placeholders = await pg(
+    "bookings?source=eq.manual&status=neq.cancelled&select=id,arrival,departure,internal_notes",
+  );
+  let replaced = 0;
+  for (const p of placeholders) {
+    const hit = reservations.find((ev) => ev.start < p.departure && ev.end > p.arrival);
+    if (!hit) continue;
+    const note = `Automatisch storniert am ${new Date().toISOString().slice(0, 10)}: ersetzt durch Airbnb-Buchung ${hit.start} → ${hit.end}.`;
+    await pg(`bookings?id=eq.${p.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        status: "cancelled",
+        internal_notes: p.internal_notes ? `${p.internal_notes}\n${note}` : note,
+      }),
+    });
+    replaced++;
+  }
+  return replaced;
 }
 
 main().catch((e) => {

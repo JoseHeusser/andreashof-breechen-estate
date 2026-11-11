@@ -36,6 +36,9 @@ export const Route = createFileRoute("/api/calendar.ics")({
           // Skip Airbnb-sourced rows — Airbnb already knows about those;
           // re-publishing them would create a loop.
           if (b.source === "airbnb") continue;
+          // 'manual' rows are placeholders for stays already sold on
+          // Airbnb (beyond its 12-month export) — Airbnb has them too.
+          if (b.source === "manual") continue;
 
           // Same ±2-day prep/cleaning buffer used by the availability
           // checker and the admin calendar (src/lib/agent/tools.ts,

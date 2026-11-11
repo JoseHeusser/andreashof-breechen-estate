@@ -472,6 +472,53 @@ export const updateBooking = createServerFn({ method: "POST" })
   });
 
 /* -----------------------------------------------------------------
+ * AIRBNB PLACEHOLDER — Airbnb's iCal export only covers the next ~12
+ * months, so a stay already sold on Airbnb further out (e.g. Christmas
+ * next year) looks free on the website. Andrea blocks it here by hand.
+ *
+ *   • source 'manual', status 'accepted' → blocks the public calendar.
+ *   • fake @andreashof-breechen.de email → no guest emails, ever.
+ *   • NOT exported in /api/calendar.ics (Airbnb already has the stay).
+ *   • The Airbnb sync cancels it automatically as soon as the real
+ *     Airbnb reservation for those dates shows up in the iCal feed.
+ * -------------------------------------------------------------- */
+export const AIRBNB_ICAL_WINDOW_DAYS = 365;
+export const PLACEHOLDER_EMAIL = "platzhalter@andreashof-breechen.de";
+
+export const createAirbnbPlaceholder = createServerFn({ method: "POST" })
+  .validator((data: { arrival: string; departure: string; note?: string }) => data)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const iso = /^\d{4}-\d{2}-\d{2}$/;
+    if (!iso.test(data.arrival) || !iso.test(data.departure) || data.arrival >= data.departure) {
+      throw new Error("INVALID_DATES");
+    }
+    // Only for dates Airbnb doesn't export yet — inside the window the
+    // sync already brings the real booking over.
+    const earliest = new Date();
+    earliest.setUTCDate(earliest.getUTCDate() + AIRBNB_ICAL_WINDOW_DAYS);
+    if (data.arrival < earliest.toISOString().slice(0, 10)) {
+      throw new Error("INSIDE_AIRBNB_WINDOW");
+    }
+    const note = data.note?.trim();
+    const { error } = await getSupabaseAdmin()
+      .from("bookings")
+      .insert({
+        source: "manual",
+        status: "accepted",
+        arrival: data.arrival,
+        departure: data.departure,
+        guests: 1,
+        contact_name: note ? `🔒 Airbnb · ${note}` : "🔒 Airbnb (Platzhalter)",
+        contact_email: PLACEHOLDER_EMAIL,
+        internal_notes:
+          "Platzhalter für eine Airbnb-Buchung außerhalb des 12-Monats-Exports. " +
+          "Wird automatisch storniert, sobald Airbnb die Buchung überträgt.",
+      });
+    if (error) throw error;
+  });
+
+/* -----------------------------------------------------------------
  * PUBLIC — create a new booking request from the /reservations form.
  * No auth required; status defaults to 'requested'.
  * -------------------------------------------------------------- */
@@ -887,6 +934,8 @@ export const sendGuestEmail = createServerFn({ method: "POST" })
       body: string;
       kind?: string;
       attachments?: { filename: string; contentBase64: string; contentType?: string }[];
+      // Render the booking's Mietvertrag server-side and attach it.
+      attachContract?: boolean;
     }) => data,
   )
   .handler(async ({ data }) => {
@@ -914,6 +963,22 @@ export const sendGuestEmail = createServerFn({ method: "POST" })
       if (bytes > MAX_ATTACHMENT_BYTES) throw new Error("ATTACHMENT_TOO_LARGE");
       return { filename: a.filename, content: a.contentBase64, contentType: a.contentType };
     });
+    if (data.attachContract) {
+      if (!data.bookingId) throw new Error("CONTRACT_NEEDS_BOOKING");
+      const { data: row, error } = await getSupabaseAdmin()
+        .from("bookings")
+        .select("*")
+        .eq("id", data.bookingId)
+        .single();
+      if (error) throw error;
+      const booking = row as Booking;
+      const bytes = await renderContractPdf(booking);
+      attachments.push({
+        filename: contractFilename(booking),
+        content: Buffer.from(bytes).toString("base64"),
+        contentType: "application/pdf",
+      });
+    }
 
     const tpl = tplCustomMessage(subject, body);
     const sent = await sendAndLog({

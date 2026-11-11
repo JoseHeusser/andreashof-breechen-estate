@@ -158,6 +158,28 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Placeholders: stays already sold on Airbnb but beyond its 12-month
+    // export, blocked by Andrea as source='manual'. Cancel each one once
+    // the real Airbnb reservation overlapping it arrives in the feed.
+    const reservations = events.filter((ev) => !/not available/i.test(ev.summary));
+    const placeholders = await pg<
+      { id: string; arrival: string; departure: string; internal_notes: string | null }[]
+    >("bookings?source=eq.manual&status=neq.cancelled&select=id,arrival,departure,internal_notes");
+    let replaced = 0;
+    for (const p of placeholders) {
+      const hit = reservations.find((ev) => ev.start < p.departure && ev.end > p.arrival);
+      if (!hit) continue;
+      const note = `Automatisch storniert am ${new Date().toISOString().slice(0, 10)}: ersetzt durch Airbnb-Buchung ${hit.start} → ${hit.end}.`;
+      await pg(`bookings?id=eq.${p.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          status: "cancelled",
+          internal_notes: p.internal_notes ? `${p.internal_notes}\n${note}` : note,
+        }),
+      });
+      replaced++;
+    }
+
     // 5. Stamp last_synced_at
     await pg("settings?key=eq.airbnb_last_synced_at", {
       method: "PATCH",
@@ -173,7 +195,7 @@ Deno.serve(async (req) => {
       });
     });
 
-    return json({ ok: true, inserted, updated, removed, total_events: events.length }, 200);
+    return json({ ok: true, inserted, updated, removed, replaced, total_events: events.length }, 200);
   } catch (e) {
     console.error(e);
     return json({ ok: false, error: e instanceof Error ? e.message : String(e) }, 500);
