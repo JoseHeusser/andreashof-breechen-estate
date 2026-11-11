@@ -7,16 +7,24 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 // server-side system prompt (src/lib/agent/system-prompt.ts) — this
 // widget is just the UI shell.
 
+// Free windows from the list_available_dates tool, drawn as a calendar.
+interface CalendarData {
+  from: string;
+  to: string;
+  free_windows: { arrival: string; departure: string; nights: number }[];
+}
+
 interface Message {
   role: "user" | "assistant";
   content: string;
+  calendar?: CalendarData;
 }
 
 const STORAGE_KEY = "andreashof.chat";
 const GREETING: Message = {
   role: "assistant",
   content:
-    "Hallo — ich bin der Andreashof. Frag mich nach Verfügbarkeit, Preisen, Zimmern oder der Umgebung. Antworte gerne auf Deutsch, English oder Español.",
+    "Hallo — ich bin der digitale Assistent des Andreashofs, eine KI. Frag mich nach Verfügbarkeit, Preisen, Zimmern oder der Umgebung. Antworte gerne auf Deutsch, English oder Español.",
 };
 
 export function ChatWidget() {
@@ -102,7 +110,18 @@ export function ChatWidget() {
               assistantText += JSON.parse(data) as string;
               setMessages((m) => {
                 const copy = m.slice();
-                copy[copy.length - 1] = { role: "assistant", content: assistantText };
+                copy[copy.length - 1] = { ...copy[copy.length - 1], content: assistantText };
+                return copy;
+              });
+            } catch {
+              /* ignore parse */
+            }
+          } else if (event === "calendar") {
+            try {
+              const calendar = JSON.parse(data) as CalendarData;
+              setMessages((m) => {
+                const copy = m.slice();
+                copy[copy.length - 1] = { ...copy[copy.length - 1], calendar };
                 return copy;
               });
             } catch {
@@ -163,6 +182,7 @@ export function ChatWidget() {
     if (!tool) return null;
     switch (tool) {
       case "check_availability":
+      case "list_available_dates":
         return "Ich schaue im Kalender…";
       case "get_pricing_quote":
         return "Ich berechne den Preis…";
@@ -224,7 +244,7 @@ export function ChatWidget() {
           {/* Messages */}
           <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto bg-background px-4 py-4">
             {messages.map((m, i) => (
-              <MessageBubble key={i} role={m.role} content={m.content} />
+              <MessageBubble key={i} {...m} />
             ))}
             {busy && toolLabel ? (
               <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
@@ -261,8 +281,12 @@ export function ChatWidget() {
                 ↑
               </button>
             </div>
-            <p className="mt-1.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">
-              Beta · powered by Claude
+            <p className="mt-1.5 text-[10px] leading-snug text-muted-foreground/80">
+              KI-Assistent (Claude von Anthropic). Antworten ohne Gewähr — verbindlich ist
+              Andreas Bestätigung. Bitte keine sensiblen Daten eingeben.{" "}
+              <a href="/datenschutz#chat" className="underline underline-offset-2 hover:text-sage-deep">
+                Datenschutz
+              </a>
             </p>
           </footer>
         </div>
@@ -271,7 +295,7 @@ export function ChatWidget() {
   );
 }
 
-function MessageBubble({ role, content }: Message) {
+function MessageBubble({ role, content, calendar }: Message) {
   if (role === "user") {
     return (
       <div className="flex justify-end">
@@ -282,12 +306,102 @@ function MessageBubble({ role, content }: Message) {
     );
   }
   return (
-    <div className="flex">
+    <div className="flex flex-col items-start gap-2">
       <p className="max-w-[88%] whitespace-pre-wrap rounded-2xl rounded-bl-md border border-border bg-card px-4 py-2 text-sm leading-relaxed text-foreground">
         {content || <span className="text-muted-foreground">…</span>}
       </p>
+      {calendar ? <AvailabilityCalendar data={calendar} /> : null}
     </div>
   );
+}
+
+// ─── Availability calendar ──────────────────────────────────────────────────
+// Free nights in sage, everything else muted. One grid per month in the
+// requested period; days outside it are left blank.
+
+const WEEKDAYS = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+const MONTH_FMT = new Intl.DateTimeFormat("de-DE", { month: "long", year: "numeric", timeZone: "UTC" });
+const MAX_MONTHS = 6;
+
+function AvailabilityCalendar({ data }: { data: CalendarData }) {
+  const free = new Set<string>();
+  for (const w of data.free_windows) {
+    for (let d = utc(w.arrival); d < utc(w.departure); d = plusDays(d, 1)) free.add(iso(d));
+  }
+  const first = utc(data.from);
+  const months: Date[] = [];
+  for (
+    let m = new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth(), 1));
+    m < utc(data.to) && months.length < MAX_MONTHS;
+    m = new Date(Date.UTC(m.getUTCFullYear(), m.getUTCMonth() + 1, 1))
+  ) {
+    months.push(m);
+  }
+
+  return (
+    <div className="w-[88%] space-y-3 rounded-2xl border border-border bg-card px-3 py-3">
+      {months.map((m) => {
+        const offset = (m.getUTCDay() + 6) % 7; // Monday first
+        const daysInMonth = new Date(Date.UTC(m.getUTCFullYear(), m.getUTCMonth() + 1, 0)).getUTCDate();
+        const cells: (string | null)[] = Array(offset).fill(null);
+        for (let day = 1; day <= daysInMonth; day++) {
+          cells.push(iso(new Date(Date.UTC(m.getUTCFullYear(), m.getUTCMonth(), day))));
+        }
+        return (
+          <div key={iso(m)}>
+            <p className="mb-1.5 text-xs font-medium capitalize text-foreground">{MONTH_FMT.format(m)}</p>
+            <div className="grid grid-cols-7 gap-0.5 text-center text-[11px]">
+              {WEEKDAYS.map((w) => (
+                <span key={w} className="py-0.5 text-[10px] text-muted-foreground">
+                  {w}
+                </span>
+              ))}
+              {cells.map((day, i) => {
+                if (!day) return <span key={`e${i}`} />;
+                const inRange = day >= data.from && day < data.to;
+                const isFree = free.has(day);
+                return (
+                  <span
+                    key={day}
+                    className={
+                      !inRange
+                        ? "py-1 text-muted-foreground/30"
+                        : isFree
+                          ? "rounded bg-sage/30 py-1 font-medium text-sage-deep"
+                          : "py-1 text-muted-foreground/50 line-through"
+                    }
+                  >
+                    {Number(day.slice(8))}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+      <p className="flex items-center gap-3 text-[10px] text-muted-foreground">
+        <span className="flex items-center gap-1">
+          <span className="h-2.5 w-2.5 rounded-sm bg-sage/30" /> frei
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="line-through">12</span> belegt
+        </span>
+        <span>· mind. 2 Nächte</span>
+      </p>
+    </div>
+  );
+}
+
+function utc(s: string): Date {
+  return new Date(s + "T00:00:00Z");
+}
+function iso(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+function plusDays(d: Date, n: number): Date {
+  const next = new Date(d);
+  next.setUTCDate(next.getUTCDate() + n);
+  return next;
 }
 
 function ChatIcon() {

@@ -104,8 +104,40 @@ function DatenschutzPage() {
               Art. 6 Abs. 1 lit. c DSGVO einschlägig.
             </p>
           </section>
+          <section id="chat">
+            <h2 className="font-display text-2xl">5. Chat-Assistent (KI)</h2>
+            <p className="mt-3">
+              Auf dieser Website können Sie einen Chat-Assistenten nutzen, der Fragen zu Haus,
+              Verfügbarkeit und Preisen beantwortet und auf Ihren Wunsch eine Reservierungsanfrage
+              anlegt. Der Assistent ist ein KI-System und kein Mensch. Die Antworten werden
+              automatisch erzeugt und können fehlerhaft sein; verbindlich sind allein unsere
+              Bestätigung und der Mietvertrag.
+            </p>
+            <p className="mt-3">
+              Für die Antworten nutzen wir das Sprachmodell Claude der Anthropic PBC (USA) als
+              Auftragsverarbeiter. Dabei werden der Inhalt Ihrer Chat-Nachrichten und der bisherige
+              Gesprächsverlauf an Anthropic übermittelt, ebenso alle Angaben, die Sie im Chat
+              machen, etwa Reisedaten, Gästezahl, Name oder E-Mail-Adresse. Anthropic verwendet
+              diese Daten nicht zum Training seiner Modelle und speichert sie nur für einen
+              begrenzten Zeitraum zur Sicherheits- und Missbrauchskontrolle. Die Übermittlung in die
+              USA erfolgt auf Grundlage der EU-Standardvertragsklauseln.
+            </p>
+            <p className="mt-3">
+              Der Gesprächsverlauf wird nur im Sitzungsspeicher Ihres Browsers abgelegt und beim
+              Schließen des Browsers oder über „Neue Konversation“ gelöscht. Auf unseren Servern
+              speichern wir Chats nicht. Nur wenn Sie über den Chat eine Reservierungsanfrage
+              absenden, werden die Anfragedaten wie unter Ziffer 3 und 4 beschrieben gespeichert.
+            </p>
+            <p className="mt-3">
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit der Chat der Anbahnung einer
+              Buchung dient, und im Übrigen Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an
+              einer schnellen Beantwortung von Gästefragen). Die Nutzung des Chats ist freiwillig;
+              Sie können uns jederzeit auch per E-Mail erreichen. Bitte geben Sie im Chat keine
+              besonders sensiblen Daten wie Gesundheits- oder Zahlungsdaten ein.
+            </p>
+          </section>
           <section>
-            <h2 className="font-display text-2xl">5. Reichweitenmessung</h2>
+            <h2 className="font-display text-2xl">6. Reichweitenmessung</h2>
             <p className="mt-3">
               Wir erfassen einfache, eigene Besuchsstatistiken, um zu verstehen, welche Seiten
               aufgerufen werden und zu welchen Zeiten die Website genutzt wird. Dabei werden
@@ -118,7 +150,7 @@ function DatenschutzPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">6. Karten</h2>
+            <h2 className="font-display text-2xl">7. Karten</h2>
             <p className="mt-3">
               Diese Website verwendet OpenStreetMap-Karten zur Darstellung der Lage. Beim Aufruf der
               Karte können technische Daten wie Ihre IP-Adresse an Server der OpenStreetMap
@@ -129,7 +161,7 @@ function DatenschutzPage() {
           </section>
           <section>
             <h2 className="font-display text-2xl">
-              7. Cookies, lokaler Speicher und Spracheinstellung
+              8. Cookies, lokaler Speicher und Spracheinstellung
             </h2>
             <p className="mt-3">
               Diese Website verwendet keine Marketing-Cookies. Zur Funktionalität können jedoch
@@ -140,12 +172,12 @@ function DatenschutzPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">8. Empfänger und Drittlandübermittlungen</h2>
+            <h2 className="font-display text-2xl">9. Empfänger und Drittlandübermittlungen</h2>
             <p className="mt-3">
               Empfänger personenbezogener Daten können technische Dienstleister sein, die wir für
-              Hosting, Datenbankbetrieb, E-Mail-Versand, Kartenanzeige, Administration und
-              Fehleranalyse einsetzen. Dazu zählen insbesondere Vercel, Supabase, Resend und
-              OpenStreetMap-Dienste.
+              Hosting, Datenbankbetrieb, E-Mail-Versand, Kartenanzeige, den Chat-Assistenten,
+              Administration und Fehleranalyse einsetzen. Dazu zählen insbesondere Vercel,
+              Supabase, Resend, Anthropic und OpenStreetMap-Dienste.
             </p>
             <p className="mt-3">
               Einige Dienstleister können Daten außerhalb der Europäischen Union oder des
@@ -155,7 +187,7 @@ function DatenschutzPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">9. Speicherdauer</h2>
+            <h2 className="font-display text-2xl">10. Speicherdauer</h2>
             <p className="mt-3">
               Wir speichern personenbezogene Daten nur so lange, wie dies für die jeweiligen Zwecke
               erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen. Reservierungs- und
@@ -165,7 +197,7 @@ function DatenschutzPage() {
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl">10. Ihre Rechte</h2>
+            <h2 className="font-display text-2xl">11. Ihre Rechte</h2>
             <p className="mt-3">
               Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der
               Verarbeitung sowie das Recht auf Datenübertragbarkeit und Widerspruch. Soweit eine

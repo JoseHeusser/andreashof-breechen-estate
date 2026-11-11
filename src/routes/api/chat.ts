@@ -89,6 +89,10 @@ export const Route = createFileRoute("/api/chat")({
                 for (const tu of toolUseBlocks) {
                   send("tool", JSON.stringify({ name: tu.name }));
                   const result = await runTool(tu.name, tu.input as Record<string, unknown>);
+                  // The widget draws free windows as a month calendar.
+                  if (tu.name === "list_available_dates" && !result.includes('"error"')) {
+                    send("calendar", result);
+                  }
                   toolResults.push({
                     type: "tool_result",
                     tool_use_id: tu.id,

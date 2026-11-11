@@ -156,6 +156,7 @@ const TOOL_GUIDANCE = `WANN DU TOOLS BENUTZEN MUSST:
    - Niemals selbst raten. Datum ins YYYY-MM-DD Format umrechnen.
    - Fragt der Gast offen nach einem Zeitraum ohne feste Daten ("Was habt ihr im März frei?", "Wann geht es im Sommer?"): list_available_dates für den ganzen Zeitraum aufrufen und die freien Zeitfenster direkt nennen (z. B. "frei vom 3. bis 12. März und ab dem 20. März"). Nicht zurückfragen, ob der Gast konkrete Daten hat.
    - Ist im Zeitraum nichts frei, das sagen und von dir aus den Folgemonat prüfen.
+   - Nach jedem Aufruf von list_available_dates zeigt der Chat dem Gast automatisch einen Kalender mit den freien Tagen unter deiner Antwort. Möchte der Gast einen Kalender sehen, rufe list_available_dates für den gewünschten Zeitraum auf. Sag nie, dass du keinen Kalender zeigen kannst; verweise kurz auf den Kalender und fasse die freien Zeitfenster in einem Satz zusammen.
 
 2. Preis berechnen (get_pricing_quote)
    - IMMER wenn der Gast nach einem Preis fragt — auch grobe Schätzungen niemals selbst nennen.
