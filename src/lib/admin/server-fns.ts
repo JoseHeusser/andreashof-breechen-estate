@@ -477,6 +477,8 @@ export const updateBooking = createServerFn({ method: "POST" })
  * next year) looks free on the website. Andrea blocks it here by hand.
  *
  *   • source 'manual', status 'accepted' → blocks the public calendar.
+ *     Identified as placeholder by PLACEHOLDER_EMAIL (real admin-entered
+ *     bookings are 'manual' too).
  *   • fake @andreashof-breechen.de email → no guest emails, ever.
  *   • NOT exported in /api/calendar.ics (Airbnb already has the stay).
  *   • The Airbnb sync cancels it automatically as soon as the real
@@ -516,6 +518,126 @@ export const createAirbnbPlaceholder = createServerFn({ method: "POST" })
           "Wird automatisch storniert, sobald Airbnb die Buchung überträgt.",
       });
     if (error) throw error;
+  });
+
+/* -----------------------------------------------------------------
+ * ADMIN BOOKING — Andrea enters a real booking by hand (phone, email,
+ * walk-in). source 'manual'; behaves like a website booking otherwise
+ * (exported to Airbnb, blocks the calendar). Placeholders above share
+ * the source but are told apart by PLACEHOLDER_EMAIL.
+ * -------------------------------------------------------------- */
+export const createAdminBooking = createServerFn({ method: "POST" })
+  .validator(
+    (data: {
+      arrival: string;
+      departure: string;
+      guests: number;
+      children?: number;
+      pets?: number;
+      rentsDachboden?: boolean;
+      name: string;
+      email: string;
+      phone?: string;
+      status: BookingStatus;
+      totalPriceCents?: number | null;
+      internalNotes?: string;
+      sendEmail: boolean;
+      allowOverlap?: boolean;
+    }) => data,
+  )
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const iso = /^\d{4}-\d{2}-\d{2}$/;
+    if (!iso.test(data.arrival) || !iso.test(data.departure) || data.arrival >= data.departure) {
+      throw new Error("INVALID_DATES");
+    }
+    if (!data.name?.trim() || !data.email?.trim()) throw new Error("MISSING_FIELDS");
+    if (!(data.guests >= 1 && data.guests <= 30)) throw new Error("INVALID_GUESTS");
+
+    const admin = getSupabaseAdmin();
+
+    if (!data.allowOverlap) {
+      const { data: clash, error: clashErr } = await admin
+        .from("bookings")
+        .select("arrival,departure,contact_name,source")
+        .neq("status", "cancelled")
+        .eq("is_cleaning", false)
+        .lt("arrival", data.departure)
+        .gt("departure", data.arrival)
+        .limit(3);
+      if (clashErr) throw clashErr;
+      if (clash && clash.length > 0) {
+        const list = clash
+          .map((c) => `${c.contact_name} (${c.arrival} → ${c.departure}, ${c.source})`)
+          .join("; ");
+        throw new Error(`OVERLAP: ${list}`);
+      }
+    }
+
+    let total = data.totalPriceCents ?? null;
+    if (total == null) {
+      const quote = await calculatePricingQuote(admin, {
+        arrival: data.arrival,
+        departure: data.departure,
+        guests: data.guests,
+        children: data.children,
+        pets: data.pets,
+        rentsDachboden: data.rentsDachboden,
+      });
+      total = quote.totalCents;
+    }
+
+    const { data: row, error } = await admin
+      .from("bookings")
+      .insert({
+        source: "manual",
+        status: data.status,
+        arrival: data.arrival,
+        departure: data.departure,
+        guests: data.guests,
+        children: data.children ?? 0,
+        needs_crib: (data.children ?? 0) > 0,
+        pets: Math.max(0, data.pets ?? 0),
+        rents_dachboden: !!data.rentsDachboden,
+        contact_name: data.name.trim(),
+        contact_email: data.email.trim(),
+        contact_phone: data.phone?.trim() || null,
+        internal_notes: data.internalNotes?.trim() || null,
+        total_price_cents: total,
+        deposit_amount_cents: Math.round(total * 0.5),
+      })
+      .select("*")
+      .single();
+    if (error) throw error;
+
+    const booking = row as Booking;
+    if (data.sendEmail) {
+      const tpl =
+        booking.status === "requested"
+          ? tplRequestedGuest(booking)
+          : booking.status === "accepted"
+            ? tplAcceptedGuest(booking)
+            : booking.status === "deposit_paid"
+              ? tplDepositPaidGuest(booking)
+              : booking.status === "fully_paid"
+                ? tplFullyPaidGuest(booking)
+                : null;
+      if (tpl) {
+        await sendAndLog({
+          to: booking.contact_email,
+          ...tpl,
+          replyTo: ADMIN_EMAIL,
+          bookingId: booking.id,
+          kind: {
+            requested: "requestedGuest",
+            accepted: "acceptedGuest",
+            deposit_paid: "depositPaidGuest",
+            fully_paid: "fullyPaidGuest",
+          }[booking.status as "requested" | "accepted" | "deposit_paid" | "fully_paid"],
+        });
+      }
+    }
+    return { id: booking.id, totalPriceCents: total };
   });
 
 /* -----------------------------------------------------------------

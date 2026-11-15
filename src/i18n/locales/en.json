@@ -152,7 +152,7 @@
     },
     "bookings": {
       "filterAll": "All ({{n}})",
-      "filterWeb": "Website ({{n}})",
+      "filterWeb": "Website & direct ({{n}})",
       "filterActive": "Active ({{n}})",
       "empty": "No bookings.",
       "labelEmail": "Email:",
@@ -247,6 +247,22 @@
       "pushTitle": "Andreashof → Airbnb (push)",
       "pushBody": "This URL publishes every confirmed booking from our site as an iCal feed. Import it into Airbnb: Listing → Calendar → Sync calendars → Import calendar. Airbnb polls it every few hours.",
       "copy": "Copy"
+    },
+    "newBooking": {
+      "title": "Add new booking",
+      "guests": "Adults",
+      "children": "Toddlers",
+      "pets": "Pets",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "priceAuto": "empty = automatic",
+      "dachboden": "Dachboden rented",
+      "sendEmail": "Send confirmation email to the guest",
+      "overlap": "Careful, this period already has: {{list}}",
+      "saveAnyway": "Save anyway",
+      "save": "Save booking",
+      "saved": "Booking saved ✓ (total {{price}})"
     }
   },
   "nav": {

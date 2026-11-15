@@ -164,7 +164,7 @@ Deno.serve(async (req) => {
     const reservations = events.filter((ev) => !/not available/i.test(ev.summary));
     const placeholders = await pg<
       { id: string; arrival: string; departure: string; internal_notes: string | null }[]
-    >("bookings?source=eq.manual&status=neq.cancelled&select=id,arrival,departure,internal_notes");
+    >("bookings?source=eq.manual&contact_email=eq.platzhalter@andreashof-breechen.de&status=neq.cancelled&select=id,arrival,departure,internal_notes");
     let replaced = 0;
     for (const p of placeholders) {
       const hit = reservations.find((ev) => ev.start < p.departure && ev.end > p.arrival);

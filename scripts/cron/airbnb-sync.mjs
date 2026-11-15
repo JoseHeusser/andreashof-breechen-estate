@@ -176,7 +176,7 @@ async function main() {
 async function replacePlaceholders(events) {
   const reservations = events.filter((ev) => !/not available/i.test(ev.summary));
   const placeholders = await pg(
-    "bookings?source=eq.manual&status=neq.cancelled&select=id,arrival,departure,internal_notes",
+    "bookings?source=eq.manual&contact_email=eq.platzhalter@andreashof-breechen.de&status=neq.cancelled&select=id,arrival,departure,internal_notes",
   );
   let replaced = 0;
   for (const p of placeholders) {

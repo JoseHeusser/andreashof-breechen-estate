@@ -152,7 +152,7 @@
     },
     "bookings": {
       "filterAll": "Alle ({{n}})",
-      "filterWeb": "Website ({{n}})",
+      "filterWeb": "Website & direkt ({{n}})",
       "filterActive": "Aktiv ({{n}})",
       "empty": "Keine Buchungen.",
       "labelEmail": "E-Mail:",
@@ -247,6 +247,22 @@
       "pushTitle": "Andreashof → Airbnb (push)",
       "pushBody": "Diese URL veröffentlicht alle bestätigten Buchungen unserer Seite als iCal-Feed. Importiere sie in Airbnb: Listing → Kalender → Kalender synchronisieren → Kalender importieren. Airbnb fragt den Feed alle paar Stunden ab.",
       "copy": "Kopieren"
+    },
+    "newBooking": {
+      "title": "Neue Buchung eintragen",
+      "guests": "Erwachsene",
+      "children": "Kleinkinder",
+      "pets": "Haustiere",
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "priceAuto": "leer = automatisch",
+      "dachboden": "Dachboden gemietet",
+      "sendEmail": "Bestätigungsmail an den Gast senden",
+      "overlap": "Achtung, in diesem Zeitraum gibt es schon: {{list}}",
+      "saveAnyway": "Trotzdem speichern",
+      "save": "Buchung speichern",
+      "saved": "Buchung gespeichert ✓ (Gesamtpreis {{price}})"
     }
   },
   "nav": {

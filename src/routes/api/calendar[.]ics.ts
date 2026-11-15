@@ -2,6 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 
+// Keep in sync with PLACEHOLDER_EMAIL in src/lib/admin/server-fns.ts
+// (not imported: that module pulls in server-fn/PDF code).
+const PLACEHOLDER_EMAIL = "platzhalter@andreashof-breechen.de";
+
 // Public iCal feed for Airbnb's "Import calendar" feature.
 // Andrea pastes this URL in Airbnb → Listing → Calendar → Sync calendars.
 // Airbnb polls it on its own schedule (~2-12h).
@@ -15,7 +19,7 @@ export const Route = createFileRoute("/api/calendar.ics")({
         // so Andrea doesn't get a double-booking while it's pending.
         const { data, error } = await admin
           .from("bookings")
-          .select("id,arrival,departure,source,status,is_cleaning")
+          .select("id,arrival,departure,source,status,is_cleaning,contact_email")
           .in("status", ["requested", "accepted", "deposit_paid", "fully_paid"]);
         if (error) {
           return new Response(`error: ${error.message}`, { status: 500 });
@@ -36,9 +40,10 @@ export const Route = createFileRoute("/api/calendar.ics")({
           // Skip Airbnb-sourced rows — Airbnb already knows about those;
           // re-publishing them would create a loop.
           if (b.source === "airbnb") continue;
-          // 'manual' rows are placeholders for stays already sold on
-          // Airbnb (beyond its 12-month export) — Airbnb has them too.
-          if (b.source === "manual") continue;
+          // Placeholders for stays already sold on Airbnb (beyond its
+          // 12-month export) — Airbnb has them too. Real admin-entered
+          // bookings (also source 'manual') ARE exported.
+          if (b.contact_email === PLACEHOLDER_EMAIL) continue;
 
           // Same ±2-day prep/cleaning buffer used by the availability
           // checker and the admin calendar (src/lib/agent/tools.ts,

@@ -26,7 +26,12 @@ import {
   sendGuestEmail,
   updateOffers,
   createAirbnbPlaceholder,
+  createAdminBooking,
 } from "@/lib/admin/server-fns";
+
+// Same value as PLACEHOLDER_EMAIL in server-fns (kept local so the
+// client bundle doesn't depend on non-server-fn exports there).
+const PLACEHOLDER_EMAIL = "platzhalter@andreashof-breechen.de";
 import {
   type AnalyticsStats,
   type EmailRow,
@@ -262,8 +267,13 @@ function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: ()
     () => guestBookings.filter((b) => b.status !== "cancelled"),
     [guestBookings],
   );
+  // Website + bookings Andrea entered herself ('manual'), minus the
+  // Airbnb placeholders.
   const webBookings = useMemo(
-    () => activeBookings.filter((b) => b.source === "web"),
+    () =>
+      activeBookings.filter(
+        (b) => b.source !== "airbnb" && b.contact_email !== PLACEHOLDER_EMAIL,
+      ),
     [activeBookings],
   );
   const filtered =
@@ -282,6 +292,7 @@ function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: ()
 
   return (
     <div>
+      <NewBookingForm onReload={onReload} />
       <AirbnbPlaceholderForm onReload={onReload} />
       <div className="mb-6 flex flex-wrap gap-2 text-xs">
         <FilterChip active={filter === "web"} onClick={() => setFilter("web")} label={t("admin.bookings.filterWeb", { n: webBookings.length })} />
@@ -305,6 +316,168 @@ function BookingsTab({ bookings, onReload }: { bookings: Booking[]; onReload: ()
             <BookingCard key={b.id} booking={b} onReload={onReload} />
           ))}
         </ul>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------
+ *  New booking — Andrea enters a real booking by hand (phone,
+ *  email, walk-in). Price is auto-calculated if left empty.
+ * ---------------------------------------------------------- */
+function NewBookingForm({ onReload }: { onReload: () => void }) {
+  const { t } = useTranslation();
+  const empty = {
+    arrival: "",
+    departure: "",
+    guests: "2",
+    children: "0",
+    pets: "0",
+    rentsDachboden: false,
+    name: "",
+    email: "",
+    phone: "",
+    status: "accepted" as BookingStatus,
+    price: "",
+    notes: "",
+    sendEmail: true,
+  };
+  const [open, setOpen] = useState(false);
+  const [f, setF] = useState(empty);
+  const [busy, setBusy] = useState(false);
+  const [overlap, setOverlap] = useState<string | null>(null);
+  const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
+  const set = <K extends keyof typeof empty>(k: K, v: (typeof empty)[K]) => {
+    setF((prev) => ({ ...prev, [k]: v }));
+    setOverlap(null);
+  };
+  const canSave =
+    !busy && !!f.arrival && f.departure > f.arrival && !!f.name.trim() && !!f.email.trim() && Number(f.guests) >= 1;
+  const inputCls = "w-full border border-border bg-background px-2 py-1.5";
+
+  const save = async (allowOverlap: boolean) => {
+    setBusy(true);
+    setResult(null);
+    try {
+      const res = await createAdminBooking({
+        data: {
+          arrival: f.arrival,
+          departure: f.departure,
+          guests: Number(f.guests),
+          children: Number(f.children) || 0,
+          pets: Number(f.pets) || 0,
+          rentsDachboden: f.rentsDachboden,
+          name: f.name,
+          email: f.email,
+          phone: f.phone,
+          status: f.status,
+          totalPriceCents: f.price ? Math.round(parseFloat(f.price) * 100) : null,
+          internalNotes: f.notes,
+          sendEmail: f.sendEmail,
+          allowOverlap,
+        },
+      });
+      setResult({
+        ok: true,
+        text: t("admin.newBooking.saved", { price: formatCents(res.totalPriceCents, "de") ?? "–" }),
+      });
+      setF(empty);
+      setOverlap(null);
+      await onReload();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "";
+      if (msg.includes("OVERLAP")) setOverlap(msg.slice(msg.indexOf("OVERLAP:") + 8).trim());
+      else setResult({ ok: false, text: msg || "Fehler" });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="mb-3 border border-border bg-card">
+      <button onClick={() => setOpen(!open)} className="flex w-full items-baseline justify-between gap-4 px-5 py-3 text-left text-sm">
+        <span>＋ {t("admin.newBooking.title")}</span>
+        <span className="text-xs text-muted-foreground">{open ? "−" : "+"}</span>
+      </button>
+      {open && (
+        <div className="border-t border-border px-5 py-4 space-y-4 text-sm">
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.placeholder.arrival")}</span>
+              <input type="date" value={f.arrival} onChange={(e) => set("arrival", e.target.value)} className={inputCls} />
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.placeholder.departure")}</span>
+              <input type="date" min={f.arrival || undefined} value={f.departure} onChange={(e) => set("departure", e.target.value)} className={inputCls} />
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.newBooking.guests")}</span>
+              <input type="number" min="1" max="30" value={f.guests} onChange={(e) => set("guests", e.target.value)} className={inputCls} />
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.newBooking.children")}</span>
+              <input type="number" min="0" value={f.children} onChange={(e) => set("children", e.target.value)} className={inputCls} />
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.newBooking.name")}</span>
+              <input type="text" value={f.name} onChange={(e) => set("name", e.target.value)} className={inputCls} />
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.newBooking.email")}</span>
+              <input type="email" value={f.email} onChange={(e) => set("email", e.target.value)} className={inputCls} />
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.newBooking.phone")}</span>
+              <input type="tel" value={f.phone} onChange={(e) => set("phone", e.target.value)} className={inputCls} />
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.newBooking.pets")}</span>
+              <input type="number" min="0" value={f.pets} onChange={(e) => set("pets", e.target.value)} className={inputCls} />
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.bookings.fieldStatus")}</span>
+              <select value={f.status} onChange={(e) => set("status", e.target.value as BookingStatus)} className={inputCls}>
+                {(["requested", "accepted", "deposit_paid", "fully_paid"] as BookingStatus[]).map((s) => (
+                  <option key={s} value={s}>{t(`admin.status.${s}`)}</option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
+              <span className="eyebrow block mb-1">{t("admin.bookings.fieldTotalPrice")}</span>
+              <input type="number" step="0.01" placeholder={t("admin.newBooking.priceAuto")} value={f.price} onChange={(e) => set("price", e.target.value)} className={inputCls} />
+            </label>
+            <label className="block sm:col-span-2">
+              <span className="eyebrow block mb-1">{t("admin.bookings.fieldNotes")}</span>
+              <input type="text" value={f.notes} onChange={(e) => set("notes", e.target.value)} className={inputCls} />
+            </label>
+          </div>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={f.rentsDachboden} onChange={(e) => set("rentsDachboden", e.target.checked)} />
+              {t("admin.newBooking.dachboden")}
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={f.sendEmail} onChange={(e) => set("sendEmail", e.target.checked)} />
+              {t("admin.newBooking.sendEmail")}
+            </label>
+          </div>
+          {overlap && (
+            <div className="border border-amber-300 bg-amber-50 px-3 py-2 text-amber-900">
+              <p>{t("admin.newBooking.overlap", { list: overlap })}</p>
+              <button disabled={busy} onClick={() => save(true)} className="mt-2 underline">
+                {t("admin.newBooking.saveAnyway")}
+              </button>
+            </div>
+          )}
+          <button
+            disabled={!canSave}
+            onClick={() => save(false)}
+            className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
+          >
+            {busy ? t("admin.saving") : t("admin.newBooking.save")}
+          </button>
+          {result && <p className={result.ok ? "text-sage-deep" : "text-red-700"}>{result.text}</p>}
+        </div>
       )}
     </div>
   );
@@ -1057,8 +1230,8 @@ function CalendarTab({ bookings }: { bookings: Booking[] }) {
         continue;
       }
 
-      // 'manual' = placeholder for an Airbnb stay beyond the iCal window.
-      const isAirbnb = b.source === "airbnb" || b.source === "manual";
+      // Placeholders stand in for an Airbnb stay beyond the iCal window.
+      const isAirbnb = b.source === "airbnb" || b.contact_email === PLACEHOLDER_EMAIL;
       const stayBucket = isAirbnb ? airbnbStay : webStay;
       const arrivalBucket = isAirbnb ? airbnbArrival : webArrival;
       const departureBucket = isAirbnb ? airbnbDeparture : webDeparture;
