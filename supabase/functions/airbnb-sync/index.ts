@@ -99,8 +99,8 @@ Deno.serve(async (req) => {
     const events = parseIcal(ics);
 
     // 4. Diff against existing airbnb-sourced bookings
-    const existing = await pg<{ airbnb_uid: string; id: string; arrival: string; departure: string }[]>(
-      "bookings?source=eq.airbnb&select=airbnb_uid,id,arrival,departure",
+    const existing = await pg<{ airbnb_uid: string; id: string; arrival: string; departure: string; status: string }[]>(
+      "bookings?source=eq.airbnb&select=airbnb_uid,id,arrival,departure,status",
     );
     const existingByUid = new Map(existing.map((b) => [b.airbnb_uid, b]));
 
@@ -141,6 +141,9 @@ Deno.serve(async (req) => {
             departure: ev.end,
             is_cleaning: isCleaning,
             contact_name: isCleaning ? "🧹 Reinigungstag" : ev.summary || "Airbnb Reservation",
+            // Back in the feed (e.g. Airbnb merged blocks and reused this
+            // UID) → active again. Never downgrade a status Andrea set.
+            ...(prior.status === "cancelled" ? { status: "accepted" } : {}),
           }),
         });
         if (prior.arrival !== ev.start || prior.departure !== ev.end) updated++;
@@ -149,7 +152,7 @@ Deno.serve(async (req) => {
 
     // Anything in DB but not in current iCal = cancelled on Airbnb's side.
     for (const [uid, b] of existingByUid) {
-      if (!seen.has(uid)) {
+      if (!seen.has(uid) && b.status !== "cancelled") {
         await pg(`bookings?id=eq.${b.id}`, {
           method: "PATCH",
           body: JSON.stringify({ status: "cancelled" }),

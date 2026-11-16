@@ -89,7 +89,7 @@ async function main() {
 
   // 3. Diff against existing airbnb-sourced bookings
   const existing = await pg(
-    "bookings?source=eq.airbnb&select=airbnb_uid,id,arrival,departure",
+    "bookings?source=eq.airbnb&select=airbnb_uid,id,arrival,departure,status",
   );
   const existingByUid = new Map(existing.map((b) => [b.airbnb_uid, b]));
 
@@ -124,6 +124,9 @@ async function main() {
           departure: ev.end,
           is_cleaning: isCleaning,
           contact_name: isCleaning ? "🧹 Reinigungstag" : ev.summary || "Airbnb Reservation",
+          // Back in the feed (e.g. Airbnb merged blocks and reused this
+          // UID) → active again. Never downgrade a status Andrea set.
+          ...(prior.status === "cancelled" ? { status: "accepted" } : {}),
         }),
       });
       if (prior.arrival !== ev.start || prior.departure !== ev.end) updated++;
@@ -132,7 +135,7 @@ async function main() {
 
   // Anything in DB but not in current iCal = cancelled on Airbnb's side
   for (const [uid, b] of existingByUid) {
-    if (!seen.has(uid)) {
+    if (!seen.has(uid) && b.status !== "cancelled") {
       await pg(`bookings?id=eq.${b.id}`, {
         method: "PATCH",
         body: JSON.stringify({ status: "cancelled" }),
