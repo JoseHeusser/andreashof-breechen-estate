@@ -1,6 +1,6 @@
 import { useEffect, useState, type KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
-import type { RoomKey } from "@/data/rooms";
+import { ROOM_KEYS, type RoomKey } from "@/data/rooms";
 import {
   FLOOR_KEYS,
   FLOOR_PLANS,
@@ -131,7 +131,7 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
       </div>
 
       {/* The sheet */}
-      <figure className="border border-border bg-card px-3 pb-4 pt-5 sm:px-6 sm:pb-5 sm:pt-7 md:px-8">
+      <figure className="-mx-5 border-y border-border bg-card px-2 pb-4 pt-5 sm:mx-0 sm:border-x sm:px-6 sm:pb-5 sm:pt-7 md:px-8">
         <div className="relative aspect-[2360/1650] w-full">
           {FLOOR_KEYS.map((key) => (
             <FloorDrawing
@@ -146,8 +146,8 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
           ))}
         </div>
 
-        <figcaption className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-border pt-4 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+        <figcaption className="mx-3 mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-border pt-4 text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:mx-0">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 max-sm:hidden">
             <LegendItem label={t("zimmer.plan.legend.room")} style={{ background: FILL.room }} />
             <LegendItem label={t("zimmer.plan.legend.bath")} style={{ background: FILL.bath }} />
             <LegendItem
@@ -165,17 +165,20 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
         </figcaption>
       </figure>
 
-      {/* Index: numeral chips on phones, a two-column register from md up */}
+      {/* Phones and small tablets: step through the rooms; the plan above follows */}
+      <RoomStepper active={active} onSelect={onSelect} />
+
+      {/* Register of all rooms, from md up */}
       <nav
         aria-label={t("zimmer.selectorLabel")}
-        className="mt-6 flex flex-wrap gap-2 md:mt-10 md:grid md:grid-cols-2 md:gap-x-12 md:gap-y-0"
+        className="mt-10 hidden grid-cols-2 gap-x-12 md:grid"
       >
         {FLOOR_KEYS.map((key) => (
-          <div key={key} className="contents md:block">
-            <p className="hidden border-b border-border pb-3 text-[11px] uppercase tracking-[0.24em] text-muted-foreground md:block">
+          <div key={key}>
+            <p className="border-b border-border pb-3 text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
               {t(`zimmer.plan.floors.${key}`)}
             </p>
-            <ul className="contents md:block">
+            <ul>
               {FLOOR_PLANS[key].rooms.map(({ key: room }) => {
                 const info = t(`rooms.${room}`, { returnObjects: true }) as {
                   name: string;
@@ -184,7 +187,7 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
                 const isActive = room === active;
                 const isHovered = room === hovered;
                 return (
-                  <li key={room} className="md:border-b md:border-border">
+                  <li key={room} className="border-b border-border">
                     <button
                       type="button"
                       onClick={() => onSelect(room)}
@@ -192,20 +195,18 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
                       onPointerLeave={() => setHovered(null)}
                       aria-current={isActive ? "true" : undefined}
                       aria-label={`${room}. ${info.name}`}
-                      className={`flex size-11 items-center justify-center border outline-none transition-colors duration-300 focus-visible:border-sage-deep md:size-auto md:w-full md:items-baseline md:justify-start md:gap-4 md:border-0 md:py-3 md:text-left ${
-                        isActive
-                          ? "border-sage-deep bg-sage-deep text-primary-foreground md:bg-transparent md:text-foreground"
-                          : `border-border ${isHovered ? "text-foreground" : "text-muted-foreground"} hover:text-foreground`
+                      className={`flex w-full items-baseline gap-4 py-3 text-left outline-none transition-colors duration-300 hover:text-foreground focus-visible:text-sage-deep ${
+                        isActive || isHovered ? "text-foreground" : "text-muted-foreground"
                       }`}
                     >
                       <span
-                        className={`font-display text-lg italic md:w-8 md:shrink-0 ${
-                          isActive ? "md:text-sage-deep" : "md:text-sage-deep/70"
+                        className={`w-8 shrink-0 font-display text-lg italic ${
+                          isActive ? "text-sage-deep" : "text-sage-deep/70"
                         }`}
                       >
                         {room}
                       </span>
-                      <span className="hidden min-w-0 flex-1 md:block">
+                      <span className="min-w-0 flex-1">
                         <span className="block font-display text-[1.05rem] leading-tight">
                           {info.name}
                         </span>
@@ -214,7 +215,7 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
                         </span>
                       </span>
                       <span
-                        className={`hidden h-px shrink-0 self-center bg-sage-deep transition-all duration-500 md:block ${
+                        className={`h-px shrink-0 self-center bg-sage-deep transition-all duration-500 ${
                           isActive
                             ? "w-7 opacity-100"
                             : isHovered
@@ -231,6 +232,66 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
         ))}
       </nav>
     </div>
+  );
+}
+
+/**
+ * Previous / next through all eleven rooms. Rooms are small tap targets on a
+ * phone-sized plan, so this is the comfortable way to browse there.
+ */
+function RoomStepper({ active, onSelect }: FloorPlanProps) {
+  const { t } = useTranslation();
+  const index = ROOM_KEYS.indexOf(active);
+  const name = (t(`rooms.${active}`, { returnObjects: true }) as { name: string }).name;
+  const step = (delta: number) =>
+    onSelect(ROOM_KEYS[(index + delta + ROOM_KEYS.length) % ROOM_KEYS.length]);
+  const arrow =
+    "flex size-12 shrink-0 items-center justify-center text-sage-deep outline-none transition-colors active:bg-accent focus-visible:bg-accent";
+
+  return (
+    <div className="-mx-5 flex items-stretch border-b border-border bg-card sm:mx-0 sm:border-x md:hidden">
+      <button
+        type="button"
+        onClick={() => step(-1)}
+        aria-label={t("zimmer.plan.prev")}
+        className={`${arrow} border-r border-border`}
+      >
+        <Chevron direction="left" />
+      </button>
+      <p
+        className="flex min-w-0 flex-1 items-baseline justify-center gap-3 px-3 py-3"
+        aria-live="polite"
+      >
+        <span className="font-display text-xl italic text-sage-deep">{active}</span>
+        <span className="truncate font-display text-lg leading-tight">{name}</span>
+        <span className="shrink-0 text-[10px] tracking-[0.18em] text-muted-foreground">
+          {index + 1}/{ROOM_KEYS.length}
+        </span>
+      </p>
+      <button
+        type="button"
+        onClick={() => step(1)}
+        aria-label={t("zimmer.plan.next")}
+        className={`${arrow} border-l border-border`}
+      >
+        <Chevron direction="right" />
+      </button>
+    </div>
+  );
+}
+
+function Chevron({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="size-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      aria-hidden="true"
+    >
+      <path d={direction === "left" ? "M14.5 5.5 8 12l6.5 6.5" : "M9.5 5.5 16 12l-6.5 6.5"} />
+    </svg>
   );
 }
 

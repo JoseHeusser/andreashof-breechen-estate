@@ -191,7 +191,9 @@
       "sheet": "Plano",
       "notToScale": "Sin escala",
       "bathOwn": "Baño propio",
-      "bathShared": "Compartido con la recámara {{key}}"
+      "bathShared": "Compartido con la recámara {{key}}",
+      "prev": "Recámara anterior",
+      "next": "Recámara siguiente"
     },
     "labelBath": "Baño"
   },

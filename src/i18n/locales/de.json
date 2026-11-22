@@ -457,7 +457,9 @@
       "sheet": "Grundriss",
       "notToScale": "Nicht maßstabsgetreu",
       "bathOwn": "Eigenes Bad",
-      "bathShared": "Geteilt mit Kammer {{key}}"
+      "bathShared": "Geteilt mit Kammer {{key}}",
+      "prev": "Vorherige Kammer",
+      "next": "Nächste Kammer"
     },
     "labelBath": "Bad"
   },

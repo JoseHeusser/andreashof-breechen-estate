@@ -457,7 +457,9 @@
       "sheet": "Floor plan",
       "notToScale": "Not to scale",
       "bathOwn": "Private bathroom",
-      "bathShared": "Shared with chamber {{key}}"
+      "bathShared": "Shared with chamber {{key}}",
+      "prev": "Previous chamber",
+      "next": "Next chamber"
     },
     "labelBath": "Bathroom"
   },

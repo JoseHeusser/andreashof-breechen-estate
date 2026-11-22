@@ -15,7 +15,8 @@ export const Route = createFileRoute("/zimmer")({
   head: () =>
     seo({
       title: "Zimmer · Andreashof Breechen",
-      description: "Elf Kammern im Andreashof Breechen — wählen Sie eine Kammer im Grundriss, um Bett, Aussicht und Atmosphäre zu sehen.",
+      description:
+        "Elf Kammern im Andreashof Breechen — wählen Sie eine Kammer im Grundriss, um Bett, Aussicht und Atmosphäre zu sehen.",
       path: "/zimmer",
     }),
   component: ZimmerPage,
@@ -132,7 +133,7 @@ function ZimmerPage() {
       </div>
 
       {/* PAGE INTRO */}
-      <section className="px-5 pt-14 pb-10 md:px-10 md:pt-24 md:pb-16">
+      <section className="px-5 pt-12 pb-8 md:px-10 md:pt-24 md:pb-16">
         <div className="mx-auto max-w-7xl">
           <h1 className="font-display text-[2.2rem] font-light leading-[1.1] md:text-6xl">
             {t("zimmer.pageTitle")}
@@ -145,7 +146,7 @@ function ZimmerPage() {
 
       {/* EXPLORER: floor plan + room index on the left, the chosen room on the right */}
       <section className="px-5 pb-20 md:px-10 md:pb-40">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-12 lg:gap-14">
+        <div className="mx-auto grid max-w-7xl gap-8 md:gap-12 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-7">
             <FloorPlan active={active} onSelect={setActive} />
           </div>
