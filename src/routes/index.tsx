@@ -1,3 +1,4 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,11 +7,7 @@ import heroImg from "@/assets/hero-facade.jpeg";
 import { NEARBY_COORDS, type NearbyPlaceId } from "@/data/nearby-places";
 import type { NearbyPlaceMarker } from "@/components/location-map";
 import { getPublishedReviews } from "@/lib/admin/server-fns";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 // Lazy — leaflet touches `window` on import, so it cannot live in the SSR bundle.
 const LocationMap = lazy(() =>
@@ -18,31 +15,13 @@ const LocationMap = lazy(() =>
 );
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Andreashof Breechen — Historisches Gutshaus in Vorpommern" },
-      {
-        name: "description",
-        content:
-          "Gustavianisches Gutshaus aus dem 18. Jahrhundert in Gützkow, Vorpommern. Komplett mietbar für bis zu 21 Gäste — Familien, Hochzeiten, Retreats.",
-      },
-      { property: "og:title", content: "Andreashof Breechen — Historisches Gutshaus" },
-      {
-        property: "og:description",
-        content:
-          "Ein stilles, lichtdurchflutetes Gutshaus im gustavianischen Stil. Für bis zu 21 Gäste.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.andreashof-breechen.de/og-image.jpg" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      { property: "og:image:type", content: "image/jpeg" },
-      { property: "og:image:alt", content: "Andreashof Breechen — Historisches Gutshaus" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://www.andreashof-breechen.de/og-image.jpg" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-  }),
+  head: () =>
+    seo({
+      title: "Andreashof Breechen — Historisches Gutshaus in Vorpommern",
+      description:
+        "Gustavianisches Gutshaus aus dem 18. Jahrhundert in Gützkow, Vorpommern. Komplett mietbar für bis zu 21 Gäste — Familien, Hochzeiten, Retreats.",
+      path: "/",
+    }),
   component: Home,
 });
 
@@ -58,7 +37,10 @@ function Home() {
     place: string;
     time: string;
   }[];
-  const staticReviews = t("reviewsSec.items", { returnObjects: true }) as { q: string; a: string }[];
+  const staticReviews = t("reviewsSec.items", { returnObjects: true }) as {
+    q: string;
+    a: string;
+  }[];
   const [dbReviews, setDbReviews] = useState<{ q: string; a: string }[] | null>(null);
   useEffect(() => {
     let cancelled = false;
@@ -125,7 +107,8 @@ function Home() {
             className="mt-5 animate-fade-up font-display text-[2.5rem] font-light leading-[1.05] text-white sm:text-5xl md:mt-6 md:text-7xl lg:text-[5.5rem]"
             style={{ animationDelay: "400ms", textShadow: "0 2px 28px rgba(0,0,0,0.5)" }}
           >
-            {t("hero.titleLine1")}<br />
+            {t("hero.titleLine1")}
+            <br />
             <em className="italic text-white/95">{t("hero.titleLine2")}</em>
           </h1>
           <p
@@ -167,12 +150,18 @@ function Home() {
             <span className="rule ml-4 align-middle" />
           </div>
           <div className="md:col-span-8">
-            <h2 className="reveal font-display text-[2rem] font-light leading-[1.15] md:text-5xl" style={{ transitionDelay: "120ms" }}>
+            <h2
+              className="reveal font-display text-[2rem] font-light leading-[1.15] md:text-5xl"
+              style={{ transitionDelay: "120ms" }}
+            >
               {t("intro.titleA")}
               <em className="italic text-sage-deep">{t("intro.titleEm")}</em>
               {t("intro.titleB")}
             </h2>
-            <div className="reveal mt-10 grid gap-8 text-base leading-relaxed text-muted-foreground md:grid-cols-2 md:text-[1.05rem]" style={{ transitionDelay: "240ms" }}>
+            <div
+              className="reveal mt-10 grid gap-8 text-base leading-relaxed text-muted-foreground md:grid-cols-2 md:text-[1.05rem]"
+              style={{ transitionDelay: "240ms" }}
+            >
               <p>{t("intro.p1")}</p>
               <p>{t("intro.p2")}</p>
             </div>
@@ -190,13 +179,9 @@ function Home() {
                 className="reveal border border-border bg-card p-6 sm:p-8 md:p-10 transition-all duration-500 hover:-translate-y-1 hover:border-sage hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.15)]"
                 style={{ transitionDelay: `${i * 140}ms` }}
               >
-                <h3 className="font-display text-2xl font-light md:text-3xl">
-                  {uses[k].title}
-                </h3>
+                <h3 className="font-display text-2xl font-light md:text-3xl">{uses[k].title}</h3>
                 <div className="mt-5 h-px w-10 bg-sage" />
-                <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-                  {uses[k].body}
-                </p>
+                <p className="mt-6 text-sm leading-relaxed text-muted-foreground">{uses[k].body}</p>
               </article>
             ))}
           </div>
@@ -213,31 +198,68 @@ function Home() {
                 {t("gallery.title")}
               </h2>
             </div>
-            <p className="max-w-sm text-sm text-muted-foreground">
-              {t("gallery.subtitle")}
-            </p>
+            <p className="max-w-sm text-sm text-muted-foreground">{t("gallery.subtitle")}</p>
           </div>
           <div className="grid grid-cols-12 gap-4 md:gap-6">
             {/* Row 1: hero-sized great room + tall salon-upper */}
             <div className="img-hover reveal col-span-12 md:col-span-8">
-              <img src="/gallery/maenner-gespraechsecke.png" alt={t("gallery.alt.greatRoom")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[320px] md:h-[560px]" />
+              <img
+                src="/gallery/maenner-gespraechsecke.png"
+                alt={t("gallery.alt.greatRoom")}
+                loading="lazy"
+                className="h-[240px] w-full object-cover sm:h-[320px] md:h-[560px]"
+              />
             </div>
-            <div className="img-hover reveal col-span-12 md:col-span-4" style={{ transitionDelay: "120ms" }}>
-              <img src="/gallery/salon-upper.jpg" alt={t("gallery.alt.salonUpper")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[320px] md:h-[560px]" />
+            <div
+              className="img-hover reveal col-span-12 md:col-span-4"
+              style={{ transitionDelay: "120ms" }}
+            >
+              <img
+                src="/gallery/salon-upper.jpg"
+                alt={t("gallery.alt.salonUpper")}
+                loading="lazy"
+                className="h-[240px] w-full object-cover sm:h-[320px] md:h-[560px]"
+              />
             </div>
             {/* Row 2: dining wide + two salon-second */}
             <div className="img-hover reveal col-span-12 md:col-span-6">
-              <img src="/gallery/dining.jpg" alt={t("gallery.alt.dining")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[400px]" />
+              <img
+                src="/gallery/dining.jpg"
+                alt={t("gallery.alt.dining")}
+                loading="lazy"
+                className="h-[240px] w-full object-cover sm:h-[300px] md:h-[400px]"
+              />
             </div>
-            <div className="img-hover reveal col-span-12 md:col-span-3" style={{ transitionDelay: "120ms" }}>
-              <img src="/gallery/salon-second-a.jpg" alt={t("gallery.alt.salonSecondA")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[400px]" />
+            <div
+              className="img-hover reveal col-span-12 md:col-span-3"
+              style={{ transitionDelay: "120ms" }}
+            >
+              <img
+                src="/gallery/salon-second-a.jpg"
+                alt={t("gallery.alt.salonSecondA")}
+                loading="lazy"
+                className="h-[240px] w-full object-cover sm:h-[300px] md:h-[400px]"
+              />
             </div>
             {/* Row 3: kitchen + outdoor games */}
             <div className="img-hover reveal col-span-12 md:col-span-7">
-              <img src="/gallery/kitchen-ground.jpg" alt={t("gallery.alt.kitchenGround")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[460px]" />
+              <img
+                src="/gallery/kitchen-ground.jpg"
+                alt={t("gallery.alt.kitchenGround")}
+                loading="lazy"
+                className="h-[240px] w-full object-cover sm:h-[300px] md:h-[460px]"
+              />
             </div>
-            <div className="img-hover reveal col-span-12 md:col-span-5" style={{ transitionDelay: "120ms" }}>
-              <img src="/gallery/outdoor-games.jpg" alt={t("gallery.alt.outdoorGames")} loading="lazy" className="h-[240px] w-full object-cover sm:h-[300px] md:h-[460px]" />
+            <div
+              className="img-hover reveal col-span-12 md:col-span-5"
+              style={{ transitionDelay: "120ms" }}
+            >
+              <img
+                src="/gallery/outdoor-games.jpg"
+                alt={t("gallery.alt.outdoorGames")}
+                loading="lazy"
+                className="h-[240px] w-full object-cover sm:h-[300px] md:h-[460px]"
+              />
             </div>
           </div>
           <div className="mt-12 text-center md:mt-16">
@@ -299,7 +321,9 @@ function Home() {
             <ul className="grid gap-x-10 gap-y-4 md:grid-cols-2">
               {amenityItems.map((a) => (
                 <li key={a} className="flex items-baseline gap-3">
-                  <span aria-hidden className="font-display text-base italic text-sage-deep">·</span>
+                  <span aria-hidden className="font-display text-base italic text-sage-deep">
+                    ·
+                  </span>
                   <span className="text-[0.95rem] leading-relaxed text-foreground/85">{a}</span>
                 </li>
               ))}
@@ -353,7 +377,9 @@ function Home() {
                           isActive ? "text-sage-deep" : ""
                         }`}
                       >
-                        <span className="min-w-0 flex-1 font-display text-lg leading-snug md:text-xl">{p.place}</span>
+                        <span className="min-w-0 flex-1 font-display text-lg leading-snug md:text-xl">
+                          {p.place}
+                        </span>
                         <span className="shrink-0 text-sm text-muted-foreground">{p.time}</span>
                       </button>
                     </li>
@@ -455,9 +481,7 @@ function Home() {
                       onClick={() => setOpen(isOpen ? null : i)}
                       className="flex w-full items-baseline justify-between gap-4 py-5 text-left transition-colors hover:text-sage-deep md:gap-6 md:py-6"
                     >
-                      <span className="font-display text-lg font-light md:text-2xl">
-                        {f.q}
-                      </span>
+                      <span className="font-display text-lg font-light md:text-2xl">{f.q}</span>
                       <span className="font-display text-2xl italic text-sage-deep">
                         {isOpen ? "—" : "·"}
                       </span>

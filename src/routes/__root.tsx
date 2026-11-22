@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
+import { seo, SITE_NAME } from "@/lib/seo";
 import { LangProvider } from "@/i18n/lang-provider";
 import { useSmoothAnchorScroll } from "@/hooks/use-smooth-anchor-scroll";
 import { useRevealPage } from "@/hooks/use-reveal-page";
@@ -112,17 +113,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.andreashof-breechen.de/og-image.jpg" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://www.andreashof-breechen.de/og-image.jpg" },
+      // Fallback for routes that set no head of their own (admin, 404).
+      ...seo({ title: SITE_NAME }).meta,
+      { name: "author", content: SITE_NAME },
     ],
     links: [
       {

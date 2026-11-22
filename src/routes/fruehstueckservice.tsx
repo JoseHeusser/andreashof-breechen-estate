@@ -1,20 +1,17 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { ServiceContact, ServiceList, ServicePrice } from "@/components/service-page";
 
 export const Route = createFileRoute("/fruehstueckservice")({
-  head: () => ({
-    meta: [
-      { title: "Frühstücksservice · Andreashof Breechen" },
-      {
-        name: "description",
-        content:
-          "Frühstücksservice im Andreashof Breechen: Aufbau und Abbau eines schönen Frühstücksbuffets nach euren Wünschen. Ab 15 € pro Person.",
-      },
-    ],
-    links: [{ rel: "canonical", href: "/fruehstueckservice" }],
-  }),
+  head: () =>
+    seo({
+      title: "Frühstücksservice · Andreashof Breechen",
+      description:
+        "Frühstücksservice im Andreashof Breechen: Aufbau und Abbau eines schönen Frühstücksbuffets nach euren Wünschen. Ab 15 € pro Person.",
+      path: "/fruehstueckservice",
+    }),
   component: FruehstueckservicePage,
 });
 

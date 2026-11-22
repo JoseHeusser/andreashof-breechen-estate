@@ -1,30 +1,20 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { GALLERY_PHOTOS, type GalleryCategory } from "@/data/galerie";
 
-const CATEGORIES: GalleryCategory[] = [
-  "interior",
-  "bath",
-  "garden",
-  "around",
-  "plans",
-  "atmos",
-];
+const CATEGORIES: GalleryCategory[] = ["interior", "bath", "garden", "around", "plans", "atmos"];
 
 export const Route = createFileRoute("/galerie")({
-  head: () => ({
-    meta: [
-      { title: "Galerie · Andreashof Breechen" },
-      {
-        name: "description",
-        content:
-          "Galerie des Andreashof Breechen — Innenräume, Bäder, Garten und das Dorf mit Badesee, Gützkow und Usedom.",
-      },
-    ],
-    links: [{ rel: "canonical", href: "/galerie" }],
-  }),
+  head: () =>
+    seo({
+      title: "Galerie · Andreashof Breechen",
+      description:
+        "Galerie des Andreashof Breechen — Innenräume, Bäder, Garten und das Dorf mit Badesee, Gützkow und Usedom.",
+      path: "/galerie",
+    }),
   component: GaleriePage,
 });
 
@@ -48,7 +38,8 @@ function GaleriePage() {
     if (lightbox === null) return;
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setLightbox(null);
-      if (e.key === "ArrowRight") setLightbox((i) => (i === null ? null : Math.min(photos.length - 1, i + 1)));
+      if (e.key === "ArrowRight")
+        setLightbox((i) => (i === null ? null : Math.min(photos.length - 1, i + 1)));
       if (e.key === "ArrowLeft") setLightbox((i) => (i === null ? null : Math.max(0, i - 1)));
     }
     window.addEventListener("keydown", onKey);
@@ -150,9 +141,7 @@ function GaleriePage() {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              setLightbox((i) =>
-                i === null ? null : Math.min(photos.length - 1, i + 1),
-              );
+              setLightbox((i) => (i === null ? null : Math.min(photos.length - 1, i + 1)));
             }}
             disabled={lightbox === photos.length - 1}
             aria-label="Weiter"

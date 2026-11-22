@@ -1,19 +1,16 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/site-chrome";
 import { LOGO_ALT, LOGO_BLACK } from "@/lib/logos";
 
 export const Route = createFileRoute("/impressum")({
-  head: () => ({
-    meta: [
-      { title: "Impressum — Andreashof Breechen" },
-      {
-        name: "description",
-        content: "Impressum und Anbieterkennzeichnung des Andreashof Breechen.",
-      },
-      { name: "robots", content: "noindex" },
-    ],
-    links: [{ rel: "canonical", href: "/impressum" }],
-  }),
+  head: () =>
+    seo({
+      title: "Impressum — Andreashof Breechen",
+      description: "Impressum und Anbieterkennzeichnung des Andreashof Breechen.",
+      path: "/impressum",
+      robots: "noindex",
+    }),
   component: ImpressumPage,
 });
 

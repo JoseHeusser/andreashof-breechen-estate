@@ -1,3 +1,4 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
@@ -37,36 +38,53 @@ const RIBBON_PHOTOS: ImpressionItem[] = [
   { src: "/galerie/history/img_8576.jpg", alt: "Geschichte des Andreashof Breechen" },
   { src: "/galerie/history/img_8582.jpg", alt: "Geschichte des Andreashof Breechen" },
   // Renovation photos
-  { src: "/galerie/history/img_3776.jpg", alt: "Fachwerk und Rundfenster im Andreashof Breechen waehrend der Bauphase" },
-  { src: "/galerie/history/img_3137.jpg", alt: "Freigelegte historische Wand im Andreashof Breechen waehrend der Sanierung" },
-  { src: "/galerie/history/img_3136.jpg", alt: "Entkernter Raum im Andreashof Breechen mit freigelegten Boeden" },
-  { src: "/galerie/history/img_3152.jpg", alt: "Entkernter Raum im Andreashof Breechen vor dem Wiederaufbau" },
-  { src: "/galerie/history/img_3236.jpg", alt: "Bauphase mit freigelegtem Boden und alten Wandflaechen" },
-  { src: "/galerie/history/img_3433.jpg", alt: "Historische Bausubstanz mit offenem Dachstuhl im Andreashof Breechen" },
-  { src: "/galerie/history/history-detail-dachbalken.jpg", alt: "Detail der sanierten Dachbalken im Andreashof Breechen" },
-  { src: "/galerie/history/history-fundstuecke.jpg", alt: "Historische Fundstuecke aus der Bauphase im Andreashof Breechen" },
-  { src: "/galerie/history/img_2999.jpg", alt: "Eindruck aus der Geschichte des Andreashof Breechen" },
+  {
+    src: "/galerie/history/img_3776.jpg",
+    alt: "Fachwerk und Rundfenster im Andreashof Breechen waehrend der Bauphase",
+  },
+  {
+    src: "/galerie/history/img_3137.jpg",
+    alt: "Freigelegte historische Wand im Andreashof Breechen waehrend der Sanierung",
+  },
+  {
+    src: "/galerie/history/img_3136.jpg",
+    alt: "Entkernter Raum im Andreashof Breechen mit freigelegten Boeden",
+  },
+  {
+    src: "/galerie/history/img_3152.jpg",
+    alt: "Entkernter Raum im Andreashof Breechen vor dem Wiederaufbau",
+  },
+  {
+    src: "/galerie/history/img_3236.jpg",
+    alt: "Bauphase mit freigelegtem Boden und alten Wandflaechen",
+  },
+  {
+    src: "/galerie/history/img_3433.jpg",
+    alt: "Historische Bausubstanz mit offenem Dachstuhl im Andreashof Breechen",
+  },
+  {
+    src: "/galerie/history/history-detail-dachbalken.jpg",
+    alt: "Detail der sanierten Dachbalken im Andreashof Breechen",
+  },
+  {
+    src: "/galerie/history/history-fundstuecke.jpg",
+    alt: "Historische Fundstuecke aus der Bauphase im Andreashof Breechen",
+  },
+  {
+    src: "/galerie/history/img_2999.jpg",
+    alt: "Eindruck aus der Geschichte des Andreashof Breechen",
+  },
 ];
 
 export const Route = createFileRoute("/rueckblicke")({
-  head: () => ({
-    meta: [
-      { title: "Rückblicke · Andreashof Breechen" },
-      {
-        name: "description",
-        content:
-          "Rückblicke und Eindrücke vom Bauverlauf bis heute — die Geschichte des Andreashof Breechen.",
-      },
-      { property: "og:title", content: "Rückblicke · Andreashof Breechen" },
-      {
-        property: "og:description",
-        content:
-          "Eindrücke vom historischen Gutshaus, seiner Entwicklung und dem Leben im Haus bis heute.",
-      },
-      { property: "og:image", content: historyHero },
-    ],
-    links: [{ rel: "canonical", href: "/rueckblicke" }],
-  }),
+  head: () =>
+    seo({
+      title: "Rückblicke · Andreashof Breechen",
+      description:
+        "Rückblicke und Eindrücke vom Bauverlauf bis heute — die Geschichte des Andreashof Breechen.",
+      path: "/rueckblicke",
+      image: historyHero,
+    }),
   component: RueckblickePage,
 });
 
@@ -253,9 +271,10 @@ function RueckblickePage() {
     [],
   );
   const prevLightbox = useCallback(
-    () => setLightboxIndex((i) =>
-      i === null ? null : (i - 1 + RIBBON_PHOTOS.length) % RIBBON_PHOTOS.length,
-    ),
+    () =>
+      setLightboxIndex((i) =>
+        i === null ? null : (i - 1 + RIBBON_PHOTOS.length) % RIBBON_PHOTOS.length,
+      ),
     [],
   );
 
@@ -317,10 +336,7 @@ function RueckblickePage() {
           <div className="mx-auto max-w-6xl">
             <span className="eyebrow">{t("history.impressionsEyebrow")}</span>
             <div className="mt-8">
-              <Carousel
-                opts={{ loop: true, align: "start" }}
-                className="relative"
-              >
+              <Carousel opts={{ loop: true, align: "start" }} className="relative">
                 <CarouselContent className="-ml-3 md:-ml-4">
                   {RIBBON_PHOTOS.map((photo, i) => (
                     <CarouselItem

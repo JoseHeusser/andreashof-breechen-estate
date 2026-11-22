@@ -1,16 +1,16 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/site-chrome";
 import { LOGO_ALT, LOGO_BLACK } from "@/lib/logos";
 
 export const Route = createFileRoute("/agb")({
-  head: () => ({
-    meta: [
-      { title: "AGB — Andreashof Breechen" },
-      { name: "description", content: "Allgemeine Geschäftsbedingungen des Andreashof Breechen." },
-      { name: "robots", content: "noindex" },
-    ],
-    links: [{ rel: "canonical", href: "/agb" }],
-  }),
+  head: () =>
+    seo({
+      title: "AGB — Andreashof Breechen",
+      description: "Allgemeine Geschäftsbedingungen des Andreashof Breechen.",
+      path: "/agb",
+      robots: "noindex",
+    }),
   component: AGBPage,
 });
 

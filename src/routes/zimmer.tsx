@@ -1,3 +1,4 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,17 +12,12 @@ const ROOM_SWITCH_GAP_MS = 110;
 const ROOM_SWITCH_IN_MS = 380;
 
 export const Route = createFileRoute("/zimmer")({
-  head: () => ({
-    meta: [
-      { title: "Zimmer · Andreashof Breechen" },
-      {
-        name: "description",
-        content:
-          "Zehn Kammern im Andreashof Breechen — wählen Sie eine Kammer, um Bett, Aussicht und Atmosphäre zu sehen.",
-      },
-    ],
-    links: [{ rel: "canonical", href: "/zimmer" }],
-  }),
+  head: () =>
+    seo({
+      title: "Zimmer · Andreashof Breechen",
+      description: "Elf Kammern im Andreashof Breechen — wählen Sie eine Kammer im Grundriss, um Bett, Aussicht und Atmosphäre zu sehen.",
+      path: "/zimmer",
+    }),
   component: ZimmerPage,
 });
 

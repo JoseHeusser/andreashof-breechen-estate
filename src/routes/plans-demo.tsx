@@ -1,12 +1,15 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { PlanClickDemo } from "@/components/plan-click-demo";
 
 export const Route = createFileRoute("/plans-demo")({
-  head: () => ({
-    meta: [{ title: "Plans Demo · Andreashof Breechen" }],
-    links: [{ rel: "canonical", href: "/plans-demo" }],
-  }),
+  head: () =>
+    seo({
+      title: "Plans Demo · Andreashof Breechen",
+      path: "/plans-demo",
+      robots: "noindex,nofollow",
+    }),
   component: PlansDemoPage,
 });
 

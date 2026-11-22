@@ -1,16 +1,16 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/site-chrome";
 import { LOGO_ALT, LOGO_BLACK } from "@/lib/logos";
 
 export const Route = createFileRoute("/datenschutz")({
-  head: () => ({
-    meta: [
-      { title: "Datenschutz — Andreashof Breechen" },
-      { name: "description", content: "Datenschutzerklärung des Andreashof Breechen." },
-      { name: "robots", content: "noindex" },
-    ],
-    links: [{ rel: "canonical", href: "/datenschutz" }],
-  }),
+  head: () =>
+    seo({
+      title: "Datenschutz — Andreashof Breechen",
+      description: "Datenschutzerklärung des Andreashof Breechen.",
+      path: "/datenschutz",
+      robots: "noindex",
+    }),
   component: DatenschutzPage,
 });
 
@@ -176,8 +176,8 @@ function DatenschutzPage() {
             <p className="mt-3">
               Empfänger personenbezogener Daten können technische Dienstleister sein, die wir für
               Hosting, Datenbankbetrieb, E-Mail-Versand, Kartenanzeige, den Chat-Assistenten,
-              Administration und Fehleranalyse einsetzen. Dazu zählen insbesondere Vercel,
-              Supabase, Resend, Anthropic und OpenStreetMap-Dienste.
+              Administration und Fehleranalyse einsetzen. Dazu zählen insbesondere Vercel, Supabase,
+              Resend, Anthropic und OpenStreetMap-Dienste.
             </p>
             <p className="mt-3">
               Einige Dienstleister können Daten außerhalb der Europäischen Union oder des

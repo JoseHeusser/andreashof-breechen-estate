@@ -1,3 +1,4 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,17 +10,13 @@ import { cn } from "@/lib/utils";
 import { createBookingRequest, getBlockedRanges, getPricingQuote } from "@/lib/admin/server-fns";
 
 export const Route = createFileRoute("/reservations")({
-  head: () => ({
-    meta: [
-      { title: "Reservierung · Andreashof Breechen" },
-      {
-        name: "description",
-        content:
-          "Reservieren Sie das ganze Gutshaus Andreashof Breechen — für 11 bis 21 Gäste. Wir antworten innerhalb von 24 Stunden.",
-      },
-    ],
-    links: [{ rel: "canonical", href: "/reservations" }],
-  }),
+  head: () =>
+    seo({
+      title: "Reservierung · Andreashof Breechen",
+      description:
+        "Reservieren Sie das ganze Gutshaus Andreashof Breechen — für 11 bis 21 Gäste. Wir antworten innerhalb von 24 Stunden.",
+      path: "/reservations",
+    }),
   component: ReservationsPage,
 });
 
@@ -790,7 +787,9 @@ function Toggle({
       >
         <span
           className={`absolute h-3.5 w-3.5 rounded-full transition-transform max-md:h-4 max-md:w-4 ${
-            checked ? "translate-x-5 bg-white max-md:translate-x-6" : "translate-x-1 bg-muted-foreground"
+            checked
+              ? "translate-x-5 bg-white max-md:translate-x-6"
+              : "translate-x-1 bg-muted-foreground"
           }`}
         />
       </span>

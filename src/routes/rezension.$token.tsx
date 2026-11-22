@@ -1,3 +1,4 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,12 +15,12 @@ export const Route = createFileRoute("/rezension/$token")({
     const { valid } = await checkReviewToken({ data: { token: params.token } });
     if (!valid) throw notFound();
   },
-  head: () => ({
-    meta: [
-      { title: "Bewertung hinterlassen · Andreashof Breechen" },
-      { name: "robots", content: "noindex,nofollow" },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Bewertung hinterlassen · Andreashof Breechen",
+      description: "Teilen Sie Ihre Eindrücke von Ihrem Aufenthalt im Andreashof Breechen.",
+      robots: "noindex,nofollow",
+    }),
   component: LeaveReviewPage,
 });
 
@@ -80,9 +81,7 @@ function LeaveReviewPage() {
           {submitted ? (
             <div className="mt-12 border border-sage bg-sage/10 p-8">
               <h2 className="font-display text-2xl font-light">{copy.thanksTitle}</h2>
-              <p className="mt-4 text-base leading-relaxed text-foreground/85">
-                {copy.thanksBody}
-              </p>
+              <p className="mt-4 text-base leading-relaxed text-foreground/85">{copy.thanksBody}</p>
               <Link
                 to="/"
                 className="mt-8 inline-block border border-foreground bg-foreground px-6 py-3 text-[11px] uppercase tracking-[0.22em] text-background transition-colors hover:bg-sage-deep hover:border-sage-deep"
@@ -229,8 +228,7 @@ const COPY = {
     moderationNote:
       "Leemos cada reseña antes de publicarla. No hace falta redacción perfecta — lo honesto se lee mejor.",
     thanksTitle: "Gracias.",
-    thanksBody:
-      "Tu reseña llegó. En cuanto le echemos un vistazo, aparecerá en la portada.",
+    thanksBody: "Tu reseña llegó. En cuanto le echemos un vistazo, aparecerá en la portada.",
     thanksCta: "Volver al inicio",
     errorGeneric: "Algo salió mal — inténtalo de nuevo.",
   },

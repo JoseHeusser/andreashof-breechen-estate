@@ -1,3 +1,4 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
@@ -13,17 +14,13 @@ const PHOTOS = [
 ];
 
 export const Route = createFileRoute("/pferdeboxen")({
-  head: () => ({
-    meta: [
-      { title: "Urlaub mit dem Pferd · Andreashof Breechen" },
-      {
-        name: "description",
-        content:
-          "Urlaub mit Deinem Pferd am Andreashof Breechen: 3 Boxen mit Stroh und Heu, Paddock, tägliches Misten, Ausreiten am Greifswalder Bodden und auf Usedom. 45 € pro Pferd und Tag.",
-      },
-    ],
-    links: [{ rel: "canonical", href: "/pferdeboxen" }],
-  }),
+  head: () =>
+    seo({
+      title: "Urlaub mit dem Pferd · Andreashof Breechen",
+      description:
+        "Urlaub mit Deinem Pferd am Andreashof Breechen: 3 Boxen mit Stroh und Heu, Paddock, tägliches Misten, Ausreiten am Greifswalder Bodden und auf Usedom. 45 € pro Pferd und Tag.",
+      path: "/pferdeboxen",
+    }),
   component: PferdeboxenPage,
 });
 

@@ -1,3 +1,4 @@
+import { seo } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
@@ -15,17 +16,13 @@ type PartnerItem = {
 };
 
 export const Route = createFileRoute("/partner")({
-  head: () => ({
-    meta: [
-      { title: "Partner & Empfehlungen · Andreashof Breechen" },
-      {
-        name: "description",
-        content:
-          "Empfohlene Partner, Dienstleister und Ausflugsziele rund um den Andreashof Breechen.",
-      },
-    ],
-    links: [{ rel: "canonical", href: "/partner" }],
-  }),
+  head: () =>
+    seo({
+      title: "Partner & Empfehlungen · Andreashof Breechen",
+      description:
+        "Empfohlene Partner, Dienstleister und Ausflugsziele rund um den Andreashof Breechen.",
+      path: "/partner",
+    }),
   component: PartnerPage,
 });
 
