@@ -451,15 +451,22 @@
         "stairs": "Treppe",
         "kitchen": "Küche",
         "living": "Küche · Wohnbereich",
-        "common": "Gemeinschaftsräume",
-        "annex": "Anbau"
+        "annex": "Anbau",
+        "dining": "Esszimmer"
       },
       "sheet": "Grundriss",
       "notToScale": "Nicht maßstabsgetreu",
       "bathOwn": "Eigenes Bad",
       "bathShared": "Geteilt mit Kammer {{key}}",
       "prev": "Vorherige Kammer",
-      "next": "Nächste Kammer"
+      "next": "Nächste Kammer",
+      "spaces": {
+        "salon": {
+          "name": "Blauer Salon",
+          "tag": "Für alle Gäste",
+          "desc": "Der gemeinsame Salon im Erdgeschoss: blaue Wände, Kamin, Bücherregale und Kronleuchter — mit offenem Durchgang zum Esszimmer."
+        }
+      }
     },
     "labelBath": "Bad"
   },

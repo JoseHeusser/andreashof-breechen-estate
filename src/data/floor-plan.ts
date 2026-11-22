@@ -14,10 +14,22 @@ export type PlanShape = [number, number, number, number] | string;
 
 /** Keys into `zimmer.plan.labels` in the locale files. */
 export type PlanLabelKey =
-  "bath" | "wc" | "hall" | "entrance" | "stairs" | "kitchen" | "living" | "common" | "annex";
+  "bath" | "wc" | "hall" | "entrance" | "stairs" | "kitchen" | "living" | "dining" | "annex";
+
+/** Shared rooms that can be selected on the plan just like a guest room. */
+export type SpaceKey = "salon";
+
+/** Anything selectable on the plan. */
+export type PlanKey = RoomKey | SpaceKey;
+
+export const SPACE_IMAGES: Record<SpaceKey, string[]> = {
+  salon: ["/galerie/salon-02.jpg", "/gallery/salon-second-a.jpg", "/gallery/dining.jpg"],
+};
+
+export const isSpace = (key: PlanKey): key is SpaceKey => key in SPACE_IMAGES;
 
 export interface PlanRoom {
-  key: RoomKey;
+  key: PlanKey;
   shape: PlanShape;
   /** Centre of the numeral. */
   at: [number, number];
@@ -85,6 +97,8 @@ const GROUND_FLOOR: FloorPlan = {
     { key: "III", shape: [518, 1257, 417, 323], at: [726, 1420], bath: "eg-bath-south" },
     { key: "IV", shape: [191, 848, 327, 409], at: [354, 1052], bath: "eg-bath-north" },
     { key: "V", shape: [191, 1257, 327, 189], at: [354, 1352], bath: "eg-bath-north" },
+    // The blue salon: shared, but selectable like a room
+    { key: "salon", shape: [845, 640, 501, 441], at: [1096, 860] },
   ],
   areas: [
     // Annex (not part of the guest area)
@@ -100,7 +114,7 @@ const GROUND_FLOOR: FloorPlan = {
       shape:
         "1346,640 1591,640 1591,1257 1251,1257 1251,1580 935,1580 935,1257 518,1257 518,1081 1346,1081",
     },
-    { id: "eg-common", kind: "open", shape: [518, 640, 828, 441] },
+    { id: "eg-dining", kind: "open", shape: [518, 640, 327, 441] },
     { id: "eg-kitchen", kind: "open", shape: [1591, 640, 419, 435] },
     // Wet rooms
     { id: "eg-bath-north", kind: "bath", shape: [191, 640, 327, 208] },
@@ -110,7 +124,7 @@ const GROUND_FLOOR: FloorPlan = {
     { id: "eg-annex-wc", kind: "bath", shape: [1624, 490, 124, 146] },
   ],
   labels: [
-    { key: "common", at: [932, 868], major: true },
+    { key: "dining", at: [682, 868] },
     { key: "kitchen", at: [1800, 866], major: true },
     { key: "hall", at: [1100, 1178] },
     { key: "entrance", at: [1093, 1430] },
@@ -213,12 +227,17 @@ export const FLOOR_KEYS: FloorKey[] = ["eg", "og"];
 
 export const ROOM_FLOOR = Object.fromEntries(
   FLOOR_KEYS.flatMap((floor) => FLOOR_PLANS[floor].rooms.map((room) => [room.key, floor])),
-) as Record<RoomKey, FloorKey>;
+) as Record<PlanKey, FloorKey>;
+
+/** Everything selectable, in walking order: ground floor first. */
+export const PLAN_KEYS: PlanKey[] = FLOOR_KEYS.flatMap((floor) =>
+  FLOOR_PLANS[floor].rooms.map((room) => room.key),
+);
 
 const ALL_ROOMS = FLOOR_KEYS.flatMap((floor) => FLOOR_PLANS[floor].rooms);
 
 /** Rooms that use the same bathroom as `room` (empty = the bathroom is its own). */
-export function bathMates(room: RoomKey): RoomKey[] {
+export function bathMates(room: PlanKey): PlanKey[] {
   const bath = ALL_ROOMS.find((r) => r.key === room)?.bath;
   if (!bath) return [];
   return ALL_ROOMS.filter((r) => r.bath === bath && r.key !== room).map((r) => r.key);

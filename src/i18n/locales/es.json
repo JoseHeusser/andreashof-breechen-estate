@@ -185,15 +185,22 @@
         "stairs": "Escalera",
         "kitchen": "Cocina",
         "living": "Cocina · Estar",
-        "common": "Salones comunes",
-        "annex": "Anexo"
+        "annex": "Anexo",
+        "dining": "Comedor"
       },
       "sheet": "Plano",
       "notToScale": "Sin escala",
       "bathOwn": "Baño propio",
       "bathShared": "Compartido con la recámara {{key}}",
       "prev": "Recámara anterior",
-      "next": "Recámara siguiente"
+      "next": "Recámara siguiente",
+      "spaces": {
+        "salon": {
+          "name": "Salón Azul",
+          "tag": "Para todos los huéspedes",
+          "desc": "El salón común de la planta baja: paredes azules, chimenea, libreros y lámpara de araña, con paso abierto al comedor."
+        }
+      }
     },
     "labelBath": "Baño"
   },

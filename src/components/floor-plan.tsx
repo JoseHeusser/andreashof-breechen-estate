@@ -1,13 +1,16 @@
 import { useEffect, useState, type KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { ROOM_KEYS, type RoomKey } from "@/data/rooms";
+import { planInfo } from "@/lib/plan-info";
 import {
   FLOOR_KEYS,
   FLOOR_PLANS,
+  isSpace,
+  PLAN_KEYS,
   ROOM_FLOOR,
   type FloorKey,
   type FloorPlan as FloorPlanData,
   type PlanDoor,
+  type PlanKey,
   type PlanShape,
 } from "@/data/floor-plan";
 
@@ -74,8 +77,8 @@ function doorPath({ axis, pos, from, to, swing }: PlanDoor): string {
 }
 
 interface FloorPlanProps {
-  active: RoomKey;
-  onSelect: (room: RoomKey) => void;
+  active: PlanKey;
+  onSelect: (room: PlanKey) => void;
 }
 
 /**
@@ -85,7 +88,7 @@ interface FloorPlanProps {
 export function FloorPlan({ active, onSelect }: FloorPlanProps) {
   const { t } = useTranslation();
   const [floor, setFloor] = useState<FloorKey>(ROOM_FLOOR[active]);
-  const [hovered, setHovered] = useState<RoomKey | null>(null);
+  const [hovered, setHovered] = useState<PlanKey | null>(null);
 
   // Follow the selection when it changes (index entry on the other floor).
   useEffect(() => {
@@ -180,10 +183,7 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
             </p>
             <ul>
               {FLOOR_PLANS[key].rooms.map(({ key: room }) => {
-                const info = t(`rooms.${room}`, { returnObjects: true }) as {
-                  name: string;
-                  bed: string;
-                };
+                const info = planInfo(t, room);
                 const isActive = room === active;
                 const isHovered = room === hovered;
                 return (
@@ -194,7 +194,7 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
                       onPointerEnter={() => setHovered(room)}
                       onPointerLeave={() => setHovered(null)}
                       aria-current={isActive ? "true" : undefined}
-                      aria-label={`${room}. ${info.name}`}
+                      aria-label={isSpace(room) ? info.name : `${room}. ${info.name}`}
                       className={`flex w-full items-baseline gap-4 py-3 text-left outline-none transition-colors duration-300 hover:text-foreground focus-visible:text-sage-deep ${
                         isActive || isHovered ? "text-foreground" : "text-muted-foreground"
                       }`}
@@ -204,14 +204,14 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
                           isActive ? "text-sage-deep" : "text-sage-deep/70"
                         }`}
                       >
-                        {room}
+                        {isSpace(room) ? "—" : room}
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block font-display text-[1.05rem] leading-tight">
                           {info.name}
                         </span>
                         <span className="mt-0.5 block text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                          {info.bed}
+                          {info.sub}
                         </span>
                       </span>
                       <span
@@ -241,10 +241,10 @@ export function FloorPlan({ active, onSelect }: FloorPlanProps) {
  */
 function RoomStepper({ active, onSelect }: FloorPlanProps) {
   const { t } = useTranslation();
-  const index = ROOM_KEYS.indexOf(active);
-  const name = (t(`rooms.${active}`, { returnObjects: true }) as { name: string }).name;
+  const index = PLAN_KEYS.indexOf(active);
+  const { name } = planInfo(t, active);
   const step = (delta: number) =>
-    onSelect(ROOM_KEYS[(index + delta + ROOM_KEYS.length) % ROOM_KEYS.length]);
+    onSelect(PLAN_KEYS[(index + delta + PLAN_KEYS.length) % PLAN_KEYS.length]);
   const arrow =
     "flex size-12 shrink-0 items-center justify-center text-sage-deep outline-none transition-colors active:bg-accent focus-visible:bg-accent";
 
@@ -262,10 +262,12 @@ function RoomStepper({ active, onSelect }: FloorPlanProps) {
         className="flex min-w-0 flex-1 items-baseline justify-center gap-3 px-3 py-3"
         aria-live="polite"
       >
-        <span className="font-display text-xl italic text-sage-deep">{active}</span>
+        {!isSpace(active) && (
+          <span className="font-display text-xl italic text-sage-deep">{active}</span>
+        )}
         <span className="truncate font-display text-lg leading-tight">{name}</span>
         <span className="shrink-0 text-[10px] tracking-[0.18em] text-muted-foreground">
-          {index + 1}/{ROOM_KEYS.length}
+          {index + 1}/{PLAN_KEYS.length}
         </span>
       </p>
       <button
@@ -307,10 +309,10 @@ function LegendItem({ label, style }: { label: string; style: React.CSSPropertie
 interface FloorDrawingProps {
   plan: FloorPlanData;
   visible: boolean;
-  active: RoomKey;
-  hovered: RoomKey | null;
-  onHover: (room: RoomKey | null) => void;
-  onSelect: (room: RoomKey) => void;
+  active: PlanKey;
+  hovered: PlanKey | null;
+  onHover: (room: PlanKey | null) => void;
+  onSelect: (room: PlanKey) => void;
 }
 
 function FloorDrawing({ plan, visible, active, hovered, onHover, onSelect }: FloorDrawingProps) {
@@ -320,7 +322,7 @@ function FloorDrawing({ plan, visible, active, hovered, onHover, onSelect }: Flo
   const linkedBath = focusRoom?.bath;
   const hoverOnThisFloor = plan.rooms.some((room) => room.key === hovered);
 
-  const onKey = (event: KeyboardEvent<SVGGElement>, room: RoomKey) => {
+  const onKey = (event: KeyboardEvent<SVGGElement>, room: PlanKey) => {
     if (event.key !== "Enter" && event.key !== " ") return;
     event.preventDefault();
     onSelect(room);
@@ -379,12 +381,13 @@ function FloorDrawing({ plan, visible, active, hovered, onHover, onSelect }: Flo
         ))}
       </g>
 
-      {/* Guest rooms */}
+      {/* Guest rooms and selectable shared spaces */}
       {plan.rooms.map((room) => {
         const isActive = room.key === active;
         const isHovered = room.key === hovered;
         const dimmed = hoverOnThisFloor && !isHovered && !isActive;
-        const name = (t(`rooms.${room.key}`, { returnObjects: true }) as { name: string }).name;
+        const space = isSpace(room.key);
+        const { name } = planInfo(t, room.key);
         const [width, height] = shapeSize(room.shape);
         const lines = wrapName(name, width);
         // Short rooms (V) shrink the numeral so numeral and name both clear the walls.
@@ -399,7 +402,7 @@ function FloorDrawing({ plan, visible, active, hovered, onHover, onSelect }: Flo
             key={room.key}
             role="button"
             tabIndex={visible ? 0 : -1}
-            aria-label={t("zimmer.plan.ariaRoom", { key: room.key, name })}
+            aria-label={space ? name : t("zimmer.plan.ariaRoom", { key: room.key, name })}
             aria-pressed={isActive}
             onClick={() => onSelect(room.key)}
             onKeyDown={(event) => onKey(event, room.key)}
@@ -411,7 +414,15 @@ function FloorDrawing({ plan, visible, active, hovered, onHover, onSelect }: Flo
           >
             <Shape
               shape={room.shape}
-              fill={isActive ? FILL.roomActive : isHovered ? FILL.roomHover : FILL.room}
+              fill={
+                isActive
+                  ? FILL.roomActive
+                  : isHovered
+                    ? FILL.roomHover
+                    : space
+                      ? FILL.open
+                      : FILL.room
+              }
               style={FADE}
             />
             {/* Keyboard focus ring, wide enough to show inside the walls */}
@@ -429,42 +440,61 @@ function FloorDrawing({ plan, visible, active, hovered, onHover, onSelect }: Flo
               opacity={dimmed ? 0.4 : 1}
               style={FADE}
             >
-              <text
-                x={room.at[0]}
-                y={top + numeral * 0.72}
-                fontStyle="italic"
-                fontSize={numeral}
-                fill={isActive ? "var(--primary-foreground)" : "var(--sage-deep)"}
-                style={FADE}
-                className="max-sm:hidden"
-              >
-                {room.key}
-              </text>
-              {/* Phones: the numeral alone, larger and centred in the room */}
-              <text
-                x={room.at[0]}
-                y={room.at[1]}
-                dominantBaseline="central"
-                fontStyle="italic"
-                fontSize={Math.min(170, Math.round(height * 0.52))}
-                fill={isActive ? "var(--primary-foreground)" : "var(--sage-deep)"}
-                style={FADE}
-                className="sm:hidden"
-              >
-                {room.key}
-              </text>
-              {/* Names would be unreadable at phone size; the chips below carry them */}
-              <text fontSize={NAME_SIZE} fill={ink} style={FADE} className="max-sm:hidden">
-                {lines.map((line, i) => (
-                  <tspan
-                    key={line}
+              {space ? (
+                <>
+                  <text
                     x={room.at[0]}
-                    y={top + numeral * 0.72 + 16 + (i + 0.78) * NAME_LEADING}
+                    y={room.at[1]}
+                    dominantBaseline="central"
+                    fontStyle="italic"
+                    fontSize={68}
+                    fill={isActive ? "var(--primary-foreground)" : "var(--sage-deep)"}
+                    style={FADE}
+                    className="max-sm:text-[82px]"
                   >
-                    {line}
-                  </tspan>
-                ))}
-              </text>
+                    {name}
+                  </text>
+                </>
+              ) : (
+                <>
+                  <text
+                    x={room.at[0]}
+                    y={top + numeral * 0.72}
+                    fontStyle="italic"
+                    fontSize={numeral}
+                    fill={isActive ? "var(--primary-foreground)" : "var(--sage-deep)"}
+                    style={FADE}
+                    className="max-sm:hidden"
+                  >
+                    {room.key}
+                  </text>
+                  {/* Phones: the numeral alone, larger and centred in the room */}
+                  <text
+                    x={room.at[0]}
+                    y={room.at[1]}
+                    dominantBaseline="central"
+                    fontStyle="italic"
+                    fontSize={Math.min(170, Math.round(height * 0.52))}
+                    fill={isActive ? "var(--primary-foreground)" : "var(--sage-deep)"}
+                    style={FADE}
+                    className="sm:hidden"
+                  >
+                    {room.key}
+                  </text>
+                  {/* Names would be unreadable at phone size; the chips below carry them */}
+                  <text fontSize={NAME_SIZE} fill={ink} style={FADE} className="max-sm:hidden">
+                    {lines.map((line, i) => (
+                      <tspan
+                        key={line}
+                        x={room.at[0]}
+                        y={top + numeral * 0.72 + 16 + (i + 0.78) * NAME_LEADING}
+                      >
+                        {line}
+                      </tspan>
+                    ))}
+                  </text>
+                </>
+              )}
             </g>
           </g>
         );

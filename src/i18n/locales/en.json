@@ -451,15 +451,22 @@
         "stairs": "Stairs",
         "kitchen": "Kitchen",
         "living": "Kitchen · Living area",
-        "common": "Shared rooms",
-        "annex": "Annex"
+        "annex": "Annex",
+        "dining": "Dining room"
       },
       "sheet": "Floor plan",
       "notToScale": "Not to scale",
       "bathOwn": "Private bathroom",
       "bathShared": "Shared with chamber {{key}}",
       "prev": "Previous chamber",
-      "next": "Next chamber"
+      "next": "Next chamber",
+      "spaces": {
+        "salon": {
+          "name": "Blue Salon",
+          "tag": "For all guests",
+          "desc": "The shared salon on the ground floor: blue walls, fireplace, bookshelves and chandelier — with an open passage to the dining room."
+        }
+      }
     },
     "labelBath": "Bathroom"
   },

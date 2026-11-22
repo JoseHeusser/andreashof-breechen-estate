@@ -4,8 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { FloorPlan } from "@/components/floor-plan";
-import { bathMates } from "@/data/floor-plan";
-import { ROOM_IMAGES, type RoomKey } from "@/data/rooms";
+import { bathMates, isSpace, ROOM_FLOOR, type PlanKey } from "@/data/floor-plan";
+import { planInfo } from "@/lib/plan-info";
 
 const ROOM_SWITCH_OUT_MS = 280;
 const ROOM_SWITCH_GAP_MS = 110;
@@ -24,22 +24,17 @@ export const Route = createFileRoute("/zimmer")({
 
 function ZimmerPage() {
   const { t } = useTranslation();
-  const [active, setActive] = useState<RoomKey>("I");
-  const [displayedRoom, setDisplayedRoom] = useState<RoomKey>("I");
+  const [active, setActive] = useState<PlanKey>("I");
+  const [displayedRoom, setDisplayedRoom] = useState<PlanKey>("I");
   const [imgIdx, setImgIdx] = useState(0);
   const [transitionPhase, setTransitionPhase] = useState<"idle" | "out" | "gap" | "in">("idle");
   const [reduceMotion, setReduceMotion] = useState(false);
-  const displayedRoomRef = useRef<RoomKey>("I");
+  const displayedRoomRef = useRef<PlanKey>("I");
   const transitionRunRef = useRef(0);
 
-  const room = t(`rooms.${displayedRoom}`, { returnObjects: true }) as {
-    name: string;
-    bed: string;
-    view: string;
-    desc: string;
-  };
-
-  const photos = useMemo(() => ROOM_IMAGES[displayedRoom], [displayedRoom]);
+  const room = useMemo(() => planInfo(t, displayedRoom), [t, displayedRoom]);
+  const photos = room.photos;
+  const shared = isSpace(displayedRoom);
   const currentPhoto = photos[Math.min(imgIdx, photos.length - 1)];
   const mates = bathMates(displayedRoom);
 
@@ -198,7 +193,9 @@ function ZimmerPage() {
               )}
               <div className="mt-8">
                 <p className="eyebrow text-sage-deep">
-                  {t("zimmer.labelNumber")} {displayedRoom}
+                  {shared
+                    ? `${t(`zimmer.plan.floors.${ROOM_FLOOR[displayedRoom]}`)} · ${room.sub}`
+                    : `${t("zimmer.labelNumber")} ${displayedRoom}`}
                 </p>
                 <h2 className="mt-3 font-display text-3xl font-light leading-tight md:text-[2.6rem]">
                   {room.name}
@@ -207,24 +204,26 @@ function ZimmerPage() {
                   {room.desc}
                 </p>
 
-                <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-border pt-6 sm:grid-cols-3">
-                  <div>
-                    <dt className="eyebrow text-muted-foreground">{t("zimmer.labelBed")}</dt>
-                    <dd className="mt-2 font-display text-lg text-foreground">{room.bed}</dd>
-                  </div>
-                  <div>
-                    <dt className="eyebrow text-muted-foreground">{t("zimmer.labelView")}</dt>
-                    <dd className="mt-2 font-display text-lg text-foreground">{room.view}</dd>
-                  </div>
-                  <div className="max-sm:col-span-2">
-                    <dt className="eyebrow text-muted-foreground">{t("zimmer.labelBath")}</dt>
-                    <dd className="mt-2 font-display text-lg text-foreground">
-                      {mates.length
-                        ? t("zimmer.plan.bathShared", { key: mates.join(" · ") })
-                        : t("zimmer.plan.bathOwn")}
-                    </dd>
-                  </div>
-                </dl>
+                {!shared && (
+                  <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-border pt-6 sm:grid-cols-3">
+                    <div>
+                      <dt className="eyebrow text-muted-foreground">{t("zimmer.labelBed")}</dt>
+                      <dd className="mt-2 font-display text-lg text-foreground">{room.bed}</dd>
+                    </div>
+                    <div>
+                      <dt className="eyebrow text-muted-foreground">{t("zimmer.labelView")}</dt>
+                      <dd className="mt-2 font-display text-lg text-foreground">{room.view}</dd>
+                    </div>
+                    <div className="max-sm:col-span-2">
+                      <dt className="eyebrow text-muted-foreground">{t("zimmer.labelBath")}</dt>
+                      <dd className="mt-2 font-display text-lg text-foreground">
+                        {mates.length
+                          ? t("zimmer.plan.bathShared", { key: mates.join(" · ") })
+                          : t("zimmer.plan.bathOwn")}
+                      </dd>
+                    </div>
+                  </dl>
+                )}
               </div>
             </div>
             {!reduceMotion && (transitionPhase === "out" || transitionPhase === "gap") && (
