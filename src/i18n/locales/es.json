@@ -162,7 +162,38 @@
     "labelView": "Vista",
     "labelNumber": "Recámara",
     "ctaBack": "Volver al inicio",
-    "selectorLabel": "Elegir recámara"
+    "selectorLabel": "Elegir recámara",
+    "plan": {
+      "eyebrow": "Plano",
+      "floors": {
+        "eg": "Planta baja",
+        "og": "Planta alta"
+      },
+      "ariaPlan": "Plano, {{floor}}",
+      "ariaRoom": "Recámara {{key}}, {{name}}",
+      "legend": {
+        "room": "Recámara",
+        "bath": "Baño",
+        "shared": "Área común",
+        "service": "Fuera del área de huéspedes"
+      },
+      "labels": {
+        "bath": "Baño",
+        "wc": "WC",
+        "hall": "Pasillo",
+        "entrance": "Entrada",
+        "stairs": "Escalera",
+        "kitchen": "Cocina",
+        "living": "Cocina · Estar",
+        "common": "Salones comunes",
+        "annex": "Anexo"
+      },
+      "sheet": "Plano",
+      "notToScale": "Sin escala",
+      "bathOwn": "Baño propio",
+      "bathShared": "Compartido con la recámara {{key}}"
+    },
+    "labelBath": "Baño"
   },
   "rooms": {
     "I": {

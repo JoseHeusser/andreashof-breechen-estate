@@ -428,7 +428,38 @@
     "labelView": "View",
     "labelNumber": "Chamber",
     "ctaBack": "Back to overview",
-    "selectorLabel": "Choose a chamber"
+    "selectorLabel": "Choose a chamber",
+    "plan": {
+      "eyebrow": "Floor plan",
+      "floors": {
+        "eg": "Ground floor",
+        "og": "Upper floor"
+      },
+      "ariaPlan": "Floor plan, {{floor}}",
+      "ariaRoom": "Chamber {{key}}, {{name}}",
+      "legend": {
+        "room": "Chamber",
+        "bath": "Bathroom",
+        "shared": "Shared area",
+        "service": "Not part of the guest area"
+      },
+      "labels": {
+        "bath": "Bath",
+        "wc": "WC",
+        "hall": "Hall",
+        "entrance": "Entrance",
+        "stairs": "Stairs",
+        "kitchen": "Kitchen",
+        "living": "Kitchen · Living area",
+        "common": "Shared rooms",
+        "annex": "Annex"
+      },
+      "sheet": "Floor plan",
+      "notToScale": "Not to scale",
+      "bathOwn": "Private bathroom",
+      "bathShared": "Shared with chamber {{key}}"
+    },
+    "labelBath": "Bathroom"
   },
   "rooms": {
     "I": {

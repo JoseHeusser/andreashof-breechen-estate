@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
-import { ROOM_IMAGES, ROOM_KEYS, type RoomKey } from "@/data/rooms";
+import { FloorPlan } from "@/components/floor-plan";
+import { bathMates } from "@/data/floor-plan";
+import { ROOM_IMAGES, type RoomKey } from "@/data/rooms";
 
 const ROOM_SWITCH_OUT_MS = 280;
 const ROOM_SWITCH_GAP_MS = 110;
@@ -42,6 +44,7 @@ function ZimmerPage() {
 
   const photos = useMemo(() => ROOM_IMAGES[displayedRoom], [displayedRoom]);
   const currentPhoto = photos[Math.min(imgIdx, photos.length - 1)];
+  const mates = bathMates(displayedRoom);
 
   // Reset image index whenever the displayed room changes.
   useEffect(() => {
@@ -134,7 +137,7 @@ function ZimmerPage() {
 
       {/* PAGE INTRO */}
       <section className="px-5 pt-14 pb-10 md:px-10 md:pt-24 md:pb-16">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-7xl">
           <h1 className="font-display text-[2.2rem] font-light leading-[1.1] md:text-6xl">
             {t("zimmer.pageTitle")}
           </h1>
@@ -144,84 +147,15 @@ function ZimmerPage() {
         </div>
       </section>
 
-      {/* MOBILE SELECTOR */}
-      <section className="px-5 pb-8 md:hidden">
-        <div className="mx-auto max-w-6xl">
-          <label htmlFor="room-select" className="eyebrow block">
-            {t("zimmer.selectorLabel")}
-          </label>
-          <div className="relative mt-3">
-            <select
-              id="room-select"
-              value={active}
-              onChange={(e) => setActive(e.target.value as RoomKey)}
-              className="min-h-11 w-full appearance-none border border-border bg-card px-4 py-3.5 pr-10 font-display text-lg text-foreground outline-none transition-colors focus:border-sage-deep"
-            >
-              {ROOM_KEYS.map((k) => {
-                const r = t(`rooms.${k}`, { returnObjects: true }) as { name: string };
-                return (
-                  <option key={k} value={k}>
-                    {k}. {r.name}
-                  </option>
-                );
-              })}
-            </select>
-            <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 font-display text-xl italic text-sage-deep">
-              ▾
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* CONTENT: sidebar list + detail panel */}
+      {/* EXPLORER: floor plan + room index on the left, the chosen room on the right */}
       <section className="px-5 pb-20 md:px-10 md:pb-40">
-        <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-12 md:gap-16">
-          {/* Sidebar (desktop) */}
-          <aside className="hidden md:col-span-4 md:block">
-            <p className="eyebrow text-muted-foreground">{t("zimmer.selectorLabel")}</p>
-            <ul className="mt-6 border-t border-border">
-              {ROOM_KEYS.map((k) => {
-                const r = t(`rooms.${k}`, { returnObjects: true }) as { name: string; bed: string };
-                const isActive = k === active;
-                return (
-                  <li key={k} className="border-b border-border">
-                    <button
-                      type="button"
-                      onClick={() => setActive(k)}
-                      aria-current={isActive ? "true" : undefined}
-                      className={`group flex w-full items-baseline gap-4 py-5 text-left transition-colors ${
-                        isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      <span
-                        className={`shrink-0 font-display text-xl italic transition-all duration-300 ${
-                          isActive ? "translate-x-1 text-sage-deep" : "text-sage-deep/60"
-                        }`}
-                      >
-                        {k}
-                      </span>
-                      <span className="flex-1">
-                        <span className="block font-display text-lg font-light leading-tight">
-                          {r.name}
-                        </span>
-                        <span className="mt-1 block text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                          {r.bed}
-                        </span>
-                      </span>
-                      <span
-                        className={`mt-2 h-px shrink-0 bg-sage-deep transition-all duration-500 ${
-                          isActive ? "w-8 opacity-100" : "w-0 opacity-0"
-                        }`}
-                      />
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </aside>
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-7">
+            <FloorPlan active={active} onSelect={setActive} />
+          </div>
 
           {/* Detail panel */}
-          <div className="md:col-span-8">
+          <div className="lg:sticky lg:top-8 lg:col-span-5 lg:self-start">
             <div
               className={`transition-[opacity,transform] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${detailTransitionClass}`}
               style={{ transitionDuration: `${detailTransitionDurationMs}ms` }}
@@ -230,11 +164,12 @@ function ZimmerPage() {
                 <img
                   src={currentPhoto}
                   alt={`${room.name} — ${imgIdx + 1}/${photos.length}`}
-                  className="h-[280px] w-full object-cover sm:h-[320px] md:h-[560px]"
+                  className="h-[280px] w-full object-cover sm:h-[360px] lg:h-[400px]"
                 />
               </div>
               {photos.length > 1 && (
-                <div className="mt-4 flex gap-2.5 overflow-x-auto pb-1 max-md:snap-x max-md:snap-mandatory md:grid md:gap-3 md:overflow-visible md:pb-0"
+                <div
+                  className="mt-4 flex gap-2.5 overflow-x-auto pb-1 max-md:snap-x max-md:snap-mandatory md:grid md:gap-3 md:overflow-visible md:pb-0"
                   style={{
                     gridTemplateColumns: `repeat(${photos.length}, minmax(0, 1fr))`,
                   }}
@@ -264,18 +199,18 @@ function ZimmerPage() {
                   })}
                 </div>
               )}
-              <div className="mt-10">
+              <div className="mt-8">
                 <p className="eyebrow text-sage-deep">
                   {t("zimmer.labelNumber")} {displayedRoom}
                 </p>
-                <h2 className="mt-3 font-display text-3xl font-light leading-tight md:text-5xl">
+                <h2 className="mt-3 font-display text-3xl font-light leading-tight md:text-[2.6rem]">
                   {room.name}
                 </h2>
                 <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[1.05rem]">
                   {room.desc}
                 </p>
 
-                <dl className="mt-10 grid max-w-md grid-cols-2 gap-6 border-t border-border pt-6">
+                <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-border pt-6 sm:grid-cols-3">
                   <div>
                     <dt className="eyebrow text-muted-foreground">{t("zimmer.labelBed")}</dt>
                     <dd className="mt-2 font-display text-lg text-foreground">{room.bed}</dd>
@@ -283,6 +218,14 @@ function ZimmerPage() {
                   <div>
                     <dt className="eyebrow text-muted-foreground">{t("zimmer.labelView")}</dt>
                     <dd className="mt-2 font-display text-lg text-foreground">{room.view}</dd>
+                  </div>
+                  <div className="max-sm:col-span-2">
+                    <dt className="eyebrow text-muted-foreground">{t("zimmer.labelBath")}</dt>
+                    <dd className="mt-2 font-display text-lg text-foreground">
+                      {mates.length
+                        ? t("zimmer.plan.bathShared", { key: mates.join(" · ") })
+                        : t("zimmer.plan.bathOwn")}
+                    </dd>
                   </div>
                 </dl>
               </div>

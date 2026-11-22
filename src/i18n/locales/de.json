@@ -428,7 +428,38 @@
     "labelView": "Aussicht",
     "labelNumber": "Kammer",
     "ctaBack": "Zurück zur Übersicht",
-    "selectorLabel": "Kammer wählen"
+    "selectorLabel": "Kammer wählen",
+    "plan": {
+      "eyebrow": "Lageplan",
+      "floors": {
+        "eg": "Erdgeschoss",
+        "og": "Obergeschoss"
+      },
+      "ariaPlan": "Grundriss {{floor}}",
+      "ariaRoom": "Kammer {{key}}, {{name}}",
+      "legend": {
+        "room": "Kammer",
+        "bath": "Bad",
+        "shared": "Gemeinschaftsbereich",
+        "service": "Nicht Teil des Gästebereichs"
+      },
+      "labels": {
+        "bath": "Bad",
+        "wc": "WC",
+        "hall": "Flur",
+        "entrance": "Eingang",
+        "stairs": "Treppe",
+        "kitchen": "Küche",
+        "living": "Küche · Wohnbereich",
+        "common": "Gemeinschaftsräume",
+        "annex": "Anbau"
+      },
+      "sheet": "Grundriss",
+      "notToScale": "Nicht maßstabsgetreu",
+      "bathOwn": "Eigenes Bad",
+      "bathShared": "Geteilt mit Kammer {{key}}"
+    },
+    "labelBath": "Bad"
   },
   "rooms": {
     "I": {
