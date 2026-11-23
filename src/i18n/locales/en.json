@@ -118,6 +118,10 @@
         "arrivalInstructions": {
           "name": "Arrival information",
           "trigger": "Currently not sent automatically — Andrea sends arrival details personally. The template is kept for reference."
+        },
+        "discountGuest": {
+          "name": "Personal discount",
+          "trigger": "When you click “Grant a personal discount” on a booking. Your text goes on top; the figures are calculated automatically."
         }
       }
     },
@@ -263,6 +267,27 @@
       "saveAnyway": "Save anyway",
       "save": "Save booking",
       "saved": "Booking saved ✓ (total {{price}})"
+    },
+    "discount": {
+      "open": "Grant a personal discount",
+      "change": "Change discount",
+      "title": "Personal discount for {{email}}",
+      "intro": "The guest gets a separate email with your text and the new figures. The rental contract stays as it is; the discount is taken off the final payment and reflected in all later emails.",
+      "amount": "Discount (€)",
+      "message": "Your message",
+      "send": "Send discount",
+      "sent": "Discount saved and sent to {{email}}.",
+      "current": "Discount {{amount}} · sent on {{when}}",
+      "remove": "Remove discount",
+      "removeConfirm": "Remove the discount? The guest is not notified automatically.",
+      "removed": "Discount removed.",
+      "needsTotal": "Please enter a total price first.",
+      "rowContract": "Total price per contract",
+      "rowDiscount": "Personal discount",
+      "rowNewTotal": "New total",
+      "rowDeposit": "Deposit (unchanged)",
+      "rowBalance": "New final payment",
+      "defaultMessage": "Liebe/r {{name}},\n\nals Dankeschön dafür, dass Sie wieder bei uns zu Gast sind, möchte ich Ihnen einen persönlichen Rabatt auf Ihren Aufenthalt vom {{arrival}} bis {{departure}} anbieten."
     }
   },
   "nav": {

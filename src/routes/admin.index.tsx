@@ -24,6 +24,7 @@ import {
   getEmailThreads,
   getEmailThread,
   sendGuestEmail,
+  setBookingDiscount,
   updateOffers,
   createAirbnbPlaceholder,
   createAdminBooking,
@@ -596,7 +597,14 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
           </span>
         </span>
         {totalFormatted && (
-          <span className="text-sm tabular-nums text-sage-deep">{totalFormatted}</span>
+          <span className="text-sm tabular-nums text-sage-deep">
+            {totalFormatted}
+            {booking.discount_cents ? (
+              <span className="ml-1.5 text-xs text-muted-foreground">
+                − {formatCents(booking.discount_cents, i18n.language)}
+              </span>
+            ) : null}
+          </span>
         )}
         <span className={`border px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${STATUS_COLOR[booking.status]}`}>
           {t(`admin.statusShort.${booking.status}`)}
@@ -700,9 +708,192 @@ function BookingCard({ booking, onReload }: { booking: Booking; onReload: () => 
           </div>
         </div>
         <GuestEmailComposer booking={booking} />
+        <DiscountPanel booking={booking} onReload={onReload} />
         </>
       )}
     </li>
+  );
+}
+
+/* ------------------------------------------------------------
+ *  Personal discount: an amount plus Andrea's own words, sent to
+ *  the guest as a separate email. The contract is not reissued;
+ *  the discount comes off the final payment.
+ * ---------------------------------------------------------- */
+function DiscountPanel({ booking, onReload }: { booking: Booking; onReload: () => void }) {
+  const { t, i18n } = useTranslation();
+  const locale = useLocale();
+  const [open, setOpen] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
+
+  const total = booking.total_price_cents;
+  const money = (value: number) => formatCents(value, i18n.language) ?? "—";
+  const cents = Math.round(parseFloat(amount.replace(",", ".")) * 100);
+  const valid = total != null && Number.isFinite(cents) && cents > 0 && cents < total;
+  const deposit = total != null ? Math.round(total * 0.5) : 0;
+  const paid = booking.status === "fully_paid" || booking.status === "completed";
+
+  const start = () => {
+    setAmount(booking.discount_cents ? String(booking.discount_cents / 100) : "");
+    setMessage(
+      t("admin.discount.defaultMessage", {
+        name: booking.contact_name,
+        arrival: format(parseISO(booking.arrival), "d. MMMM yyyy", { locale }),
+        departure: format(parseISO(booking.departure), "d. MMMM yyyy", { locale }),
+      }),
+    );
+    setResult(null);
+    setOpen(true);
+  };
+
+  const run = async (discountCents: number | null) => {
+    setBusy(true);
+    setResult(null);
+    try {
+      await setBookingDiscount({ data: { id: booking.id, discountCents, message } });
+      setResult({
+        ok: true,
+        text:
+          discountCents == null
+            ? t("admin.discount.removed")
+            : t("admin.discount.sent", { email: booking.contact_email }),
+      });
+      await onReload();
+    } catch (e) {
+      setResult({ ok: false, text: e instanceof Error ? e.message : String(e) });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const current = booking.discount_cents ? (
+    <span className="text-xs text-muted-foreground">
+      {t("admin.discount.current", {
+        amount: money(booking.discount_cents),
+        when: booking.discount_sent_at
+          ? format(parseISO(booking.discount_sent_at), "d MMM yyyy", { locale })
+          : "—",
+      })}
+    </span>
+  ) : null;
+
+  if (!open) {
+    return (
+      <div className="border-t border-border flex flex-wrap items-center gap-3 px-5 py-4">
+        <button
+          onClick={start}
+          disabled={total == null}
+          className="border border-border px-4 py-2 text-[11px] uppercase tracking-[0.22em] hover:border-foreground disabled:opacity-50"
+        >
+          {booking.discount_cents ? t("admin.discount.change") : t("admin.discount.open")}
+        </button>
+        {current}
+        {total == null && (
+          <span className="text-xs text-muted-foreground">{t("admin.discount.needsTotal")}</span>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="border-t border-border px-5 py-5 space-y-3 text-sm">
+      <div className="flex items-baseline justify-between gap-4">
+        <span className="eyebrow">{t("admin.discount.title", { email: booking.contact_email })}</span>
+        <button
+          onClick={() => setOpen(false)}
+          className="text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground"
+        >
+          {t("admin.compose.close")}
+        </button>
+      </div>
+      <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground">
+        {t("admin.discount.intro")}
+      </p>
+
+      <div className="grid gap-5 md:grid-cols-2">
+        <div className="space-y-3">
+          <label className="block">
+            <span className="eyebrow block mb-1">{t("admin.discount.amount")}</span>
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full border border-border bg-background px-2 py-1.5"
+            />
+          </label>
+          <label className="block">
+            <span className="eyebrow block mb-1">{t("admin.discount.message")}</span>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={7}
+              className="w-full border border-border bg-background px-2 py-1.5"
+            />
+          </label>
+        </div>
+
+        {/* The figures the guest will see below the message */}
+        <dl className="self-start border border-border bg-background px-4 py-3 tabular-nums">
+          <DiscountRow label={t("admin.discount.rowContract")} value={total != null ? money(total) : "—"} />
+          <DiscountRow label={t("admin.discount.rowDiscount")} value={valid ? `− ${money(cents)}` : "—"} />
+          <DiscountRow
+            label={t("admin.discount.rowNewTotal")}
+            value={valid ? money(total - cents) : "—"}
+            strong
+          />
+          {!paid && (
+            <>
+              <DiscountRow label={t("admin.discount.rowDeposit")} value={total != null ? money(deposit) : "—"} />
+              <DiscountRow
+                label={t("admin.discount.rowBalance")}
+                value={valid ? money(Math.max(0, total - deposit - cents)) : "—"}
+                strong
+              />
+            </>
+          )}
+        </dl>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          disabled={busy || !valid || message.trim() === ""}
+          onClick={() => run(cents)}
+          className="border border-foreground bg-foreground px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-background disabled:opacity-50"
+        >
+          {busy ? t("admin.compose.sending") : t("admin.discount.send")}
+        </button>
+        {booking.discount_cents ? (
+          <button
+            disabled={busy}
+            onClick={() => {
+              if (window.confirm(t("admin.discount.removeConfirm"))) void run(null);
+            }}
+            className="text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground disabled:opacity-50"
+          >
+            {t("admin.discount.remove")}
+          </button>
+        ) : null}
+        {current}
+      </div>
+
+      {result && (
+        <p className={`text-sm ${result.ok ? "text-sage-deep" : "text-red-700"}`}>{result.text}</p>
+      )}
+    </div>
+  );
+}
+
+function DiscountRow({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
+  return (
+    <div className="flex items-baseline justify-between gap-4 py-1">
+      <dt className="text-xs text-muted-foreground">{label}</dt>
+      <dd className={strong ? "font-medium" : ""}>{value}</dd>
+    </div>
   );
 }
 
@@ -1968,8 +2159,12 @@ const EMAIL_RECIPIENT: Record<EmailPreview["key"], "guest" | "admin"> = {
   fullyPaidGuest: "guest",
   balanceReminder: "guest",
   arrivalInstructions: "guest",
+  discountGuest: "guest",
 };
-const MANUAL_EMAILS: ReadonlySet<EmailPreview["key"]> = new Set(["arrivalInstructions"]);
+const MANUAL_EMAILS: ReadonlySet<EmailPreview["key"]> = new Set([
+  "arrivalInstructions",
+  "discountGuest",
+]);
 
 function EmailsTab() {
   const { t } = useTranslation();

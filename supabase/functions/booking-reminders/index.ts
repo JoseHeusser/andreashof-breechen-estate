@@ -40,6 +40,7 @@ interface BookingRow {
   contact_email: string;
   status: string;
   total_price_cents: number | null;
+  discount_cents: number | null;
   is_cleaning: boolean;
   reminder_balance_sent_at: string | null;
   reminder_arrival_sent_at: string | null;
@@ -137,7 +138,13 @@ function shell(title: string, body: string) {
 function balanceReminderHtml(b: BookingRow): string {
   const balance =
     b.total_price_cents != null
-      ? formatPrice(Math.round(b.total_price_cents * 0.5))
+      ? // Half the contract total is the deposit; a personal discount comes off the rest.
+        formatPrice(
+          Math.max(
+            0,
+            b.total_price_cents - Math.round(b.total_price_cents * 0.5) - (b.discount_cents ?? 0),
+          ),
+        )
       : "die Restzahlung";
   const body = `
     <h1 style="margin:0 0 18px;font-size:22px;font-weight:300;">Freundliche Erinnerung</h1>
@@ -188,7 +195,7 @@ Deno.serve(async () => {
 
     // Pull both buckets in parallel.
     const select =
-      "id,arrival,departure,contact_name,contact_email,status,total_price_cents,is_cleaning,reminder_balance_sent_at,reminder_arrival_sent_at";
+      "id,arrival,departure,contact_name,contact_email,status,total_price_cents,discount_cents,is_cleaning,reminder_balance_sent_at,reminder_arrival_sent_at";
     const [balanceCandidates, arrivalCandidates] = await Promise.all([
       pg<BookingRow[]>(
         `bookings?status=eq.deposit_paid&arrival=eq.${target3}&is_cleaning=eq.false&select=${select}`,

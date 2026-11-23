@@ -1,11 +1,6 @@
 // Hand-written for now (avoid the codegen round-trip). Mirrors 0001_initial_schema.sql.
 export type BookingStatus =
-  | "requested"
-  | "accepted"
-  | "deposit_paid"
-  | "fully_paid"
-  | "cancelled"
-  | "completed";
+  "requested" | "accepted" | "deposit_paid" | "fully_paid" | "cancelled" | "completed";
 
 export type BookingSource = "web" | "airbnb" | "manual";
 
@@ -46,6 +41,9 @@ export interface Booking {
   message: string | null;
   total_price_cents: number | null;
   deposit_amount_cents: number | null;
+  /** Personal discount granted after the contract; settled with the final payment. */
+  discount_cents: number | null;
+  discount_sent_at: string | null;
   internal_notes: string | null;
   airbnb_uid: string | null;
   created_at: string;

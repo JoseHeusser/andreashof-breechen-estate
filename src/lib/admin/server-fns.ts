@@ -24,6 +24,7 @@ import {
   tplBalanceReminderGuest,
   tplArrivalInstructionsGuest,
   tplCustomMessage,
+  tplDiscountGuest,
 } from "@/lib/email/templates";
 import { SAMPLE_BOOKING } from "@/lib/email/sample-booking";
 import { renderContractPdf, contractFilename } from "@/lib/contract/pdf";
@@ -1119,6 +1120,75 @@ export const sendGuestEmail = createServerFn({ method: "POST" })
     return { ok: true as const, to };
   });
 
+/* -----------------------------------------------------------------
+ * ADMIN — personal discount on a booking. Stored on the booking (the
+ * contract total stays as signed) and announced to the guest in its
+ * own email. Later emails take the discount off the final payment.
+ * Passing discountCents = null removes the discount without emailing.
+ * -------------------------------------------------------------- */
+export const setBookingDiscount = createServerFn({ method: "POST" })
+  .validator((data: { id: string; discountCents: number | null; message?: string }) => data)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const admin = getSupabaseAdmin();
+    const { data: row, error } = await admin
+      .from("bookings")
+      .select("*")
+      .eq("id", data.id)
+      .single();
+    if (error) throw error;
+    const booking = row as Booking;
+
+    if (data.discountCents == null) {
+      const { error: clearErr } = await admin
+        .from("bookings")
+        .update({ discount_cents: null, discount_sent_at: null })
+        .eq("id", booking.id);
+      if (clearErr) throw clearErr;
+      return { ok: true as const, sent: false };
+    }
+
+    const cents = Math.round(data.discountCents);
+    const message = data.message?.trim() ?? "";
+    if (booking.total_price_cents == null) throw new Error("DISCOUNT_NEEDS_TOTAL_PRICE");
+    if (!(cents > 0) || cents >= booking.total_price_cents) throw new Error("DISCOUNT_OUT_OF_RANGE");
+    if (!message) throw new Error("MESSAGE_REQUIRED");
+    if (!booking.contact_email || booking.contact_email.endsWith("@andreashof-breechen.de")) {
+      throw new Error("NO_RECIPIENT");
+    }
+
+    // Save first, so a database problem can never leave the guest holding a
+    // promise the booking does not know about. If the email then fails, the
+    // previous state is restored.
+    const { error: saveErr } = await admin
+      .from("bookings")
+      .update({ discount_cents: cents })
+      .eq("id", booking.id);
+    if (saveErr) throw saveErr;
+
+    const tpl = tplDiscountGuest({ ...booking, discount_cents: cents }, message);
+    const sent = await sendAndLog({
+      to: booking.contact_email,
+      ...tpl,
+      replyTo: ADMIN_EMAIL,
+      bookingId: booking.id,
+      kind: "discountGuest",
+    });
+    if (!sent) {
+      await admin
+        .from("bookings")
+        .update({ discount_cents: booking.discount_cents ?? null })
+        .eq("id", booking.id);
+      throw new Error("SEND_FAILED");
+    }
+
+    await admin
+      .from("bookings")
+      .update({ discount_sent_at: new Date().toISOString() })
+      .eq("id", booking.id);
+    return { ok: true as const, sent: true, to: booking.contact_email };
+  });
+
 // ADMIN — render every email template with a sample booking, for the
 // read-only "E-Mail-Vorlagen" tab.
 export const getEmailPreviews = createServerFn({ method: "GET" }).handler(async () => {
@@ -1134,6 +1204,13 @@ export const getEmailPreviews = createServerFn({ method: "GET" }).handler(async 
     {
       key: "arrivalInstructions",
       ...tplArrivalInstructionsGuest({ ...b, status: "fully_paid" }),
+    },
+    {
+      key: "discountGuest",
+      ...tplDiscountGuest(
+        { ...b, status: "deposit_paid", discount_cents: 20000 },
+        "Liebe/r Max Mustermann,\n\nals Dankeschön für Ihre Treue möchte ich Ihnen einen persönlichen Rabatt auf Ihren Aufenthalt anbieten.",
+      ),
     },
   ] as const;
 });

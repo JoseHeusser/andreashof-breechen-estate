@@ -24,6 +24,8 @@ export const SAMPLE_BOOKING: Booking = {
   message: "Wir freuen uns sehr auf das Gutshaus! Gibt es genug Platz für zwei Kinderwagen?",
   total_price_cents: 260000,
   deposit_amount_cents: 130000,
+  discount_cents: null,
+  discount_sent_at: null,
   internal_notes: null,
   airbnb_uid: null,
   created_at: "2027-01-10T10:00:00.000Z",

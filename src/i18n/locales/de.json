@@ -118,6 +118,10 @@
         "arrivalInstructions": {
           "name": "Anreise-Informationen",
           "trigger": "Wird derzeit nicht automatisch verschickt — Andrea schickt die Anreise-Infos persönlich. Die Vorlage dient als Referenz."
+        },
+        "discountGuest": {
+          "name": "Persönlicher Rabatt",
+          "trigger": "Wenn Sie bei einer Buchung auf „Persönlichen Rabatt gewähren“ klicken. Ihr Text steht oben, die Beträge werden automatisch berechnet."
         }
       }
     },
@@ -263,6 +267,27 @@
       "saveAnyway": "Trotzdem speichern",
       "save": "Buchung speichern",
       "saved": "Buchung gespeichert ✓ (Gesamtpreis {{price}})"
+    },
+    "discount": {
+      "open": "Persönlichen Rabatt gewähren",
+      "change": "Rabatt ändern",
+      "title": "Persönlicher Rabatt für {{email}}",
+      "intro": "Der Gast erhält eine eigene E-Mail mit Ihrem Text und den neuen Beträgen. Der Mietvertrag bleibt unverändert; der Rabatt wird von der Restzahlung abgezogen und in allen späteren E-Mails berücksichtigt.",
+      "amount": "Rabatt (€)",
+      "message": "Ihre Nachricht",
+      "send": "Rabatt mitteilen",
+      "sent": "Rabatt gespeichert und an {{email}} gesendet.",
+      "current": "Rabatt {{amount}} · mitgeteilt am {{when}}",
+      "remove": "Rabatt entfernen",
+      "removeConfirm": "Rabatt entfernen? Der Gast wird darüber nicht automatisch informiert.",
+      "removed": "Rabatt entfernt.",
+      "needsTotal": "Bitte zuerst einen Gesamtpreis eintragen.",
+      "rowContract": "Gesamtpreis laut Mietvertrag",
+      "rowDiscount": "Persönlicher Rabatt",
+      "rowNewTotal": "Neuer Gesamtpreis",
+      "rowDeposit": "Anzahlung (unverändert)",
+      "rowBalance": "Restzahlung neu",
+      "defaultMessage": "Liebe/r {{name}},\n\nals Dankeschön dafür, dass Sie wieder bei uns zu Gast sind, möchte ich Ihnen einen persönlichen Rabatt auf Ihren Aufenthalt vom {{arrival}} bis {{departure}} anbieten."
     }
   },
   "nav": {

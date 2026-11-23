@@ -91,6 +91,29 @@ function formatPrice(cents: number | null): string {
   }).format(cents / 100);
 }
 
+/* Money. The contract total never changes; a personal discount is settled
+ * with the final payment, so the deposit stays at half the contract total. */
+const DEPOSIT_SHARE = 0.5;
+
+function discountOf(b: Booking): number {
+  return b.discount_cents ?? 0;
+}
+
+function depositCents(b: Booking): number | null {
+  return b.total_price_cents == null ? null : Math.round(b.total_price_cents * DEPOSIT_SHARE);
+}
+
+/** What is still due after the deposit, discount already taken off. */
+function balanceCents(b: Booking): number | null {
+  if (b.total_price_cents == null) return null;
+  return Math.max(0, b.total_price_cents - depositCents(b)! - discountOf(b));
+}
+
+/** What the guest pays in the end. */
+function payableCents(b: Booking): number | null {
+  return b.total_price_cents == null ? null : Math.max(0, b.total_price_cents - discountOf(b));
+}
+
 function salutation(b: Booking): string {
   const name = b.contact_name?.trim();
   return name ? `Liebe/r ${escapeHtml(name)},` : "Liebe Gäste,";
@@ -132,6 +155,14 @@ function bookingSummary(b: Booking): string {
     lines.push(
       `<tr><td style="padding:8px 0 4px;color:${COLORS.muted};font-size:13px;border-top:1px solid ${COLORS.border};">Gesamtpreis</td><td style="padding:8px 0 4px;font-size:18px;font-weight:500;border-top:1px solid ${COLORS.border};">${formatPrice(b.total_price_cents)}</td></tr>`,
     );
+  if (b.total_price_cents != null && discountOf(b) > 0) {
+    lines.push(
+      `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Persönlicher Rabatt</td><td style="padding:4px 0;font-size:14px;color:${COLORS.sageDeep};">− ${formatPrice(discountOf(b))}</td></tr>`,
+    );
+    lines.push(
+      `<tr><td style="padding:4px 0;color:${COLORS.muted};font-size:13px;">Zu zahlen</td><td style="padding:4px 0;font-size:16px;font-weight:500;">${formatPrice(payableCents(b))}</td></tr>`,
+    );
+  }
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;margin:20px 0;">${lines.join("")}</table>`;
 }
 
@@ -197,9 +228,7 @@ export function tplRequestedAdmin(b: Booking) {
 export function tplAcceptedGuest(b: Booking) {
   const subject = `Ihre Buchung ist bestätigt — Andreashof Breechen`;
   const deposit =
-    b.total_price_cents != null
-      ? formatPrice(Math.round(b.total_price_cents * 0.5))
-      : "50% des Gesamtpreises";
+    b.total_price_cents != null ? formatPrice(depositCents(b)) : "50% des Gesamtpreises";
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Ihre Buchung ist bestätigt.</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
@@ -226,10 +255,7 @@ export function tplAcceptedGuest(b: Booking) {
 // ═══════════════════════════════════════════════════════════════
 export function tplDepositPaidGuest(b: Booking) {
   const subject = `Anzahlung erhalten — wir freuen uns auf Sie`;
-  const balance =
-    b.total_price_cents != null
-      ? formatPrice(Math.round(b.total_price_cents * 0.5))
-      : "die Restzahlung";
+  const balance = b.total_price_cents != null ? formatPrice(balanceCents(b)) : "die Restzahlung";
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Anzahlung erhalten.</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
@@ -252,7 +278,7 @@ export function tplDepositPaidGuest(b: Booking) {
 // ═══════════════════════════════════════════════════════════════
 export function tplFullyPaidGuest(b: Booking) {
   const subject = `Restzahlung erhalten — vielen Dank`;
-  const total = b.total_price_cents != null ? formatPrice(b.total_price_cents) : "den Gesamtbetrag";
+  const total = b.total_price_cents != null ? formatPrice(payableCents(b)) : "den Gesamtbetrag";
   const body = `
     <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Restzahlung erhalten.</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
@@ -269,10 +295,7 @@ export function tplFullyPaidGuest(b: Booking) {
 // ═══════════════════════════════════════════════════════════════
 export function tplBalanceReminderGuest(b: Booking) {
   const subject = `Erinnerung: Restzahlung für Ihren Aufenthalt`;
-  const balance =
-    b.total_price_cents != null
-      ? formatPrice(Math.round(b.total_price_cents * 0.5))
-      : "die Restzahlung";
+  const balance = b.total_price_cents != null ? formatPrice(balanceCents(b)) : "die Restzahlung";
   const body = `
     <h1 style="margin:0 0 18px;font-size:22px;font-weight:300;">Freundliche Erinnerung</h1>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${salutation(b)}</p>
@@ -313,12 +336,54 @@ export function tplArrivalInstructionsGuest(b: Booking) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  8) Free-text message written by Andrea in the admin
+//  8) Personal discount → guest. A supplement to the rental contract:
+//     Andrea's own words on top, the new figures below. The contract
+//     itself is not reissued.
 // ═══════════════════════════════════════════════════════════════
-export function tplCustomMessage(subject: string, text: string) {
-  // Plain text in, branded email out: blank lines separate paragraphs,
-  // single newlines become line breaks.
-  const paragraphs = text
+export function tplDiscountGuest(b: Booking, message: string) {
+  const subject = `Ihr persönlicher Rabatt — Andreashof Breechen`;
+  const row = (label: string, value: string, strong = false) =>
+    `<tr><td style="padding:5px 0;color:${COLORS.muted};font-size:13px;width:220px;">${label}</td><td style="padding:5px 0;font-size:${strong ? 17 : 14}px;${strong ? "font-weight:500;" : ""}text-align:right;">${value}</td></tr>`;
+  const rule = `<tr><td colspan="2" style="padding:6px 0 0;border-bottom:1px solid ${COLORS.border};font-size:0;line-height:0;">&nbsp;</td></tr>`;
+
+  // Once everything is paid there is no balance left to reduce; Andrea
+  // says in her own text how the amount comes back to the guest.
+  const paid = b.status === "fully_paid" || b.status === "completed";
+  const rows = [
+    row("Gesamtpreis laut Mietvertrag", formatPrice(b.total_price_cents)),
+    row(
+      "Persönlicher Rabatt",
+      `<span style="color:${COLORS.sageDeep};">− ${formatPrice(discountOf(b))}</span>`,
+    ),
+    rule,
+    row("Neuer Gesamtpreis", formatPrice(payableCents(b)), true),
+  ];
+  if (!paid) {
+    rows.push(
+      row("Anzahlung (unverändert)", formatPrice(depositCents(b))),
+      row("Restzahlung neu", formatPrice(balanceCents(b)), true),
+    );
+  }
+  const settlement = paid
+    ? ""
+    : `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${COLORS.muted};">Der Rabatt wird mit Ihrer Restzahlung verrechnet; die Anzahlung bleibt wie im Mietvertrag vereinbart.</p>`;
+
+  const body = `
+    <h1 style="margin:0 0 18px;font-size:24px;font-weight:300;font-style:italic;">Ein persönlicher Rabatt für Sie.</h1>
+    ${paragraphs(message)}
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:22px 0;padding:18px 20px;background:${COLORS.bg};border:1px solid ${COLORS.border};width:100%;">
+      ${rows.join("")}
+    </table>
+    ${settlement}
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${COLORS.muted};">Diese Nachricht ergänzt Ihren Mietvertrag für den Aufenthalt vom ${formatDate(b.arrival)} bis ${formatDate(b.departure)} (Buchung ${b.id.slice(0, 8)}). Der Vertrag selbst bleibt unverändert gültig.</p>
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Grüße<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
+  `;
+  return { subject, html: shell(subject, body) };
+}
+
+/** Plain text in, email paragraphs out: blank lines separate paragraphs. */
+function paragraphs(text: string): string {
+  return text
     .split(/\n\s*\n/)
     .map((p) => p.trim())
     .filter(Boolean)
@@ -327,8 +392,15 @@ export function tplCustomMessage(subject: string, text: string) {
         `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">${escapeHtml(p).replaceAll("\n", "<br>")}</p>`,
     )
     .join("");
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  9) Free-text message written by Andrea in the admin
+// ═══════════════════════════════════════════════════════════════
+export function tplCustomMessage(subject: string, text: string) {
+  // Plain text in, branded email out.
   const body = `
-    ${paragraphs}
+    ${paragraphs(text)}
     <p style="margin:18px 0 0;font-size:15px;line-height:1.6;">Herzliche Gr\u00fc\u00dfe<br><em style="color:${COLORS.sageDeep};">${SIGNATURE}</em></p>
   `;
   return { subject, html: shell(subject, body) };
